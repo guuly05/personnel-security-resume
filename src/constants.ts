@@ -1,4 +1,4 @@
-import { Achievement, Certificate, Course, Project, Skill } from './types.ts';
+import { Achievement, Certificate, Course, Experience, Project, Skill } from './types.ts';
 
 export const PERSONAL_INFO = {
   name: "Guuleed Maxmuud Aw Abdi",
@@ -22,8 +22,39 @@ export const SOFT_SKILLS = [
 ];
 
 export const HOBBIES = [
-  "Capture The Flag (CTF) challenges", "Open-source contributions", 
-  "Chess", "Reading cybersecurity research", "Football", "Tech blogging"
+  "Reading books and articles", "Watching anime",
+  "Online courses", "Reading documentation", "Tinkering with tech"
+];
+
+// New About Me intro content inserted for the enhanced About page.
+export const ABOUT_LETTER = [
+  "Hello, I am Guuleed, a cybersecurity-focused technologist who approaches every project with curiosity, discipline, and respect for the people who depend on the systems I help protect.",
+  "I enjoy turning complex technical problems into clear, practical solutions. Whether I am testing an application, documenting risks, or supporting users, I try to communicate calmly, work carefully, and leave things stronger than I found them.",
+  "Technology moves quickly, and that is exactly what keeps me motivated. I am committed to continuous learning through books, articles, online courses, documentation, and hands-on tinkering with new tools."
+];
+
+// New Experience content inserted for the Experience section.
+export const EXPERIENCES: Experience[] = [
+  {
+    title: "Penetration Tester",
+    company: "Confidential Family-Owned Business",
+    dateRange: "June 2024 - August 2024",
+    bullets: [
+      "Conducted vulnerability assessments on internal web applications and network services, identifying 12 high-priority security issues that were remediated within the engagement period.",
+      "Validated authentication, access control, and input-handling weaknesses using tools such as Nmap, Burp Suite, and manual testing techniques.",
+      "Delivered a clear penetration test report with prioritized remediation steps, earning positive feedback from the business owner for its practical and actionable guidance."
+    ]
+  },
+  {
+    title: "General IT Support",
+    company: "Confidential Family-Owned Business",
+    dateRange: "August 2025 - October 2025",
+    bullets: [
+      "Resolved over 95% of end-user IT support requests on first contact, covering laptop setup, software configuration, connectivity issues, and account access.",
+      "Streamlined onboarding for 5 remote workers by configuring laptops, VPN access, and required applications, completing setup work about 40% faster than the previous manual process.",
+      "Created quick-start guides and troubleshooting documentation that reduced repetitive support questions by an estimated 30% during the support period."
+    ]
+  }
 ];
 
 export const CORE_SKILLS = [

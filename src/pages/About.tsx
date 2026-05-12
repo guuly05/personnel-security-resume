@@ -1,7 +1,6 @@
 import React from 'react';
-import { PERSONAL_INFO, SOFT_SKILLS, HOBBIES } from '../constants.ts';
+import { ABOUT_LETTER, PERSONAL_INFO, SOFT_SKILLS, HOBBIES } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
-import { motion } from 'motion/react';
 
 const AboutPage: React.FC = () => {
   return (
@@ -18,6 +17,15 @@ const AboutPage: React.FC = () => {
           <p className="text-slate-400 leading-relaxed text-lg mb-8 max-w-lg">
             Resourceful penetration tester with hands-on experience in vulnerability assessment, network security, and Linux administration. I specialize in identifying critical weaknesses and delivering clear remediation strategies.
           </p>
+          {/* Download CV button inserted for direct PDF access. */}
+          <a
+            href="/assets/resume.pdf"
+            download
+            className="inline-flex items-center gap-3 px-5 py-3 mb-8 bg-brand-cyan text-brand-bg rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:scale-105 transition-transform active:scale-95"
+          >
+            <Icon name="file-code" size={18} />
+            Download CV (PDF)
+          </a>
           <div className="grid grid-cols-2 gap-4">
             <div className="p-5 bg-white/5 rounded-3xl border border-white/5 backdrop-blur-sm group/item hover:border-brand-cyan/30 transition-colors">
               <span className="text-[10px] text-brand-cyan font-mono uppercase tracking-widest block mb-1">LOCATION</span>
@@ -37,12 +45,27 @@ const AboutPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Warm introductory letter inserted for the enhanced About Me section. */}
+      <div className="lg:col-span-2 glass-card p-10 flex flex-col justify-center bg-gradient-to-br from-brand-bg to-brand-cyan/5">
+        <h3 className="text-xs font-mono text-brand-cyan uppercase tracking-widest mb-8 flex items-center gap-3">
+          <div className="w-6 h-[1px] bg-brand-cyan/40"></div>
+          About Me
+        </h3>
+        <div className="space-y-5">
+          {ABOUT_LETTER.map((paragraph) => (
+            <p key={paragraph} className="text-sm md:text-base text-slate-300 leading-relaxed">
+              {paragraph}
+            </p>
+          ))}
+        </div>
+      </div>
+
       {/* Soft Skills - Col 2 */}
       <div className="lg:col-span-2 glass-card p-10 flex flex-col justify-between bg-gradient-to-tr from-brand-purple/5 to-transparent">
         <div>
           <h3 className="text-xs font-mono text-brand-purple uppercase tracking-widest mb-8 flex items-center gap-3">
             <div className="w-6 h-[1px] bg-brand-purple/40"></div>
-            Core Competencies
+            Soft Skills
           </h3>
           <div className="flex flex-wrap gap-3">
             {SOFT_SKILLS.map((skill) => (
@@ -53,7 +76,7 @@ const AboutPage: React.FC = () => {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-white/5">
-          <p className="text-xs text-slate-500 font-mono italic">"Adaptable, Analytical, and Passionate about Defensive Strategy."</p>
+          <p className="text-xs text-slate-500 font-mono italic">"Clear communication, steady teamwork, and practical problem-solving under pressure."</p>
         </div>
       </div>
 
@@ -87,7 +110,7 @@ const AboutPage: React.FC = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {HOBBIES.map((hobby) => (
             <div key={hobby} className="bg-white/5 p-4 rounded-2xl border border-white/5 text-[10px] font-bold uppercase tracking-widest text-center hover:bg-brand-cyan/20 hover:text-brand-cyan transition-all cursor-default">
-              {hobby.split(' (')[0]}
+              {hobby}
             </div>
           ))}
         </div>

@@ -34,3 +34,10 @@ export interface Achievement {
   text: string;
   metric: string;
 }
+
+export interface Experience {
+  title: string;
+  company: string;
+  dateRange: string;
+  bullets: string[];
+}

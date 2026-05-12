@@ -11,11 +11,12 @@ import { Icon } from './components/Icon.tsx';
 // Pages - to be moved to separate files later for better structure
 import AboutPage from './pages/About.tsx';
 import SkillsPage from './pages/Skills.tsx';
+import ExperiencePage from './pages/Experience.tsx';
 import CertificatesPage from './pages/Certificates.tsx';
 import PortfolioPage from './pages/Portfolio.tsx';
 import ContactPage from './pages/Contact.tsx';
 
-type Section = 'about' | 'skills' | 'certificates' | 'portfolio' | 'contact';
+type Section = 'about' | 'skills' | 'experience' | 'certificates' | 'portfolio' | 'contact';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<Section>('about');
@@ -24,7 +25,8 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '') as Section;
-        if (['about', 'skills', 'certificates', 'portfolio', 'contact'].includes(hash)) {
+      if (['about', 'skills', 'experience', 'certificates', 'portfolio', 'contact'].includes(hash)) {
+        setActiveSection(hash);
       } else {
         setActiveSection('about');
       }
@@ -39,6 +41,8 @@ export default function App() {
   const navItems = [
     { id: 'about', label: 'About', icon: 'user' },
     { id: 'skills', label: 'Skills', icon: 'terminal' },
+    // Experience navigation item inserted for the new section.
+    { id: 'experience', label: 'Experience', icon: 'briefcase' },
     { id: 'certificates', label: 'Credentials', icon: 'graduation-cap' },
     { id: 'contact', label: 'Contact', icon: 'mail' },
   ];
@@ -132,6 +136,7 @@ export default function App() {
           >
             {activeSection === 'about' && <AboutPage />}
             {activeSection === 'skills' && <SkillsPage />}
+            {activeSection === 'experience' && <ExperiencePage />}
             {activeSection === 'certificates' && <CertificatesPage />}
             {activeSection === 'portfolio' && <PortfolioPage />}
             {activeSection === 'contact' && <ContactPage />}
