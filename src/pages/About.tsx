@@ -19,7 +19,7 @@ const AboutPage: React.FC = () => {
           </p>
           {/* Download CV button inserted for direct PDF access. */}
           <a
-            href="public\assets\Guuleed-Maxamuud-Awabdi-CV-1.pdf"
+            href="/assets/Guuleed-Maxamuud-Awabdi-CV-1.pdf"
             download
             className="inline-flex items-center gap-3 px-5 py-3 mb-8 bg-brand-cyan text-brand-bg rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:scale-105 transition-transform active:scale-95"
           >
