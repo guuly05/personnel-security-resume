@@ -44,6 +44,7 @@ export default function App() {
     // Experience navigation item inserted for the new section.
     { id: 'experience', label: 'Experience', icon: 'briefcase' },
     { id: 'certificates', label: 'Credentials', icon: 'graduation-cap' },
+    { id: 'portfolio', label: 'Portfolio', icon: 'layout' },
     { id: 'contact', label: 'Contact', icon: 'mail' },
   ];
 
