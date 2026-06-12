@@ -21,6 +21,17 @@ type Section = 'about' | 'skills' | 'experience' | 'certificates' | 'portfolio' 
 export default function App() {
   const [activeSection, setActiveSection] = useState<Section>('about');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    if (typeof window === 'undefined') return 'dark';
+    const stored = window.localStorage.getItem('portfolio-theme');
+    if (stored === 'light' || stored === 'dark') return stored;
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  });
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem('portfolio-theme', theme);
+  }, [theme]);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -38,6 +49,8 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  const toggleTheme = () => setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
+
   const navItems = [
     { id: 'about', label: 'About', icon: 'user' },
     { id: 'skills', label: 'Skills', icon: 'terminal' },
@@ -49,9 +62,9 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen p-4 md:p-8 lg:p-12 selection:bg-brand-cyan/20">
+    <div className="min-h-screen p-4 md:p-8 lg:p-12 selection:bg-[var(--accent)]/20 bg-[var(--color-bg)] text-[var(--color-text)] transition-colors duration-300">
       {/* Top Navbar */}
-      <nav className="max-w-7xl mx-auto mb-10 p-2 glass-card rounded-2xl flex items-center justify-between sticky top-4 z-50 transition-all duration-300">
+      <nav className="max-w-7xl mx-auto mb-10 rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 shadow-[var(--shadow)] backdrop-blur-xl transition-all duration-300 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3 pl-2">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(34,211,238,0.4)]">
             GM
@@ -80,20 +93,32 @@ export default function App() {
           ))}
         </div>
 
-        {/* Mobile Nav Toggle */}
-        <button 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden p-2 text-slate-400 hover:text-brand-cyan transition-colors"
-        >
-          <Icon name={isMenuOpen ? "x" : "menu"} size={24} />
-        </button>
+        <div className="hidden md:flex items-center gap-3">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            className="inline-flex items-center gap-2 rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          >
+            <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
+            <span className="hidden sm:inline">{theme === 'dark' ? 'Light' : 'Dark'} Mode</span>
+          </button>
 
-        {/* Divider for CTA if needed */}
-        <div className="hidden md:flex items-center gap-4 pr-2">
-          <a href="#contact" className="px-4 py-2 bg-brand-cyan text-brand-bg rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:scale-105 transition-transform active:scale-95">
-            Hire Me
+          <a
+            href="#contact"
+            className="rounded-3xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)] shadow-[0_0_18px_rgba(16,185,129,0.25)] transition hover:scale-[1.02] active:scale-[0.98]"
+          >
+            Contact
           </a>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setIsMenuOpen((value) => !value)}
+          className="md:hidden rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
+        >
+          <Icon name={isMenuOpen ? 'x' : 'menu'} size={20} />
+        </button>
       </nav>
 
       {/* Mobile Menu Overlay */}

@@ -1,261 +1,208 @@
 import React from 'react';
 import { Icon } from '../components/Icon.tsx';
 
-type Project = {
+interface ProjectDetails {
+  id: string;
   title: string;
-  githubUrl: string;
-  media:
-    | {
-        type: 'image';
-        src: string;
-        alt: string;
-        frame: 'wide' | 'phone';
-      }
-    | {
-        type: 'placeholder';
-        alt: string;
-      };
   problem: string;
-  solutionParts: Array<string | { tech: string }>;
+  solution: string;
   finished: string;
-};
+  techStack: Array<{ name: string }>;
+  githubUrl: string;
+  imageUrl: string;
+  imageAlt: string;
+  imagePosition: 'left' | 'right';
+}
 
-const projects: Project[] = [
+const PORTFOLIO_PROJECTS: ProjectDetails[] = [
   {
+    id: 'gabay-keeper',
     title: 'Gabay Keeper',
+    problem:
+      'Somali oral poetry is traditionally shared orally and kept in scattered notes, recordings, or community memory. This makes it vulnerable to loss, misattribution, and separation from its cultural context. There was no dedicated digital archive that captures poems with their proper metadata (genre, xaraf, source, etc.) while keeping the data private and user‑owned.',
+    solution:
+      'I built a full‑stack web archive using React, TypeScript, and Tailwind CSS for the frontend, with Firebase Authentication and Firestore for user accounts and secure data storage. I implemented structured metadata fields, footnotes, tagging, and filtering by Somali alphabet letter and genre. I also integrated Tesseract.js for OCR (extracting poem text from images) and html‑to‑image for generating shareable visual poem cards. Security rules enforce strict document ownership – each poem belongs only to the authenticated user who created it.',
+    finished:
+      'Gabay Keeper is a private digital archive where users can preserve Somali poems with full metadata, search and filter their collection, add research footnotes, scan printed texts via OCR, and export poems as shareable visual cards. It includes a dark mode for comfortable long‑form reading and works entirely in the browser without a backend server.',
+    techStack: [
+      { name: 'React' },
+      { name: 'TypeScript' },
+      { name: 'Tailwind CSS' },
+      { name: 'Firebase' },
+      { name: 'Tesseract.js' },
+      { name: 'html‑to‑image' },
+    ],
     githubUrl: 'https://github.com/guuly05/gabay-keeper',
-    media: {
-      type: 'placeholder',
-      alt: 'Archive interface placeholder for Gabay Keeper',
-    },
-    problem:
-      'Somali oral poetry is often preserved through memory, recordings, and scattered notes. I built this because that kind of cultural material can be lost, misattributed, or separated from the context that gives it meaning.',
-    solutionParts: [
-      'I built a full-stack web archive with ',
-      { tech: 'React' },
-      ', ',
-      { tech: 'TypeScript' },
-      ', and ',
-      { tech: 'Tailwind CSS' },
-      ' on the frontend, with ',
-      { tech: 'Firebase' },
-      ' handling authentication and secure Firestore storage. The archive supports structured metadata, footnotes, tags, filtering by Somali alphabet letter and genre, OCR through ',
-      { tech: 'Tesseract.js' },
-      ', and shareable poem cards generated with ',
-      { tech: 'html-to-image' },
-      '. Security rules keep each poem owned by the authenticated user who created it.',
-    ],
-    finished:
-      'Gabay Keeper is a private browser-based archive for preserving Somali poems with full metadata. Users can search and filter their collection, add research notes, scan printed text from images, export visual poem cards, and read comfortably in dark mode without needing a separate backend server.',
+    imageUrl: 'https://images.unsplash.com/photo-1519452575417-564c1401ecc0?w=800&h=450&fit=crop',
+    imageAlt: 'Gabay Keeper archive interface',
+    imagePosition: 'left',
   },
   {
+    id: 'cyber-dashboard',
     title: 'Cyber Attack Monitoring Dashboard',
-    githubUrl: 'https://github.com/guuly05/cyber-attack-monitoring-dashboard',
-    media: {
-      type: 'image',
-      src: 'https://github.com/user-attachments/assets/a8f31de3-ee5b-4b89-8224-951b399291a7',
-      alt: 'Cyber Attack Monitoring Dashboard main interface preview',
-      frame: 'wide',
-    },
     problem:
-      'Security analysts need a single place to watch threat indicators and quickly investigate IPs, domains, and CVEs. I wanted to avoid the usual back-and-forth between separate tools while keeping sensitive API keys on the server.',
-    solutionParts: [
-      'I created a ',
-      { tech: 'Next.js' },
-      ' App Router dashboard with ',
-      { tech: 'React' },
-      ', ',
-      { tech: 'TypeScript' },
-      ', and ',
-      { tech: 'Tailwind CSS' },
-      ', using ',
-      { tech: 'TanStack Query' },
-      ' for data fetching and ',
-      { tech: 'Recharts' },
-      ' for visualizations. Server-side API routes integrate AbuseIPDB and the CIRCL CVE API, while ',
-      { tech: 'Radix UI' },
-      ' primitives support the dialogs and interface states.',
-    ],
+      'Security analysts often need a single‑pane view of live‑style threat indicators and quick investigation tools for IPs, domains, and CVEs. Building such a dashboard usually requires juggling multiple APIs and manual data correlation. I wanted a clean, modern dashboard that shows real‑time and simulated threats while keeping API keys secure on the server.',
+    solution:
+      'I created a Next.js App Router dashboard with React, TypeScript, and Tailwind CSS, using TanStack Query for data fetching and Recharts for visualisations. I built server‑side API routes to integrate AbuseIPDB (IP reputation) and the CIRCL CVE API (vulnerability details), so no API keys are exposed to the client. The UI uses Radix UI primitives and lucide‑react icons for a polished look. The app includes a live‑style threat feed, threat search, risk scoring, and detailed dialogs with safe outbound links to VirusTotal, Shodan, and AlienVault OTX.',
     finished:
-      'The dashboard shows a live-style stream of malware, phishing, C2, botnet, and ransomware indicators. Users can search threat data, review risk scores and charts, open detailed investigation dialogs, and use mitigation guidance with safe outbound links to tools such as VirusTotal, Shodan, and AlienVault OTX.',
+      'The dashboard displays a stream of simulated malware, phishing, C2, botnet, and ransomware indicators. Users can search IPs, domains, and CVEs, see risk scores and charts, and read mitigation recommendations. When the AbuseIPDB key is configured, live IP reputation lookups are performed. The app is deployed on Vercel with production security headers and analytics.',
+    techStack: [
+      { name: 'Next.js' },
+      { name: 'React' },
+      { name: 'TypeScript' },
+      { name: 'Tailwind CSS' },
+      { name: 'TanStack Query' },
+      { name: 'Recharts' },
+      { name: 'Radix UI' },
+    ],
+    githubUrl: 'https://github.com/guuly05/cyber-attack-monitoring-dashboard',
+    imageUrl:
+      'https://github.com/user-attachments/assets/a8f31de3-ee5b-4b89-8224-951b399291a7',
+    imageAlt: 'Cyber Attack Monitoring Dashboard main view',
+    imagePosition: 'right',
   },
   {
+    id: 'purpleprint',
     title: 'PurplePrint',
-    githubUrl: 'https://github.com/guuly05/purpleprint',
-    media: {
-      type: 'image',
-      src: 'https://github.com/user-attachments/assets/9e8811f5-5e10-497f-82c1-2a144533e6d8',
-      alt: 'PurplePrint Android Markdown editor screenshot',
-      frame: 'phone',
-    },
     problem:
-      'Many Markdown editors and PDF converters process documents on remote servers. I wanted an Android editor that works fully offline, respects private writing, and never needs to upload a document anywhere.',
-    solutionParts: [
-      'I built a native Android app with ',
-      { tech: 'Kotlin' },
-      ' and ',
-      { tech: 'Jetpack Compose' },
-      ' following ',
-      { tech: 'Material 3' },
-      ' patterns. I wrote a custom Markdown parser that turns text into an AST, then built a local PDF engine with Android ',
-      { tech: 'PdfDocument' },
-      ' and ',
-      { tech: 'PrintManager' },
-      '. The layout adapts between split editor/preview on tablets and a tabbed workflow on phones.',
-    ],
+      'Many Markdown editors and PDF converters send your content to a remote server for processing. I wanted a fully offline, private Markdown editor and PDF exporter for Android that never needs internet access and never uploads documents anywhere.',
+    solution:
+      'I built a native Android app using Kotlin and Jetpack Compose, following Material 3 guidelines. I wrote a custom Markdown parser (block‑level and inline) that converts raw text into an AST, then built a PDF layout engine that uses Android\'s native PdfDocument and PrintManager to render pages – all on‑device. The app adapts its layout: split editor/preview on tablets and a tabbed workflow on phones. No internet permission is declared, and Android backup is disabled by default.',
     finished:
-      'PurplePrint is an offline-first Markdown editor with live preview and PDF export through the Android print dialog. It supports light and dark themes, keeps all processing on the device, and avoids internet permission entirely so writing stays local.',
+      'PurplePrint is an offline‑first Markdown editor with live preview. You write in a focused editor, see the rendered version instantly, and export a print‑ready PDF through the Android print dialog. The UI respects dark/light themes, and all processing stays on the device – zero data leaves your phone.',
+    techStack: [
+      { name: 'Kotlin' },
+      { name: 'Jetpack Compose' },
+      { name: 'Material 3' },
+      { name: 'PdfDocument' },
+      { name: 'PrintManager' },
+    ],
+    githubUrl: 'https://github.com/guuly05/purpleprint',
+    imageUrl:
+      'https://github.com/user-attachments/assets/9e8811f5-5e10-497f-82c1-2a144533e6d8',
+    imageAlt: 'PurplePrint editor interface',
+    imagePosition: 'left',
   },
 ];
 
-const TechBadge: React.FC<{ children: string }> = ({ children }) => (
-  <code className="mx-1 inline-flex rounded-lg border border-brand-cyan/20 bg-brand-cyan/10 px-2 py-0.5 font-mono text-[0.72rem] font-bold text-brand-cyan">
-    {children}
-  </code>
-);
-
-const ProjectMedia: React.FC<{ project: Project }> = ({ project }) => {
-  if (project.media.type === 'placeholder') {
-    return (
-      <div
-        aria-label={project.media.alt}
-        className="aspect-video w-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 shadow-[inset_0_0_40px_rgba(34,211,238,0.08)]"
-      >
-        <div className="flex h-full flex-col justify-between rounded-[1.25rem] border border-brand-cyan/20 bg-gradient-to-br from-brand-cyan/10 via-white/[0.03] to-brand-purple/10 p-5">
-          <div className="flex items-center justify-between border-b border-white/10 pb-4">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-brand-cyan">
-              Gabay Archive
-            </span>
-            <div className="flex gap-2">
-              <span className="h-2 w-2 rounded-full bg-brand-cyan/80" />
-              <span className="h-2 w-2 rounded-full bg-brand-purple/80" />
-              <span className="h-2 w-2 rounded-full bg-white/30" />
-            </div>
-          </div>
-          <div className="grid gap-4 md:grid-cols-[1fr_0.8fr]">
-            <div className="space-y-3">
-              <div className="h-3 w-2/3 rounded-full bg-white/20" />
-              <div className="h-3 w-full rounded-full bg-white/10" />
-              <div className="h-3 w-5/6 rounded-full bg-white/10" />
-              <div className="h-3 w-3/4 rounded-full bg-white/10" />
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-brand-bg/60 p-4">
-              <p className="mb-3 text-[10px] font-mono uppercase tracking-widest text-brand-purple">
-                Metadata
-              </p>
-              <div className="space-y-2">
-                {['Genre', 'Xaraf', 'Source'].map((item) => (
-                  <div key={item} className="flex items-center justify-between gap-3">
-                    <span className="text-[10px] text-slate-500">{item}</span>
-                    <span className="h-2 w-16 rounded-full bg-white/15" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <span className="self-start rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-300">
-            16:9 placeholder
-          </span>
-        </div>
-      </div>
-    );
-  }
-
-  if (project.media.frame === 'phone') {
-    return (
-      <div className="flex w-full justify-center rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6">
-        <div className="aspect-[9/16] w-full max-w-[280px] overflow-hidden rounded-[2rem] border border-white/15 bg-slate-950 shadow-[0_20px_60px_rgba(0,0,0,0.28)]">
-          <img
-            src={project.media.src}
-            alt={project.media.alt}
-            className="h-full w-full object-cover"
-            loading="lazy"
-          />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="aspect-video w-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.03]">
-      <img
-        src={project.media.src}
-        alt={project.media.alt}
-        className="h-full w-full object-cover"
-        loading="lazy"
-      />
-    </div>
-  );
-};
-
 const PortfolioPage: React.FC = () => {
   return (
-    <div className="glass-card overflow-hidden bg-gradient-to-br from-brand-cyan/5 via-transparent to-brand-purple/5">
-      <header className="px-6 py-10 md:px-10 md:py-12 lg:px-12">
-        <span className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">
-          Selected Work
-        </span>
-        <div className="mt-4 max-w-3xl">
-          <h2 className="font-display text-4xl font-bold leading-tight text-white md:text-5xl">
-            Projects built around <span className="text-gradient">culture, security, and privacy.</span>
-          </h2>
-          <p className="mt-5 text-base leading-relaxed text-slate-400">
-            A focused look at three projects I built to solve problems I cared about: preserving Somali poetry, making threat investigation easier, and keeping Markdown-to-PDF work private on Android.
+    <div className="w-full">
+      {/* Header Section */}
+      <section className="surface-card p-6 md:p-10 lg:p-12 mb-12">
+        <div className="max-w-4xl space-y-4">
+          <span className="text-[10px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold">
+            Selected work
+          </span>
+          <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
+            Security and privacy projects with clear goals.
+          </h1>
+          <p className="text-base leading-8 text-[var(--color-text-muted)] max-w-3xl">
+            These examples show the kinds of system hardening, investigation, and secure tooling work I do. Every project is built so it can be explained, reproduced, and used without extra complexity.
           </p>
         </div>
-      </header>
+      </section>
 
-      <div className="border-t border-white/10">
-        {projects.map((project, index) => {
-          const reversed = index % 2 === 1;
+      {/* Projects */}
+      <div className="space-y-20 lg:space-y-24 px-6 md:px-10 lg:px-12 pb-12">
+        {PORTFOLIO_PROJECTS.map((project, index) => (
+          <section key={project.id} className="w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              {/* Image Column */}
+              <div
+                className={`order-first ${
+                  project.imagePosition === 'right' ? 'lg:order-last' : ''
+                }`}
+              >
+                <div className="relative w-full bg-[var(--surface-soft)] rounded-[1.75rem] overflow-hidden aspect-video border border-[var(--border)]">
+                  <img
+                    src={project.imageUrl}
+                    alt={project.imageAlt}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
 
-          return (
-            <section
-              key={project.title}
-              aria-labelledby={`${project.title.toLowerCase().replace(/\s+/g, '-')}-title`}
-              className="border-b border-white/10 px-6 py-10 last:border-b-0 md:px-10 md:py-14 lg:px-12"
-            >
-              <div className={`grid items-center gap-8 lg:grid-cols-2 lg:gap-12 ${reversed ? 'lg:[&>*:first-child]:order-2' : ''}`}>
-                <ProjectMedia project={project} />
-
-                <div className="max-w-xl">
-                  <span className="mb-4 inline-flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-slate-500">
-                    <span className="h-px w-8 bg-brand-cyan/40" />
+              {/* Text Column */}
+              <div className="space-y-6 order-last lg:order-first">
+                <div>
+                  <span className="text-[10px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold mb-3 block">
                     Project {index + 1}
                   </span>
-                  <h3
-                    id={`${project.title.toLowerCase().replace(/\s+/g, '-')}-title`}
-                    className="font-display text-3xl font-bold leading-tight text-white md:text-4xl"
-                  >
+                  <h2 className="text-3xl md:text-4xl font-semibold mb-6">
                     {project.title}
-                  </h3>
-                  <div className="mt-6 space-y-5 text-sm leading-relaxed text-slate-300 md:text-base">
-                    <p>{project.problem}</p>
-                    <p>
-                      {project.solutionParts.map((part, partIndex) =>
-                        typeof part === 'string' ? (
-                          <React.Fragment key={partIndex}>{part}</React.Fragment>
-                        ) : (
-                          <TechBadge key={`${part.tech}-${partIndex}`}>{part.tech}</TechBadge>
-                        ),
-                      )}
+                  </h2>
+                </div>
+
+                {/* Content Sections */}
+                <div className="space-y-5">
+                  {/* The Problem */}
+                  <div>
+                    <h3 className="text-[11px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold mb-2">
+                      The Problem
+                    </h3>
+                    <p className="text-[15px] leading-7 text-[var(--color-text-muted)]">
+                      {project.problem}
                     </p>
-                    <p>{project.finished}</p>
                   </div>
+
+                  {/* How I Solved It */}
+                  <div>
+                    <h3 className="text-[11px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold mb-2">
+                      How I Solved It
+                    </h3>
+                    <p className="text-[15px] leading-7 text-[var(--color-text-muted)]">
+                      {project.solution}
+                    </p>
+                  </div>
+
+                  {/* The Finished Solution */}
+                  <div>
+                    <h3 className="text-[11px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold mb-2">
+                      The Finished Solution
+                    </h3>
+                    <p className="text-[15px] leading-7 text-[var(--color-text-muted)]">
+                      {project.finished}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Tech Stack */}
+                <div className="pt-2">
+                  <div className="flex flex-wrap gap-2">
+                    {project.techStack.map((tech) => (
+                      <span
+                        key={tech.name}
+                        className="inline-block rounded-full border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]"
+                      >
+                        {tech.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* GitHub Button */}
+                <div className="pt-4">
                   <a
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-8 inline-flex items-center gap-3 rounded-xl bg-brand-cyan px-5 py-3 text-sm font-bold text-brand-bg shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-transform hover:scale-105 active:scale-95"
+                    className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--color-bg)] transition hover:opacity-90 active:scale-95"
                   >
-                    <Icon name="github" size={18} />
+                    <Icon name="github" size={16} />
                     View on GitHub
                   </a>
                 </div>
               </div>
-            </section>
-          );
-        })}
+            </div>
+
+            {/* Divider (not after last project) */}
+            {index < PORTFOLIO_PROJECTS.length - 1 && (
+              <div className="mt-20 lg:mt-24 h-px bg-gradient-to-r from-[var(--border)] via-[var(--accent)]/30 to-[var(--border)]" />
+            )}
+          </section>
+        ))}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import {
   LucideIcon, Mail, MapPin, Network, Phone, ShieldAlert, ShieldCheck, 
   Target, Github, Linkedin, ExternalLink, Menu, X, ChevronRight, 
   Trophy, BookOpen, User, Briefcase, GraduationCap, Laptop, Terminal,
-  Globe, Clock, Layers, Star, Info, MessageSquare, Search
+  Globe, Clock, Layers, Star, Info, MessageSquare, Search, Sun, Moon
 } from 'lucide-react';
 import React from 'react';
 
@@ -68,7 +68,9 @@ const iconMap: Record<string, LucideIcon> = {
   // Misc
   'microsoft': ShieldCheck, 
   'javascript': Braces,
-  'search': Search
+  'search': Search,
+  'sun': Sun,
+  'moon': Moon
 };
 
 interface IconProps {
