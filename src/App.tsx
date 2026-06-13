@@ -75,7 +75,7 @@ export default function App() {
             className="inline-flex items-center gap-3"
             aria-label="Home"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(34,211,238,0.4)]">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-[var(--color-text)] shadow-[0_0_15px_rgba(34,211,238,0.4)]">
               GM
             </div>
           </a>
@@ -153,7 +153,7 @@ export default function App() {
           >
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-white">GM</div>
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-[var(--color-text)]">GM</div>
                 <div className="text-sm font-bold">{PERSONAL_INFO.name}</div>
               </div>
               <div>

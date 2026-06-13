@@ -88,6 +88,9 @@
   .accent-text {
     color: var(--accent) !important;
   }
+  .brand-purple-text {
+    color: var(--brand-purple) !important;
+  }
 
   /* Force all text to use the theme text color so light/dark modes invert cleanly. */
   *,

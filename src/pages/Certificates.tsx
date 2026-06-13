@@ -51,31 +51,31 @@ const CertificatesPage: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <section className="glass-card overflow-hidden bg-gradient-to-br from-brand-cyan/5 via-transparent to-brand-purple/5">
-        <div className="grid gap-8 p-6 md:p-10 lg:grid-cols-[0.75fr_1.25fr] lg:p-12">
+      <section className="surface-card p-6 md:p-10 lg:p-12">
+        <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
           <div className="flex flex-col justify-between gap-8">
             <div>
               <span className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">
                 Credentials
               </span>
-              <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-white md:text-5xl">
+              <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-[var(--color-text)] md:text-5xl">
                 Security learning with <span className="text-gradient">practical outcomes.</span>
               </h2>
-              <p className="mt-5 text-sm leading-relaxed text-slate-400 md:text-base">
+              <p className="mt-5 text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
                 These certifications support the way I work: understand the risk, validate it carefully, document it clearly, and keep improving through structured learning.
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-                <p className="font-display text-4xl font-bold text-brand-cyan">{CERTIFICATES.length}</p>
-                <p className="mt-2 text-[10px] font-mono font-bold uppercase tracking-widest text-slate-500">
+              <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-5">
+                <p className="font-display text-4xl font-bold accent-text">{CERTIFICATES.length}</p>
+                <p className="mt-2 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
                   Certificates
                 </p>
               </div>
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-                <p className="font-display text-4xl font-bold text-brand-purple">20+</p>
-                <p className="mt-2 text-[10px] font-mono font-bold uppercase tracking-widest text-slate-500">
+              <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-5">
+                <p className="font-display text-4xl font-bold text-[var(--brand-purple)]">20+</p>
+                <p className="mt-2 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
                   Skills Mapped
                 </p>
               </div>
@@ -89,10 +89,10 @@ const CertificatesPage: React.FC = () => {
               return (
                 <article
                   key={cert.title}
-                  className="group border-l-2 border-brand-cyan bg-white/5 p-5 transition-colors hover:bg-white/10 md:p-6 rounded-r-[1.5rem]"
+                  className="group border-l-2 border-[var(--accent)] bg-[var(--surface-soft)] p-5 md:p-6 rounded-r-[1.5rem]"
                 >
                   <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-brand-cyan/10 text-brand-cyan transition-transform group-hover:scale-110">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--accent-soft)] accent-text transition-transform group-hover:scale-110">
                       <Icon name={cert.icon} size={24} />
                     </div>
 
@@ -106,20 +106,20 @@ const CertificatesPage: React.FC = () => {
                               rel="noopener noreferrer"
                               className="group/title"
                             >
-                              <h3 className="text-xl font-bold leading-tight text-white transition-colors group-hover/title:text-brand-cyan">
+                              <h3 className="text-xl font-bold leading-tight text-[var(--color-text)] transition-colors group-hover/title:accent-text">
                                 {cert.title}
                               </h3>
                             </a>
                           ) : (
-                            <h3 className="text-xl font-bold leading-tight text-white">{cert.title}</h3>
+                            <h3 className="text-xl font-bold leading-tight text-[var(--color-text)]">{cert.title}</h3>
                           )}
-                          <p className="mt-2 text-[11px] font-bold uppercase tracking-widest text-brand-purple">
+                          <p className="mt-2 text-[11px] font-bold uppercase tracking-widest text-[var(--brand-purple)]">
                             {cert.issuer}
                           </p>
                         </div>
 
                         <div className="flex flex-row items-center gap-3 md:flex-col md:items-end md:gap-2">
-                          <span className="rounded bg-brand-cyan/10 px-2 py-1 font-mono text-[10px] font-bold uppercase text-brand-cyan">
+                          <span className="rounded bg-[var(--accent-soft)] px-2 py-1 font-mono text-[10px] font-bold uppercase accent-text">
                             {cert.date}
                           </span>
                           {cert.verifyLink && (
@@ -127,7 +127,7 @@ const CertificatesPage: React.FC = () => {
                               href={cert.verifyLink}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-brand-purple transition-colors hover:text-white"
+                              className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-[var(--brand-purple)] transition-colors hover:accent-text"
                             >
                               <Icon name="external-link" size={10} />
                               Verify Authenticity
@@ -136,13 +136,13 @@ const CertificatesPage: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="mt-5 grid gap-5 border-t border-white/5 pt-5 lg:grid-cols-[1fr_0.8fr]">
+                      <div className="mt-5 grid gap-5 border-t border-[var(--border)] pt-5 lg:grid-cols-[1fr_0.8fr]">
                         <div className="space-y-4">
                           <div>
                             <p className="mb-2 text-[10px] font-mono font-bold uppercase tracking-widest text-brand-cyan">
                               Certificate Content
                             </p>
-                            <p className="text-sm leading-relaxed text-slate-300">
+                            <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
                               {insight?.summary ?? cert.description}
                             </p>
                           </div>
@@ -150,21 +150,21 @@ const CertificatesPage: React.FC = () => {
                             <p className="mb-2 text-[10px] font-mono font-bold uppercase tracking-widest text-slate-500">
                               Personal Takeaway
                             </p>
-                            <p className="text-sm leading-relaxed text-slate-400">
+                            <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
                               {cert.description}
                             </p>
                           </div>
                         </div>
 
-                        <div className="rounded-3xl border border-white/10 bg-slate-950/40 p-4">
-                          <p className="mb-3 text-[10px] font-mono font-bold uppercase tracking-widest text-brand-purple">
+                        <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-4">
+                          <p className="mb-3 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--brand-purple)]">
                             Skills Gained
                           </p>
                           <div className="flex flex-wrap gap-2">
                             {(insight?.skills ?? []).map((skill) => (
                               <span
                                 key={skill}
-                                className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-slate-300"
+                                className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]"
                               >
                                 {skill}
                               </span>
