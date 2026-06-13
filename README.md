@@ -230,10 +230,10 @@ The following enhancements are planned (but not yet implemented):
 
 **Contact:**  
 - Email: guuleedmaxamuud40@gmail.com  
-- LinkedIn: [linkedin.com/in/yourprofile](https://www.linkedin.com/in/guuleed-aw-abdi-517928277/)  
+- LinkedIn: [linkedin.com/in/guuleed maxamuud](https://www.linkedin.com/in/guuleed-aw-abdi-517928277/)  
 - GitHub: [github.com/guuly05](https://github.com/guuly05)
 
 ---
 
 *Built with precision, deployed with confidence.*  
-**Last updated:** May 2026
+**Last updated:** June 2026
