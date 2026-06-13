@@ -88,6 +88,34 @@
   .accent-text {
     color: var(--accent) !important;
   }
+
+  /* Force all text to use the theme text color so light/dark modes invert cleanly. */
+  *,
+  *::before,
+  *::after {
+    color: var(--color-text) !important;
+  }
+
+  /* Allow text gradients and explicit accent text to keep their visuals */
+  .text-gradient {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+  }
+
+  /* Ensure SVG icons inherit text color */
+  svg {
+    color: inherit;
+  }
+  svg path,
+  svg circle,
+  svg rect,
+  svg polygon,
+  svg line,
+  svg polyline {
+    stroke: currentColor;
+    fill: currentColor;
+  }
 }
 
 .bento-grid {
