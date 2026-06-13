@@ -66,9 +66,19 @@ export default function App() {
       {/* Top Navbar */}
       <nav className="max-w-7xl mx-auto mb-10 rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 shadow-[var(--shadow)] backdrop-blur-xl transition-all duration-300 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3 pl-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(34,211,238,0.4)]">
-            GM
-          </div>
+          <a
+            href="#about"
+            onClick={() => {
+              setActiveSection('about');
+              setIsMenuOpen(false);
+            }}
+            className="inline-flex items-center gap-3"
+            aria-label="Home"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(34,211,238,0.4)]">
+              GM
+            </div>
+          </a>
           <div className="hidden sm:block">
             <h1 className="text-sm font-bold leading-tight">{PERSONAL_INFO.name}</h1>
             <p className="text-[10px] text-brand-cyan font-mono tracking-tighter uppercase">{PERSONAL_INFO.title}</p>
@@ -112,13 +122,24 @@ export default function App() {
           </a>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsMenuOpen((value) => !value)}
-          className="md:hidden rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
-        >
-          <Icon name={isMenuOpen ? 'x' : 'menu'} size={20} />
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
+          >
+            <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen((value) => !value)}
+            className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
+          >
+            <Icon name={isMenuOpen ? 'x' : 'menu'} size={20} />
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Menu Overlay */}
@@ -130,6 +151,23 @@ export default function App() {
             exit={{ opacity: 0, y: -20 }}
             className="md:hidden fixed inset-x-4 top-24 z-40 glass-card p-6 overflow-hidden shadow-2xl"
           >
+            <div className="mb-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-white">GM</div>
+                <div className="text-sm font-bold">{PERSONAL_INFO.name}</div>
+              </div>
+              <div>
+                <button
+                  type="button"
+                  onClick={() => toggleTheme()}
+                  aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                  className="inline-flex items-center gap-2 rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                >
+                  <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
+                  <span className="text-sm">{theme === 'dark' ? 'Light' : 'Dark'}</span>
+                </button>
+              </div>
+            </div>
             <div className="flex flex-col gap-4">
               {navItems.map((item) => (
                 <a
