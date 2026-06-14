@@ -44,7 +44,7 @@ const educationHighlights = [
 ];
 
 const universityImageUrl =
-  'https://commons.wikimedia.org/wiki/Special:Redirect/file/University%20of%20Hargeisa.svg';
+  'https://images.unsplash.com/photo-1519452575417-564c1401ecc0?w=600&h=400&fit=crop';
 
 const CertificatesPage: React.FC = () => {
   const [isEducationOpen, setIsEducationOpen] = useState(false);
@@ -182,34 +182,37 @@ const CertificatesPage: React.FC = () => {
       </section>
 
       <section className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="glass-card overflow-hidden border-t-8 border-brand-purple">
+        <div className="surface-card overflow-hidden">
           <button
             type="button"
             onClick={() => setIsEducationOpen((current) => !current)}
-            className="flex w-full flex-col gap-6 p-6 text-left transition-colors hover:bg-white/[0.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple/70 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg md:flex-row md:items-center md:justify-between md:p-10"
+            className="flex w-full flex-col gap-6 p-6 text-left md:flex-row md:items-center md:justify-between md:p-8"
             aria-expanded={isEducationOpen}
           >
-            <div className="flex items-center gap-5">
-              <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-brand-purple/10 text-brand-purple">
-                <Icon name="graduation-cap" size={32} />
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--brand-purple)]/10 text-[var(--brand-purple)]">
+                <Icon name="graduation-cap" size={28} />
               </div>
               <div>
-                <p className="text-xs font-mono font-bold uppercase tracking-widest text-brand-purple">
+                <p className="text-xs font-mono font-bold uppercase tracking-widest text-[var(--brand-purple)]">
                   Education
                 </p>
-                <h3 className="mt-2 text-2xl font-bold leading-tight text-white">B.Sc. Computer Science</h3>
-                <p className="mt-1 text-sm italic text-slate-400">University of Hargeisa</p>
+                <h3 className="mt-2 text-2xl font-bold leading-tight text-[var(--color-text)]">B.Sc. Computer Science</h3>
+                <p className="mt-1 text-sm italic text-[var(--color-text-muted)]">University of Hargeisa</p>
               </div>
             </div>
 
             <div className="flex items-center justify-between gap-4 md:flex-col md:items-end">
-              <p className="font-mono text-xs font-bold text-brand-purple">2022 - 2027</p>
-              <span className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-slate-300">
-                {isEducationOpen ? 'Hide Details' : 'View Details'}
+              <div className="text-right">
+                <p className="font-mono text-xs font-bold text-[var(--brand-purple)]">2023 - 2027</p>
+                <p className="text-[10px] text-[var(--color-text-muted)] mt-1">4 Years</p>
+              </div>
+              <span className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
+                {isEducationOpen ? 'Hide' : 'Expand'}
                 <Icon
                   name="chevron-right"
                   size={14}
-                  className={`transition-transform ${isEducationOpen ? 'rotate-90 text-brand-purple' : ''}`}
+                  className={`transition-transform ${isEducationOpen ? 'rotate-90 text-[var(--brand-purple)]' : ''}`}
                 />
               </span>
             </div>
@@ -224,25 +227,26 @@ const CertificatesPage: React.FC = () => {
                 transition={{ duration: 0.25 }}
                 className="overflow-hidden"
               >
-                <div className="grid gap-6 border-t border-white/10 p-6 md:p-10 lg:grid-cols-[0.8fr_1.2fr]">
-                  <div className="flex min-h-64 items-center justify-center rounded-3xl border border-white/10 bg-white/5 p-8">
+                <div className="grid gap-6 border-t border-[var(--border)] p-6 md:p-8 lg:grid-cols-[1fr_1.2fr]">
+                  <div className="rounded-lg overflow-hidden border border-[var(--border)]">
                     <img
                       src={universityImageUrl}
-                      alt="University of Hargeisa emblem"
-                      className="max-h-56 w-full object-contain"
+                      alt="University of Hargeisa"
+                      className="w-full h-full object-cover aspect-video"
                       loading="lazy"
                     />
                   </div>
 
                   <div>
-                    <p className="mb-5 text-sm leading-relaxed text-slate-300">
-                      My time at the University of Hargeisa has been more than coursework. It has been a place to build discipline, meet serious learners, practice leadership, and turn independent curiosity into consistent technical progress.
+                    <p className="text-[10px] uppercase tracking-widest font-semibold text-[var(--accent)] mb-3">University Experience</p>
+                    <p className="text-sm leading-relaxed text-[var(--color-text-muted)] mb-4">
+                      My time at the University of Hargeisa has shaped my technical foundation and professional mindset. I've built strong peer relationships, led learning initiatives, and consistently applied coursework to real security challenges.
                     </p>
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       {educationHighlights.map((highlight) => (
-                        <div key={highlight} className="flex gap-3 rounded-2xl border border-white/5 bg-white/5 p-4">
-                          <Icon name="chevron-right" size={16} className="mt-0.5 flex-shrink-0 text-brand-purple" />
-                          <p className="text-sm leading-relaxed text-slate-300">{highlight}</p>
+                        <div key={highlight} className="flex gap-2 text-xs text-[var(--color-text-muted)]">
+                          <span className="text-[var(--accent)] flex-shrink-0 mt-0.5">•</span>
+                          <span>{highlight}</span>
                         </div>
                       ))}
                     </div>
@@ -253,22 +257,28 @@ const CertificatesPage: React.FC = () => {
           </AnimatePresence>
         </div>
 
-        <div className="glass-card p-6 md:p-8 bg-gradient-to-br from-brand-bg to-brand-cyan/5">
-          <p className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-brand-cyan">
+        <div className="surface-card p-6 md:p-8">
+          <p className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-[var(--accent)]">
             Learning Focus
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-5 space-y-4">
+            <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
+              The university program is designed around real-world security and engineering challenges, giving me a solid foundation across systems thinking, secure development, and technology leadership.
+            </p>
+          <div className="flex flex-wrap gap-3 mt-4">
             {['Network Security', 'Cryptography', 'Operating Systems', 'Web Security', 'Secure SDLC', 'Identity', 'Threat Response'].map((course) => (
               <span
                 key={course}
-                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-slate-300"
+                className="rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]"
               >
                 {course}
               </span>
             ))}
           </div>
-          <div className="mt-8 border-t border-white/10 pt-6">
-            <p className="text-sm leading-relaxed text-slate-400">
+          </div>
+          <div className="mt-6 border-t border-[var(--border)] pt-6">
+            <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--brand-purple)] mb-2">Next Steps</p>
+            <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
               The certificates and degree work support the same direction: stronger fundamentals, better documentation, more confident collaboration, and practical security judgment.
             </p>
           </div>

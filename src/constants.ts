@@ -197,7 +197,7 @@ export const CERTIFICATES: Certificate[] = [
     issuer: "Cisco",
     date: "2026",
     description: "Gained deep insights into identifying and mitigating sophisticated cyber threats. Developed practical skills in monitoring network traffic for anomalies and responding to modern security incidents using advanced toolsets.",
-    icon: "activity",
+    icon: "cisco",
     verifyLink: "https://www.credly.com/badges/b4fce403-72e2-45c1-9c23-d8be733b06a4/public_url"
   },
   {
@@ -205,7 +205,7 @@ export const CERTIFICATES: Certificate[] = [
     issuer: "Cybrary",
     date: "2026",
     description: "Acquired hands-on experience in the entire offensive security lifecycle, from reconnaissance and vulnerability scanning to exploitation and post-exploitation. Learned specialized techniques for red teaming and reporting.",
-    icon: "target",
+    icon: "cybrary",
     verifyLink: "https://www.linkedin.com/learning/certificates/212ba3619b3f7861364d3abbceb053dfeaffe5694695a4a767601f756404dd6e/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3BgUaqTvJTTMqBt8%2FfS89IiA%3D%3D"
   },
   {
@@ -213,7 +213,7 @@ export const CERTIFICATES: Certificate[] = [
     issuer: "Microsoft & LinkedIn",
     date: "2026",
     description: "Mastered the core concepts of security, compliance, and identity across Microsoft ecosystems. Gained practical knowledge of implementing zero-trust architectures and managing cloud security postures.",
-    icon: "microsoft",
+    icon: "shield-check",
     verifyLink: "https://www.linkedin.com/learning/certificates/540585c949c8154fc65ad5caaa5a905e73cde74e32bdb0543210cce49ecceedc/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3BgUaqTvJTTMqBt8%2FfS89IiA%3D%3D"
   },
   {
