@@ -110,15 +110,6 @@
   svg {
     color: inherit;
   }
-  svg path,
-  svg circle,
-  svg rect,
-  svg polygon,
-  svg line,
-  svg polyline {
-    stroke: currentColor;
-    fill: currentColor;
-  }
 }
 
 .bento-grid {

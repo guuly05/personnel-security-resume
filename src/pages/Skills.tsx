@@ -44,8 +44,8 @@ const SkillsPage: React.FC = () => {
                   }`}
                 >
                   <div className="flex items-start gap-4">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-3xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                      <Icon name={course.icon} size={20} />
+                    <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-[var(--accent-soft)] text-[var(--accent)] shadow-[0_8px_24px_rgba(16,185,129,0.12)]">
+                      <Icon name={course.icon} size={22} />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between gap-4">
@@ -102,8 +102,8 @@ const SkillsPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {TOOLSET.map((tool) => (
                 <div key={tool} className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 text-center transition hover:border-[var(--accent)]">
-                  <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-3xl bg-[var(--surface)] text-[var(--accent)]">
-                    <Icon name={tool === 'Linux' ? 'terminal' : tool.toLowerCase()} size={18} />
+                  <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-[1.35rem] bg-[var(--surface)] text-[var(--accent)] shadow-[0_10px_30px_rgba(15,23,42,0.12)]">
+                    <Icon name={tool === 'Linux' ? 'terminal' : tool.toLowerCase()} size={24} />
                   </div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{tool}</p>
                 </div>
