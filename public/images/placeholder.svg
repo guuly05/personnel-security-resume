@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" rx="40" fill="#0f172a"/>
+  <rect x="36" y="36" width="728" height="428" rx="28" fill="#111827" stroke="#2dd4bf" stroke-width="4"/>
+  <circle cx="400" cy="220" r="120" fill="none" stroke="#2dd4bf" stroke-width="18" opacity="0.8"/>
+  <path d="M320 280h160" stroke="#f8fafc" stroke-width="18" stroke-linecap="round"/>
+  <path d="M352 184h96" stroke="#f8fafc" stroke-width="18" stroke-linecap="round"/>
+  <text x="400" y="392" text-anchor="middle" fill="#e2e8f0" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="600">Drop your image file here</text>
+</svg>

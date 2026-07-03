@@ -9,6 +9,7 @@ import { PERSONAL_INFO } from './constants.ts';
 import { Icon } from './components/Icon.tsx';
 
 // Pages - to be moved to separate files later for better structure
+import HomePage from './pages/Home.tsx';
 import AboutPage from './pages/About.tsx';
 import SkillsPage from './pages/Skills.tsx';
 import ExperiencePage from './pages/Experience.tsx';
@@ -16,10 +17,10 @@ import CertificatesPage from './pages/Certificates.tsx';
 import PortfolioPage from './pages/Portfolio.tsx';
 import ContactPage from './pages/Contact.tsx';
 
-type Section = 'about' | 'skills' | 'experience' | 'certificates' | 'portfolio' | 'contact';
+type Section = 'home' | 'about' | 'skills' | 'experience' | 'certificates' | 'portfolio' | 'contact';
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState<Section>('about');
+  const [activeSection, setActiveSection] = useState<Section>('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window === 'undefined') return 'dark';
@@ -36,10 +37,10 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '') as Section;
-      if (['about', 'skills', 'experience', 'certificates', 'portfolio', 'contact'].includes(hash)) {
+      if (['home', 'about', 'skills', 'experience', 'certificates', 'portfolio', 'contact'].includes(hash)) {
         setActiveSection(hash);
       } else {
-        setActiveSection('about');
+        setActiveSection('home');
       }
     };
 
@@ -52,6 +53,7 @@ export default function App() {
   const toggleTheme = () => setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
 
   const navItems = [
+    { id: 'home', label: 'Home', icon: 'layout' },
     { id: 'about', label: 'About', icon: 'user' },
     { id: 'skills', label: 'Skills', icon: 'terminal' },
     // Experience navigation item inserted for the new section.
@@ -67,9 +69,9 @@ export default function App() {
       <nav className="max-w-7xl mx-auto mb-10 rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 shadow-[var(--shadow)] backdrop-blur-xl transition-all duration-300 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3 pl-2">
           <a
-            href="#about"
+            href="#home"
             onClick={() => {
-              setActiveSection('about');
+              setActiveSection('home');
               setIsMenuOpen(false);
             }}
             className="inline-flex items-center gap-3"
@@ -95,7 +97,7 @@ export default function App() {
                 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200
                 ${activeSection === item.id 
                   ? 'bg-brand-cyan/10 text-brand-cyan' 
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'}
+                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--surface-soft)]'}
               `}
             >
               {item.label}
@@ -176,7 +178,7 @@ export default function App() {
                   onClick={() => setIsMenuOpen(false)}
                   className={`
                     flex items-center gap-4 px-4 py-3 rounded-xl transition-all
-                    ${activeSection === item.id ? 'bg-brand-cyan/10 text-brand-cyan' : 'text-slate-400'}
+                    ${activeSection === item.id ? 'bg-brand-cyan/10 text-brand-cyan' : 'text-[var(--color-text-muted)]'}
                   `}
                 >
                   <Icon name={item.icon} size={20} />
@@ -198,6 +200,7 @@ export default function App() {
             exit={{ opacity: 0, scale: 1.02 }}
             transition={{ duration: 0.3 }}
           >
+            {activeSection === 'home' && <HomePage />}
             {activeSection === 'about' && <AboutPage />}
             {activeSection === 'skills' && <SkillsPage />}
             {activeSection === 'experience' && <ExperiencePage />}
@@ -213,7 +216,7 @@ export default function App() {
         <div className="flex gap-6">
           <a href={PERSONAL_INFO.linkedin} target="_blank" className="hover:text-brand-cyan transition-colors">LinkedIn</a>
           <a href={PERSONAL_INFO.github} target="_blank" className="hover:text-brand-cyan transition-colors">GitHub</a>
-          <a href="#portfolio" className="hover:text-brand-cyan transition-colors">Portfolio</a>
+          <a href="#home" className="hover:text-brand-cyan transition-colors">Home</a>
         </div>
       </footer>
     </div>

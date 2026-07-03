@@ -264,3 +264,149 @@ export const PROJECTS: Project[] = [
     link: "#"
   }
 ];
+
+// ── Hobbies / Media Favourites ──────────────────────────────────────────
+
+export interface MediaItem {
+  title: string;
+  image: string;
+  description: string;
+}
+
+export interface HobbyCategory {
+  id: string;
+  label: string;
+  emoji: string;
+  items: MediaItem[];
+}
+
+export const HOBBY_CATEGORIES: HobbyCategory[] = [
+  {
+    id: 'anime',
+    label: 'Anime',
+    emoji: '📺',
+    items: [
+      {
+        title: 'Code Geass',
+        image: '/images/anime/code-geass.jpg',
+        description: 'A masterpiece of strategic warfare and moral ambiguity. Lelouch\'s genius-level tactics and the constant chess match between rebellion and empire make every episode gripping. The ending is one of the most talked-about in anime history.',
+      },
+      {
+        title: 'Bleach',
+        image: '/images/anime/bleach.jpg',
+        description: 'Ichigo\'s journey from substitute Soul Reaper to one of the strongest warriors in the Soul Society is packed with incredible sword fights, memorable villain arcs like Aizen\'s deception, and one of the best soundtracks in anime.',
+      },
+      {
+        title: 'Naruto Shippuden',
+        image: '/images/anime/naruto-shippuden.jpg',
+        description: 'The continuation of Naruto\'s story takes everything to another level. The Pain arc, Itachi\'s truth, and the theme of breaking cycles of hatred hit hard. The bond between Naruto and Sasuke drives the whole series.',
+      },
+      {
+        title: 'Overlord',
+        image: '/images/anime/overlord.jpg',
+        description: 'Ainz Ooal Gown trapped in a game world as an overpowered undead overlord, but played from the villain\'s perspective. The world-building is exceptional, and watching Ainz navigate politics while his subordinates worship him is both funny and terrifying.',
+      },
+      {
+        title: 'Mushoku Tensei',
+        image: '/images/anime/mushoku-tensei.jpg',
+        description: 'One of the best isekai ever made. The animation quality is movie-grade, the character development is slow and realistic, and the world feels genuinely alive. It takes the "reborn in another world" idea and treats it seriously.',
+      },
+    ],
+  },
+  {
+    id: 'games',
+    label: 'Games',
+    emoji: '🎮',
+    items: [
+      {
+        title: 'Genshin Impact',
+        image: '/images/games/genshin-impact.jpg',
+        description: 'An open-world action RPG with breathtaking visuals, deep elemental combat, and a massive world to explore. The gacha system keeps things exciting, and each region feels like stepping into a different culture.',
+      },
+      {
+        title: 'Persona 5',
+        image: '/images/games/persona-5.jpg',
+        description: 'A stylish JRPG that blends dungeon crawling with daily life simulation. The Phantom Thieves\' story of rebellion against corrupt adults is told through one of the most visually striking games ever made.',
+      },
+      {
+        title: 'Resident Evil',
+        image: '/images/games/resident-evil.jpg',
+        description: 'The franchise that defined survival horror. From the haunted Spencer Mansion to the streets of Raccoon City, these games deliver tension, resource management, and unforgettable boss fights.',
+      },
+      {
+        title: 'Final Fantasy',
+        image: '/images/games/final-fantasy.jpg',
+        description: 'A legendary RPG series known for epic storytelling, complex characters, and worlds that feel grand in every sense. Each entry reinvents itself while keeping the magic alive.',
+      },
+      {
+        title: 'Call of Duty',
+        image: '/images/games/call-of-duty.jpg',
+        description: 'The go-to FPS franchise for fast-paced multiplayer action and cinematic campaign experiences. Whether it\'s Modern Warfare\'s intensity or Warzone\'s battle royale chaos, it delivers adrenaline every time.',
+      },
+    ],
+  },
+  {
+    id: 'books',
+    label: 'Books',
+    emoji: '📚',
+    items: [
+      {
+        title: 'Pride and Prejudice',
+        image: '/images/books/pride-and-prejudice.jpg',
+        description: 'Jane Austen\'s timeless classic about love, class, and misjudgment. Elizabeth Bennet\'s sharp wit and Darcy\'s slow transformation make this one of the most satisfying character studies in English literature.',
+      },
+      {
+        title: 'Shōgun',
+        image: '/images/books/shogun.jpg',
+        description: 'James Clavell\'s epic historical novel set in feudal Japan. A sweeping tale of political intrigue, cultural clash, and survival as an English navigator becomes entangled in the power struggles of Japanese warlords.',
+      },
+      {
+        title: 'The Nightingale',
+        image: '/images/books/the-nightingale.jpg',
+        description: 'Kristin Hannah\'s powerful WWII novel following two sisters in occupied France. A deeply emotional story about courage, sacrifice, and the quiet heroism of ordinary people during extraordinary times.',
+      },
+      {
+        title: 'The Art of War',
+        image: '/images/books/the-art-of-war.jpg',
+        description: 'Sun Tzu\'s ancient treatise on strategy and conflict. Its lessons on positioning, deception, and knowing your opponent apply far beyond the battlefield — from business to cybersecurity.',
+      },
+      {
+        title: 'Omniscient Reader\'s Viewpoint',
+        image: '/images/books/omniscient-readers-viewpoint.jpg',
+        description: 'A genre-bending story where the sole reader of an apocalyptic web novel finds himself living inside the story. Blends action, philosophy, and meta-narrative in a way that redefines what a "reader" means.',
+      },
+    ],
+  },
+  {
+    id: 'manhwa',
+    label: 'Manhwa',
+    emoji: '📖',
+    items: [
+      {
+        title: 'Barbarian Quest',
+        image: '/images/manhwa/barbarian-quest.jpg',
+        description: 'A gripping tale of a barbarian warrior navigating a world of civilisation and conflict. Raw combat, cultural clashes, and a protagonist who fights with both strength and growing wisdom.',
+      },
+      {
+        title: 'Beginning After the End',
+        image: '/images/manhwa/beginning-after-the-end.jpg',
+        description: 'A powerful king reborn into a world of magic and monsters. The story balances intense action with genuine character growth as Arthur Leywin builds a new life while preparing for threats only he knows are coming.',
+      },
+      {
+        title: 'Legend of the Northern Blade',
+        image: '/images/manhwa/legend-of-the-northern-blade.jpg',
+        description: 'A martial arts manhwa with exceptional fight choreography and a compelling revenge story. Jin Mu-Won\'s quiet determination and explosive combat skills make every chapter satisfying.',
+      },
+      {
+        title: 'FFF-Class Trash Hero',
+        image: '/images/manhwa/fff-class-trash-hero.jpg',
+        description: 'A hilarious twist on the isekai formula where the hero is forced to redo his adventure because he completed it with terrible personality scores. Dark humour meets overpowered action.',
+      },
+      {
+        title: 'Greatest Estate Developer',
+        image: '/images/manhwa/greatest-estate-developer.jpg',
+        description: 'A civil engineering student reborn inside a fantasy novel as a doomed noble. Instead of fighting, he uses modern engineering knowledge to develop estates and infrastructure. Refreshingly unique and funny.',
+      },
+    ],
+  },
+];

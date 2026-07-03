@@ -3,7 +3,7 @@ import {
   LucideIcon, Mail, MapPin, Network, Phone, ShieldAlert, ShieldCheck, 
   Target, Github, Linkedin, ExternalLink, Menu, X, ChevronRight, 
   Trophy, BookOpen, User, Briefcase, GraduationCap, Laptop, Terminal,
-  Globe, Clock, Layers, Star, Info, MessageSquare, Search, Sun, Moon
+  Globe, Clock, Layers, Star, Info, MessageSquare, Search, Sun, Moon, Home
 } from 'lucide-react';
 import React from 'react';
 
@@ -257,6 +257,7 @@ const lucideIconMap: Record<string, LucideIcon> = {
   'graduation-cap': GraduationCap,
   'laptop': Laptop,
   'terminal': Terminal,
+  'home': Home,
   'globe': Globe,
   'clock': Clock,
   'layers': Layers,
