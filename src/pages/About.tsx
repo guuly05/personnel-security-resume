@@ -287,7 +287,7 @@ const AboutPage: React.FC = () => {
                 <p className="mt-1 text-sm font-semibold text-[var(--color-text)]">{PERSONAL_INFO.title}</p>
               </div>
               <div className="stat-badge items-start sm:col-span-2">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">Live Age</p>
+                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">Age</p>
                 <p className="mt-1 text-xl font-bold text-[var(--accent)] age-counter">{age.preciseYears.toFixed(8)} years</p>
                 <p className="mt-1 text-xs text-[var(--color-text-muted)]">
                   {age.years} years and {age.months} months
@@ -342,7 +342,7 @@ const AboutPage: React.FC = () => {
       <section className="surface-card p-6 md:p-8">
         <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)]">Hobbies and Interests</p>
         <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
-          Open any card to view my top 5 titles in each category, with short notes and image paths mapped to the images folder.
+          I have compiled here my top hobbies and my fav media in each of them, browsing them should help you to understand how i am outside my work.
         </p>
 
         <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
@@ -400,7 +400,7 @@ const AboutPage: React.FC = () => {
                     <h4 className="mt-3 text-base font-bold text-[var(--color-text)]">{item.title}</h4>
                     <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">{item.description}</p>
                     <p className="mt-3 text-xs font-semibold uppercase tracking-widest text-[var(--accent)]">
-                      What stands out: {item.highlight}
+                      What i like about this: {item.highlight}
                     </p>
                   </article>
                 ))}
