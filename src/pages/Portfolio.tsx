@@ -94,9 +94,9 @@ const PortfolioPage: React.FC = () => {
           <span className="text-[10px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold">
             Selected work
           </span>
-          <h1 className="text-4xl md:text-5xl font-semibold leading-tight">
+          <h2 className="text-4xl md:text-5xl font-semibold leading-tight">
             Security and privacy projects with clear goals.
-          </h1>
+          </h2>
           <p className="text-base leading-8 text-[var(--color-text-muted)] max-w-3xl">
             These examples show the kinds of system hardening, investigation, and secure tooling work I do. Every project is built so it can be explained, reproduced, and used without extra complexity.
           </p>

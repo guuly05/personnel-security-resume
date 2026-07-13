@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PERSONAL_INFO } from './constants.ts';
 import { Icon } from './components/Icon.tsx';
+import { SeoHead } from './components/SeoHead.tsx';
 
 // Pages - to be moved to separate files later for better structure
 import HomePage from './pages/Home.tsx';
@@ -65,6 +66,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen p-4 md:p-8 lg:p-12 selection:bg-[var(--accent)]/20 bg-[var(--color-bg)] text-[var(--color-text)] transition-colors duration-300">
+      {/* Dynamic SEO head tags — updates per active section */}
+      <SeoHead section={activeSection} />
       {/* Top Navbar */}
       <nav className="max-w-7xl mx-auto mb-10 rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 shadow-[var(--shadow)] backdrop-blur-xl transition-all duration-300 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3 pl-2">
@@ -82,7 +85,8 @@ export default function App() {
             </div>
           </a>
           <div className="hidden sm:block">
-            <h1 className="text-sm font-bold leading-tight">{PERSONAL_INFO.name}</h1>
+            {/* nav brand: styled as bold text but NOT an h1 — the real h1 is on the Home page */}
+            <span className="block text-sm font-bold leading-tight">{PERSONAL_INFO.name}</span>
             <p className="text-[10px] text-brand-cyan font-mono tracking-tighter uppercase">{PERSONAL_INFO.title}</p>
           </div>
         </div>

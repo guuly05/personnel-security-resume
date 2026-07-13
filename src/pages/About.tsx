@@ -254,9 +254,9 @@ const AboutPage: React.FC = () => {
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">About Me</p>
-            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-[var(--color-text)] md:text-5xl">
+            <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-[var(--color-text)] md:text-5xl">
               Security learner, builder, and long-term systems thinker.
-            </h1>
+            </h2>
             <div className="mt-5 space-y-4">
               {ABOUT_LETTER.map((paragraph) => (
                 <p key={paragraph} className="text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
