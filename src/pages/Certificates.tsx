@@ -34,6 +34,31 @@ const certificateInsights: Record<string, CertificateInsight> = {
       'Provided a broad cybersecurity foundation across common threats, defensive controls, investigations, and professional security roles. It helped sharpen the baseline knowledge I use when moving between networking, systems, and application security.',
     skills: ['Security fundamentals', 'Threat intelligence', 'Digital forensics', 'Defense strategy'],
   },
+  'Cloud Tech Associate Advanced Security + EDR': {
+    summary:
+      'Focused on practical cloud-era protection with endpoint detection and response concepts, emphasizing stronger defensive visibility and faster incident reaction.',
+    skills: ['Endpoint detection and response', 'Cloud security basics', 'Threat monitoring', 'Incident triage'],
+  },
+  'Access Governance & Risk Management': {
+    summary:
+      'Covered identity governance and risk-centered access decisions, with emphasis on least privilege, access lifecycle control, and governance-aligned security planning.',
+    skills: ['Access governance', 'Risk management', 'Least privilege strategy', 'Identity control'],
+  },
+  'Claude Code 101': {
+    summary:
+      'Introduced practical AI-assisted engineering workflows, including prompt design, iterative refinement, and faster implementation with clear technical direction.',
+    skills: ['Prompt engineering', 'AI-assisted development', 'Iterative coding workflows', 'Developer productivity'],
+  },
+  'Web Application Security for the Everyday Software Engineer': {
+    summary:
+      'Strengthened day-to-day secure development practices by focusing on common web vulnerabilities, defensive coding choices, and risk-aware implementation habits.',
+    skills: ['Secure coding', 'Web vulnerability mitigation', 'Application threat modeling', 'Defensive engineering'],
+  },
+  'Securing MongoDB Self-Managed Networking': {
+    summary:
+      'Focused on hardening self-managed MongoDB network exposure through secure connectivity patterns, segmentation, and safer infrastructure-level database access.',
+    skills: ['MongoDB network hardening', 'Secure connectivity', 'Attack surface reduction', 'Infrastructure security'],
+  },
 };
 
 const educationHighlights = [
@@ -46,8 +71,50 @@ const educationHighlights = [
 const universityImageUrl =
   'https://images.unsplash.com/photo-1519452575417-564c1401ecc0?w=600&h=400&fit=crop';
 
+const certificateTracks = {
+  'Cyber Threat Management': 'Offensive Security',
+  'Penetration Testing Professional': 'Offensive Security',
+  'Microsoft Security Essentials': 'Identity & Governance',
+  'Career Essentials in GitHub': 'Engineering',
+  'Career Essentials in Cybersecurity': 'Offensive Security',
+  'Cloud Tech Associate Advanced Security + EDR': 'Cloud & Infrastructure',
+  'Access Governance & Risk Management': 'Identity & Governance',
+  'Claude Code 101': 'Engineering',
+  'Web Application Security for the Everyday Software Engineer': 'Offensive Security',
+  'Securing MongoDB Self-Managed Networking': 'Cloud & Infrastructure',
+} as const;
+
+const certificateTrackOptions = [
+  'All',
+  'Offensive Security',
+  'Identity & Governance',
+  'Cloud & Infrastructure',
+  'Engineering',
+] as const;
+
+type CertificateTrack = (typeof certificateTrackOptions)[number];
+
+const mappedSkillsCount = new Set(Object.values(certificateInsights).flatMap((entry) => entry.skills)).size;
+
 const CertificatesPage: React.FC = () => {
   const [isEducationOpen, setIsEducationOpen] = useState(false);
+  const [activeTrack, setActiveTrack] = useState<CertificateTrack>('All');
+  const [expandedCertificates, setExpandedCertificates] = useState<Record<string, boolean>>({});
+
+  const visibleCertificates = CERTIFICATES.filter((cert) => {
+    if (activeTrack === 'All') {
+      return true;
+    }
+
+    return certificateTracks[cert.title as keyof typeof certificateTracks] === activeTrack;
+  });
+
+  const toggleCertificateExpanded = (title: string) => {
+    setExpandedCertificates((current) => ({
+      ...current,
+      [title]: !current[title],
+    }));
+  };
 
   return (
     <div className="space-y-4">
@@ -74,7 +141,7 @@ const CertificatesPage: React.FC = () => {
                 </p>
               </div>
               <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-5">
-                <p className="font-display text-4xl font-bold text-[var(--brand-purple)]">20+</p>
+                <p className="font-display text-4xl font-bold text-[var(--brand-purple)]">{mappedSkillsCount}</p>
                 <p className="mt-2 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
                   Skills Mapped
                 </p>
@@ -83,61 +150,137 @@ const CertificatesPage: React.FC = () => {
           </div>
 
           <div className="space-y-5">
-            {CERTIFICATES.map((cert) => {
+            <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-5">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <p className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-[var(--color-text-muted)]">
+                  Browse by track
+                </p>
+                <p className="text-[10px] font-mono font-bold uppercase tracking-widest accent-text">
+                  Showing {visibleCertificates.length} of {CERTIFICATES.length}
+                </p>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {certificateTrackOptions.map((track) => (
+                  <button
+                    key={track}
+                    type="button"
+                    onClick={() => setActiveTrack(track)}
+                    className={`rounded-xl border px-3 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors ${
+                      activeTrack === track
+                        ? 'border-[var(--accent)] bg-[var(--accent-soft)] accent-text'
+                        : 'border-[var(--border)] bg-[var(--surface-soft)] text-[var(--color-text-muted)] hover:border-[var(--accent)] hover:text-[var(--color-text)]'
+                    }`}
+                  >
+                    {track}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <motion.div
+              layout
+              className="grid gap-4 md:grid-cols-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.25 }}
+            >
+              {visibleCertificates.map((cert, index) => {
               const insight = certificateInsights[cert.title];
+              const track = certificateTracks[cert.title as keyof typeof certificateTracks] ?? 'General';
+              const isExpanded = Boolean(expandedCertificates[cert.title]);
 
               return (
-                <article
+                <motion.article
+                  layout
                   key={cert.title}
-                  className="group border-l-2 border-[var(--accent)] bg-[var(--surface-soft)] p-5 md:p-6 rounded-r-[1.5rem]"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.22, delay: index * 0.03 }}
+                  className="group rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-5 transition-colors hover:border-[var(--accent)]"
                 >
-                  <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--accent-soft)] accent-text transition-transform group-hover:scale-110">
-                      <Icon name={cert.icon} size={24} />
-                    </div>
-
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                        <div>
-                          {cert.verifyLink ? (
-                            <a
-                              href={cert.verifyLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="group/title"
-                            >
-                              <h3 className="text-xl font-bold leading-tight text-[var(--color-text)] transition-colors group-hover/title:accent-text">
-                                {cert.title}
-                              </h3>
-                            </a>
-                          ) : (
-                            <h3 className="text-xl font-bold leading-tight text-[var(--color-text)]">{cert.title}</h3>
-                          )}
-                          <p className="mt-2 text-[11px] font-bold uppercase tracking-widest text-[var(--brand-purple)]">
-                            {cert.issuer}
-                          </p>
-                        </div>
-
-                        <div className="flex flex-row items-center gap-3 md:flex-col md:items-end md:gap-2">
-                          <span className="rounded bg-[var(--accent-soft)] px-2 py-1 font-mono text-[10px] font-bold uppercase accent-text">
-                            {cert.date}
-                          </span>
-                          {cert.verifyLink && (
-                            <a
-                              href={cert.verifyLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-[var(--brand-purple)] transition-colors hover:accent-text"
-                            >
-                              <Icon name="external-link" size={10} />
-                              Verify Authenticity
-                            </a>
-                          )}
-                        </div>
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--accent-soft)] accent-text transition-transform group-hover:scale-110">
+                        <Icon name={cert.icon} size={24} />
                       </div>
 
-                      <div className="mt-5 grid gap-5 border-t border-[var(--border)] pt-5 lg:grid-cols-[1fr_0.8fr]">
-                        <div className="space-y-4">
+                      <div className="min-w-0">
+                        {cert.verifyLink ? (
+                          <a
+                            href={cert.verifyLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group/title"
+                          >
+                            <h3 className="text-lg font-bold leading-tight text-[var(--color-text)] transition-colors group-hover/title:accent-text">
+                              {cert.title}
+                            </h3>
+                          </a>
+                        ) : (
+                          <h3 className="text-lg font-bold leading-tight text-[var(--color-text)]">{cert.title}</h3>
+                        )}
+                        <p className="mt-2 text-[11px] font-bold uppercase tracking-widest text-[var(--brand-purple)]">
+                          {cert.issuer}
+                        </p>
+                        <p className="mt-2 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
+                          {track}
+                        </p>
+                      </div>
+                    </div>
+
+                    <span className="rounded bg-[var(--accent-soft)] px-2 py-1 font-mono text-[10px] font-bold uppercase accent-text">
+                      {cert.date}
+                    </span>
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {(insight?.skills ?? []).slice(0, 4).map((skill) => (
+                      <span
+                        key={skill}
+                        className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 flex items-center justify-between gap-3 border-t border-[var(--border)] pt-4">
+                    <button
+                      type="button"
+                      onClick={() => toggleCertificateExpanded(cert.title)}
+                      className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] transition-colors hover:accent-text"
+                    >
+                      {isExpanded ? 'Hide details' : 'View details'}
+                      <Icon
+                        name="chevron-right"
+                        size={12}
+                        className={`transition-transform ${isExpanded ? 'rotate-90 text-[var(--brand-purple)]' : ''}`}
+                      />
+                    </button>
+
+                    {cert.verifyLink && (
+                      <a
+                        href={cert.verifyLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-[var(--brand-purple)] transition-colors hover:accent-text"
+                      >
+                        <Icon name="external-link" size={10} />
+                        Verify Authenticity
+                      </a>
+                    )}
+                  </div>
+
+                  <AnimatePresence initial={false}>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-4 space-y-4 border-t border-[var(--border)] pt-4">
                           <div>
                             <p className="mb-2 text-[10px] font-mono font-bold uppercase tracking-widest text-brand-cyan">
                               Certificate Content
@@ -155,28 +298,13 @@ const CertificatesPage: React.FC = () => {
                             </p>
                           </div>
                         </div>
-
-                        <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-4">
-                          <p className="mb-3 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--brand-purple)]">
-                            Skills Gained
-                          </p>
-                          <div className="flex flex-wrap gap-2">
-                            {(insight?.skills ?? []).map((skill) => (
-                              <span
-                                key={skill}
-                                className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]"
-                              >
-                                {skill}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </article>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.article>
               );
             })}
+            </motion.div>
           </div>
         </div>
       </section>

@@ -231,6 +231,46 @@ export const CERTIFICATES: Certificate[] = [
     description: "Followed a focused path on modern security threats, defense mechanisms, and investigative techniques. Strengthened foundational knowledge in network security, threat intelligence, and digital forensics.",
     icon: "shield-alert",
     verifyLink: "https://www.linkedin.com/learning/certificates/d736a666b751844e8009136d3831f7dad97edfc9a044f15c347fc941bf8eb49a"
+  },
+  {
+    title: "Cloud Tech Associate Advanced Security + EDR",
+    issuer: "Acronis",
+    date: "2026",
+    description: "Completed advanced security and endpoint detection and response learning focused on practical protection, detection, and response workflows in cloud-driven environments.",
+    icon: "shield-check",
+    verifyLink: "https://www.credly.com/badges/55feb6cf-1d77-45b5-a815-5ddfd65345a0/public_url"
+  },
+  {
+    title: "Access Governance & Risk Management",
+    issuer: "ManageEngine User Academy",
+    date: "2026",
+    description: "Strengthened core identity governance and risk management knowledge, including access control principles, role-based access strategy, and governance-focused security decision making.",
+    icon: "shield-alert",
+    verifyLink: "https://www.credly.com/badges/b575deed-cb31-4ea0-8d46-bb4b2e05520d/linked_in_profile"
+  },
+  {
+    title: "Claude Code 101",
+    issuer: "Anthropic",
+    date: "2026",
+    description: "Covered practical workflows for building with Claude Code, including prompt-driven development, iteration strategies, and effective AI-assisted engineering habits.",
+    icon: "code-2",
+    verifyLink: "https://verify.skilljar.com/c/o6zbhrnhf8rw"
+  },
+  {
+    title: "Web Application Security for the Everyday Software Engineer",
+    issuer: "Educative",
+    date: "2026",
+    description: "Focused on secure coding essentials for web applications, including common vulnerability patterns, mitigation techniques, and day-to-day defensive engineering practices.",
+    icon: "globe",
+    verifyLink: "https://www.educative.io/verify-certificate/AHSDOE1W6M"
+  },
+  {
+    title: "Securing MongoDB Self-Managed Networking",
+    issuer: "MongoDB",
+    date: "2026",
+    description: "Validated knowledge of securing self-managed MongoDB networking, including access exposure reduction, secure connectivity design, and defense-in-depth configuration choices.",
+    icon: "network",
+    verifyLink: "https://www.credly.com/badges/71f2e47b-75c4-4d2e-bf18-8ed12b33d86f"
   }
 ];
 
