@@ -55,6 +55,11 @@ const SECTION_META: Record<string, { title: string; description: string }> = {
       `Explore ${FULL_NAME}'s cybersecurity projects including the EternalBlue exploitation case study, ` +
       `automated vulnerability scanner, and BookWanag — a modern React storefront.`,
   },
+  blog: {
+    title: `Blog | ${TITLE_SUFFIX}`,
+    description:
+      `Read editorial long-form technical writing, custom markdown experiments, and premium reading layouts from ${FULL_NAME}.`,
+  },
   contact: {
     title: `Contact ${FULL_NAME} | ${TITLE_SUFFIX}`,
     description:

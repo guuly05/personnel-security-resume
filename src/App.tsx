@@ -16,13 +16,15 @@ import SkillsPage from './pages/Skills.tsx';
 import ExperiencePage from './pages/Experience.tsx';
 import CertificatesPage from './pages/Certificates.tsx';
 import PortfolioPage from './pages/Portfolio.tsx';
+import BlogPage from './pages/Blog.tsx';
 import ContactPage from './pages/Contact.tsx';
 
-type Section = 'home' | 'about' | 'skills' | 'experience' | 'certificates' | 'portfolio' | 'contact';
+type Section = 'home' | 'about' | 'skills' | 'experience' | 'certificates' | 'portfolio' | 'blog' | 'contact';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<Section>('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isBlogFocusMode, setIsBlogFocusMode] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window === 'undefined') return 'dark';
     const stored = window.localStorage.getItem('portfolio-theme');
@@ -38,7 +40,7 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '') as Section;
-      if (['home', 'about', 'skills', 'experience', 'certificates', 'portfolio', 'contact'].includes(hash)) {
+      if (['home', 'about', 'skills', 'experience', 'certificates', 'portfolio', 'blog', 'contact'].includes(hash)) {
         setActiveSection(hash);
       } else {
         setActiveSection('home');
@@ -51,6 +53,12 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  useEffect(() => {
+    if (activeSection !== 'blog') {
+      setIsBlogFocusMode(false);
+    }
+  }, [activeSection]);
+
   const toggleTheme = () => setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
 
   const navItems = [
@@ -61,15 +69,19 @@ export default function App() {
     { id: 'experience', label: 'Experience', icon: 'briefcase' },
     { id: 'certificates', label: 'Credentials', icon: 'graduation-cap' },
     { id: 'portfolio', label: 'Portfolio', icon: 'layout' },
+    { id: 'blog', label: 'Blog', icon: 'book-open' },
     { id: 'contact', label: 'Contact', icon: 'mail' },
   ];
+
+  const isBlogSection = activeSection === 'blog';
+  const chromeClassName = isBlogSection && isBlogFocusMode ? 'opacity-0 pointer-events-none max-h-0 overflow-hidden' : '';
 
   return (
     <div className="min-h-screen p-4 md:p-8 lg:p-12 selection:bg-[var(--accent)]/20 bg-[var(--color-bg)] text-[var(--color-text)] transition-colors duration-300">
       {/* Dynamic SEO head tags — updates per active section */}
       <SeoHead section={activeSection} />
       {/* Top Navbar */}
-      <nav className="max-w-7xl mx-auto mb-10 rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 shadow-[var(--shadow)] backdrop-blur-xl transition-all duration-300 flex flex-wrap items-center justify-between gap-4">
+      <nav className={`max-w-7xl mx-auto mb-10 rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 shadow-[var(--shadow)] backdrop-blur-xl transition-all duration-300 flex flex-wrap items-center justify-between gap-4 ${chromeClassName}`}>
         <div className="flex items-center gap-3 pl-2">
           <a
             href="#home"
@@ -210,17 +222,24 @@ export default function App() {
             {activeSection === 'experience' && <ExperiencePage />}
             {activeSection === 'certificates' && <CertificatesPage />}
             {activeSection === 'portfolio' && <PortfolioPage />}
+            {activeSection === 'blog' && (
+              <BlogPage
+                isFocusMode={isBlogFocusMode}
+                onFocusModeChange={setIsBlogFocusMode}
+              />
+            )}
             {activeSection === 'contact' && <ContactPage />}
           </motion.div>
         </AnimatePresence>
       </main>
 
-      <footer className="max-w-7xl mx-auto mt-20 pt-8 border-t border-brand-border flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-slate-500 font-mono uppercase tracking-widest px-4 pb-12">
+      <footer className={`max-w-7xl mx-auto mt-20 pt-8 border-t border-brand-border flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-slate-500 font-mono uppercase tracking-widest px-4 pb-12 ${chromeClassName}`}>
         <p>© 2026 {PERSONAL_INFO.name} — Secure by Design</p>
         <div className="flex gap-6">
           <a href={PERSONAL_INFO.linkedin} target="_blank" className="hover:text-brand-cyan transition-colors">LinkedIn</a>
           <a href={PERSONAL_INFO.github} target="_blank" className="hover:text-brand-cyan transition-colors">GitHub</a>
           <a href="#home" className="hover:text-brand-cyan transition-colors">Home</a>
+          <a href="#blog" className="hover:text-brand-cyan transition-colors">Blog</a>
         </div>
       </footer>
     </div>

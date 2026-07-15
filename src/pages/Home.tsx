@@ -34,6 +34,12 @@ const exploreCards = [
     icon: 'layout',
   },
   {
+    id: 'blog',
+    title: 'Blog',
+    description: 'Premium editorial writing, markdown experiments, and mood-driven reading.',
+    icon: 'book-open',
+  },
+  {
     id: 'contact',
     title: 'Contact',
     description: 'Direct channels for collaboration and opportunities.',
