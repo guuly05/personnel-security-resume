@@ -538,6 +538,47 @@
     margin-top: 0.45rem;
   }
 
+  .blog-list-ordered {
+    padding-left: 1.35rem;
+  }
+
+  .blog-table-wrap {
+    margin: 1.6rem 0;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 1.2rem;
+    background: var(--surface-soft);
+  }
+
+  .blog-table {
+    width: 100%;
+    min-width: 44rem;
+    border-collapse: collapse;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .blog-table th,
+  .blog-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .blog-table th {
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .blog-table tr:last-child td {
+    border-bottom: 0;
+  }
+
   .blog-figure {
     margin: 1.8rem 0;
   }

@@ -274,6 +274,62 @@ function parseMarkdown(markdown: string, title?: string): ReactNode[] {
       continue;
     }
 
+    if (/^\d+\.\s+/.test(trimmed)) {
+      const items: string[] = [];
+      while (index < lines.length && /^\d+\.\s+/.test(lines[index].trim())) {
+        items.push(lines[index].trim().replace(/^\d+\.\s+/, ''));
+        index += 1;
+      }
+
+      nodes.push(
+        <ol key={nextKey('ordered-list')} className="blog-list blog-list-ordered">
+          {items.map((item) => (
+            <li key={`${item.slice(0, 24)}-${item.length}`} dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(item) }} />
+          ))}
+        </ol>,
+      );
+      continue;
+    }
+
+    if (/^\|.+\|$/.test(trimmed)) {
+      const tableLines: string[] = [];
+      while (index < lines.length && /^\|.+\|$/.test(lines[index].trim())) {
+        tableLines.push(lines[index].trim());
+        index += 1;
+      }
+
+      const rows = tableLines
+        .filter((row) => !/^\|\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|$/.test(row))
+        .map((row) => row.split('|').slice(1, -1).map((cell) => cell.trim()));
+      const [headers, ...bodyRows] = rows;
+
+      nodes.push(
+        <div key={nextKey('table')} className="blog-table-wrap">
+          <table className="blog-table">
+            {headers && (
+              <thead>
+                <tr>
+                  {headers.map((header) => (
+                    <th key={header} dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(header) }} />
+                  ))}
+                </tr>
+              </thead>
+            )}
+            <tbody>
+              {bodyRows.map((row, rowIndex) => (
+                <tr key={`row-${rowIndex}`}>
+                  {row.map((cell, cellIndex) => (
+                    <td key={`${rowIndex}-${cellIndex}`} dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(cell) }} />
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>,
+      );
+      continue;
+    }
+
     const paragraphLines: string[] = [];
     while (
       index < lines.length &&
@@ -283,7 +339,9 @@ function parseMarkdown(markdown: string, title?: string): ReactNode[] {
       !lines[index].trim().startsWith('>') &&
       !lines[index].trim().startsWith('```') &&
       !/^!\[[^\]]*\]\([^\)]+\)$/.test(lines[index].trim()) &&
-      !/^[*-]\s+/.test(lines[index].trim())
+      !/^[*-]\s+/.test(lines[index].trim()) &&
+      !/^\d+\.\s+/.test(lines[index].trim()) &&
+      !/^\|.+\|$/.test(lines[index].trim())
     ) {
       paragraphLines.push(lines[index].trim());
       index += 1;
@@ -336,12 +394,14 @@ function IntroGate({ onEnter, palette }: { onEnter: () => void; palette: MoodPal
 }
 
 function BlogCatalog({
-  post,
+  posts,
   onOpen,
 }: {
-  post: BlogPost;
-  onOpen: () => void;
+  posts: BlogPost[];
+  onOpen: (slug: string) => void;
 }) {
+  const post = posts[0];
+  const otherPosts = posts.slice(1);
   const palette = moodPalette(post.mood);
 
   return (
@@ -366,7 +426,7 @@ function BlogCatalog({
 
       <div className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
         <article className="blog-card-large surface-card overflow-hidden">
-          <button type="button" onClick={onOpen} className="block w-full text-left">
+          <button type="button" onClick={() => onOpen(post.slug)} className="block w-full text-left">
             <div className="blog-hero-frame">
               <div
                 className="blog-hero-art"
@@ -401,8 +461,8 @@ function BlogCatalog({
           <div className="surface-card p-6">
             <p className="blog-eyebrow">Catalog notes</p>
             <div className="mt-5 space-y-3 text-sm leading-7 text-[var(--color-text-muted)]">
-              <p>This section is built to scale from one seed post to a full editorial archive without changing the layout language.</p>
-              <p>The story uses custom image frames, blockquotes, lists, and ambient mood treatment to keep the reading experience visually varied.</p>
+              <p>This section scales from one seed post to a full editorial archive without changing the layout language.</p>
+              <p>Stories use custom image frames, blockquotes, lists, tables, and ambient mood treatment to keep the reading experience visually varied.</p>
             </div>
           </div>
 
@@ -434,6 +494,28 @@ function BlogCatalog({
           </div>
         </aside>
       </div>
+
+      {otherPosts.length > 0 && (
+        <div className="grid gap-4 md:grid-cols-2">
+          {otherPosts.map((entry) => (
+            <article key={entry.slug} className="surface-card p-6 md:p-7">
+              <button type="button" onClick={() => onOpen(entry.slug)} className="block w-full text-left">
+                <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-[0.34em] text-[var(--color-text-muted)]">
+                  <span>{entry.date}</span>
+                  <span className="h-1 w-1 rounded-full bg-[var(--border)]" />
+                  <span>{entry.readTime}</span>
+                  <span className="h-1 w-1 rounded-full bg-[var(--border)]" />
+                  <span>{entry.mood}</span>
+                </div>
+                <h3 className="mt-5 text-2xl font-display font-semibold leading-tight text-[var(--color-text)]">
+                  {entry.title}
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-[var(--color-text-muted)]">{entry.subtitle}</p>
+              </button>
+            </article>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -602,7 +684,7 @@ export default function BlogPage({ isFocusMode, onFocusModeChange }: BlogPagePro
             progress={progress}
           />
         ) : (
-          <BlogCatalog key="catalog" post={activePost} onOpen={() => setActiveSlug(activePost.slug)} />
+          <BlogCatalog key="catalog" posts={BLOG_POSTS} onOpen={setActiveSlug} />
         )}
       </AnimatePresence>
     </div>
