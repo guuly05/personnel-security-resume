@@ -234,6 +234,8 @@ const getGraduationStats = (now: Date) => {
 const AboutPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<HobbyCard['id'] | null>(null);
   const [now, setNow] = useState(() => new Date());
+  const [isCvOpen, setIsCvOpen] = useState(false);
+  const [isModalCvOpen, setIsModalCvOpen] = useState(false);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -247,6 +249,8 @@ const AboutPage: React.FC = () => {
 
   const age = useMemo(() => getAge(now), [now]);
   const graduation = useMemo(() => getGraduationStats(now), [now]);
+
+  const pdfUrl = "/assets/Guuleed-Maxamuud-Awabdi-CV-1.pdf";
 
   return (
     <div className="space-y-5">
@@ -263,6 +267,26 @@ const AboutPage: React.FC = () => {
                   {paragraph}
                 </p>
               ))}
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setIsCvOpen(!isCvOpen)}
+                className="inline-flex items-center gap-2 rounded-3xl bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--color-bg)] shadow-[0_0_18px_rgba(16,185,129,0.25)] transition hover:scale-[1.02]"
+              >
+                <Icon name={isCvOpen ? "x" : "eye"} size={16} />
+                <span>{isCvOpen ? "Hide CV Preview" : "See My CV"}</span>
+              </button>
+
+              <a
+                href={pdfUrl}
+                download="Guuleed-Maxamuud-Awabdi-CV.pdf"
+                className="inline-flex items-center gap-2 rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-3 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+              >
+                <Icon name="download" size={16} />
+                <span>Download CV</span>
+              </a>
             </div>
           </div>
 
@@ -309,7 +333,102 @@ const AboutPage: React.FC = () => {
             </div>
           </aside>
         </div>
+
+        {/* Embedded Interactive PDF Viewer */}
+        {isCvOpen && (
+          <div className="mt-8 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-6 shadow-2xl transition-all">
+            <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] accent-text">
+                  <Icon name="file-text" size={20} />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[var(--color-text)]">Curriculum Vitae</h3>
+                  <p className="text-xs text-[var(--color-text-muted)]">Guuleed Maxamuud Aw Abdi - Cybersecurity Resume</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsModalCvOpen(true)}
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[var(--color-text)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition"
+                  title="Expand to Fullscreen"
+                >
+                  <Icon name="maximize-2" size={14} />
+                  <span className="hidden sm:inline">Fullscreen</span>
+                </button>
+                <a
+                  href={pdfUrl}
+                  download="Guuleed-Maxamuud-Awabdi-CV.pdf"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-[var(--accent)] px-3.5 py-2 text-xs font-semibold text-[var(--color-bg)] transition hover:scale-[1.02]"
+                >
+                  <Icon name="download" size={14} />
+                  <span>Download PDF</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setIsCvOpen(false)}
+                  className="flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition"
+                  title="Close PDF viewer"
+                >
+                  <Icon name="x" size={16} />
+                </button>
+              </div>
+            </div>
+            
+            <div className="mt-4 aspect-[1/1.3] w-full rounded-2xl overflow-hidden border border-[var(--border)] bg-black/20">
+              <iframe
+                src={`${pdfUrl}#toolbar=0&navpanes=0`}
+                title="Guuleed Maxamuud Aw Abdi CV PDF"
+                className="h-full w-full border-0"
+              />
+            </div>
+          </div>
+        )}
       </section>
+
+      {/* Fullscreen CV Viewer Modal */}
+      {isModalCvOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md">
+          <div className="flex h-[92vh] w-full max-w-5xl flex-col rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-2xl">
+            <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] accent-text">
+                  <Icon name="file-text" size={20} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-[var(--color-text)]">Guuleed Maxamuud Aw Abdi — CV</h3>
+                  <p className="text-xs text-[var(--color-text-muted)]">Official Cybersecurity Resume PDF</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <a
+                  href={pdfUrl}
+                  download="Guuleed-Maxamuud-Awabdi-CV.pdf"
+                  className="inline-flex items-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-2.5 text-xs font-semibold text-[var(--color-bg)] transition hover:scale-[1.02]"
+                >
+                  <Icon name="download" size={14} />
+                  <span>Download CV</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setIsModalCvOpen(false)}
+                  className="flex h-9 w-9 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition"
+                >
+                  <Icon name="x" size={18} />
+                </button>
+              </div>
+            </div>
+            <div className="mt-4 flex-1 rounded-2xl overflow-hidden border border-[var(--border)] bg-black/40">
+              <iframe
+                src={pdfUrl}
+                title="Full Screen CV Viewer"
+                className="h-full w-full border-0"
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       <section className="grid gap-4 md:grid-cols-2">
         <div className="surface-card p-6 md:p-8">

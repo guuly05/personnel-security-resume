@@ -3,7 +3,8 @@ import {
   LucideIcon, Mail, MapPin, Network, Phone, ShieldAlert, ShieldCheck, 
   Target, Github, Linkedin, ExternalLink, Menu, X, ChevronRight, 
   Trophy, BookOpen, User, Briefcase, GraduationCap, Laptop, Terminal,
-  Globe, Clock, Layers, Star, Info, MessageSquare, Search, Sun, Moon, Home
+  Globe, Clock, Layers, Star, Info, MessageSquare, Search, Sun, Moon, Home,
+  FileText, Download, Eye, Maximize2
 } from 'lucide-react';
 import React from 'react';
 
@@ -267,6 +268,10 @@ const lucideIconMap: Record<string, LucideIcon> = {
   'search': Search,
   'sun': Sun,
   'moon': Moon,
+  'file-text': FileText,
+  'download': Download,
+  'eye': Eye,
+  'maximize-2': Maximize2,
 };
 
 interface IconProps {
