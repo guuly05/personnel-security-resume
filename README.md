@@ -194,7 +194,7 @@ The live site is automatically deployed via **Vercel**.
 - Every push triggers a new deployment with instant cache invalidation.
 - A custom domain can be configured through the hosting provider.
 
-**Current live URL:** https://guuleed-maxamuud-portfolio.vercel.app/
+**Current live URL:** https://guuleedmaxamuud.dev/
 
 ---
 
