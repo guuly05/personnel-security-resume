@@ -9,15 +9,17 @@ import { PERSONAL_INFO } from './constants.ts';
 import { Icon } from './components/Icon.tsx';
 import { SeoHead } from './components/SeoHead.tsx';
 
-// Pages - to be moved to separate files later for better structure
-import HomePage from './pages/Home.tsx';
-import AboutPage from './pages/About.tsx';
-import SkillsPage from './pages/Skills.tsx';
-import ExperiencePage from './pages/Experience.tsx';
-import CertificatesPage from './pages/Certificates.tsx';
-import PortfolioPage from './pages/Portfolio.tsx';
-import BlogPage from './pages/Blog.tsx';
-import ContactPage from './pages/Contact.tsx';
+import { lazy, Suspense } from 'react';
+
+// Code-split pages for faster initial bundle loading
+const HomePage = lazy(() => import('./pages/Home.tsx'));
+const AboutPage = lazy(() => import('./pages/About.tsx'));
+const SkillsPage = lazy(() => import('./pages/Skills.tsx'));
+const ExperiencePage = lazy(() => import('./pages/Experience.tsx'));
+const CertificatesPage = lazy(() => import('./pages/Certificates.tsx'));
+const PortfolioPage = lazy(() => import('./pages/Portfolio.tsx'));
+const BlogPage = lazy(() => import('./pages/Blog.tsx'));
+const ContactPage = lazy(() => import('./pages/Contact.tsx'));
 
 type Section = 'home' | 'about' | 'skills' | 'experience' | 'certificates' | 'portfolio' | 'blog' | 'contact';
 
@@ -208,29 +210,40 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto relative">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeSection}
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-          >
-            {activeSection === 'home' && <HomePage />}
-            {activeSection === 'about' && <AboutPage />}
-            {activeSection === 'skills' && <SkillsPage />}
-            {activeSection === 'experience' && <ExperiencePage />}
-            {activeSection === 'certificates' && <CertificatesPage />}
-            {activeSection === 'portfolio' && <PortfolioPage />}
-            {activeSection === 'blog' && (
-              <BlogPage
-                isFocusMode={isBlogFocusMode}
-                onFocusModeChange={setIsBlogFocusMode}
-              />
-            )}
-            {activeSection === 'contact' && <ContactPage />}
-          </motion.div>
-        </AnimatePresence>
+        <Suspense
+          fallback={
+            <div className="flex h-64 w-full items-center justify-center rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-8">
+              <div className="flex items-center gap-3 text-sm font-semibold text-[var(--color-text-muted)]">
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent" />
+                <span>Loading section...</span>
+              </div>
+            </div>
+          }
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeSection}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
+              {activeSection === 'home' && <HomePage />}
+              {activeSection === 'about' && <AboutPage />}
+              {activeSection === 'skills' && <SkillsPage />}
+              {activeSection === 'experience' && <ExperiencePage />}
+              {activeSection === 'certificates' && <CertificatesPage />}
+              {activeSection === 'portfolio' && <PortfolioPage />}
+              {activeSection === 'blog' && (
+                <BlogPage
+                  isFocusMode={isBlogFocusMode}
+                  onFocusModeChange={setIsBlogFocusMode}
+                />
+              )}
+              {activeSection === 'contact' && <ContactPage />}
+            </motion.div>
+          </AnimatePresence>
+        </Suspense>
       </main>
 
       <footer className={`max-w-7xl mx-auto mt-20 pt-8 border-t border-brand-border flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-slate-500 font-mono uppercase tracking-widest px-4 pb-12 ${chromeClassName}`}>

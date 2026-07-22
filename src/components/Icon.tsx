@@ -206,6 +206,31 @@ interface SVGIconProps {
   className?: string;
 }
 
+const SvgFileMap: Record<string, string> = {
+  'cisco': '/images/SVG/cisco.svg',
+  'cybrary': '/images/SVG/cybrary.svg',
+  'acronis': '/images/SVG/Acronis.svg',
+  'manageengine': '/images/SVG/manageengine-logo-.png',
+  'manage-engine': '/images/SVG/manageengine-logo-.png',
+  'microsoft': '/images/SVG/microsoft.svg',
+  'github': '/images/SVG/github-wordmark.svg',
+  'anthropic': '/images/SVG/anthropic.svg',
+  'educative': '/images/SVG/educative.svg',
+  'mongodb': '/images/SVG/mongodb.svg',
+  'nessus': '/images/SVG/Nessus-Professional-FullColor-RGB.svg',
+  'nmap': '/images/SVG/nmap.svg',
+  'linux': '/images/SVG/linux.svg',
+  'wireshark': '/images/SVG/wireshark.svg',
+  'metasploit': '/images/SVG/metasploit.svg',
+  'bash': '/images/SVG/bash.svg',
+  'vmware': '/images/SVG/vmware-workstation.svg',
+  'virtualbox': '/images/SVG/virtualbox.svg',
+  'java': '/images/SVG/java.svg',
+  'python': '/images/SVG/python.svg',
+  'burpsuite': '/images/SVG/burpsuite.svg',
+  'burp-suite': '/images/SVG/burpsuite.svg',
+};
+
 const SvgIconMap: Record<string, React.FC<SVGIconProps>> = {
   'javascript': JsLogo,
   'js': JsLogo,
@@ -282,11 +307,31 @@ interface IconProps {
 
 const normalizeIconName = (name: string) => name.toLowerCase().replace(/[^a-z0-9]/g, '');
 
-export const Icon: React.FC<IconProps> = ({ name, className, size = 20 }) => {
+export const Icon: React.FC<IconProps> = ({ name, className, size = 24 }) => {
   const lowerName = name.toLowerCase();
   const normalizedName = normalizeIconName(name);
   
-  // Check SVG icon map first
+  // Check SVG File Map first for exact company/tool SVG images
+  const svgFilePath = SvgFileMap[lowerName] || SvgFileMap[normalizedName];
+  if (svgFilePath) {
+    return (
+      <div 
+        className="inline-flex items-center justify-center rounded-xl bg-white p-2 shadow-sm border border-slate-200 dark:border-slate-700 transition-all duration-300 hover:scale-105"
+        style={{ width: size + 14, height: size + 14 }}
+      >
+        <img
+          src={svgFilePath}
+          alt={name}
+          width={size}
+          height={size}
+          className={`object-contain max-h-full max-w-full ${className || ''}`}
+          style={{ width: size, height: size }}
+        />
+      </div>
+    );
+  }
+
+  // Check SVG React Component map second
   const SvgIcon = SvgIconMap[lowerName] || SvgIconMap[normalizedName];
   if (SvgIcon) {
     return <SvgIcon size={size} className={className} />;

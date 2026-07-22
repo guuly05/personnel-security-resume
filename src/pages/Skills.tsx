@@ -120,11 +120,11 @@ const SkillsPage: React.FC = () => {
 
                 return (
                   <div key={tool} className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 text-center transition hover:border-[var(--accent)]">
-                    <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-[1.35rem] bg-[var(--surface)] text-[var(--accent)] shadow-[0_10px_30px_rgba(15,23,42,0.12)]">
+                    <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-[1.35rem] bg-white p-2.5 shadow-md border border-slate-200 dark:border-slate-700 transition-all hover:scale-105">
                       {svgPath ? (
-                        <img src={svgPath} alt={tool} className="h-7 w-7 object-contain" loading="lazy" />
+                        <img src={svgPath} alt={tool} className="h-9 w-9 object-contain max-h-full max-w-full" loading="lazy" />
                       ) : (
-                        <Icon name={tool === 'Linux' ? 'terminal' : tool.toLowerCase()} size={24} />
+                        <Icon name={tool === 'Linux' ? 'terminal' : tool.toLowerCase()} size={30} />
                       )}
                     </div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--color-text-muted)]">{tool}</p>

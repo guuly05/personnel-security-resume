@@ -213,7 +213,7 @@ export const CERTIFICATES: Certificate[] = [
     issuer: "Microsoft & LinkedIn",
     date: "2026",
     description: "Mastered the core concepts of security, compliance, and identity across Microsoft ecosystems. Gained practical knowledge of implementing zero-trust architectures and managing cloud security postures.",
-    icon: "shield-check",
+    icon: "microsoft",
     verifyLink: "https://www.linkedin.com/learning/certificates/540585c949c8154fc65ad5caaa5a905e73cde74e32bdb0543210cce49ecceedc/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3BgUaqTvJTTMqBt8%2FfS89IiA%3D%3D"
   },
   {
@@ -229,7 +229,7 @@ export const CERTIFICATES: Certificate[] = [
     issuer: "Microsoft & LinkedIn",
     date: "2026",
     description: "Followed a focused path on modern security threats, defense mechanisms, and investigative techniques. Strengthened foundational knowledge in network security, threat intelligence, and digital forensics.",
-    icon: "shield-alert",
+    icon: "microsoft",
     verifyLink: "https://www.linkedin.com/learning/certificates/d736a666b751844e8009136d3831f7dad97edfc9a044f15c347fc941bf8eb49a"
   },
   {
@@ -237,7 +237,7 @@ export const CERTIFICATES: Certificate[] = [
     issuer: "Acronis",
     date: "2026",
     description: "Completed advanced security and endpoint detection and response learning focused on practical protection, detection, and response workflows in cloud-driven environments.",
-    icon: "shield-check",
+    icon: "acronis",
     verifyLink: "https://www.credly.com/badges/55feb6cf-1d77-45b5-a815-5ddfd65345a0/public_url"
   },
   {
@@ -245,7 +245,7 @@ export const CERTIFICATES: Certificate[] = [
     issuer: "ManageEngine User Academy",
     date: "2026",
     description: "Strengthened core identity governance and risk management knowledge, including access control principles, role-based access strategy, and governance-focused security decision making.",
-    icon: "shield-alert",
+    icon: "manageengine",
     verifyLink: "https://www.credly.com/badges/b575deed-cb31-4ea0-8d46-bb4b2e05520d/linked_in_profile"
   },
   {
@@ -253,7 +253,7 @@ export const CERTIFICATES: Certificate[] = [
     issuer: "Anthropic",
     date: "2026",
     description: "Covered practical workflows for building with Claude Code, including prompt-driven development, iteration strategies, and effective AI-assisted engineering habits.",
-    icon: "code-2",
+    icon: "anthropic",
     verifyLink: "https://verify.skilljar.com/c/o6zbhrnhf8rw"
   },
   {
@@ -261,7 +261,7 @@ export const CERTIFICATES: Certificate[] = [
     issuer: "Educative",
     date: "2026",
     description: "Focused on secure coding essentials for web applications, including common vulnerability patterns, mitigation techniques, and day-to-day defensive engineering practices.",
-    icon: "globe",
+    icon: "educative",
     verifyLink: "https://www.educative.io/verify-certificate/AHSDOE1W6M"
   },
   {
@@ -269,7 +269,7 @@ export const CERTIFICATES: Certificate[] = [
     issuer: "MongoDB",
     date: "2026",
     description: "Validated knowledge of securing self-managed MongoDB networking, including access exposure reduction, secure connectivity design, and defense-in-depth configuration choices.",
-    icon: "network",
+    icon: "mongodb",
     verifyLink: "https://www.credly.com/badges/71f2e47b-75c4-4d2e-bf18-8ed12b33d86f"
   }
 ];

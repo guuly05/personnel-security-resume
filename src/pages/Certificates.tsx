@@ -200,8 +200,8 @@ const CertificatesPage: React.FC = () => {
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-4">
-                      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--accent-soft)] accent-text transition-transform group-hover:scale-110">
-                        <Icon name={cert.icon} size={24} />
+                      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--accent-soft)] accent-text transition-transform group-hover:scale-110">
+                        <Icon name={cert.icon} size={28} />
                       </div>
 
                       <div className="min-w-0">
