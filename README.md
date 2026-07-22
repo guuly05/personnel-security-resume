@@ -38,7 +38,7 @@ It presents:
 - Key projects and contributions to the security community.
 - A direct way to contact me or connect on professional networks.
 
-The site is fully responsive, supports dark/light themes, and loads instantly thanks to modern frontend tooling. It serves as a permanent, version‑controlled alternative to static PDFs – always up‑to‑date, always accessible.
+The site is fully responsive, supports dark/light themes, and loads instantly thanks to modern frontend tooling. It serves as a permanent, version‑controlled alternative to static PDFs – always up‑to‑date, always accessible
 
 ---
 
