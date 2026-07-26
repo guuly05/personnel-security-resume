@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { PERSONAL_INFO } from './constants.ts';
 import { Icon } from './components/Icon.tsx';
 import { SeoHead } from './components/SeoHead.tsx';
+import { BirthdayConfetti } from './components/BirthdayConfetti.tsx';
 
 import { lazy, Suspense } from 'react';
 
@@ -20,19 +21,38 @@ const CertificatesPage = lazy(() => import('./pages/Certificates.tsx'));
 const PortfolioPage = lazy(() => import('./pages/Portfolio.tsx'));
 const BlogPage = lazy(() => import('./pages/Blog.tsx'));
 const ContactPage = lazy(() => import('./pages/Contact.tsx'));
+const AnnualRecapPage = lazy(() => import('./pages/AnnualRecap.tsx'));
 
-type Section = 'home' | 'about' | 'skills' | 'experience' | 'certificates' | 'portfolio' | 'blog' | 'contact';
+type Section =
+  | 'home'
+  | 'about'
+  | 'skills'
+  | 'experience'
+  | 'certificates'
+  | 'portfolio'
+  | 'blog'
+  | 'contact'
+  | 'recap';
+
+function checkIsJuly27Today(): boolean {
+  const today = new Date();
+  // July is month index 6 (0-indexed)
+  return today.getMonth() === 6 && today.getDate() === 27;
+}
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<Section>('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBlogFocusMode, setIsBlogFocusMode] = useState(false);
+
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window === 'undefined') return 'dark';
     const stored = window.localStorage.getItem('portfolio-theme');
     if (stored === 'light' || stored === 'dark') return stored;
     return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
   });
+
+  const isJuly27 = checkIsJuly27Today();
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -42,7 +62,13 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '') as Section;
-      if (['home', 'about', 'skills', 'experience', 'certificates', 'portfolio', 'blog', 'contact'].includes(hash)) {
+      if (['recap', 'reflection', 'surprise', 'vault'].includes(hash)) {
+        setActiveSection('recap');
+      } else if (
+        ['home', 'about', 'skills', 'experience', 'certificates', 'portfolio', 'blog', 'contact'].includes(
+          hash
+        )
+      ) {
         setActiveSection(hash);
       } else {
         setActiveSection('home');
@@ -67,7 +93,6 @@ export default function App() {
     { id: 'home', label: 'Home', icon: 'layout' },
     { id: 'about', label: 'About', icon: 'user' },
     { id: 'skills', label: 'Skills', icon: 'terminal' },
-    // Experience navigation item inserted for the new section.
     { id: 'experience', label: 'Experience', icon: 'briefcase' },
     { id: 'certificates', label: 'Credentials', icon: 'graduation-cap' },
     { id: 'portfolio', label: 'Portfolio', icon: 'layout' },
@@ -75,15 +100,26 @@ export default function App() {
     { id: 'contact', label: 'Contact', icon: 'mail' },
   ];
 
+  if (isJuly27 || activeSection === 'recap') {
+    navItems.push({ id: 'recap', label: 'Annual Reflection', icon: 'film' });
+  }
+
   const isBlogSection = activeSection === 'blog';
-  const chromeClassName = isBlogSection && isBlogFocusMode ? 'opacity-0 pointer-events-none max-h-0 overflow-hidden' : '';
+  const chromeClassName =
+    isBlogSection && isBlogFocusMode ? 'opacity-0 pointer-events-none max-h-0 overflow-hidden' : '';
 
   return (
     <div className="min-h-screen p-4 md:p-8 lg:p-12 selection:bg-[var(--accent)]/20 bg-[var(--color-bg)] text-[var(--color-text)] transition-colors duration-300">
-      {/* Dynamic SEO head tags — updates per active section */}
-      <SeoHead section={activeSection} />
+      {/* Particle confetti only activates on July 27th */}
+      <BirthdayConfetti isActive={isJuly27 || activeSection === 'recap'} />
+
+      {/* Dynamic SEO head tags */}
+      <SeoHead section={activeSection === 'recap' ? 'about' : activeSection} />
+
       {/* Top Navbar */}
-      <nav className={`max-w-7xl mx-auto mb-10 rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 shadow-[var(--shadow)] backdrop-blur-xl transition-all duration-300 flex flex-wrap items-center justify-between gap-4 ${chromeClassName}`}>
+      <nav
+        className={`max-w-7xl mx-auto mb-10 rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 shadow-[var(--shadow)] backdrop-blur-xl transition-all duration-300 flex flex-wrap items-center justify-between gap-4 ${chromeClassName}`}
+      >
         <div className="flex items-center gap-3 pl-2">
           <a
             href="#home"
@@ -99,23 +135,27 @@ export default function App() {
             </div>
           </a>
           <div className="hidden sm:block">
-            {/* nav brand: styled as bold text but NOT an h1 — the real h1 is on the Home page */}
             <span className="block text-sm font-bold leading-tight">{PERSONAL_INFO.name}</span>
-            <p className="text-[10px] text-brand-cyan font-mono tracking-tighter uppercase">{PERSONAL_INFO.title}</p>
+            <p className="text-[10px] text-brand-cyan font-mono tracking-tighter uppercase">
+              {PERSONAL_INFO.title}
+            </p>
           </div>
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex gap-1">
+        <div className="hidden md:flex gap-1 items-center">
           {navItems.map((item) => (
             <a
               key={item.id}
               href={`#${item.id}`}
+              onClick={() => setActiveSection(item.id as Section)}
               className={`
-                px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200
-                ${activeSection === item.id 
-                  ? 'bg-brand-cyan/10 text-brand-cyan' 
-                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--surface-soft)]'}
+                px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200
+                ${
+                  activeSection === item.id
+                    ? 'bg-brand-cyan/10 text-brand-cyan'
+                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--surface-soft)]'
+                }
               `}
             >
               {item.label}
@@ -173,7 +213,9 @@ export default function App() {
           >
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-[var(--color-text)]">GM</div>
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-[var(--color-text)]">
+                  GM
+                </div>
                 <div className="text-sm font-bold">{PERSONAL_INFO.name}</div>
               </div>
               <div>
@@ -193,10 +235,17 @@ export default function App() {
                 <a
                   key={item.id}
                   href={`#${item.id}`}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => {
+                    setActiveSection(item.id as Section);
+                    setIsMenuOpen(false);
+                  }}
                   className={`
                     flex items-center gap-4 px-4 py-3 rounded-xl transition-all
-                    ${activeSection === item.id ? 'bg-brand-cyan/10 text-brand-cyan' : 'text-[var(--color-text-muted)]'}
+                    ${
+                      activeSection === item.id
+                        ? 'bg-brand-cyan/10 text-brand-cyan'
+                        : 'text-[var(--color-text-muted)]'
+                    }
                   `}
                 >
                   <Icon name={item.icon} size={20} />
@@ -241,18 +290,38 @@ export default function App() {
                 />
               )}
               {activeSection === 'contact' && <ContactPage />}
+              {activeSection === 'recap' && <AnnualRecapPage />}
             </motion.div>
           </AnimatePresence>
         </Suspense>
       </main>
 
-      <footer className={`max-w-7xl mx-auto mt-20 pt-8 border-t border-brand-border flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-slate-500 font-mono uppercase tracking-widest px-4 pb-12 ${chromeClassName}`}>
+      <footer
+        className={`max-w-7xl mx-auto mt-20 pt-8 border-t border-brand-border flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-slate-500 font-mono uppercase tracking-widest px-4 pb-12 ${chromeClassName}`}
+      >
         <p>© 2026 {PERSONAL_INFO.name} — Secure by Design</p>
-        <div className="flex gap-6">
-          <a href={PERSONAL_INFO.linkedin} target="_blank" className="hover:text-brand-cyan transition-colors">LinkedIn</a>
-          <a href={PERSONAL_INFO.github} target="_blank" className="hover:text-brand-cyan transition-colors">GitHub</a>
-          <a href="#home" className="hover:text-brand-cyan transition-colors">Home</a>
-          <a href="#blog" className="hover:text-brand-cyan transition-colors">Blog</a>
+        <div className="flex flex-wrap items-center gap-6">
+          {(isJuly27 || activeSection === 'recap') && (
+            <a
+              href="#recap"
+              onClick={() => setActiveSection('recap')}
+              className="hover:text-brand-cyan transition-colors"
+            >
+              Annual Reflection
+            </a>
+          )}
+          <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noreferrer" className="hover:text-brand-cyan transition-colors">
+            LinkedIn
+          </a>
+          <a href={PERSONAL_INFO.github} target="_blank" rel="noreferrer" className="hover:text-brand-cyan transition-colors">
+            GitHub
+          </a>
+          <a href="#home" className="hover:text-brand-cyan transition-colors">
+            Home
+          </a>
+          <a href="#blog" className="hover:text-brand-cyan transition-colors">
+            Blog
+          </a>
         </div>
       </footer>
     </div>
