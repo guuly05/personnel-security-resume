@@ -194,7 +194,7 @@ function parseMarkdown(markdown: string, title?: string): ReactNode[] {
     if (/^#{1,6}\s+/.test(trimmed)) {
       const headingLevel = trimmed.match(/^#{1,6}/)?.[0].length ?? 1;
       const headingText = trimmed.replace(/^#{1,6}\s+/, '');
-      const HeadingTag = `h${headingLevel}` as keyof JSX.IntrinsicElements;
+      const HeadingTag = `h${headingLevel}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
       nodes.push(
         <HeadingTag

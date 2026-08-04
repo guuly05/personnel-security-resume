@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#070a12" />
+    </linearGradient>
+
+    <!-- Shield & Accent Gradient -->
+    <linearGradient id="cyan-emerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="50%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+
+    <!-- Terminal Prompt Glow -->
+    <linearGradient id="prompt-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22d3ee" />
+      <stop offset="100%" stop-color="#34d399" />
+    </linearGradient>
+
+    <!-- Border Glow Filter -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#06b6d4" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Base Container / Squircle -->
+  <rect x="16" y="16" width="480" height="480" rx="108" fill="url(#bg-grad)" stroke="url(#cyan-emerald)" stroke-width="10" filter="url(#soft-shadow)" />
+
+  <!-- Inner Tech Grid Circuit Pattern (Subtle) -->
+  <path d="M 64 160 H 448 M 64 256 H 448 M 64 352 H 448 M 160 64 V 448 M 256 64 V 448 M 352 64 V 448" 
+        stroke="#1e293b" stroke-width="2" stroke-dasharray="4 8" opacity="0.4" />
+
+  <!-- Shield Outer Glow & Path -->
+  <g filter="url(#soft-shadow)">
+    <!-- Outer Shield Frame -->
+    <path d="M 256 80 
+             C 340 80, 400 100, 400 120 
+             V 260 
+             C 400 360, 290 424, 256 440 
+             C 222 424, 112 360, 112 260 
+             V 120 
+             C 112 100, 172 80, 256 80 Z" 
+          fill="#0f172a" 
+          fill-opacity="0.85"
+          stroke="url(#cyan-emerald)" 
+          stroke-width="14" 
+          stroke-linejoin="round" />
+
+    <!-- Inner Shield Accent Line -->
+    <path d="M 256 104 
+             C 324 104, 376 120, 376 136 
+             V 252 
+             C 376 334, 282 390, 256 404 
+             C 230 390, 136 334, 136 252 
+             V 136 
+             C 136 120, 188 104, 256 104 Z" 
+          fill="none" 
+          stroke="#06b6d4" 
+          stroke-width="3" 
+          stroke-dasharray="6 6" 
+          opacity="0.6" />
+  </g>
+
+  <!-- Cybersecurity Terminal emblem: >_ & Keyhole -->
+  <g transform="translate(0, 4)">
+    <!-- Terminal Prompt Chevron '>' -->
+    <path d="M 184 200 L 244 248 L 184 296" 
+          fill="none" 
+          stroke="url(#prompt-grad)" 
+          stroke-width="22" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
+
+    <!-- Terminal Cursor '_' -->
+    <line x1="264" y1="296" x2="328" y2="296" 
+          stroke="url(#prompt-grad)" 
+          stroke-width="22" 
+          stroke-linecap="round" />
+
+    <!-- Lock Keyhole Node at the bottom center of shield -->
+    <circle cx="256" cy="350" r="14" fill="#10b981" />
+    <polygon points="250,350 262,350 266,374 246,374" fill="#10b981" />
+  </g>
+</svg>

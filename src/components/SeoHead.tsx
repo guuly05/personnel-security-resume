@@ -1,8 +1,7 @@
 /**
  * SeoHead.tsx
- * Centralised SEO / meta-tag component for Guuleed Maxamuud's portfolio.
- * Uses react-helmet-async so tags are injected server-side-safely and updated
- * whenever the active section changes (good for social-share previews).
+ * Centralised SEO / meta-tag component for Guuleed Maxmuud Aw Abdi's portfolio.
+ * Uses react-helmet-async so tags are injected dynamically for link sharing & search engines.
  */
 
 import { Helmet } from 'react-helmet-async';
@@ -13,121 +12,128 @@ interface SeoHeadProps {
 }
 
 const SITE_URL = 'https://guuleedmaxamuud.dev';
-const FULL_NAME = 'Guuleed Maxamuud';
+const FULL_NAME = 'Guuleed Maxmuud Aw Abdi';
 const TITLE_SUFFIX = `${FULL_NAME} — Cybersecurity Portfolio`;
-const OG_IMAGE = `${SITE_URL}/assets/og-preview.png`; // 1200×630 social card (place in /public/assets/)
+const OG_IMAGE = `${SITE_URL}/assets/og-preview.png`; // 1200×630 social card in /public/assets/
 
 const SECTION_META: Record<string, { title: string; description: string }> = {
   home: {
     title: `${FULL_NAME} | Cybersecurity & Penetration Testing Portfolio`,
     description:
-      `${FULL_NAME} is a Vulnerability Assessment & Penetration Tester based in Hargeisa, Somaliland. ` +
-      `Explore his cybersecurity projects, certifications, and professional experience in ethical hacking, ` +
-      `network security, and secure engineering.`,
+      `${FULL_NAME} — Vulnerability Assessment & Penetration Tester based in Hargeisa, Somaliland. ` +
+      `Explore ethical hacking projects, verified cybersecurity certifications, security audits, and network protection research.`,
   },
   about: {
     title: `About ${FULL_NAME} | Cybersecurity Specialist`,
     description:
-      `Learn more about ${FULL_NAME} — a cybersecurity professional and Computer Science student at the ` +
-      `University of Hargeisa, passionate about penetration testing, secure design, and continuous learning.`,
+      `Learn about ${FULL_NAME} — a cybersecurity specialist and Computer Science student at the ` +
+      `University of Hargeisa, passionate about ethical hacking, vulnerability research, and systems protection.`,
   },
   skills: {
-    title: `Technical Skills | ${TITLE_SUFFIX}`,
+    title: `Technical Security Skills | ${TITLE_SUFFIX}`,
     description:
-      `${FULL_NAME}'s technical skill set spans penetration testing (Burp Suite, Nessus), Python automation, ` +
-      `Linux hardening, network security, TypeScript, React, and more.`,
+      `${FULL_NAME}'s technical competencies: Burp Suite, Nessus, Nmap, Python automation, ` +
+      `Linux security hardening, network analysis, Wireshark, React, and secure application design.`,
   },
   experience: {
-    title: `Work Experience | ${TITLE_SUFFIX}`,
+    title: `Cybersecurity & IT Experience | ${TITLE_SUFFIX}`,
     description:
-      `${FULL_NAME}'s hands-on cybersecurity experience includes penetration testing for a business client and ` +
-      `IT support roles, delivering measurable security improvements and IT efficiency gains.`,
+      `${FULL_NAME}'s hands-on experience includes web app penetration testing, vulnerability remediation, ` +
+      `and enterprise IT support operations with measurable security enhancements.`,
   },
   certificates: {
-    title: `Certifications & Credentials | ${TITLE_SUFFIX}`,
+    title: `Verified Credentials & Certifications | ${TITLE_SUFFIX}`,
     description:
-      `Verified certifications earned by ${FULL_NAME}: Cisco Cyber Threat Management, Cybrary Penetration Testing ` +
-      `Professional, Microsoft Security Essentials, Career Essentials in Cybersecurity, and more.`,
+      `Verified security credentials earned by ${FULL_NAME}: Cisco Cyber Threat Management, ` +
+      `Cybrary Penetration Testing Professional, Microsoft Security Essentials, and LinkedIn Career Essentials in Cybersecurity.`,
   },
   portfolio: {
-    title: `Projects & Portfolio | ${TITLE_SUFFIX}`,
+    title: `Security Projects & Case Studies | ${TITLE_SUFFIX}`,
     description:
-      `Explore ${FULL_NAME}'s cybersecurity projects including the EternalBlue exploitation case study, ` +
-      `automated vulnerability scanner, and BookWanag — a modern React storefront.`,
+      `Explore ${FULL_NAME}'s cybersecurity projects including EternalBlue exploitation research, ` +
+      `automated vulnerability assessment tools, and modern web application security architecture.`,
   },
   blog: {
-    title: `Blog | ${TITLE_SUFFIX}`,
+    title: `Cybersecurity Blog & Research Insights | ${TITLE_SUFFIX}`,
     description:
-      `Read editorial long-form technical writing, custom markdown experiments, and premium reading layouts from ${FULL_NAME}.`,
+      `Read long-form technical writeups, penetration testing walkthroughs, and cybersecurity insights authored by ${FULL_NAME}.`,
   },
   contact: {
-    title: `Contact ${FULL_NAME} | ${TITLE_SUFFIX}`,
+    title: `Contact ${FULL_NAME} | Cybersecurity Consulting`,
     description:
-      `Get in touch with ${FULL_NAME} for cybersecurity consulting, collaboration, or job opportunities. ` +
-      `Reach out via email or LinkedIn.`,
+      `Connect with ${FULL_NAME} for vulnerability assessments, penetration testing engagements, security consultations, or career opportunities.`,
   },
 };
 
 export function SeoHead({ section = 'home' }: SeoHeadProps) {
   const meta = SECTION_META[section] ?? SECTION_META.home;
+  const canonicalUrl = `${SITE_URL}/${section === 'home' ? '' : '#' + section}`;
 
   return (
     <Helmet>
-      {/* ── Primary ──────────────────────────────────────────────── */}
+      {/* ── Primary Search Engine Tags ────────────────────────────── */}
       <title>{meta.title}</title>
       <meta name="description" content={meta.description} />
       <meta
         name="keywords"
         content={[
-          'Guuleed Maxamuud',
           'Guuleed Maxmuud Aw Abdi',
+          'Guuleed Maxamuud',
           'cybersecurity portfolio',
           'penetration tester Somaliland',
           'vulnerability assessment',
-          'ethical hacker',
-          'network security',
+          'ethical hacker Hargeisa',
+          'network security specialist',
           'Burp Suite Nessus Nmap',
           'cybersecurity resume',
-          'Hargeisa cybersecurity',
+          'Somaliland cybersecurity',
         ].join(', ')}
       />
       <meta name="author" content={FULL_NAME} />
-      <link rel="canonical" href={`${SITE_URL}/${section === 'home' ? '' : '#' + section}`} />
+      <link rel="canonical" href={canonicalUrl} />
 
-      {/* ── Open Graph (Facebook, LinkedIn, Discord…) ─────────────── */}
+      {/* ── Favicons & App Icons ─────────────────────────────────── */}
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+      <link rel="manifest" href="/site.webmanifest" />
+
+      {/* ── Open Graph (WhatsApp, LinkedIn, Telegram, Facebook, Discord) ── */}
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={SITE_URL} />
+      <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:image" content={OG_IMAGE} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:image:alt" content={`${FULL_NAME} — Cybersecurity Portfolio preview card`} />
       <meta property="og:site_name" content={`${FULL_NAME} Portfolio`} />
       <meta property="og:locale" content="en_US" />
 
-      {/* ── Twitter / X Card ─────────────────────────────────────── */}
+      {/* ── Twitter / X Link Preview ─────────────────────────────── */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
       <meta name="twitter:image" content={OG_IMAGE} />
       <meta name="twitter:image:alt" content={`${FULL_NAME} — Cybersecurity Portfolio`} />
 
-      {/* ── Robots / Indexing ─────────────────────────────────────── */}
+      {/* ── Search Indexing Instructions ─────────────────────────── */}
       <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
-      {/* ── Structured Data (JSON-LD) — Person schema ─────────────── */}
+      {/* ── Google Search Structured Data (JSON-LD) ──────────────── */}
       <script type="application/ld+json">
         {JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'Person',
           name: FULL_NAME,
-          alternateName: 'Guuleed Maxmuud Aw Abdi',
+          alternateName: 'Guuleed Maxamuud',
           url: SITE_URL,
           email: 'guuleedmaxamuud40@gmail.com',
           jobTitle: 'Vulnerability Assessment & Penetration Tester',
           description:
-            'Cybersecurity professional specialising in penetration testing, vulnerability assessment, and secure engineering.',
+            'Cybersecurity professional specialising in penetration testing, vulnerability assessment, ethical hacking, and network security.',
           address: {
             '@type': 'PostalAddress',
             addressLocality: 'Hargeisa',
@@ -140,16 +146,17 @@ export function SeoHead({ section = 'home' }: SeoHeadProps) {
           knowsAbout: [
             'Penetration Testing',
             'Vulnerability Assessment',
-            'Network Security',
-            'Cybersecurity',
             'Ethical Hacking',
-            'Python',
-            'Linux',
+            'Network Security',
             'Burp Suite',
             'Nessus',
+            'Nmap',
+            'Linux Hardening',
+            'Python Automation',
           ],
         })}
       </script>
     </Helmet>
   );
 }
+

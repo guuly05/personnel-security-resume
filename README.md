@@ -1,4 +1,3 @@
-
 [![Made with React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.4-646CFF?logo=vite)](https://vitejs.dev/)
@@ -7,24 +6,23 @@
 
 # Personnel Security Resume | Online Portfolio & Interactive CV
 
-
-**A modern, responsive, single‑page portfolio and resume website** – built for cybersecurity professionals who value precision, clarity, and a strong digital presence. This is not a template or a resume generator; it is **my** living CV, code‑crafted to reflect my identity as a personnel security specialist.
+**A modern, high-performance, single-page portfolio and interactive resume website** – built for cybersecurity professionals who value precision, clarity, and a strong digital presence. This is a living CV, code-crafted to reflect my identity as a Vulnerability Assessment & Penetration Tester.
 
 ---
 
 ## 📖 Table of Contents
 
-- [Project Overview](#project-overview)
-- [Motivation – Why I Built This](#motivation--why-i-built-this)
-- [Design Philosophy & Methodologies](#design-philosophy--methodologies)
-- [Technology Stack – Tools & Libraries](#technology-stack--tools--libraries)
-- [Development Workflow & Implementation](#development-workflow--implementation)
-- [Core Features](#core-features)
-- [Getting Started (Local Setup)](#getting-started-local-setup)
-- [Deployment & Hosting](#deployment--hosting)
-- [What Makes This Different](#what-makes-this-different)
-- [Future Roadmap](#future-roadmap)
-- [License & Contact](#license--contact)
+- [Project Overview](#-project-overview)
+- [Motivation – Why I Built This](#-motivation--why-i-built-this)
+- [Design Philosophy & Methodologies](#-design-philosophy--methodologies)
+- [Technology Stack](#-technology-stack)
+- [Directory & File Structure](#-directory--file-structure)
+- [Core Feature Breakdown](#-core-feature-breakdown)
+- [Getting Started (Local Setup)](#-getting-started-local-setup)
+- [Deployment & Hosting](#-deployment--hosting)
+- [What Makes This Different](#-what-makes-this-different)
+- [Future Roadmap](#-future-roadmap)
+- [License & Contact](#-license--contact)
 
 ---
 
@@ -33,12 +31,13 @@
 This repository contains the complete source code for **my personal online resume and portfolio**.  
 It presents:
 
-- My professional experience in personnel security, risk assessment, and compliance.
-- Technical competencies (security frameworks, tools, incident response, etc.).
-- Key projects and contributions to the security community.
-- A direct way to contact me or connect on professional networks.
+- Professional experience in vulnerability assessment, penetration testing, and IT support.
+- Technical competencies across security tools (Burp Suite, Nessus, Nmap, Wireshark, Linux hardening, Python).
+- Verified cybersecurity credentials and professional certifications.
+- Featured security projects and technical writeups.
+- A direct way to connect via email, LinkedIn, or GitHub.
 
-The site is fully responsive, supports dark/light themes, and loads instantly thanks to modern frontend tooling. It serves as a permanent, version‑controlled alternative to static PDFs – always up‑to‑date, always accessible
+The site is fully responsive, supports dark and light themes, and loads instantly thanks to modern frontend tooling. It serves as a permanent, version-controlled alternative to static PDFs — always up-to-date and accessible worldwide.
 
 ---
 
@@ -47,193 +46,195 @@ The site is fully responsive, supports dark/light themes, and loads instantly th
 Traditional resumes have fundamental limitations:
 
 - **Static & outdated** – once sent, you cannot update the recipient’s copy.
-- **One‑dimensional** – no interactivity, no visual hierarchy beyond formatting.
-- **Detached from your work** – a PDF cannot showcase your actual coding ability or design thinking.
+- **One-dimensional** – no interactivity, visual hierarchy, or dynamic link previews.
+- **Detached from your work** – a PDF cannot showcase actual security research, frontend design, or code quality.
 
 I created this project to:
 
-- **Demonstrate technical competence** – the resume _is_ the product. Hiring managers see exactly how I structure code, manage state, and design UX.
+- **Demonstrate technical competence** – the resume _is_ the product. Hiring managers see exactly how I structure code, manage state, and design UI/UX.
 - **Maintain a single source of truth** – one URL, one set of content, automatically versioned with Git.
-- **Control my personal brand** – every pixel, every animation, every word is intentional and reflects my professional identity.
-- **Experiment with modern tooling** – React 19, TypeScript, Vite, and Tailwind CSS are not buzzwords; I integrate them deeply to build a production‑grade, high‑performance application.
+- **Control my personal brand** – every pixel, animation, and description reflects my professional security identity.
+- **Experiment with modern tooling** – React 19, TypeScript 5.8, Vite 6, and Tailwind CSS 4 integrated into a production-grade application.
 
 ---
 
 ## 🧠 Design Philosophy & Methodologies
 
-### 1. **Content‑First Architecture**
-Before writing a single component, I mapped out the information hierarchy:  
-Header → Summary → Experience → Certifications → Technical Skills → Projects → Contact.  
-Each section serves a distinct purpose, and the layout guides the reader naturally from overview to details.
+### 1. **Content-First Architecture**
+Information hierarchy is carefully structured:  
+Header → Summary → Experience → Certifications → Technical Skills → Portfolio → Blog → Contact.  
+Each section serves a distinct purpose, guiding visitors naturally from high-level overview to detailed technical evidence.
 
-### 2. **Mobile‑First Responsive Design**
-Using Tailwind’s utility classes, I styled for mobile breakpoints first, then progressively enhanced for tablet and desktop. The result: a seamless experience on any device.
+### 2. **Mobile-First Responsive Design**
+Styled for mobile breakpoints first using Tailwind CSS, then progressively enhanced for tablet and desktop displays.
 
-### 3. **Component‑Based Reusability**
-React components (`Header`, `ExperienceCard`, `SkillBadge`, etc.) are isolated, tested in isolation, and reused across the page. This keeps the codebase DRY and maintainable.
+### 3. **Component-Based Reusability**
+React components (`SeoHead`, `Icon`, `BirthdayConfetti`, etc.) are modular, isolated, and code-split using React `lazy` and `Suspense` for minimal initial bundle sizes.
 
-### 4. **Type Safety with TypeScript**
-Every prop, state variable, and API response is strictly typed. This eliminates entire classes of runtime errors and serves as living documentation for future changes.
+### 4. **Strict Type Safety**
+Every property, state variable, and dataset in `src/constants.ts` and `src/types.ts` is strictly typed with TypeScript.
 
-### 5. **Performance by Default**
-- **Vite** for lightning‑fast HMR during development.
-- **Lazy loading** of non‑critical sections.
-- **Tree‑shaking** to remove unused CSS and JS.
-- **Optimised asset delivery** (SVGs, compressed images).
-
-### 6. **Accessibility (a11y)**
-Semantic HTML, ARIA labels, keyboard navigation, and sufficient colour contrast are baked in. The dark/light theme respects system preferences (`prefers-color-scheme`).
+### 5. **Performance & SEO by Default**
+- **Vite 6** for fast build compilation and Hot Module Replacement (HMR).
+- **Code Splitting** for each section page to optimize loading speed.
+- **Dynamic Meta Tags (`react-helmet-async`)** for per-section titles, descriptions, Open Graph preview cards, and JSON-LD structured data.
 
 ---
 
-## 🛠️ Technology Stack – Tools & Libraries
+## 🛠️ Technology Stack
 
-| Category | Specific Tools |
-|----------|----------------|
-| **Core Framework** | React 19 (functional components, hooks) |
+| Category | Tools & Technologies |
+|----------|----------------------|
+| **Core Framework** | React 19 (functional components, hooks, lazy loading) |
 | **Language** | TypeScript 5.8 (strict mode) |
-| **Build Tool** | Vite 6.4 + plugins (React, Tailwind) |
-| **Styling** | Tailwind CSS 4 + Autoprefixer |
-| **Animations** | Framer Motion (`motion`) for entrance animations & subtle transitions |
-| **Icons** | Lucide React (lightweight, consistent icon set) |
-| **AI Integration (optional)** | Google Gemini API (`@google/genai`) for interactive Q&A or content enhancement |
+| **Build Tool** | Vite 6.4 + `@vitejs/plugin-react` |
+| **Styling & UI** | Tailwind CSS v4 + Autoprefixer |
+| **Animations** | Motion (`motion/react`) for smooth entrance animations |
+| **Icons** | Lucide React (`lucide-react`) |
+| **SEO & Head** | `react-helmet-async` for Open Graph, Twitter Cards, & JSON-LD |
 | **Package Manager** | npm |
 | **Version Control** | Git + GitHub |
-| **Code Quality** | TypeScript compiler (`tsc --noEmit`), ESLint (implicit via React/Vite) |
-
-No third‑party UI libraries – everything is custom‑built to maintain full control over design and bundle size.
 
 ---
 
-## ⚙️ Development Workflow & Implementation
+## 📁 Directory & File Structure
 
-### Phase 1 – Planning & Content Strategy
-- Wrote draft content (experience, skills, projects) in Markdown.
-- Defined the information architecture and user journey.
-- Created wireframes on paper, then translated them to Figma for high‑fidelity mockups.
-
-### Phase 2 – Environment Setup
-- Initialised Vite project with React‑TypeScript template:  
-  `npm create vite@latest . -- --template react-ts`
-- Added Tailwind CSS, Lucide React, and Framer Motion.
-- Configured path aliases (`@/*`) for cleaner imports.
-
-### Phase 3 – Component Development
-- Built static components with placeholder data.
-- Implemented responsive grid/flex layouts using Tailwind utilities.
-- Added theme toggle (dark/light) using React context and CSS variables.
-- Integrated optional Gemini API service module (separate from core resume display).
-
-### Phase 4 – Content Integration & Refinement
-- Replaced placeholders with real resume content.
-- Fine‑tuned spacing, typography (using Tailwind’s `font-*` utilities), and animations.
-- Tested across Chrome, Firefox, Safari, and Edge.
-
-### Phase 5 – Build Optimisation & Deployment
-- Run `npm run build` to generate a production bundle in `/dist`.
-- Previewed locally with `npm run preview`.
-- Connected GitHub repository to Vercel for automatic deployments on `main` branch pushes.
-- Configured environment variables (Gemini API key) on Vercel dashboard.
-
-### Phase 6 – Continuous Maintenance
-- Content updates are simply `git commit` + `git push`.
-- Performance monitoring via Lighthouse (score ≥95 across all categories).
+```
+personnel-security-resume/
+├── public/                      # Static public assets
+│   ├── assets/                  # CV PDF downloads & Open Graph preview image
+│   │   ├── Guuleed-Maxamuud-Awabdi-CV-1.pdf
+│   │   └── og-preview.png       # 1200x630 social share preview card
+│   ├── favicon.svg              # Custom vector SVG favicon (cyan/emerald shield)
+│   ├── favicon-16x16.png        # Raster PNG favicon 16x16
+│   ├── favicon-32x32.png        # Raster PNG favicon 32x32
+│   ├── apple-touch-icon.png     # Apple touch icon 180x180 for iOS
+│   ├── android-chrome-192x192.png
+│   ├── android-chrome-512x512.png
+│   ├── favicon.ico              # Multi-resolution ICO fallback
+│   ├── site.webmanifest         # Web App Manifest for mobile PWA support
+│   ├── robots.txt               # Search engine crawler instructions
+│   └── sitemap.xml              # XML Sitemap for search indexers
+├── scripts/
+│   └── copy_icons.js            # Node script for favicon build synchronization
+├── src/
+│   ├── blog/                    # Technical markdown blog posts
+│   ├── components/              # Modular React components
+│   │   ├── BirthdayConfetti.tsx # July 27th annual reflection confetti
+│   │   ├── Icon.tsx             # Icon component wrapper
+│   │   └── SeoHead.tsx          # Dynamic SEO, Open Graph & JSON-LD component
+│   ├── pages/                   # Lazy-loaded section pages
+│   │   ├── About.tsx            # Personal letter, background & soft skills
+│   │   ├── AnnualRecap.tsx      # Annual reflection & milestone recap
+│   │   ├── Blog.tsx             # Cybersecurity blog reader & markdown parser
+│   │   ├── Certificates.tsx     # Verified credentials & certifications
+│   │   ├── Contact.tsx          # Contact information & direct channels
+│   │   ├── Experience.tsx       # Penetration testing & IT support timeline
+│   │   ├── Home.tsx             # Hero section, quick metrics & CTA
+│   │   ├── Portfolio.tsx        # Featured security projects & case studies
+│   │   └── Skills.tsx           # Technical skills matrix & security tools
+│   ├── App.tsx                  # Main layout container & navigation state
+│   ├── constants.ts             # Centralized profile data & section details
+│   ├── index.css                # CSS custom properties & Tailwind setup
+│   ├── main.tsx                 # React app entry point with HelmetProvider
+│   └── types.ts                 # TypeScript interface definitions
+├── index.html                   # HTML entry point with primary meta & JSON-LD
+├── metadata.json                # Repository metadata
+├── package.json                 # Node dependencies & project scripts
+├── postcss.config.mjs           # PostCSS configuration
+├── tsconfig.json                # TypeScript compiler configuration
+└── vite.config.ts               # Vite build configuration
+```
 
 ---
 
-## ✨ Core Features
+## ✨ Core Feature Breakdown
 
 | Feature | Description |
 |---------|-------------|
-| **Interactive Resume Display** | Clean, scannable layout with sections for experience, certifications, technical skills, and education. |
-| **Dark / Light Theme** | Persists user preference across sessions using `localStorage`. |
-| **Responsive Grid** | Reflows gracefully from mobile to 4K displays. |
-| **Print‑Friendly Styles** | Uses a separate print media query to produce a clean PDF‑like output. |
-| **Optional Gemini Chat (demo)** | Asks the user for a question about my background and returns a formatted answer – showcases API integration. |
-| **Contact Links** | Direct buttons for email, LinkedIn, GitHub, and (optionally) a contact form. |
-| **Portfolio Project Cards** | Each project includes a description, technologies used, and a live/demo link. |
-| **SEO Ready** | Proper meta tags, semantic HTML, and Open Graph images for social sharing. |
+| **Single-Page Dynamic Navigation** | Smooth section switching with URL hash syncing (`#home`, `#about`, `#skills`, etc.). |
+| **Dark / Light Mode Theme Engine** | Persists theme selection in `localStorage` with automatic system preference detection. |
+| **Custom Vector Favicons & PWA** | Custom-designed glowing shield SVG favicon, crisp PNG fallbacks, and `site.webmanifest` for mobile home screen shortcuts. |
+| **High-Impact SEO & Rich Snippets** | Comprehensive meta titles, descriptions, and Google Search JSON-LD structured data (`WebSite` and `Person` schemas). |
+| **Social Link Sharing Previews** | Open Graph (`og:*`) and Twitter Card (`summary_large_image`) cards optimized for WhatsApp, LinkedIn, Telegram, X/Twitter, Discord, and iMessage. |
+| **Interactive Portfolio Modals** | Rich project breakdown cards detailing security vulnerabilities, methodologies, and live links. |
+| **Built-In Technical Blog Reader** | Renders long-form cybersecurity articles, code blocks, and markdown content directly within the site. |
+| **Annual Reflection & Birthday Mode** | Automatic celebratory confetti trigger on July 27th featuring a dedicated reflection page. |
+| **Print & PDF Export Styling** | Print-optimized stylesheet for producing clean paper/PDF copies. |
 
 ---
 
 ## 🚀 Getting Started (Local Setup)
 
-To run this portfolio on your own machine (e.g., for review or customization):
+To run this portfolio on your local machine:
 
 ```bash
-# 1. Clone the repo
+# 1. Clone the repository
 git clone https://github.com/guuly05/personnel-security-resume.git
 cd personnel-security-resume
 
 # 2. Install dependencies
 npm install
 
-# 3. (optional) Set up Gemini API key
-cp .env.example .env.local
-# then edit .env.local with your actual key
-
-# 4. Start dev server
+# 3. Start development server
 npm run dev
 ```
 
-The site will be available at `http://localhost:3000`.
+The application will launch at `http://localhost:3000`.
 
-**Build for production:**
+**Build for Production & Test Bundle:**
 ```bash
 npm run build
-npm run preview   # serves the built site locally
+npm run preview
 ```
 
 ---
 
 ## 🌍 Deployment & Hosting
 
-The live site is automatically deployed via **Vercel**.  
+The site is automatically deployed via **Vercel**.  
 
 - The GitHub `main` branch is the source of truth.
-- Every push triggers a new deployment with instant cache invalidation.
-- A custom domain can be configured through the hosting provider.
+- Pushing to `main` triggers automated build checks and instant global edge distribution.
 
-**Current live URL:** https://guuleedmaxamuud.dev/
+**Live URL:** https://guuleedmaxamuud.dev/
 
 ---
 
 ## 🔍 What Makes This Different
 
-| Aspect | Traditional PDF Resume | This Project |
-|--------|------------------------|---------------|
-| **Updatability** | You must resend a new file | One push – everyone sees the latest version |
-| **Interactivity** | None | Theme toggle, optional Gemini Q&A, smooth scroll |
-| **Code Quality** | Hidden | Open source, typed, modular, documented |
-| **Performance** | N/A | Scores 95+ on Lighthouse |
-| **Platform** | Requires download & PDF viewer | Any modern browser |
-| **Version Control** | Manual naming (final_v2_actual) | Git history, revertable |
+| Aspect | Traditional PDF Resume | This Web Application |
+|--------|------------------------|-----------------------|
+| **Updatability** | Requires resending static files | Single `git push` updates all live links instantly |
+| **Interactivity** | None | Dark/light theme, interactive modals, blog reader, hash routing |
+| **Link Previews** | Plain URL text | Rich preview card with image, title, and site description |
+| **Searchability** | Invisible to search engines | Indexed on Google Search with JSON-LD structured data |
+| **Code Verification** | Unverified | Fully open-source, typed, and code-split |
+| **Performance** | Static document | 95+ score on Google Lighthouse |
 
 ---
 
 ## 🧭 Future Roadmap
 
-The following enhancements are planned (but not yet implemented):
-
-- [ ] **i18n** – Support for multiple languages (English + another).
-- [ ] **Blog / Insights** – A section for short security articles or case studies.
-- [ ] **Advanced Gemini features** – Resume quiz, skill gap analysis, or automated cover letter generation.
-- [ ] **Analytics dashboard** – Privacy‑friendly page view tracking (Plausible / Umami).
-- [ ] **Offline support** – Service worker for basic offline access to the resume.
+- [ ] **i18n Multi-Language Support** – Add Somali and Arabic language toggles alongside English.
+- [ ] **Interactive Terminal Mode** – Command-line interface view for navigating sections via terminal commands (`help`, `cat skills`, `ping contact`).
+- [ ] **Privacy-First Analytics** – Integration with lightweight, privacy-focused analytics (Plausible or Umami).
 
 ---
 
 ## 📄 License & Contact
 
-**License:** This project is personal and not licensed for general redistribution. You may view the source for reference, but please do not clone and deploy as your own without substantial changes.  
-© 2025 – guuleed maxamuud aw abdi
+**License:** Personal portfolio code repository. You may view the source code for reference or inspiration.
 
-**Contact:**  
-- Email: guuleedmaxamuud40@gmail.com  
-- LinkedIn: [linkedin.com/in/guuleed maxamuud](https://www.linkedin.com/in/guuleed-aw-abdi-517928277/)  
-- GitHub: [github.com/guuly05](https://github.com/guuly05)
+**Contact Information:**  
+- **Name:** Guuleed Maxmuud Aw Abdi  
+- **Role:** Vulnerability Assessment & Penetration Tester  
+- **Location:** Hargeisa, Somaliland  
+- **Email:** [guuleedmaxamuud40@gmail.com](mailto:guuleedmaxamuud40@gmail.com)  
+- **LinkedIn:** [linkedin.com/in/guuleed-aw-abdi-517928277](https://linkedin.com/in/guuleed-aw-abdi-517928277)  
+- **GitHub:** [github.com/guuly05](https://github.com/guuly05)
 
 ---
 
 *Built with precision, deployed with confidence.*  
-**Last updated:** July 2026
+**Last updated:** August 2026
