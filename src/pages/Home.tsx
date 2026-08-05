@@ -63,13 +63,13 @@ const HomePage: React.FC = () => {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href="#about"
+                href="/about"
                 className="rounded-3xl bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--color-bg)] shadow-[0_0_18px_rgba(16,185,129,0.25)] transition hover:scale-[1.02]"
               >
                 Explore About Me
               </a>
               <a
-                href="#contact"
+                href="/contact"
                 className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-3 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)]"
               >
                 Contact
@@ -135,7 +135,7 @@ const HomePage: React.FC = () => {
         <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)]">Explore Website</p>
         <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {exploreCards.map((card) => (
-            <a key={card.id} href={`#${card.id}`} className="explore-card">
+            <a key={card.id} href={`/${card.id}`} className="explore-card">
               <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] accent-text">
                 <Icon name={card.icon} size={18} />
               </div>

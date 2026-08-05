@@ -67,7 +67,7 @@ const SECTION_META: Record<string, { title: string; description: string }> = {
 
 export function SeoHead({ section = 'home' }: SeoHeadProps) {
   const meta = SECTION_META[section] ?? SECTION_META.home;
-  const canonicalUrl = `${SITE_URL}/${section === 'home' ? '' : '#' + section}`;
+  const canonicalUrl = `${SITE_URL}${section === 'home' ? '/' : '/' + section}`;
 
   return (
     <Helmet>
@@ -159,4 +159,3 @@ export function SeoHead({ section = 'home' }: SeoHeadProps) {
     </Helmet>
   );
 }
-

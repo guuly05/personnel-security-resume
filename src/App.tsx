@@ -34,6 +34,38 @@ type Section =
   | 'contact'
   | 'recap';
 
+const SECTIONS: Section[] = [
+  'home',
+  'about',
+  'skills',
+  'experience',
+  'certificates',
+  'portfolio',
+  'blog',
+  'contact',
+  'recap',
+];
+
+const RECAP_ALIASES = ['reflection', 'surprise', 'vault'];
+
+function sectionToPath(section: Section): string {
+  return section === 'home' ? '/' : `/${section}`;
+}
+
+function pathToSection(pathname: string): Section {
+  const segment = pathname.replace(/^\/+/, '').split('/')[0];
+  if (!segment) return 'home';
+  if (RECAP_ALIASES.includes(segment)) return 'recap';
+  return SECTIONS.includes(segment as Section) ? (segment as Section) : 'home';
+}
+
+function hashToSection(hash: string): Section | null {
+  const segment = hash.replace(/^#/, '').split('/')[0];
+  if (!segment) return null;
+  if (RECAP_ALIASES.includes(segment)) return 'recap';
+  return SECTIONS.includes(segment as Section) ? (segment as Section) : null;
+}
+
 function checkIsJuly27Today(): boolean {
   const today = new Date();
   // July is month index 6 (0-indexed)
@@ -60,25 +92,48 @@ export default function App() {
   }, [theme]);
 
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '') as Section;
-      if (['recap', 'reflection', 'surprise', 'vault'].includes(hash)) {
-        setActiveSection('recap');
-      } else if (
-        ['home', 'about', 'skills', 'experience', 'certificates', 'portfolio', 'blog', 'contact'].includes(
-          hash
-        )
-      ) {
-        setActiveSection(hash);
-      } else {
-        setActiveSection('home');
+    const applyCurrentRoute = () => {
+      const legacyHashSection = hashToSection(window.location.hash);
+      if (legacyHashSection) {
+        window.history.replaceState(null, '', sectionToPath(legacyHashSection));
+        setActiveSection(legacyHashSection);
+        return;
       }
+
+      setActiveSection(pathToSection(window.location.pathname));
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    handleHashChange(); // Initial check
+    const handleDocumentClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
 
-    return () => window.removeEventListener('hashchange', handleHashChange);
+      const anchor = (event.target as Element | null)?.closest('a[href]');
+      if (!(anchor instanceof HTMLAnchorElement) || anchor.target || anchor.hasAttribute('download')) {
+        return;
+      }
+
+      const url = new URL(anchor.href);
+      if (url.origin !== window.location.origin) return;
+
+      const nextSection = pathToSection(url.pathname);
+      const isKnownRoute = nextSection !== 'home' || url.pathname === '/' || url.pathname === '/home';
+      if (!isKnownRoute) return;
+
+      event.preventDefault();
+      window.history.pushState(null, '', sectionToPath(nextSection));
+      setActiveSection(nextSection);
+      setIsMenuOpen(false);
+    };
+
+    window.addEventListener('popstate', applyCurrentRoute);
+    document.addEventListener('click', handleDocumentClick);
+    applyCurrentRoute();
+
+    return () => {
+      window.removeEventListener('popstate', applyCurrentRoute);
+      document.removeEventListener('click', handleDocumentClick);
+    };
   }, []);
 
   useEffect(() => {
@@ -122,7 +177,7 @@ export default function App() {
       >
         <div className="flex items-center gap-3 pl-2">
           <a
-            href="#home"
+            href="/"
             onClick={() => {
               setActiveSection('home');
               setIsMenuOpen(false);
@@ -147,7 +202,7 @@ export default function App() {
           {navItems.map((item) => (
             <a
               key={item.id}
-              href={`#${item.id}`}
+              href={sectionToPath(item.id as Section)}
               onClick={() => setActiveSection(item.id as Section)}
               className={`
                 px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200
@@ -175,7 +230,7 @@ export default function App() {
           </button>
 
           <a
-            href="#contact"
+            href="/contact"
             className="rounded-3xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)] shadow-[0_0_18px_rgba(16,185,129,0.25)] transition hover:scale-[1.02] active:scale-[0.98]"
           >
             Contact
@@ -234,7 +289,7 @@ export default function App() {
               {navItems.map((item) => (
                 <a
                   key={item.id}
-                  href={`#${item.id}`}
+                  href={sectionToPath(item.id as Section)}
                   onClick={() => {
                     setActiveSection(item.id as Section);
                     setIsMenuOpen(false);
@@ -303,7 +358,7 @@ export default function App() {
         <div className="flex flex-wrap items-center gap-6">
           {(isJuly27 || activeSection === 'recap') && (
             <a
-              href="#recap"
+              href="/recap"
               onClick={() => setActiveSection('recap')}
               className="hover:text-brand-cyan transition-colors"
             >
@@ -316,10 +371,10 @@ export default function App() {
           <a href={PERSONAL_INFO.github} target="_blank" rel="noreferrer" className="hover:text-brand-cyan transition-colors">
             GitHub
           </a>
-          <a href="#home" className="hover:text-brand-cyan transition-colors">
+          <a href="/" className="hover:text-brand-cyan transition-colors">
             Home
           </a>
-          <a href="#blog" className="hover:text-brand-cyan transition-colors">
+          <a href="/blog" className="hover:text-brand-cyan transition-colors">
             Blog
           </a>
         </div>
