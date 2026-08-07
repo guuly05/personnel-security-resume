@@ -46,26 +46,47 @@ function getRequestOrigin(req: any): string | null {
   return null;
 }
 
-function getAllowedOrigin(req: any): string | null {
-  if (process.env.CONTACT_ALLOWED_ORIGIN) {
-    return process.env.CONTACT_ALLOWED_ORIGIN;
+function normalizeOrigin(value: string): string | null {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  try {
+    return new URL(trimmed).origin;
+  } catch {
+    try {
+      return new URL(`https://${trimmed}`).origin;
+    } catch {
+      return null;
+    }
+  }
+}
+
+function getAllowedOrigins(req: any): string[] {
+  const origins = new Set<string>();
+
+  const addOrigin = (value: string | undefined | null) => {
+    if (!value) return;
+    const normalized = normalizeOrigin(value);
+    if (normalized) origins.add(normalized);
+  };
+
+  const configured = process.env.CONTACT_ALLOWED_ORIGIN;
+  if (configured) {
+    configured.split(',').forEach((value) => addOrigin(value));
   }
 
-  if (process.env.APP_URL) {
-    return process.env.APP_URL;
-  }
-
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
-  }
+  addOrigin(process.env.APP_URL);
+  addOrigin(process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
 
   const host = req.headers.host;
   if (typeof host === 'string' && host.trim()) {
-    const protocol = host.includes('localhost') || host.includes('127.0.0.1') ? 'http' : 'https';
-    return `${protocol}://${host}`;
+    addOrigin(`https://${host}`);
+    if (host.includes('localhost') || host.includes('127.0.0.1')) {
+      addOrigin(`http://${host}`);
+    }
   }
 
-  return null;
+  return [...origins];
 }
 
 function escapeHtml(value: string): string {
@@ -121,10 +142,10 @@ export default async function handler(req: any, res: any) {
     return res.status(429).json({ error: 'Too many submissions. Please wait a bit and try again.' });
   }
 
-  const allowedOrigin = getAllowedOrigin(req);
   const requestOrigin = getRequestOrigin(req);
 
-  if (allowedOrigin && requestOrigin && requestOrigin !== allowedOrigin) {
+  const allowedOrigins = getAllowedOrigins(req);
+  if (requestOrigin && allowedOrigins.length > 0 && !allowedOrigins.includes(requestOrigin)) {
     return res.status(403).json({ error: 'Invalid origin.' });
   }
 
