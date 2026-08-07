@@ -176,6 +176,10 @@ The site now includes a more production-ready contact flow and stronger anti-abu
 - **Honeypot field and minimum-fill-time checks** to stop basic bot submissions.
 - **Rate limiting** on the contact API to slow repeated spam attempts.
 - **Origin validation** in the backend so requests must come from the deployed app.
+- **Strict payload validation** to cap request size and reject unusually long names, emails, and messages.
+- **Email format enforcement** so malformed addresses are rejected before reaching Resend.
+- **Field normalization and trimming** so the backend stores and sends clean input only.
+- **Security headers and CSP** to reduce XSS, clickjacking, and accidental third-party script exposure.
 - **Mail fallback link** in the contact section for direct outreach if the form is unavailable.
 - **Safer Vercel routing** so `/api/contact` is handled by the backend instead of the SPA rewrite.
 
@@ -190,6 +194,10 @@ The site now includes a more production-ready contact flow and stronger anti-abu
 - `CONTACT_RATE_LIMIT_MAX` - optional submission limit per IP
 - `CONTACT_RATE_LIMIT_WINDOW_MS` - optional rate-limit window in milliseconds
 - `CONTACT_MIN_SUBMIT_TIME_MS` - optional minimum time before submit is accepted
+- `CONTACT_MAX_REQUEST_BYTES` - optional maximum request size for the contact endpoint
+- `CONTACT_MAX_NAME_LENGTH` - optional maximum allowed name length
+- `CONTACT_MAX_EMAIL_LENGTH` - optional maximum allowed email length
+- `CONTACT_MAX_MESSAGE_LENGTH` - optional maximum allowed message length
 
 ---
 
@@ -232,6 +240,13 @@ The site is automatically deployed via **Vercel**.
   - `CONTACT_TO_EMAIL`
   - `CONTACT_FROM_EMAIL`
   - `CONTACT_ALLOWED_ORIGIN`
+  - `CONTACT_RATE_LIMIT_MAX`
+  - `CONTACT_RATE_LIMIT_WINDOW_MS`
+  - `CONTACT_MIN_SUBMIT_TIME_MS`
+  - `CONTACT_MAX_REQUEST_BYTES`
+  - `CONTACT_MAX_NAME_LENGTH`
+  - `CONTACT_MAX_EMAIL_LENGTH`
+  - `CONTACT_MAX_MESSAGE_LENGTH`
 
 **Live URL:** https://guuleedmaxamuud.dev/
 
