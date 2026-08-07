@@ -18,6 +18,7 @@
 - [Technology Stack](#-technology-stack)
 - [Directory & File Structure](#-directory--file-structure)
 - [Core Feature Breakdown](#-core-feature-breakdown)
+- [Recent Enhancements](#-recent-enhancements)
 - [Getting Started (Local Setup)](#-getting-started-local-setup)
 - [Deployment & Hosting](#-deployment--hosting)
 - [What Makes This Different](#-what-makes-this-different)
@@ -164,6 +165,34 @@ personnel-security-resume/
 
 ---
 
+## 🔧 Recent Enhancements
+
+The site now includes a more production-ready contact flow and stronger anti-abuse protection:
+
+- **Real contact delivery** through a Vercel serverless endpoint at `api/contact.ts`.
+- **Resend email integration** so messages are delivered to `guuleedmaxamuud40@gmail.com`.
+- **Cloudflare Turnstile protection** on the contact form to block automated abuse.
+- **Server-side Turnstile verification** using the canonical `siteverify` endpoint.
+- **Honeypot field and minimum-fill-time checks** to stop basic bot submissions.
+- **Rate limiting** on the contact API to slow repeated spam attempts.
+- **Origin validation** in the backend so requests must come from the deployed app.
+- **Mail fallback link** in the contact section for direct outreach if the form is unavailable.
+- **Safer Vercel routing** so `/api/contact` is handled by the backend instead of the SPA rewrite.
+
+**Environment variables used by the contact flow**
+
+- `RESEND_API_KEY` - secret server-side key for sending mail
+- `TURNSTILE_SECRET` - secret server-side key for Turnstile verification
+- `VITE_TURNSTILE_SITE_KEY` - public site key used by the browser widget
+- `CONTACT_TO_EMAIL` - destination inbox for contact form submissions
+- `CONTACT_FROM_EMAIL` - sender identity used by Resend
+- `CONTACT_ALLOWED_ORIGIN` - allowed production origin for request validation
+- `CONTACT_RATE_LIMIT_MAX` - optional submission limit per IP
+- `CONTACT_RATE_LIMIT_WINDOW_MS` - optional rate-limit window in milliseconds
+- `CONTACT_MIN_SUBMIT_TIME_MS` - optional minimum time before submit is accepted
+
+---
+
 ## 🚀 Getting Started (Local Setup)
 
 To run this portfolio on your local machine:
@@ -196,6 +225,13 @@ The site is automatically deployed via **Vercel**.
 
 - The GitHub `main` branch is the source of truth.
 - Pushing to `main` triggers automated build checks and instant global edge distribution.
+- Add the production environment variables in the Vercel dashboard before the next deploy:
+  - `RESEND_API_KEY`
+  - `TURNSTILE_SECRET`
+  - `VITE_TURNSTILE_SITE_KEY`
+  - `CONTACT_TO_EMAIL`
+  - `CONTACT_FROM_EMAIL`
+  - `CONTACT_ALLOWED_ORIGIN`
 
 **Live URL:** https://guuleedmaxamuud.dev/
 
