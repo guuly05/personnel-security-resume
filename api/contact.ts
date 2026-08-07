@@ -9,6 +9,11 @@ const rateLimitStore = new Map<string, RateLimitEntry>();
 const RATE_LIMIT_MAX = Number(process.env.CONTACT_RATE_LIMIT_MAX ?? 3);
 const RATE_LIMIT_WINDOW_MS = Number(process.env.CONTACT_RATE_LIMIT_WINDOW_MS ?? 15 * 60 * 1000);
 const MIN_SUBMIT_TIME_MS = Number(process.env.CONTACT_MIN_SUBMIT_TIME_MS ?? 4500);
+const MAX_REQUEST_BYTES = Number(process.env.CONTACT_MAX_REQUEST_BYTES ?? 12 * 1024);
+const MAX_NAME_LENGTH = Number(process.env.CONTACT_MAX_NAME_LENGTH ?? 100);
+const MAX_EMAIL_LENGTH = Number(process.env.CONTACT_MAX_EMAIL_LENGTH ?? 254);
+const MAX_MESSAGE_LENGTH = Number(process.env.CONTACT_MAX_MESSAGE_LENGTH ?? 4000);
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function getRequestIp(req: any): string {
   const forwardedFor = req.headers['x-forwarded-for'];
@@ -102,6 +107,21 @@ function normalizeString(value: unknown): string {
   return typeof value === 'string' ? value.trim() : '';
 }
 
+function getRequestBodyBytes(req: any): number | null {
+  const contentLength = req.headers['content-length'];
+  if (typeof contentLength !== 'string' || !contentLength.trim()) {
+    return null;
+  }
+
+  const parsed = Number(contentLength);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
+}
+
+function isValidEmail(value: string): boolean {
+  if (value.length > MAX_EMAIL_LENGTH) return false;
+  return EMAIL_PATTERN.test(value);
+}
+
 function cleanupRateLimitStore(now: number): void {
   for (const [key, entry] of rateLimitStore.entries()) {
     if (entry.resetAt <= now) {
@@ -138,6 +158,11 @@ export default async function handler(req: any, res: any) {
   const now = Date.now();
   const ip = getRequestIp(req);
 
+  const bodyBytes = getRequestBodyBytes(req);
+  if (bodyBytes !== null && bodyBytes > MAX_REQUEST_BYTES) {
+    return res.status(413).json({ error: 'Request body is too large.' });
+  }
+
   if (isRateLimited(ip, now)) {
     return res.status(429).json({ error: 'Too many submissions. Please wait a bit and try again.' });
   }
@@ -163,6 +188,18 @@ export default async function handler(req: any, res: any) {
 
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'Please fill in all required fields.' });
+  }
+
+  if (name.length > MAX_NAME_LENGTH) {
+    return res.status(400).json({ error: 'Name is too long.' });
+  }
+
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ error: 'Please enter a valid email address.' });
+  }
+
+  if (message.length > MAX_MESSAGE_LENGTH) {
+    return res.status(400).json({ error: 'Message is too long.' });
   }
 
   if (!turnstileResponse) {
