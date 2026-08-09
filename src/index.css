@@ -974,6 +974,37 @@
 .terminal-statusbar span:nth-child(2) { color: #8b949e; }
 .terminal-statusbar span:nth-child(3) { color: #6e7681; }
 
+.terminal-resize-handle {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  z-index: 3;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 0.6rem;
+  background: transparent;
+  color: var(--brand-cyan, #2dd4bf);
+  cursor: nwse-resize;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.18s ease, transform 0.18s ease, background 0.18s ease;
+}
+
+.terminal-resize-handle:hover {
+  opacity: 1;
+  background: rgba(45, 212, 191, 0.08);
+  transform: translate(1px, 1px);
+}
+
+.terminal-resize-handle:active {
+  cursor: nwse-resize;
+}
+
 /* ── Navbar terminal button ──────────────────────────────────────────────── */
 
 .terminal-nav-btn {
@@ -1011,4 +1042,3 @@
     max-height:    70vh;
   }
 }
-
