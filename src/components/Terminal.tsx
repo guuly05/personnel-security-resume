@@ -27,38 +27,124 @@ const LINE_COLORS: Record<LineType, string> = {
   accent:  'text-[var(--accent)] font-semibold',
 };
 
-// ── Draggable hook ────────────────────────────────────────────────────────
-function useDrag(initialPos: { x: number; y: number }) {
-  const [pos, setPos] = useState(initialPos);
-  const dragging = useRef(false);
-  const startMouse = useRef({ x: 0, y: 0 });
-  const startPos   = useRef({ x: 0, y: 0 });
+type WindowRect = { x: number; y: number; width: number; height: number };
 
-  const onMouseDown = useCallback((e: React.MouseEvent) => {
-    dragging.current = true;
-    startMouse.current = { x: e.clientX, y: e.clientY };
-    startPos.current   = pos;
-    e.preventDefault();
-  }, [pos]);
+const MIN_WIDTH = 420;
+const MIN_HEIGHT = 320;
+const MAX_WIDTH = 1100;
+const MAX_HEIGHT = 820;
 
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      if (!dragging.current) return;
-      setPos({
-        x: startPos.current.x + (e.clientX - startMouse.current.x),
-        y: startPos.current.y + (e.clientY - startMouse.current.y),
-      });
-    };
-    const onUp = () => { dragging.current = false; };
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup',   onUp);
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseup',   onUp);
-    };
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function getInitialRect(): WindowRect {
+  const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 1200;
+  const viewportHeight = typeof window !== 'undefined' ? window.innerHeight : 900;
+  const width = Math.min(860, viewportWidth - 24);
+  const height = Math.min(560, viewportHeight - 120);
+  return {
+    x: Math.max(12, Math.round((viewportWidth - width) / 2)),
+    y: Math.max(12, Math.round((viewportHeight - height) / 2 - 28)),
+    width,
+    height,
+  };
+}
+
+// ── Window movement and resizing ───────────────────────────────────────────
+function useWindowControls() {
+  const [rect, setRect] = useState<WindowRect>(() => getInitialRect());
+  const dragState = useRef<
+    | { mode: 'drag'; pointerId: number; startX: number; startY: number; startRect: WindowRect }
+    | { mode: 'resize'; pointerId: number; startX: number; startY: number; startRect: WindowRect }
+    | null
+  >(null);
+
+  const syncToViewport = useCallback((nextRect: WindowRect) => {
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const maxWidth = Math.min(MAX_WIDTH, viewportWidth - 16);
+    const maxHeight = Math.min(MAX_HEIGHT, viewportHeight - 16);
+    const width = clamp(nextRect.width, MIN_WIDTH, maxWidth);
+    const height = clamp(nextRect.height, MIN_HEIGHT, maxHeight);
+    const x = clamp(nextRect.x, 8, Math.max(8, viewportWidth - width - 8));
+    const y = clamp(nextRect.y, 8, Math.max(8, viewportHeight - height - 8));
+    return { x, y, width, height };
   }, []);
 
-  return { pos, onMouseDown };
+  const beginDrag = useCallback((e: React.PointerEvent) => {
+    if (e.button !== 0) return;
+    if (!(e.currentTarget instanceof HTMLElement)) return;
+    dragState.current = {
+      mode: 'drag',
+      pointerId: e.pointerId,
+      startX: e.clientX,
+      startY: e.clientY,
+      startRect: rect,
+    };
+    e.currentTarget.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  }, [rect]);
+
+  const beginResize = useCallback((e: React.PointerEvent) => {
+    if (e.button !== 0) return;
+    if (!(e.currentTarget instanceof HTMLElement)) return;
+    dragState.current = {
+      mode: 'resize',
+      pointerId: e.pointerId,
+      startX: e.clientX,
+      startY: e.clientY,
+      startRect: rect,
+    };
+    e.currentTarget.setPointerCapture(e.pointerId);
+    e.preventDefault();
+    e.stopPropagation();
+  }, [rect]);
+
+  const onPointerMove = useCallback((e: PointerEvent) => {
+    const state = dragState.current;
+    if (!state || state.pointerId !== e.pointerId) return;
+
+    if (state.mode === 'drag') {
+      setRect(syncToViewport({
+        ...state.startRect,
+        x: state.startRect.x + (e.clientX - state.startX),
+        y: state.startRect.y + (e.clientY - state.startY),
+      }));
+      return;
+    }
+
+    const nextWidth = state.startRect.width + (e.clientX - state.startX);
+    const nextHeight = state.startRect.height + (e.clientY - state.startY);
+    const width = clamp(nextWidth, MIN_WIDTH, Math.min(MAX_WIDTH, window.innerWidth - state.startRect.x - 8));
+    const height = clamp(nextHeight, MIN_HEIGHT, Math.min(MAX_HEIGHT, window.innerHeight - state.startRect.y - 8));
+    setRect(syncToViewport({ ...state.startRect, width, height }));
+  }, [syncToViewport]);
+
+  const endPointer = useCallback((e: PointerEvent) => {
+    const state = dragState.current;
+    if (!state || state.pointerId !== e.pointerId) return;
+    dragState.current = null;
+  }, []);
+
+  const handleViewportResize = useCallback(() => {
+    setRect(prev => syncToViewport(prev));
+  }, [syncToViewport]);
+
+  useEffect(() => {
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', endPointer);
+    window.addEventListener('pointercancel', endPointer);
+    window.addEventListener('resize', handleViewportResize);
+    return () => {
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', endPointer);
+      window.removeEventListener('pointercancel', endPointer);
+      window.removeEventListener('resize', handleViewportResize);
+    };
+  }, [endPointer, handleViewportResize, onPointerMove, syncToViewport]);
+
+  return { rect, beginDrag, beginResize };
 }
 
 // ── Terminal Window ────────────────────────────────────────────────────────
@@ -68,11 +154,7 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
 
   const callbacks = { onNavigate, onTheme };
 
-  // Start roughly centered, nudged slightly up-left
-  const { pos, onMouseDown } = useDrag({
-    x: Math.max(0, (window.innerWidth  - 740) / 2),
-    y: Math.max(0, (window.innerHeight - 520) / 2 - 40),
-  });
+  const { rect, beginDrag, beginResize } = useWindowControls();
 
   // Click-outside to close (only on backdrop, not the window itself)
   const windowRef = useRef<HTMLDivElement>(null);
@@ -108,7 +190,13 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
           <motion.div
             ref={windowRef}
             className="terminal-window pointer-events-auto"
-            style={{ position: 'fixed', left: pos.x, top: pos.y, width: 'min(740px, 96vw)' }}
+            style={{
+              position: 'fixed',
+              left: rect.x,
+              top: rect.y,
+              width: rect.width,
+              height: rect.height,
+            }}
             initial={{ opacity: 0, scale: 0.92, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 16 }}
@@ -118,7 +206,7 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
             {/* ── Title bar ── */}
             <div
               className="terminal-titlebar"
-              onMouseDown={onMouseDown}
+              onPointerDown={beginDrag}
               style={{ cursor: 'grab' }}
             >
               {/* Traffic lights */}
@@ -126,6 +214,7 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
                 <button
                   type="button"
                   onClick={closeTerminal}
+                  onPointerDown={(e) => e.stopPropagation()}
                   className="terminal-dot terminal-dot-red group"
                   aria-label="Close terminal"
                 >
@@ -203,8 +292,17 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
             <div className="terminal-statusbar">
               <span>● CONNECTED</span>
               <span>portfolio-shell v2.0</span>
-              <span>↑↓ history · Tab autocomplete · Ctrl+Alt+G toggle</span>
+              <span>drag title · resize corner · ↑↓ history · Tab autocomplete · help</span>
             </div>
+
+            <button
+              type="button"
+              aria-label="Resize terminal"
+              className="terminal-resize-handle"
+              onPointerDown={beginResize}
+            >
+              <span aria-hidden>⋱</span>
+            </button>
           </motion.div>
         </motion.div>
       )}
