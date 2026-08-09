@@ -9,6 +9,8 @@ import { PERSONAL_INFO } from './constants.ts';
 import { Icon } from './components/Icon.tsx';
 import { SeoHead } from './components/SeoHead.tsx';
 import { BirthdayConfetti } from './components/BirthdayConfetti.tsx';
+import { Terminal } from './components/Terminal.tsx';
+import { useTerminal } from './hooks/useTerminal.ts';
 
 import { lazy, Suspense } from 'react';
 
@@ -77,6 +79,8 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBlogFocusMode, setIsBlogFocusMode] = useState(false);
 
+  const terminal = useTerminal();
+
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window === 'undefined') return 'dark';
     const stored = window.localStorage.getItem('portfolio-theme');
@@ -90,6 +94,18 @@ export default function App() {
     document.documentElement.dataset.theme = theme;
     window.localStorage.setItem('portfolio-theme', theme);
   }, [theme]);
+
+  // Global keyboard shortcut: Ctrl+Alt+G toggles the terminal
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.altKey && e.key.toLowerCase() === 'g') {
+        e.preventDefault();
+        terminal.toggleTerminal();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [terminal]);
 
   useEffect(() => {
     const applyCurrentRoute = () => {
@@ -219,6 +235,18 @@ export default function App() {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
+          {/* Terminal toggle button */}
+          <button
+            type="button"
+            id="terminal-open-btn"
+            onClick={terminal.toggleTerminal}
+            aria-label="Open terminal"
+            className="terminal-nav-btn"
+          >
+            <span style={{ fontSize: 14 }}>⌨</span>
+            <span>&gt;_</span>
+          </button>
+
           <button
             type="button"
             onClick={toggleTheme}
@@ -238,6 +266,16 @@ export default function App() {
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
+          {/* Mobile terminal toggle */}
+          <button
+            type="button"
+            onClick={terminal.toggleTerminal}
+            aria-label="Open terminal"
+            className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] px-2.5 py-2 text-[var(--color-text)] transition hover:border-[var(--accent)] font-mono text-xs font-semibold"
+          >
+            &gt;_
+          </button>
+
           <button
             type="button"
             onClick={toggleTheme}
@@ -308,6 +346,17 @@ export default function App() {
                 </a>
               ))}
             </div>
+
+            {/* Terminal shortcut hint inside mobile menu */}
+            <button
+              type="button"
+              onClick={() => { terminal.openTerminal(); setIsMenuOpen(false); }}
+              className="flex items-center gap-4 px-4 py-3 rounded-xl transition-all text-[var(--color-text-muted)] hover:text-[var(--accent)]"
+            >
+              <span className="font-mono text-base font-bold">&gt;_</span>
+              <span className="font-bold uppercase tracking-widest text-xs">Terminal</span>
+              <span className="ml-auto font-mono text-[10px] opacity-50">Ctrl+Alt+G</span>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -379,6 +428,16 @@ export default function App() {
           </a>
         </div>
       </footer>
+
+      {/* Terminal overlay — rendered at root so it floats above everything */}
+      <Terminal
+        terminal={terminal}
+        onNavigate={(section) => {
+          setActiveSection(section as Section);
+          window.history.pushState(null, '', sectionToPath(section as Section));
+        }}
+        onTheme={(t) => setTheme(t)}
+      />
     </div>
   );
 }
