@@ -302,6 +302,13 @@ export const PROJECTS: Project[] = [
     tech: ["Python", "Nmap", "OpenVAS", "SMTP"],
     achievement: "Reduced scan-to-report time by 70%.",
     link: "#"
+  },
+  {
+    title: "Fundamentals of Information Systems Security",
+    description: "A comprehensive open-source course repository covering the CIA triad, risk management, access control, cryptography, malware analysis, and security operations. Includes 9 structured chapters, hands-on Kali Linux labs, real-world case studies (SolarWinds, EternalBlue, WannaCry), policy templates, and alignment with CompTIA Security+, CISSP, and GIAC GSEC certifications.",
+    tech: ["Kali Linux", "Wireshark", "Metasploit", "Nmap", "OpenSSL", "Python"],
+    achievement: "45–65 hour curriculum with 9 labs, 7 case studies & 5 security frameworks.",
+    link: "https://github.com/guuly05/information-security-lessons"
   }
 ];
 
