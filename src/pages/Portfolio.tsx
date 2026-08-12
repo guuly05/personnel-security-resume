@@ -131,6 +131,39 @@ const CASE_STUDIES: CaseStudy[] = [
     ],
     githubUrl: 'https://github.com/guuly05/purpleprint',
   },
+  {
+    id: 'infosec-course',
+    title: 'Fundamentals of Information Systems Security',
+    subtitle: 'A structured open-source curriculum covering the full security lifecycle — from the CIA triad to penetration testing and incident response.',
+    type: 'Security Education',
+    year: '2026',
+    status: 'Open Source',
+    role: 'Curriculum Author & Maintainer',
+    imageUrl: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=900&h=500&fit=crop&q=80',
+    imageAlt: 'Digital lock and circuit board representing information security fundamentals',
+    challenge:
+      'Most cybersecurity learning resources are either too scattered across platforms or too shallow to be used as a standalone university-level course. Students and self-directed learners needed a single, structured repository that covers theory, labs, case studies, and real certification alignment — all in one place.',
+    approach:
+      'Designed a 9-chapter curriculum mapped to CompTIA Security+, CISSP, and GIAC GSEC domains. Each chapter pairs written content with hands-on Kali Linux lab exercises and real-world case studies (SolarWinds, WannaCry, EternalBlue). Supplemented with policy templates, industry framework guides (NIST CSF, MITRE ATT&CK, OWASP Top 10), and a curated reading list of nine security books.',
+    outcome:
+      'A comprehensive, version-controlled course repository delivering 45–65 hours of structured learning. Students walk away with practical Kali Linux skills, completed risk assessments, a full security policy framework, and the foundational knowledge needed for entry-level cybersecurity certifications.',
+    highlights: [
+      '9 structured chapters with matching lab exercises and chapter quizzes',
+      '7 real-world case studies including SolarWinds, WannaCry & Log4j',
+      'Aligned with CompTIA Security+, CISSP, SSCP, and GIAC GSEC',
+      '5 industry security frameworks: NIST CSF, MITRE ATT&CK, ISO 27001, OWASP, PCI DSS',
+      'Includes 9 policy templates for professional security documentation',
+    ],
+    techStack: [
+      { name: 'Kali Linux', group: 'platform' },
+      { name: 'Wireshark', group: 'tooling' },
+      { name: 'Metasploit', group: 'tooling' },
+      { name: 'Nmap', group: 'tooling' },
+      { name: 'OpenSSL', group: 'tooling' },
+      { name: 'Python', group: 'backend' },
+    ],
+    githubUrl: 'https://github.com/guuly05/information-security-lessons',
+  },
 ];
 
 /* ─────────────────────────────────────────────
