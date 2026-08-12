@@ -5,6 +5,7 @@
  */
 
 import { Helmet } from 'react-helmet-async';
+import { BLOG_POSTS } from '../blog/posts.ts';
 
 interface SeoHeadProps {
   /** The route/section that is currently visible. Drives per-section title & description. */
@@ -66,8 +67,83 @@ const SECTION_META: Record<string, { title: string; description: string }> = {
 };
 
 export function SeoHead({ section = 'home' }: SeoHeadProps) {
-  const meta = SECTION_META[section] ?? SECTION_META.home;
-  const canonicalUrl = `${SITE_URL}${section === 'home' ? '/' : '/' + section}`;
+  let meta = SECTION_META[section] ?? SECTION_META.home;
+  let canonicalUrl = `${SITE_URL}${section === 'home' ? '/' : '/' + section}`;
+  let ogImage = OG_IMAGE;
+  let isArticle = false;
+  let articleData: any = null;
+
+  if (typeof window !== 'undefined') {
+    const parts = window.location.pathname.split('/');
+    if (parts[1] === 'blog' && parts[2]) {
+      const slug = parts[2];
+      const post = BLOG_POSTS.find((p) => p.slug === slug);
+      if (post) {
+        isArticle = true;
+        articleData = post;
+        meta = {
+          title: `${post.title} | ${FULL_NAME}`,
+          description: post.subtitle,
+        };
+        canonicalUrl = `${SITE_URL}/blog/${slug}`;
+        ogImage = `${SITE_URL}/blog/${slug}/og.png`;
+      }
+    }
+  }
+
+  const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: FULL_NAME,
+    alternateName: 'Guuleed Maxamuud',
+    url: SITE_URL,
+    email: 'guuleedmaxamuud40@gmail.com',
+    jobTitle: 'Vulnerability Assessment & Penetration Tester',
+    description:
+      'Cybersecurity professional specialising in penetration testing, vulnerability assessment, ethical hacking, and network security.',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Hargeisa',
+      addressRegion: 'Somaliland',
+    },
+    sameAs: [
+      'https://linkedin.com/in/guuleed-aw-abdi-517928277',
+      'https://github.com/guuly05',
+    ],
+    knowsAbout: [
+      'Penetration Testing',
+      'Vulnerability Assessment',
+      'Ethical Hacking',
+      'Network Security',
+      'Burp Suite',
+      'Nessus',
+      'Nmap',
+      'Linux Hardening',
+      'Python Automation',
+    ],
+  };
+
+  const articleSchema = isArticle && articleData ? {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: articleData.title,
+    description: articleData.subtitle,
+    image: ogImage,
+    author: {
+      '@type': 'Person',
+      name: FULL_NAME,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: FULL_NAME,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/favicon.png`,
+      },
+    },
+    datePublished: new Date(articleData.date).toISOString(),
+    url: canonicalUrl,
+  } : null;
 
   return (
     <Helmet>
@@ -100,61 +176,33 @@ export function SeoHead({ section = 'home' }: SeoHeadProps) {
       <link rel="manifest" href="/site.webmanifest" />
 
       {/* ── Open Graph (WhatsApp, LinkedIn, Telegram, Facebook, Discord) ── */}
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={isArticle ? 'article' : 'website'} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
-      <meta property="og:image" content={OG_IMAGE} />
+      <meta property="og:image" content={ogImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:type" content="image/png" />
-      <meta property="og:image:alt" content={`${FULL_NAME} — Cybersecurity Portfolio preview card`} />
-      <meta property="og:site_name" content={`${FULL_NAME} Portfolio`} />
+      <meta property="og:image:alt" content={isArticle ? `Blog post: ${meta.title}` : `${FULL_NAME} — Cybersecurity Portfolio preview card`} />
+      <meta property="og:site_name" content="Guuleed Maxamuud" />
       <meta property="og:locale" content="en_US" />
+      {isArticle && <meta property="article:author" content={FULL_NAME} />}
+      {isArticle && articleData && <meta property="article:published_time" content={new Date(articleData.date).toISOString()} />}
 
       {/* ── Twitter / X Link Preview ─────────────────────────────── */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
-      <meta name="twitter:image" content={OG_IMAGE} />
-      <meta name="twitter:image:alt" content={`${FULL_NAME} — Cybersecurity Portfolio`} />
+      <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:image:alt" content={meta.title} />
 
       {/* ── Search Indexing Instructions ─────────────────────────── */}
       <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
       {/* ── Google Search Structured Data (JSON-LD) ──────────────── */}
       <script type="application/ld+json">
-        {JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'Person',
-          name: FULL_NAME,
-          alternateName: 'Guuleed Maxamuud',
-          url: SITE_URL,
-          email: 'guuleedmaxamuud40@gmail.com',
-          jobTitle: 'Vulnerability Assessment & Penetration Tester',
-          description:
-            'Cybersecurity professional specialising in penetration testing, vulnerability assessment, ethical hacking, and network security.',
-          address: {
-            '@type': 'PostalAddress',
-            addressLocality: 'Hargeisa',
-            addressRegion: 'Somaliland',
-          },
-          sameAs: [
-            'https://linkedin.com/in/guuleed-aw-abdi-517928277',
-            'https://github.com/guuly05',
-          ],
-          knowsAbout: [
-            'Penetration Testing',
-            'Vulnerability Assessment',
-            'Ethical Hacking',
-            'Network Security',
-            'Burp Suite',
-            'Nessus',
-            'Nmap',
-            'Linux Hardening',
-            'Python Automation',
-          ],
-        })}
+        {JSON.stringify(articleSchema ? [personSchema, articleSchema] : personSchema)}
       </script>
     </Helmet>
   );

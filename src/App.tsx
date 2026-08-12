@@ -137,8 +137,8 @@ export default function App() {
       if (!isKnownRoute) return;
 
       event.preventDefault();
-      window.history.pushState(null, '', sectionToPath(nextSection));
-      setActiveSection(nextSection);
+      window.history.pushState(null, '', url.pathname);
+      window.dispatchEvent(new PopStateEvent('popstate'));
       setIsMenuOpen(false);
     };
 
@@ -433,8 +433,8 @@ export default function App() {
       <Terminal
         terminal={terminal}
         onNavigate={(section) => {
-          setActiveSection(section as Section);
           window.history.pushState(null, '', sectionToPath(section as Section));
+          window.dispatchEvent(new PopStateEvent('popstate'));
         }}
         onTheme={(t) => setTheme(t)}
       />

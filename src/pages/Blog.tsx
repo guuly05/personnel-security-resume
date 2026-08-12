@@ -617,12 +617,21 @@ function BlogReader({
   );
 }
 
+const getSlugFromPath = (): string | null => {
+  if (typeof window === 'undefined') return null;
+  const parts = window.location.pathname.split('/');
+  if (parts[1] === 'blog' && parts[2]) {
+    return parts[2];
+  }
+  return null;
+};
+
 export default function BlogPage({ isFocusMode, onFocusModeChange }: BlogPageProps) {
   const [isUnlocked, setIsUnlocked] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false;
     return window.sessionStorage.getItem(STORAGE_KEY) === 'true';
   });
-  const [activeSlug, setActiveSlug] = useState<string | null>(null);
+  const [activeSlug, setActiveSlug] = useState<string | null>(() => getSlugFromPath());
   const [progress, setProgress] = useState(0);
 
   const activePost = BLOG_POSTS.find((entry) => entry.slug === activeSlug) ?? BLOG_POSTS[0];
@@ -631,6 +640,24 @@ export default function BlogPage({ isFocusMode, onFocusModeChange }: BlogPagePro
   useEffect(() => {
     window.sessionStorage.setItem(STORAGE_KEY, isUnlocked ? 'true' : 'false');
   }, [isUnlocked]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setActiveSlug(getSlugFromPath());
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const handleOpen = (slug: string) => {
+    setActiveSlug(slug);
+    window.history.pushState(null, '', `/blog/${slug}`);
+  };
+
+  const handleBack = () => {
+    setActiveSlug(null);
+    window.history.pushState(null, '', '/blog');
+  };
 
   useEffect(() => {
     if (!activeSlug) {
@@ -678,13 +705,13 @@ export default function BlogPage({ isFocusMode, onFocusModeChange }: BlogPagePro
           <BlogReader
             key={activeSlug}
             post={activePost}
-            onBack={() => setActiveSlug(null)}
+            onBack={handleBack}
             isFocusMode={isFocusMode}
             onFocusModeChange={onFocusModeChange}
             progress={progress}
           />
         ) : (
-          <BlogCatalog key="catalog" posts={BLOG_POSTS} onOpen={setActiveSlug} />
+          <BlogCatalog key="catalog" posts={BLOG_POSTS} onOpen={handleOpen} />
         )}
       </AnimatePresence>
     </div>
