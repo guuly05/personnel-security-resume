@@ -2,7 +2,7 @@ import { ImageResponse } from '@vercel/og';
 import { BLOG_POSTS } from '../src/blog/posts.ts';
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'nodejs',
 };
 
 export default async function handler(req: any) {
