@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { readFileSync, existsSync } from 'fs';
-import { BLOG_POSTS } from '../src/blog/posts.ts';
+import { BLOG_POSTS } from '../src/blog/posts.js';
 
 function escapeHtml(str: string): string {
   return str

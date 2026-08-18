@@ -1,4 +1,4 @@
-import { BOOKING_CONFIG } from '../src/booking/config';
+import { BOOKING_CONFIG } from '../src/booking/config.js';
 
 type RateLimitEntry = {
   count: number;

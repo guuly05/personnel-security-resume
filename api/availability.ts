@@ -1,8 +1,8 @@
 import { eachDayOfInterval, isSameMonth } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
-import { getCalendarId, getGoogleCalendarClient } from './calendar';
-import { enforceRateLimit } from './rate-limit';
-import { BOOKING_CONFIG } from '../src/booking/config';
+import { getCalendarId, getGoogleCalendarClient } from './calendar.js';
+import { enforceRateLimit } from './rate-limit.js';
+import { BOOKING_CONFIG } from '../src/booking/config.js';
 import {
   buildSlotWindows,
   formatDateKey,
@@ -13,7 +13,7 @@ import {
   parseDayString,
   slotToResponse,
   subtractBusyBlocks,
-} from '../src/booking/time';
+} from '../src/booking/time.js';
 
 const monthlyCache = new Map<string, { expiresAt: number; payload: unknown }>();
 

@@ -1,7 +1,7 @@
-import { BOOKING_CONFIG, BOOKING_EMAIL_PATTERN } from '../src/booking/config';
-import { getCalendarId, getGoogleCalendarClient } from './calendar';
-import { enforceRateLimit } from './rate-limit';
-import { buildSlotWindows, getDayWindow, isBookingWeekday, isSlotTooSoon, parseSlotString } from '../src/booking/time';
+import { BOOKING_CONFIG, BOOKING_EMAIL_PATTERN } from '../src/booking/config.js';
+import { getCalendarId, getGoogleCalendarClient } from './calendar.js';
+import { enforceRateLimit } from './rate-limit.js';
+import { buildSlotWindows, getDayWindow, isBookingWeekday, isSlotTooSoon, parseSlotString } from '../src/booking/time.js';
 
 export default async function handler(req: any, res: any) {
   res.setHeader('Content-Type', 'application/json');

@@ -1,6 +1,6 @@
 import { addMinutes, differenceInMinutes, format, isBefore } from 'date-fns';
 import { fromZonedTime, toZonedTime } from 'date-fns-tz';
-import { BOOKING_CONFIG } from './config';
+import { BOOKING_CONFIG } from './config.js';
 
 export type AvailabilityBlock = { start?: string | null; end?: string | null };
 

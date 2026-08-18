@@ -1,5 +1,5 @@
 import { ImageResponse } from '@vercel/og';
-import { BLOG_POSTS } from '../src/blog/posts.ts';
+import { BLOG_POSTS } from '../src/blog/posts.js';
 
 export const config = {
   runtime: 'nodejs',
