@@ -1,6 +1,7 @@
 import { eachDayOfInterval, isSameMonth } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import { getCalendarId, getGoogleCalendarClient } from './calendar';
+import { enforceRateLimit } from './rate-limit';
 import { BOOKING_CONFIG } from '../src/booking/config';
 import {
   buildSlotWindows,
@@ -21,6 +22,10 @@ export default async function handler(req: any, res: any) {
 
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  if (enforceRateLimit(req)) {
+    return res.status(429).json({ error: 'Too many requests. Please wait and try again.' });
   }
 
   const month = typeof req.query.month === 'string' ? req.query.month : '';

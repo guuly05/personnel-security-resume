@@ -1,39 +1,15 @@
 import { BOOKING_CONFIG, BOOKING_EMAIL_PATTERN } from '../src/booking/config';
 import { getCalendarId, getGoogleCalendarClient } from './calendar';
+import { enforceRateLimit } from './rate-limit';
 import { buildSlotWindows, getDayWindow, isBookingWeekday, isSlotTooSoon, parseSlotString } from '../src/booking/time';
-
-type RateLimitEntry = { count: number; resetAt: number };
-
-const rateLimitStore = new Map<string, RateLimitEntry>();
-
-function getRequestIp(req: any): string {
-  const forwarded = req.headers['x-forwarded-for'];
-  if (typeof forwarded === 'string' && forwarded.trim()) return forwarded.split(',')[0].trim();
-  return typeof req.headers['x-real-ip'] === 'string' ? req.headers['x-real-ip'].trim() : 'unknown';
-}
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  for (const [key, entry] of rateLimitStore.entries()) {
-    if (entry.resetAt <= now) rateLimitStore.delete(key);
-  }
-  const entry = rateLimitStore.get(ip);
-  if (!entry || entry.resetAt <= now) {
-    rateLimitStore.set(ip, { count: 1, resetAt: now + BOOKING_CONFIG.rateLimitWindowMs });
-    return false;
-  }
-  if (entry.count >= BOOKING_CONFIG.rateLimitMax) return true;
-  entry.count += 1;
-  rateLimitStore.set(ip, entry);
-  return false;
-}
 
 export default async function handler(req: any, res: any) {
   res.setHeader('Content-Type', 'application/json');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const ip = getRequestIp(req);
-  if (isRateLimited(ip)) return res.status(429).json({ error: 'Too many booking attempts. Please wait and try again.' });
+  if (enforceRateLimit(req)) {
+    return res.status(429).json({ error: 'Too many booking attempts. Please wait and try again.' });
+  }
 
   const { date, time, email, notes, honeypot } = req.body ?? {};
   if (typeof honeypot === 'string' && honeypot.trim()) return res.status(200).json({ ok: true });
