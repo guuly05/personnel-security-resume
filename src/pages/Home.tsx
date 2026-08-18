@@ -45,6 +45,12 @@ const exploreCards = [
     description: 'Direct channels for collaboration and opportunities.',
     icon: 'mail',
   },
+  {
+    id: 'book',
+    title: 'Book a Call',
+    description: 'Choose a time for a focused conversation on Google Meet.',
+    icon: 'calendar',
+  },
 ];
 
 const HomePage: React.FC = () => {
