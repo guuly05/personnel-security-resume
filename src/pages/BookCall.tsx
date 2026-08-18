@@ -131,12 +131,13 @@ export default function BookCallPage() {
   };
 
   return (
-    <div className="space-y-5">
-      <section className="surface-card relative overflow-hidden p-6 md:p-8 lg:p-10">
+    <div className="booking-shell space-y-5">
+      <section className="booking-hero surface-card relative overflow-hidden p-6 md:p-8 lg:p-10">
         <div className="absolute right-0 top-0 h-32 w-32 border-b border-l border-dashed border-[var(--border)]" aria-hidden />
+        <div className="booking-hero-index absolute right-7 top-6 font-mono text-5xl font-bold leading-none text-[var(--border)]" aria-hidden>03</div>
         <div className="relative grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
           <div className="space-y-4">
-            <p className="flex items-center gap-3 text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan"><span className="h-2 w-2 bg-[var(--accent)]" />Live scheduling terminal</p>
+            <p className="flex items-center gap-3 text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan"><span className="booking-status-dot h-2 w-2 bg-[var(--accent)]" />Live scheduling terminal</p>
             <h1 className="max-w-3xl font-display text-5xl font-bold leading-[0.95] text-[var(--color-text)] sm:text-6xl">
               Pick a day, pick a slot, and I’ll meet you on Google Meet.
             </h1>
@@ -144,7 +145,8 @@ export default function BookCallPage() {
               Bookings are only available on Thursday and Friday, between 09:00 and 17:00 EAT. Calls are 30 minutes long with a 10 minute gap between slots, and you must book at least 2 hours ahead.
             </p>
           </div>
-          <div className="grid gap-3 border border-dashed border-[var(--border)] bg-[var(--surface-soft)] p-4 sm:grid-cols-2">
+          <div className="booking-spec-grid grid gap-3 border border-dashed border-[var(--border)] bg-[var(--surface-soft)] p-4 sm:grid-cols-2">
+            <div className="col-span-full flex items-center justify-between border-b border-[var(--border)] pb-3 text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[var(--color-text-muted)]"><span>Call protocol</span><span className="text-[var(--accent)]">Meet enabled</span></div>
             <div className="border-b border-[var(--border)] pb-3 sm:border-b-0 sm:border-r sm:pr-3">
               <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">Timezone</p>
               <p className="mt-2 text-sm font-semibold text-[var(--color-text)]">{BOOKING_CONFIG.timezone}</p>
@@ -172,7 +174,7 @@ export default function BookCallPage() {
             ['02', 'Lock a time', selectedTime ? `${selectedTime} EAT` : 'Open windows', Boolean(selectedTime)],
             ['03', 'Confirm details', email ? 'Email captured' : 'Google Meet invite', Boolean(email)],
           ].map(([number, title, detail, complete]) => (
-            <div key={number as string} className={`flex min-h-20 items-center gap-4 border p-4 ${complete ? 'border-[var(--accent)] bg-[var(--accent-soft)]' : 'border-[var(--border)] bg-[var(--surface-soft)]'}`}>
+            <div key={number as string} className={`booking-flow-step flex min-h-20 items-center gap-4 border p-4 ${complete ? 'is-complete border-[var(--accent)] bg-[var(--accent-soft)]' : 'border-[var(--border)] bg-[var(--surface-soft)]'}`}>
               <span className={`font-mono text-xl font-bold ${complete ? 'text-[var(--accent)]' : 'text-[var(--color-text-muted)]'}`}>{number}</span>
               <div><p className="text-sm font-bold text-[var(--color-text)]">{title}</p><p className="mt-1 text-xs text-[var(--color-text-muted)]">{detail}</p></div>
             </div>
@@ -181,7 +183,7 @@ export default function BookCallPage() {
       </section>
 
       <section className="grid gap-5 xl:grid-cols-[1.08fr_0.92fr]">
-        <div className="surface-card p-6 md:p-8">
+        <div className="booking-panel surface-card p-6 md:p-8">
           <div className="flex flex-wrap items-end justify-between gap-4 border-b border-dashed border-[var(--border)] pb-6">
             <div>
               <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--brand-purple)]">01 / Date selection</p>
@@ -210,7 +212,8 @@ export default function BookCallPage() {
                     key={day}
                     type="button"
                     onClick={() => setSelectedDate(day)}
-                    className={`min-h-28 border p-4 text-left transition ${
+                    aria-pressed={selected}
+                    className={`booking-date-card min-h-28 border p-4 text-left transition ${
                       selected
                         ? 'border-[var(--accent)] bg-[var(--accent-soft)] text-[var(--color-text)]'
                         : 'border-[var(--border)] bg-[var(--surface-soft)] text-[var(--color-text-muted)] hover:border-[var(--accent)] hover:text-[var(--color-text)]'
@@ -219,6 +222,7 @@ export default function BookCallPage() {
                     <span className="block font-mono text-[10px] font-bold uppercase tracking-[0.22em]">{entry.weekday}</span>
                     <span className="mt-2 block font-display text-4xl font-bold leading-none">{entry.day}</span>
                     <span className="mt-2 block text-xs uppercase tracking-widest">{entry.month}</span>
+                    <span className={`mt-3 block h-px w-full ${selected ? 'bg-[var(--accent)]' : 'bg-[var(--border)]'}`} aria-hidden />
                   </button>
                 );
               })
@@ -230,7 +234,7 @@ export default function BookCallPage() {
           </div>
         </div>
 
-        <div className="surface-card p-6 md:p-8">
+        <div className="booking-panel surface-card p-6 md:p-8">
           <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">02 / Time selection</p>
           <div className="mt-3 flex items-center justify-between gap-3 border-b border-dashed border-[var(--border)] pb-6">
             <h2 className="font-display text-3xl font-bold text-[var(--color-text)]">{selectedDay ? `${selectedDay.weekday}, ${selectedDay.month} ${selectedDay.day}` : 'Choose a date'}</h2>
@@ -249,6 +253,7 @@ export default function BookCallPage() {
                   key={slot.start}
                   type="button"
                   onClick={() => setSelectedTime(slot.start)}
+                  aria-pressed={selectedTime === slot.start}
                   className={`min-h-16 border px-3 py-2 text-left transition ${
                     selectedTime === slot.start
                       ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--color-bg)]'
@@ -256,7 +261,7 @@ export default function BookCallPage() {
                   }`}
                 >
                   <span className="block font-mono text-sm font-bold">{slot.start}</span>
-                  <span className="mt-1 block text-[10px] uppercase tracking-widest opacity-70">until {slot.end}</span>
+                  <span className="mt-1 block text-[10px] uppercase tracking-widest opacity-70">until {slot.end} / EAT</span>
                 </button>
               ))
             ) : (
@@ -268,7 +273,7 @@ export default function BookCallPage() {
         </div>
       </section>
 
-      <section className="surface-card overflow-hidden">
+      <section className="booking-confirmation surface-card overflow-hidden">
         <div className="grid lg:grid-cols-[0.72fr_1.28fr]">
           <aside className="border-b border-dashed border-[var(--border)] bg-[var(--surface-soft)] p-6 md:p-8 lg:border-b-0 lg:border-r">
             <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">03 / Finalize</p>
@@ -277,6 +282,7 @@ export default function BookCallPage() {
               <p><span className="block text-[10px] uppercase tracking-widest text-[var(--color-text-muted)]">Date</span><span className="mt-1 block text-[var(--color-text)]">{selectedDate || 'Awaiting selection'}</span></p>
               <p><span className="block text-[10px] uppercase tracking-widest text-[var(--color-text-muted)]">Time</span><span className="mt-1 block text-[var(--color-text)]">{selectedTime ? `${selectedTime} EAT` : 'Awaiting selection'}</span></p>
               <p><span className="block text-[10px] uppercase tracking-widest text-[var(--color-text-muted)]">Channel</span><span className="mt-1 block text-[var(--color-text)]">Google Meet invite</span></p>
+              <p className="border-t border-dashed border-[var(--border)] pt-4 text-[10px] leading-5 text-[var(--color-text-muted)]">A calendar invite and private video link will be sent after confirmation.</p>
             </div>
           </aside>
           <div className="p-6 md:p-8">
@@ -313,10 +319,11 @@ export default function BookCallPage() {
           </label>
 
           <label className="space-y-2 md:col-span-2">
-            <span className="block pl-1 font-mono text-[10px] uppercase tracking-widest text-brand-cyan">Note</span>
+            <span className="flex items-center justify-between pl-1 font-mono text-[10px] uppercase tracking-widest text-brand-cyan"><span>Note</span><span className="text-[var(--color-text-muted)]">{notes.length}/{BOOKING_CONFIG.maxNotesLength}</span></span>
             <textarea
               required
               rows={5}
+              maxLength={BOOKING_CONFIG.maxNotesLength}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               className="w-full resize-none border border-[var(--border)] bg-[var(--surface-soft)] p-4 text-sm text-[var(--color-text)] outline-none transition focus:border-[var(--accent)]"

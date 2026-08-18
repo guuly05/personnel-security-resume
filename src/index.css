@@ -129,6 +129,81 @@
     color: var(--brand-purple);
   }
 
+  .booking-shell {
+    isolation: isolate;
+  }
+
+  .booking-hero::after {
+    content: '';
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+    width: 5rem;
+    height: 5rem;
+    border-right: 1px dashed var(--border);
+    border-bottom: 1px dashed var(--border);
+    pointer-events: none;
+  }
+
+  .booking-status-dot {
+    animation: booking-status-pulse 1.8s ease-in-out infinite;
+  }
+
+  .booking-flow-step {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .booking-flow-step::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: var(--border);
+  }
+
+  .booking-flow-step.is-complete::before {
+    background: var(--accent);
+  }
+
+  .booking-panel {
+    transition: transform 180ms ease, border-color 180ms ease;
+  }
+
+  .booking-panel:has(.booking-date-card[aria-pressed='true']),
+  .booking-panel:has(button[aria-pressed='true']) {
+    border-color: var(--accent);
+  }
+
+  .booking-date-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .booking-date-card:hover,
+  .booking-date-card:focus-visible,
+  .booking-panel button[aria-pressed='false']:hover,
+  .booking-panel button[aria-pressed='false']:focus-visible {
+    transform: translateY(-2px);
+  }
+
+  .booking-confirmation:has(input:focus, textarea:focus) {
+    border-color: var(--accent);
+  }
+
+  @keyframes booking-status-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.7); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .booking-status-dot { animation: none; }
+    .booking-date-card:hover,
+    .booking-date-card:focus-visible,
+    .booking-panel button[aria-pressed='false']:hover,
+    .booking-panel button[aria-pressed='false']:focus-visible { transform: none; }
+  }
+
   .border-accent {
     border-color: var(--accent) !important;
   }
