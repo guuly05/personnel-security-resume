@@ -23,6 +23,7 @@ const CertificatesPage = lazy(() => import('./pages/Certificates.tsx'));
 const PortfolioPage = lazy(() => import('./pages/Portfolio.tsx'));
 const BlogPage = lazy(() => import('./pages/Blog.tsx'));
 const ContactPage = lazy(() => import('./pages/Contact.tsx'));
+const BookCallPage = lazy(() => import('./pages/BookCall.tsx'));
 const AnnualRecapPage = lazy(() => import('./pages/AnnualRecap.tsx'));
 
 type Section =
@@ -32,6 +33,7 @@ type Section =
   | 'experience'
   | 'certificates'
   | 'portfolio'
+  | 'book'
   | 'blog'
   | 'contact'
   | 'recap';
@@ -43,6 +45,7 @@ const SECTIONS: Section[] = [
   'experience',
   'certificates',
   'portfolio',
+  'book',
   'blog',
   'contact',
   'recap',
@@ -167,6 +170,7 @@ export default function App() {
     { id: 'experience', label: 'Experience', icon: 'briefcase' },
     { id: 'certificates', label: 'Credentials', icon: 'graduation-cap' },
     { id: 'portfolio', label: 'Portfolio', icon: 'layout' },
+    { id: 'book', label: 'Book a Call', icon: 'calendar' },
     { id: 'blog', label: 'Blog', icon: 'book-open' },
     { id: 'contact', label: 'Contact', icon: 'mail' },
   ];
@@ -387,6 +391,7 @@ export default function App() {
               {activeSection === 'experience' && <ExperiencePage />}
               {activeSection === 'certificates' && <CertificatesPage />}
               {activeSection === 'portfolio' && <PortfolioPage />}
+              {activeSection === 'book' && <BookCallPage />}
               {activeSection === 'blog' && (
                 <BlogPage
                   isFocusMode={isBlogFocusMode}
