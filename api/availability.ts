@@ -32,7 +32,7 @@ export default async function handler(req: any, res: any) {
   const date = typeof req.query.date === 'string' ? req.query.date : '';
 
   try {
-    const calendar = getGoogleCalendarClient();
+    const calendar = await getGoogleCalendarClient();
     const calendarId = getCalendarId();
 
     if (month) {
