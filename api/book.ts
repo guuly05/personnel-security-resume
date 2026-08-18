@@ -31,7 +31,7 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const calendar = getGoogleCalendarClient();
+    const calendar = await getGoogleCalendarClient();
     const calendarId = getCalendarId();
     const slotStart = parseSlotString(date, time);
     const slotEnd = new Date(slotStart.getTime() + BOOKING_CONFIG.slotMinutes * 60 * 1000);
