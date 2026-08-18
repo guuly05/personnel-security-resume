@@ -2,7 +2,7 @@ import { addMinutes, differenceInMinutes, format, isBefore } from 'date-fns';
 import { fromZonedTime, toZonedTime } from 'date-fns-tz';
 import { BOOKING_CONFIG } from './config';
 
-export type AvailabilityBlock = { start: string; end: string };
+export type AvailabilityBlock = { start?: string | null; end?: string | null };
 
 export type DaySlot = {
   start: string;
@@ -82,7 +82,12 @@ export function subtractBusyBlocks(
   busyBlocks: AvailabilityBlock[],
 ): Array<{ start: Date; end: Date }> {
   return slots.filter((slot) =>
-    !busyBlocks.some((busy) => overlaps(slot.start, slot.end, new Date(busy.start), new Date(busy.end))),
+    !busyBlocks.some((busy) => {
+      if (!busy.start || !busy.end) return false;
+      const busyStart = new Date(busy.start);
+      const busyEnd = new Date(busy.end);
+      return !Number.isNaN(busyStart.getTime()) && !Number.isNaN(busyEnd.getTime()) && overlaps(slot.start, slot.end, busyStart, busyEnd);
+    }),
   );
 }
 

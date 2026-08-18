@@ -28,6 +28,7 @@ export default function BookCallPage() {
   const [selectedTime, setSelectedTime] = useState('');
   const [email, setEmail] = useState('');
   const [notes, setNotes] = useState('');
+  const [honeypot, setHoneypot] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'booking' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
@@ -35,15 +36,19 @@ export default function BookCallPage() {
     let active = true;
     setStatus('loading');
     fetch(`/api/availability?month=${selectedMonth}`)
-      .then((response) => response.json())
+      .then(async (response) => {
+        const data = await response.json().catch(() => null);
+        if (!response.ok) throw new Error(data?.error ?? 'Could not load availability right now.');
+        return data as MonthAvailability;
+      })
       .then((data: MonthAvailability) => {
         if (!active) return;
         setAvailability(data);
         setStatus('idle');
       })
-      .catch(() => {
+      .catch((error) => {
         if (!active) return;
-        setMessage('Could not load availability right now.');
+        setMessage(error instanceof Error ? error.message : 'Could not load availability right now.');
         setStatus('error');
       });
     return () => {
@@ -60,16 +65,20 @@ export default function BookCallPage() {
     let active = true;
     setStatus('loading');
     fetch(`/api/availability?date=${selectedDate}`)
-      .then((response) => response.json())
+      .then(async (response) => {
+        const data = await response.json().catch(() => null);
+        if (!response.ok) throw new Error(data?.error ?? 'Could not load time slots right now.');
+        return data as DayAvailability;
+      })
       .then((data: DayAvailability) => {
         if (!active) return;
         setDayAvailability(data);
         setSelectedTime('');
         setStatus('idle');
       })
-      .catch(() => {
+      .catch((error) => {
         if (!active) return;
-        setMessage('Could not load time slots right now.');
+        setMessage(error instanceof Error ? error.message : 'Could not load time slots right now.');
         setStatus('error');
       });
 
@@ -94,7 +103,7 @@ export default function BookCallPage() {
           time: selectedTime,
           email,
           notes,
-          honeypot: '',
+          honeypot,
         }),
       });
 
@@ -237,7 +246,15 @@ export default function BookCallPage() {
         <form onSubmit={handleBooking} className="mt-6 grid gap-4 md:grid-cols-2">
           <div className="hidden">
             <label htmlFor="honeypot">Honeypot</label>
-            <input id="honeypot" name="honeypot" type="text" tabIndex={-1} autoComplete="off" />
+            <input
+              id="honeypot"
+              name="honeypot"
+              type="text"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+            />
           </div>
 
           <label className="space-y-2">

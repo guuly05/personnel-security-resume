@@ -51,7 +51,12 @@ export default async function handler(req: any, res: any) {
     });
 
     const busyBlocks = busy.data.calendars?.[calendarId]?.busy ?? [];
-    const stillFree = !busyBlocks.some((block) => slotStart < new Date(block.end) && slotEnd > new Date(block.start));
+    const stillFree = !busyBlocks.some((block) => {
+      if (!block.start || !block.end) return false;
+      const busyStart = new Date(block.start);
+      const busyEnd = new Date(block.end);
+      return !Number.isNaN(busyStart.getTime()) && !Number.isNaN(busyEnd.getTime()) && slotStart < busyEnd && slotEnd > busyStart;
+    });
     if (!stillFree) {
       return res.status(409).json({ error: 'That time slot was just booked by someone else. Please choose another.' });
     }
