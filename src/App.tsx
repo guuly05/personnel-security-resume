@@ -25,6 +25,7 @@ const BlogPage = lazy(() => import('./pages/Blog.tsx'));
 const ContactPage = lazy(() => import('./pages/Contact.tsx'));
 const BookCallPage = lazy(() => import('./pages/BookCall.tsx'));
 const AnnualRecapPage = lazy(() => import('./pages/AnnualRecap.tsx'));
+const NotFoundPage = lazy(() => import('./pages/NotFound.tsx'));
 
 type Section =
   | 'home'
@@ -36,9 +37,12 @@ type Section =
   | 'book'
   | 'blog'
   | 'contact'
-  | 'recap';
+  | 'recap'
+  | 'not-found';
 
-const SECTIONS: Section[] = [
+type NavigableSection = Exclude<Section, 'not-found'>;
+
+const SECTIONS: NavigableSection[] = [
   'home',
   'about',
   'skills',
@@ -54,6 +58,7 @@ const SECTIONS: Section[] = [
 const RECAP_ALIASES = ['reflection', 'surprise', 'vault'];
 
 function sectionToPath(section: Section): string {
+  if (section === 'not-found') return '/404';
   return section === 'home' ? '/' : `/${section}`;
 }
 
@@ -61,14 +66,14 @@ function pathToSection(pathname: string): Section {
   const segment = pathname.replace(/^\/+/, '').split('/')[0];
   if (!segment) return 'home';
   if (RECAP_ALIASES.includes(segment)) return 'recap';
-  return SECTIONS.includes(segment as Section) ? (segment as Section) : 'home';
+  return SECTIONS.includes(segment as NavigableSection) ? (segment as Section) : 'not-found';
 }
 
 function hashToSection(hash: string): Section | null {
   const segment = hash.replace(/^#/, '').split('/')[0];
   if (!segment) return null;
   if (RECAP_ALIASES.includes(segment)) return 'recap';
-  return SECTIONS.includes(segment as Section) ? (segment as Section) : null;
+  return SECTIONS.includes(segment as NavigableSection) ? (segment as Section) : null;
 }
 
 function checkIsJuly27Today(): boolean {
@@ -136,7 +141,7 @@ export default function App() {
       if (url.origin !== window.location.origin) return;
 
       const nextSection = pathToSection(url.pathname);
-      const isKnownRoute = nextSection !== 'home' || url.pathname === '/' || url.pathname === '/home';
+      const isKnownRoute = nextSection !== 'not-found' || url.pathname === '/404';
       if (!isKnownRoute) return;
 
       event.preventDefault();
@@ -400,6 +405,7 @@ export default function App() {
               )}
               {activeSection === 'contact' && <ContactPage />}
               {activeSection === 'recap' && <AnnualRecapPage />}
+              {activeSection === 'not-found' && <NotFoundPage />}
             </motion.div>
           </AnimatePresence>
         </Suspense>

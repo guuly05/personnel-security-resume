@@ -191,6 +191,22 @@
     border-color: var(--accent);
   }
 
+  .not-found-shell::after {
+    content: '';
+    position: absolute;
+    inset: auto 2rem 2rem auto;
+    width: 6rem;
+    height: 6rem;
+    border-right: 1px dashed var(--border);
+    border-bottom: 1px dashed var(--border);
+    pointer-events: none;
+  }
+
+  .not-found-link:hover,
+  .not-found-link:focus-visible {
+    transform: translateY(-2px);
+  }
+
   @keyframes booking-status-pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.45; transform: scale(0.7); }
@@ -198,6 +214,8 @@
 
   @media (prefers-reduced-motion: reduce) {
     .booking-status-dot { animation: none; }
+    .not-found-link:hover,
+    .not-found-link:focus-visible,
     .booking-date-card:hover,
     .booking-date-card:focus-visible,
     .booking-panel button[aria-pressed='false']:hover,

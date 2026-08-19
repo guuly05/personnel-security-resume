@@ -6,6 +6,18 @@ import { BOOKING_CONFIG } from '../booking/config';
 type MonthAvailability = { month: string; days: string[] };
 type DayAvailability = { date: string; slots: Array<{ start: string; end: string; label: string }> };
 
+function availabilityErrorMessage(status?: number): string {
+  if (status === 429) return 'Too many requests right now. Please wait a minute and try again.';
+  return 'Availability is not loading right now. Please refresh or try again shortly.';
+}
+
+function bookingErrorMessage(status?: number): string {
+  if (status === 400) return 'Please check your email, note, date, and time before trying again.';
+  if (status === 409) return 'That slot was just taken. Please choose another open time.';
+  if (status === 429) return 'Too many booking attempts right now. Please wait a minute and try again.';
+  return 'The booking could not be completed right now. Please try again shortly.';
+}
+
 function pad(n: number): string {
   return String(n).padStart(2, '0');
 }
@@ -47,7 +59,7 @@ export default function BookCallPage() {
     fetch(`/api/availability?month=${selectedMonth}`)
       .then(async (response) => {
         const data = await response.json().catch(() => null);
-        if (!response.ok) throw new Error(data?.error ?? 'Could not load availability right now.');
+        if (!response.ok) throw new Error(availabilityErrorMessage(response.status));
         return data as MonthAvailability;
       })
       .then((data: MonthAvailability) => {
@@ -57,7 +69,7 @@ export default function BookCallPage() {
       })
       .catch((error) => {
         if (!active) return;
-        setMessage(error instanceof Error ? error.message : 'Could not load availability right now.');
+        setMessage(error instanceof Error ? error.message : availabilityErrorMessage());
         setStatus('error');
       });
     return () => {
@@ -76,7 +88,7 @@ export default function BookCallPage() {
     fetch(`/api/availability?date=${selectedDate}`)
       .then(async (response) => {
         const data = await response.json().catch(() => null);
-        if (!response.ok) throw new Error(data?.error ?? 'Could not load time slots right now.');
+        if (!response.ok) throw new Error(availabilityErrorMessage(response.status));
         return data as DayAvailability;
       })
       .then((data: DayAvailability) => {
@@ -87,7 +99,7 @@ export default function BookCallPage() {
       })
       .catch((error) => {
         if (!active) return;
-        setMessage(error instanceof Error ? error.message : 'Could not load time slots right now.');
+        setMessage(error instanceof Error ? error.message : availabilityErrorMessage());
         setStatus('error');
       });
 
@@ -117,8 +129,8 @@ export default function BookCallPage() {
         }),
       });
 
-      const payload = (await response.json().catch(() => null)) as { error?: string } | null;
-      if (!response.ok) throw new Error(payload?.error ?? 'Booking failed.');
+      await response.json().catch(() => null);
+      if (!response.ok) throw new Error(bookingErrorMessage(response.status));
 
       setStatus('success');
       setMessage('Your call is booked. Google will send the calendar invite and Meet link.');
@@ -126,7 +138,7 @@ export default function BookCallPage() {
       setEmail('');
     } catch (error) {
       setStatus('error');
-      setMessage(error instanceof Error ? error.message : 'Booking failed.');
+      setMessage(error instanceof Error ? error.message : bookingErrorMessage());
     }
   };
 

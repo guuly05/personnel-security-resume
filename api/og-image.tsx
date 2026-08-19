@@ -167,7 +167,7 @@ export default async function handler(req: any) {
     );
   } catch (e: any) {
     console.error(e);
-    return new Response(`Failed to generate the image: ${e.message}`, {
+    return new Response('Unable to generate the image right now.', {
       status: 500,
     });
   }

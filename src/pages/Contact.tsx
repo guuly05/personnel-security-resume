@@ -12,6 +12,7 @@ type TurnstileWindow = Window & {
 };
 
 const MIN_FILL_TIME_MS = 4500;
+const CONTACT_ERROR_MESSAGE = 'The message could not be sent right now. Please try again shortly.';
 const TURNSTILE_SITE_KEY =
   ((import.meta as { env?: { VITE_TURNSTILE_SITE_KEY?: string } }).env?.VITE_TURNSTILE_SITE_KEY) ??
   '0x4AAAAAAEJeTjoANqG1MG63';
@@ -72,17 +73,17 @@ const ContactPage: React.FC = () => {
         }),
       });
 
-      const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+      await response.json().catch(() => null);
 
       if (!response.ok) {
-        throw new Error(payload?.error ?? 'Unable to send message.');
+        throw new Error(CONTACT_ERROR_MESSAGE);
       }
 
       setStatus('success');
       setFormData({ name: '', email: '', message: '' });
     } catch (error) {
       setStatus('error');
-      setErrorMessage(error instanceof Error ? error.message : 'Unable to send message.');
+      setErrorMessage(error instanceof Error ? error.message : CONTACT_ERROR_MESSAGE);
     } finally {
       resetTurnstile();
     }

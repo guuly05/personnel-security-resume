@@ -64,6 +64,10 @@ const SECTION_META: Record<string, { title: string; description: string }> = {
     description:
       `Connect with ${FULL_NAME} for vulnerability assessments, penetration testing engagements, security consultations, or career opportunities.`,
   },
+  'not-found': {
+    title: `Page Not Found | ${TITLE_SUFFIX}`,
+    description: `The requested portfolio page could not be found.`,
+  },
 };
 
 export function SeoHead({ section = 'home' }: SeoHeadProps) {
@@ -198,7 +202,14 @@ export function SeoHead({ section = 'home' }: SeoHeadProps) {
       <meta name="twitter:image:alt" content={meta.title} />
 
       {/* ── Search Indexing Instructions ─────────────────────────── */}
-      <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+      <meta
+        name="robots"
+        content={
+          section === 'not-found'
+            ? 'noindex, follow'
+            : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'
+        }
+      />
 
       {/* ── Google Search Structured Data (JSON-LD) ──────────────── */}
       <script type="application/ld+json">
