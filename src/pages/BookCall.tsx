@@ -108,7 +108,15 @@ export default function BookCallPage() {
     };
   }, [selectedDate]);
 
-  const days = useMemo(() => availability?.days ?? [], [availability]);
+  const todayKey = useMemo(
+    () =>
+      `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`,
+    [today],
+  );
+  const days = useMemo(
+    () => (availability?.days ?? []).filter((day) => day >= todayKey),
+    [availability, todayKey],
+  );
   const selectedDay = selectedDate ? formatBookingDay(selectedDate) : null;
 
   const handleBooking = async (event: React.FormEvent) => {
