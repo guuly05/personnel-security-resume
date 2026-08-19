@@ -7,8 +7,12 @@ export const BOOKING_CONFIG = {
   businessStartHour: 9,
   businessEndHour: 17,
   monthlyAvailabilityTtlSeconds: 60,
-  rateLimitMax: 5,
-  rateLimitWindowMs: 15 * 60 * 1000,
+  // Strict limit for POST /api/book — 2 actual booking attempts per 30 minutes per IP
+  bookRateLimitMax: 2,
+  bookRateLimitWindowMs: 30 * 60 * 1000,
+  // Moderate limit for GET /api/availability — 20 requests per 60 seconds per IP
+  availabilityRateLimitMax: 20,
+  availabilityRateLimitWindowMs: 60 * 1000,
   maxNotesLength: 1000,
 } as const;
 

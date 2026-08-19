@@ -1,7 +1,7 @@
 import { eachDayOfInterval, isSameMonth } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import { getCalendarId, getGoogleCalendarClient } from './calendar.js';
-import { enforceRateLimit } from './rate-limit.js';
+import { enforceAvailabilityRateLimit } from './rate-limit.js';
 import { BOOKING_CONFIG } from '../src/booking/config.js';
 import {
   buildSlotWindows,
@@ -19,12 +19,15 @@ const monthlyCache = new Map<string, { expiresAt: number; payload: unknown }>();
 
 export default async function handler(req: any, res: any) {
   res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Cache-Control', 'no-store');
 
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  if (enforceRateLimit(req)) {
+  const rateLimit = enforceAvailabilityRateLimit(req);
+  if (rateLimit.limited) {
+    res.setHeader('Retry-After', String(rateLimit.retryAfterSeconds));
     return res.status(429).json({ error: 'Too many requests. Please wait and try again.' });
   }
 

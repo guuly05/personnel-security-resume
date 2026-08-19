@@ -5,7 +5,9 @@ type RateLimitEntry = {
   resetAt: number;
 };
 
-const rateLimitStore = new Map<string, RateLimitEntry>();
+// Separate stores so /api/availability traffic never touches /api/book quota
+const bookStore = new Map<string, RateLimitEntry>();
+const availabilityStore = new Map<string, RateLimitEntry>();
 
 function getRequestIp(req: any): string {
   const forwarded = req.headers['x-forwarded-for'];
@@ -25,27 +27,44 @@ function getRequestIp(req: any): string {
   return 'unknown';
 }
 
-export function enforceRateLimit(req: any): boolean {
-  const ip = getRequestIp(req);
+function checkLimit(
+  store: Map<string, RateLimitEntry>,
+  ip: string,
+  max: number,
+  windowMs: number,
+): { limited: boolean; retryAfterSeconds: number } {
   const now = Date.now();
 
-  for (const [key, entry] of rateLimitStore.entries()) {
-    if (entry.resetAt <= now) {
-      rateLimitStore.delete(key);
-    }
+  // Sweep expired entries
+  for (const [key, entry] of store.entries()) {
+    if (entry.resetAt <= now) store.delete(key);
   }
 
-  const entry = rateLimitStore.get(ip);
+  const entry = store.get(ip);
+
   if (!entry || entry.resetAt <= now) {
-    rateLimitStore.set(ip, { count: 1, resetAt: now + BOOKING_CONFIG.rateLimitWindowMs });
-    return false;
+    store.set(ip, { count: 1, resetAt: now + windowMs });
+    return { limited: false, retryAfterSeconds: 0 };
   }
 
-  if (entry.count >= BOOKING_CONFIG.rateLimitMax) {
-    return true;
+  if (entry.count >= max) {
+    const retryAfterSeconds = Math.ceil((entry.resetAt - now) / 1000);
+    return { limited: true, retryAfterSeconds };
   }
 
   entry.count += 1;
-  rateLimitStore.set(ip, entry);
-  return false;
+  store.set(ip, entry);
+  return { limited: false, retryAfterSeconds: 0 };
+}
+
+/** Use for POST /api/book — 2 attempts per 30 minutes per IP */
+export function enforceBookRateLimit(req: any): { limited: boolean; retryAfterSeconds: number } {
+  const ip = getRequestIp(req);
+  return checkLimit(bookStore, ip, BOOKING_CONFIG.bookRateLimitMax, BOOKING_CONFIG.bookRateLimitWindowMs);
+}
+
+/** Use for GET /api/availability — 20 requests per 60 seconds per IP */
+export function enforceAvailabilityRateLimit(req: any): { limited: boolean; retryAfterSeconds: number } {
+  const ip = getRequestIp(req);
+  return checkLimit(availabilityStore, ip, BOOKING_CONFIG.availabilityRateLimitMax, BOOKING_CONFIG.availabilityRateLimitWindowMs);
 }

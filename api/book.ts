@@ -1,13 +1,43 @@
 import { BOOKING_CONFIG, BOOKING_EMAIL_PATTERN } from '../src/booking/config.js';
 import { getCalendarId, getGoogleCalendarClient } from './calendar.js';
-import { enforceRateLimit } from './rate-limit.js';
+import { enforceBookRateLimit } from './rate-limit.js';
 import { buildSlotWindows, getDayWindow, isBookingWeekday, isSlotTooSoon, parseSlotString } from '../src/booking/time.js';
+
+function getAllowedOrigins(req: any): string[] {
+  const origins = new Set<string>();
+  const addOrigin = (value: string | undefined | null) => {
+    if (!value) return;
+    try { origins.add(new URL(value.trim()).origin); } catch { /* ignore invalid */ }
+  };
+  addOrigin(process.env.APP_URL);
+  addOrigin(process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
+  const host = req.headers.host;
+  if (typeof host === 'string' && host.trim()) {
+    addOrigin(`https://${host}`);
+    if (host.includes('localhost') || host.includes('127.0.0.1')) addOrigin(`http://${host}`);
+  }
+  return [...origins];
+}
 
 export default async function handler(req: any, res: any) {
   res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  if (enforceRateLimit(req)) {
+  // Origin check — block direct script/curl callers that aren't from the site
+  const requestOrigin = req.headers.origin ?? req.headers.referer;
+  const allowedOrigins = getAllowedOrigins(req);
+  if (requestOrigin && allowedOrigins.length > 0) {
+    let originHost: string | null = null;
+    try { originHost = new URL(requestOrigin).origin; } catch { /* ignore */ }
+    if (originHost && !allowedOrigins.includes(originHost)) {
+      return res.status(403).json({ error: 'Forbidden.' });
+    }
+  }
+
+  const rateLimit = enforceBookRateLimit(req);
+  if (rateLimit.limited) {
+    res.setHeader('Retry-After', String(rateLimit.retryAfterSeconds));
     return res.status(429).json({ error: 'Too many booking attempts. Please wait and try again.' });
   }
 
