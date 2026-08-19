@@ -41,8 +41,49 @@ export default async function handler(req: any, res: any) {
     return res.status(429).json({ error: 'Too many booking attempts. Please wait and try again.' });
   }
 
-  const { date, time, email, notes, honeypot } = req.body ?? {};
+  const { date, time, email, notes, honeypot, 'cf-turnstile-response': turnstileResponse } = req.body ?? {};
   if (typeof honeypot === 'string' && honeypot.trim()) return res.status(200).json({ ok: true });
+
+  if (!turnstileResponse) {
+    return res.status(400).json({ error: 'Please complete the Turnstile check before booking.' });
+  }
+
+  const turnstileSecret = process.env.TURNSTILE_SECRET;
+  if (!turnstileSecret) {
+    return res.status(500).json({ error: 'Turnstile is not configured on the server yet.' });
+  }
+
+  // Get IP helper for verification
+  const forwarded = req.headers['x-forwarded-for'];
+  const ip = typeof forwarded === 'string' && forwarded.trim()
+    ? forwarded.split(',')[0].trim()
+    : req.headers['x-real-ip'] || 'unknown';
+
+  try {
+    const verifyResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        secret: turnstileSecret,
+        response: turnstileResponse,
+        remoteip: ip,
+      }),
+    });
+
+    if (!verifyResponse.ok) {
+      return res.status(403).json({ error: 'Turnstile verification failed.' });
+    }
+
+    const turnstileResult = (await verifyResponse.json()) as { success?: boolean };
+    if (!turnstileResult?.success) {
+      return res.status(403).json({ error: 'Turnstile verification failed.' });
+    }
+  } catch (error) {
+    console.error('Turnstile verification error:', error);
+    return res.status(403).json({ error: 'Turnstile verification failed.' });
+  }
 
   if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return res.status(400).json({ error: 'Invalid date.' });

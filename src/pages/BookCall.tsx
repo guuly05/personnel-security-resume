@@ -1,7 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { toZonedTime } from 'date-fns-tz';
+import { Helmet } from 'react-helmet-async';
 import { Icon } from '../components/Icon';
 import { BOOKING_CONFIG } from '../booking/config';
+
+type TurnstileWindow = Window & {
+  turnstile?: {
+    reset: () => void;
+  };
+};
+
+const TURNSTILE_SITE_KEY =
+  ((import.meta as { env?: { VITE_TURNSTILE_SITE_KEY?: string } }).env?.VITE_TURNSTILE_SITE_KEY) ??
+  '0x4AAAAAAEJeTjoANqG1MG63';
 
 type MonthAvailability = { month: string; days: string[] };
 type DayAvailability = { date: string; slots: Array<{ start: string; end: string; label: string }> };
@@ -119,8 +130,24 @@ export default function BookCallPage() {
   );
   const selectedDay = selectedDate ? formatBookingDay(selectedDate) : null;
 
+  const resetTurnstile = () => {
+    const globalWindow = window as TurnstileWindow;
+    globalWindow.turnstile?.reset();
+  };
+
   const handleBooking = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    const form = event.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+    const turnstileToken = formData.get('cf-turnstile-response');
+
+    if (typeof turnstileToken !== 'string' || !turnstileToken.trim()) {
+      setStatus('error');
+      setMessage('Please complete the Turnstile check before booking.');
+      return;
+    }
+
     setStatus('booking');
     setMessage('');
 
@@ -134,6 +161,7 @@ export default function BookCallPage() {
           email,
           notes,
           honeypot,
+          'cf-turnstile-response': turnstileToken,
         }),
       });
 
@@ -147,11 +175,20 @@ export default function BookCallPage() {
     } catch (error) {
       setStatus('error');
       setMessage(error instanceof Error ? error.message : bookingErrorMessage());
+    } finally {
+      resetTurnstile();
     }
   };
 
   return (
     <div className="booking-shell space-y-5">
+      <Helmet>
+        <script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          async
+          defer
+        />
+      </Helmet>
       <section className="booking-hero surface-card relative overflow-hidden p-6 md:p-8 lg:p-10">
         <div className="absolute right-0 top-0 h-32 w-32 border-b border-l border-dashed border-[var(--border)]" aria-hidden />
         <div className="booking-hero-index absolute right-7 top-6 font-mono text-5xl font-bold leading-none text-[var(--border)]" aria-hidden>03</div>
@@ -350,6 +387,13 @@ export default function BookCallPage() {
               placeholder="Tell me what you want to discuss."
             />
           </label>
+
+          <div
+            className="cf-turnstile md:col-span-2"
+            data-sitekey={TURNSTILE_SITE_KEY}
+            data-action="turnstile-booking-spin"
+            data-theme="dark"
+          />
 
           {message ? (
             <div
