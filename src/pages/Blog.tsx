@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, BookOpen, Maximize2, Minimize2, Shield, Sparkles, TimerReset, X } from 'lucide-react';
 import { BLOG_POSTS, BlogPost } from '../blog/posts.ts';
 
 type BlogPageProps = {
   isFocusMode: boolean;
   onFocusModeChange: (value: boolean) => void;
+  initialSlug?: string | null;
 };
 
 type LightboxState = {
@@ -22,8 +22,6 @@ type MoodPalette = {
   soft: string;
   border: string;
 };
-
-const STORAGE_KEY = 'blog-unlocked';
 
 const MOOD_PALETTES: Record<string, MoodPalette> = {
   Suspenseful: {
@@ -410,7 +408,7 @@ function BlogCatalog({
         <div className="grid gap-6 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
           <div className="space-y-4">
             <p className="blog-eyebrow">Blog / Issue 01</p>
-            <h2 className="blog-hero-title">Editorial writing shaped like a premium magazine spread.</h2>
+            <h1 className="blog-hero-title">Cybersecurity writing shaped like a premium magazine spread.</h1>
             <p className="max-w-3xl text-sm leading-7 text-[var(--color-text-muted)] md:text-base">
               This blog uses custom markdown rendering, mood-based ambience, and a clean reading mode to make long-form technical writing feel more tactile.
             </p>
@@ -426,7 +424,7 @@ function BlogCatalog({
 
       <div className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
         <article className="blog-card-large surface-card overflow-hidden">
-          <button type="button" onClick={() => onOpen(post.slug)} className="block w-full text-left">
+          <a href={`/blog/${post.slug}`} onClick={() => onOpen(post.slug)} className="block w-full text-left">
             <div className="blog-hero-frame">
               <div
                 className="blog-hero-art"
@@ -454,7 +452,7 @@ function BlogCatalog({
                 {post.subtitle}
               </p>
             </div>
-          </button>
+          </a>
         </article>
 
         <aside className="space-y-4">
@@ -499,7 +497,7 @@ function BlogCatalog({
         <div className="grid gap-4 md:grid-cols-2">
           {otherPosts.map((entry) => (
             <article key={entry.slug} className="surface-card p-6 md:p-7">
-              <button type="button" onClick={() => onOpen(entry.slug)} className="block w-full text-left">
+              <a href={`/blog/${entry.slug}`} onClick={() => onOpen(entry.slug)} className="block w-full text-left">
                 <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-[0.34em] text-[var(--color-text-muted)]">
                   <span>{entry.date}</span>
                   <span className="h-1 w-1 rounded-full bg-[var(--border)]" />
@@ -511,7 +509,7 @@ function BlogCatalog({
                   {entry.title}
                 </h3>
                 <p className="mt-4 text-sm leading-7 text-[var(--color-text-muted)]">{entry.subtitle}</p>
-              </button>
+              </a>
             </article>
           ))}
         </div>
@@ -547,16 +545,11 @@ function BlogReader({
         ['--border-color' as string]: palette.border,
       }}
     >
-      <Helmet>
-        <title>{`${post.title} | Blog`}</title>
-        <meta name="description" content={post.subtitle} />
-      </Helmet>
-
       <div className="blog-reader-topbar">
-        <button type="button" onClick={onBack} className="blog-back-button">
+        <a href="/blog" onClick={onBack} className="blog-back-button">
           <ArrowLeft size={16} />
           Back to catalog
-        </button>
+        </a>
 
         <button type="button" onClick={() => onFocusModeChange(!isFocusMode)} className="blog-focus-button">
           {isFocusMode ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
@@ -567,6 +560,7 @@ function BlogReader({
       <header className="blog-reader-hero surface-card p-6 md:p-8 lg:p-10">
         <div className="grid gap-6 lg:grid-cols-[1.08fr_0.92fr] lg:items-end">
           <div className="space-y-5">
+            <p className="blog-eyebrow"><a href="/blog">Blog</a> / Technical research</p>
             <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-[0.34em] text-[var(--color-text-muted)]">
               <span>{post.date}</span>
               <span className="h-1 w-1 rounded-full bg-[var(--border)]" />
@@ -578,6 +572,7 @@ function BlogReader({
             <p className="max-w-3xl text-sm leading-7 text-[var(--color-text-muted)] md:text-base">
               {post.subtitle}
             </p>
+            <p className="text-xs leading-6 text-[var(--color-text-muted)]">By <a href="/about" className="text-[var(--accent)]">Guuleed Maxmuud Aw Abdi</a> · Published {post.date}</p>
           </div>
 
           <div className="blog-reader-meta-panel">
@@ -613,6 +608,13 @@ function BlogReader({
         <span style={{ width: `${Math.round(progress * 1000) / 10}%` }} />
       </div>
       <div className="blog-progress-orb" aria-hidden="true" style={{ transform: `translateX(${Math.max(0, Math.min(100, progress * 100))}vw)` }} />
+      <nav aria-label="Related articles" className="mt-6 grid gap-4 md:grid-cols-2">
+        {BLOG_POSTS.filter((entry) => entry.slug !== post.slug).map((entry) => (
+          <a key={entry.slug} href={`/blog/${entry.slug}`} className="surface-card p-5 text-sm font-semibold text-[var(--color-text)] hover:border-[var(--accent)]">
+            Read related article: {entry.title}
+          </a>
+        ))}
+      </nav>
     </section>
   );
 }
@@ -626,20 +628,12 @@ const getSlugFromPath = (): string | null => {
   return null;
 };
 
-export default function BlogPage({ isFocusMode, onFocusModeChange }: BlogPageProps) {
-  const [isUnlocked, setIsUnlocked] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return false;
-    return window.sessionStorage.getItem(STORAGE_KEY) === 'true';
-  });
-  const [activeSlug, setActiveSlug] = useState<string | null>(() => getSlugFromPath());
+export default function BlogPage({ isFocusMode, onFocusModeChange, initialSlug }: BlogPageProps) {
+  const [activeSlug, setActiveSlug] = useState<string | null>(() => initialSlug ?? getSlugFromPath());
   const [progress, setProgress] = useState(0);
 
   const activePost = BLOG_POSTS.find((entry) => entry.slug === activeSlug) ?? BLOG_POSTS[0];
   const palette = moodPalette(activePost.mood);
-
-  useEffect(() => {
-    window.sessionStorage.setItem(STORAGE_KEY, isUnlocked ? 'true' : 'false');
-  }, [isUnlocked]);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -699,9 +693,7 @@ export default function BlogPage({ isFocusMode, onFocusModeChange }: BlogPagePro
       <div className="blog-page-ambient" aria-hidden="true" />
 
       <AnimatePresence mode="wait">
-        {!isUnlocked ? (
-          <IntroGate key="gate" onEnter={() => setIsUnlocked(true)} palette={palette} />
-        ) : activeSlug ? (
+        {activeSlug ? (
           <BlogReader
             key={activeSlug}
             post={activePost}
