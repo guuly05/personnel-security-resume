@@ -155,7 +155,7 @@ export default async function handler(req: any) {
                 letterSpacing: '0.5px',
               }}
             >
-              guuleedmaxamuud.dev
+              www.guuleedmaxamuud.dev
             </span>
           </div>
         </div>
