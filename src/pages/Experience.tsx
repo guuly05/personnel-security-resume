@@ -8,7 +8,7 @@ const ExperiencePage: React.FC = () => {
       <div className="space-y-8">
         <div className="space-y-4">
           <span className="text-[10px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold">Real engagements</span>
-          <h2 className="text-4xl font-semibold md:text-5xl">Security work that moves beyond theory.</h2>
+          <h1 className="text-4xl font-semibold md:text-5xl">Cybersecurity and IT experience beyond theory.</h1>
           <p className="max-w-3xl text-[15px] leading-8 text-[var(--color-text-muted)]">
             These engagements show how I turn discovery into clear action: find the issue, explain it clearly, and give the team a strong next step.
           </p>
