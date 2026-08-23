@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import { BLOG_POSTS } from '../src/blog/posts.js';
+import { SITE_URL, FULL_NAME, PUBLISHER_LOGO } from '../src/seo/metadata.js';
 
 function escapeHtml(str: string): string {
   return str
@@ -12,8 +13,6 @@ function escapeHtml(str: string): string {
 }
 
 function replaceMeta(html: string, post: any, slug: string): string {
-  const SITE_URL = 'https://guuleedmaxamuud.dev';
-  const FULL_NAME = 'Guuleed Maxmuud Aw Abdi';
   const postTitle = `${post.title} | ${FULL_NAME}`;
   const postDesc = post.subtitle;
   const postUrl = `${SITE_URL}/blog/${slug}`;
@@ -96,16 +95,17 @@ function replaceMeta(html: string, post: any, slug: string): string {
       name: FULL_NAME,
       logo: {
         '@type': 'ImageObject',
-        url: `${SITE_URL}/favicon.png`,
+        url: PUBLISHER_LOGO,
       },
     },
     datePublished: postDateIso,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
     url: postUrl,
   };
 
   // Find the JSON-LD script and replace it
   const jsonLdRegex = /<script\s+type="application\/ld\+json"\s*>([\s\S]*?)<\/script>/i;
-  const combinedSchema = [personSchema, articleSchema];
+  const combinedSchema = articleSchema;
   html = html.replace(jsonLdRegex, `<script type="application/ld+json">${JSON.stringify(combinedSchema)}</script>`);
 
   return html;
@@ -117,6 +117,12 @@ export default async function handler(req: any, res: any) {
 
   if (!post) {
     return res.status(404).send('Blog post not found');
+  }
+
+  const prerenderedPath = join(process.cwd(), 'dist', 'blog', slug, 'index.html');
+  if (existsSync(prerenderedPath)) {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    return res.status(200).send(readFileSync(prerenderedPath, 'utf8'));
   }
 
   let htmlPath = join(process.cwd(), 'dist', 'index.html');
