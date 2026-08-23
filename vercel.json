@@ -34,14 +34,23 @@
     {
       "source": "/blog/:slug/og.png",
       "destination": "/api/og-image?slug=:slug"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/reflection",
+      "destination": "/recap",
+      "permanent": true
     },
     {
-      "source": "/blog/:slug",
-      "destination": "/api/blog-seo?slug=:slug"
+      "source": "/surprise",
+      "destination": "/recap",
+      "permanent": true
     },
     {
-      "source": "/((?!api/).*)",
-      "destination": "/index.html"
+      "source": "/vault",
+      "destination": "/recap",
+      "permanent": true
     }
   ]
 }
