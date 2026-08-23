@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import React, { useEffect, useState } from 'react';
 import { PERSONAL_INFO } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
 
@@ -22,6 +21,16 @@ const ContactPage: React.FC = () => {
   const [status, setStatus] = useState<SubmitStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [pageLoadedAt] = useState(() => Date.now());
+
+  useEffect(() => {
+    if (document.querySelector('script[data-turnstile]')) return;
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    script.async = true;
+    script.defer = true;
+    script.dataset.turnstile = 'true';
+    document.head.appendChild(script);
+  }, []);
 
   const resetTurnstile = () => {
     const globalWindow = window as TurnstileWindow;
@@ -91,19 +100,12 @@ const ContactPage: React.FC = () => {
 
   return (
     <div className="bento-grid">
-      <Helmet>
-        <script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-          async
-          defer
-        />
-      </Helmet>
-
       <div className="lg:col-span-2 lg:row-span-3 glass-card p-10">
-        <h3 className="mb-8 flex items-center gap-3 text-2xl font-bold">
+        <h1 className="mb-4 flex items-center gap-3 text-3xl font-bold">
           <Icon name="message-square" className="text-brand-cyan" />
-          Get In Touch
-        </h3>
+          Contact Guuleed Maxmuud Aw Abdi
+        </h1>
+        <p className="mb-8 max-w-2xl text-sm leading-7 text-[var(--color-text-muted)]">Get in touch about security assessments, penetration testing, collaboration, or career opportunities.</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="hidden">
