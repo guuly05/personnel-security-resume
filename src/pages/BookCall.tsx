@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { toZonedTime } from 'date-fns-tz';
-import { Helmet } from 'react-helmet-async';
 import { Icon } from '../components/Icon';
 import { BOOKING_CONFIG } from '../booking/config';
 
@@ -63,6 +62,16 @@ export default function BookCallPage() {
   const [honeypot, setHoneypot] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'booking' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    if (document.querySelector('script[data-turnstile]')) return;
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    script.async = true;
+    script.defer = true;
+    script.dataset.turnstile = 'true';
+    document.head.appendChild(script);
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -182,13 +191,6 @@ export default function BookCallPage() {
 
   return (
     <div className="booking-shell space-y-5">
-      <Helmet>
-        <script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-          async
-          defer
-        />
-      </Helmet>
       <section className="booking-hero surface-card relative overflow-hidden p-6 md:p-8 lg:p-10">
         <div className="absolute right-0 top-0 h-32 w-32 border-b border-l border-dashed border-[var(--border)]" aria-hidden />
         <div className="booking-hero-index absolute right-7 top-6 font-mono text-5xl font-bold leading-none text-[var(--border)]" aria-hidden>03</div>
