@@ -125,9 +125,9 @@ const CertificatesPage: React.FC = () => {
               <span className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">
                 Credentials
               </span>
-              <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-[var(--color-text)] md:text-5xl">
+            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-[var(--color-text)] md:text-5xl">
                 Security learning with <span className="text-gradient">practical outcomes.</span>
-              </h2>
+            </h1>
               <p className="mt-5 text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
                 These certifications support the way I work: understand the risk, validate it carefully, document it clearly, and keep improving through structured learning.
               </p>
