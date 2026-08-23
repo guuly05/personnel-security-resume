@@ -11,6 +11,7 @@ import { SeoHead } from './components/SeoHead.tsx';
 import { BirthdayConfetti } from './components/BirthdayConfetti.tsx';
 import { Terminal } from './components/Terminal.tsx';
 import { useTerminal } from './hooks/useTerminal.ts';
+import { BLOG_POSTS } from './blog/posts.ts';
 
 import { lazy, Suspense } from 'react';
 
@@ -63,8 +64,10 @@ function sectionToPath(section: Section): string {
 }
 
 function pathToSection(pathname: string): Section {
-  const segment = pathname.replace(/^\/+/, '').split('/')[0];
+  const segments = pathname.replace(/^\/+/, '').split('/');
+  const segment = segments[0];
   if (!segment) return 'home';
+  if (segment === 'blog' && segments[1] && !BLOG_POSTS.some((post) => post.slug === segments[1])) return 'not-found';
   if (RECAP_ALIASES.includes(segment)) return 'recap';
   return SECTIONS.includes(segment as NavigableSection) ? (segment as Section) : 'not-found';
 }
@@ -83,7 +86,9 @@ function checkIsJuly27Today(): boolean {
 }
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState<Section>('home');
+  const [activeSection, setActiveSection] = useState<Section>(() =>
+    typeof window === 'undefined' ? 'home' : pathToSection(window.location.pathname),
+  );
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBlogFocusMode, setIsBlogFocusMode] = useState(false);
 
@@ -194,7 +199,7 @@ export default function App() {
       <BirthdayConfetti isActive={isJuly27 || activeSection === 'recap'} />
 
       {/* Dynamic SEO head tags */}
-      <SeoHead section={activeSection === 'recap' ? 'about' : activeSection} />
+      <SeoHead section={activeSection} />
 
       {/* Top Navbar */}
       <nav
