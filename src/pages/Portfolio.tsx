@@ -11,7 +11,7 @@ interface TechItem {
   group: 'frontend' | 'backend' | 'tooling' | 'platform' | 'native';
 }
 
-interface CaseStudy {
+export interface CaseStudy {
   id: string;
   title: string;
   subtitle: string;
@@ -34,7 +34,7 @@ interface CaseStudy {
    Project data — restructured for case-study format
    ───────────────────────────────────────────── */
 
-const CASE_STUDIES: CaseStudy[] = [
+export const CASE_STUDIES: CaseStudy[] = [
   {
     id: 'cyber-dashboard',
     title: 'Cyber Attack Monitoring Dashboard',
@@ -319,6 +319,13 @@ const FeaturedCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
         {/* Actions */}
         <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-[var(--border)]">
           <a
+            href={`/portfolio/${study.id}`}
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--accent-soft)] px-5 py-2.5 text-[13px] font-semibold text-[var(--accent)] transition hover:border-[var(--accent)] active:scale-[0.97]"
+          >
+            <Icon name="file-text" size={15} />
+            Full Case Study
+          </a>
+          <a
             href={study.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -471,6 +478,13 @@ const ProjectCard: React.FC<{ study: CaseStudy; index: number }> = ({ study, ind
 
           {/* Actions */}
           <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-[var(--border)]">
+            <a
+              href={`/portfolio/${study.id}`}
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--accent-soft)] px-5 py-2.5 text-[13px] font-semibold text-[var(--accent)] transition hover:border-[var(--accent)] active:scale-[0.97]"
+            >
+              <Icon name="file-text" size={15} />
+              Full Case Study
+            </a>
             <a
               href={study.githubUrl}
               target="_blank"
