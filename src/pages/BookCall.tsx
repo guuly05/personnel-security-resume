@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { toZonedTime } from 'date-fns-tz';
 import { Icon } from '../components/Icon';
 import { BOOKING_CONFIG } from '../booking/config';
@@ -15,6 +15,8 @@ const TURNSTILE_SITE_KEY =
 
 type MonthAvailability = { month: string; days: string[] };
 type DayAvailability = { date: string; slots: Array<{ start: string; end: string; label: string }> };
+type ManagedBooking = { status: 'confirmed' | 'canceled'; date: string; time: string; timezone: string; meetLink: string | null; calendarLink: string | null };
+type BookingLinks = { manageUrl?: string; meetLink?: string | null; calendarLink?: string | null };
 
 function availabilityErrorMessage(status?: number): string {
   if (status === 429) return 'Too many requests right now. Please wait a minute and try again.';
@@ -62,6 +64,29 @@ export default function BookCallPage() {
   const [honeypot, setHoneypot] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'booking' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const [managedBooking, setManagedBooking] = useState<ManagedBooking | null>(null);
+  const [manageToken, setManageToken] = useState('');
+  const [manageStatus, setManageStatus] = useState<'idle' | 'loading' | 'working' | 'error'>('idle');
+  const [manageMessage, setManageMessage] = useState('');
+  const [bookingLinks, setBookingLinks] = useState<BookingLinks | null>(null);
+  const idempotencyKeyRef = useRef<string | null>(null);
+
+  const resetIdempotencyKey = () => { idempotencyKeyRef.current = null; };
+
+  useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get('manage') ?? '';
+    if (!token) return;
+    setManageToken(token);
+    setManageStatus('loading');
+    fetch(`/api/manage-booking?token=${encodeURIComponent(token)}`)
+      .then(async (response) => {
+        const data = await response.json().catch(() => null);
+        if (!response.ok) throw new Error(data?.error ?? 'This booking link is no longer available.');
+        return data as { booking: ManagedBooking };
+      })
+      .then((data) => { setManagedBooking(data.booking); setManageStatus('idle'); })
+      .catch((error) => { setManageMessage(error instanceof Error ? error.message : 'Unable to load this booking.'); setManageStatus('error'); });
+  }, []);
 
   useEffect(() => {
     if (document.querySelector('script[data-turnstile]')) return;
@@ -159,11 +184,13 @@ export default function BookCallPage() {
 
     setStatus('booking');
     setMessage('');
+    const idempotencyKey = idempotencyKeyRef.current ?? (typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    idempotencyKeyRef.current = idempotencyKey;
 
     try {
       const response = await fetch('/api/book', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': idempotencyKey },
         body: JSON.stringify({
           date: selectedDate,
           time: selectedTime,
@@ -174,18 +201,47 @@ export default function BookCallPage() {
         }),
       });
 
-      await response.json().catch(() => null);
+      const data = await response.json().catch(() => null) as (BookingLinks & { confirmationEmailSent?: boolean }) | null;
       if (!response.ok) throw new Error(bookingErrorMessage(response.status));
 
       setStatus('success');
-      setMessage('Your call is booked. Google will send the calendar invite and Meet link.');
+      setMessage(data?.confirmationEmailSent === false
+        ? 'Your call is booked. The Google invite was created, but the confirmation email is still pending.'
+        : 'Your call is booked. Check your email for the invite and booking management link.');
+      if (data) setBookingLinks(data);
       setNotes('');
       setEmail('');
+      idempotencyKeyRef.current = null;
     } catch (error) {
       setStatus('error');
       setMessage(error instanceof Error ? error.message : bookingErrorMessage());
     } finally {
       resetTurnstile();
+    }
+  };
+
+  const handleManageAction = async (action: 'cancel' | 'reschedule') => {
+    if (!manageToken) return;
+    if (action === 'reschedule' && (!selectedDate || !selectedTime)) {
+      setManageMessage('Choose a new date and time first.');
+      return;
+    }
+    setManageStatus('working');
+    setManageMessage('');
+    try {
+      const response = await fetch('/api/manage-booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: manageToken, action, date: selectedDate, time: selectedTime }),
+      });
+      const data = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(data?.error ?? 'Unable to update this booking.');
+      setManagedBooking(data.booking as ManagedBooking);
+      setManageStatus('idle');
+      setManageMessage(action === 'cancel' ? 'The booking was canceled and the calendar invite was updated.' : 'The booking was rescheduled and a new calendar update was sent.');
+    } catch (error) {
+      setManageStatus('error');
+      setManageMessage(error instanceof Error ? error.message : 'Unable to update this booking.');
     }
   };
 
@@ -225,6 +281,31 @@ export default function BookCallPage() {
           </div>
         </div>
       </section>
+
+      {manageToken && (
+        <section className="surface-card border-[var(--accent)] p-5 md:p-6" aria-labelledby="manage-booking-title">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">Booking management</p>
+              <h2 id="manage-booking-title" className="mt-2 text-2xl font-bold text-[var(--color-text)]">Change your call</h2>
+              {managedBooking && <p className="mt-2 text-sm text-[var(--color-text-muted)]">Current slot: {managedBooking.date} at {managedBooking.time} ({managedBooking.timezone})</p>}
+              {manageMessage && <p className="mt-3 text-sm text-[var(--color-text-muted)]" role="status">{manageMessage}</p>}
+            </div>
+            {managedBooking?.status === 'confirmed' && (
+              <div className="flex flex-wrap gap-2">
+                <button type="button" onClick={() => handleManageAction('reschedule')} disabled={manageStatus === 'working'} className="min-h-11 border border-[var(--accent)] bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)] disabled:opacity-50">Reschedule to selected time</button>
+                <button type="button" onClick={() => handleManageAction('cancel')} disabled={manageStatus === 'working'} className="min-h-11 border border-rose-400/50 px-4 py-2 text-sm font-semibold text-rose-300 disabled:opacity-50">Cancel booking</button>
+              </div>
+            )}
+          </div>
+          {managedBooking?.meetLink || managedBooking?.calendarLink ? (
+            <div className="mt-5 flex flex-wrap gap-4 border-t border-dashed border-[var(--border)] pt-4 text-sm">
+              {managedBooking.meetLink && <a className="font-semibold text-[var(--accent)] underline underline-offset-4" href={managedBooking.meetLink}>Join Google Meet</a>}
+              {managedBooking.calendarLink && <a className="font-semibold text-[var(--accent)] underline underline-offset-4" href={managedBooking.calendarLink}>Open calendar event</a>}
+            </div>
+          ) : null}
+        </section>
+      )}
 
       <section className="surface-card p-5 md:p-6">
         <div className="grid gap-3 md:grid-cols-3">
@@ -270,7 +351,7 @@ export default function BookCallPage() {
                   <button
                     key={day}
                     type="button"
-                    onClick={() => setSelectedDate(day)}
+                    onClick={() => { resetIdempotencyKey(); setSelectedDate(day); }}
                     aria-pressed={selected}
                     className={`booking-date-card min-h-28 border p-4 text-left transition ${
                       selected
@@ -311,7 +392,7 @@ export default function BookCallPage() {
                 <button
                   key={slot.start}
                   type="button"
-                  onClick={() => setSelectedTime(slot.start)}
+                  onClick={() => { resetIdempotencyKey(); setSelectedTime(slot.start); }}
                   aria-pressed={selectedTime === slot.start}
                   className={`min-h-16 border px-3 py-2 text-left transition ${
                     selectedTime === slot.start
@@ -370,7 +451,7 @@ export default function BookCallPage() {
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => { resetIdempotencyKey(); setEmail(e.target.value); }}
               className="w-full border border-[var(--border)] bg-[var(--surface-soft)] p-4 text-sm text-[var(--color-text)] outline-none transition focus:border-[var(--accent)]"
               placeholder="you@example.com"
               autoComplete="email"
@@ -384,7 +465,7 @@ export default function BookCallPage() {
               rows={5}
               maxLength={BOOKING_CONFIG.maxNotesLength}
               value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              onChange={(e) => { resetIdempotencyKey(); setNotes(e.target.value); }}
               className="w-full resize-none border border-[var(--border)] bg-[var(--surface-soft)] p-4 text-sm text-[var(--color-text)] outline-none transition focus:border-[var(--accent)]"
               placeholder="Tell me what you want to discuss."
             />
@@ -399,6 +480,8 @@ export default function BookCallPage() {
 
           {message ? (
             <div
+              role="status"
+              aria-live="polite"
               className={`md:col-span-2 border p-4 text-sm ${
                 status === 'success'
                   ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-200'
@@ -406,6 +489,13 @@ export default function BookCallPage() {
               }`}
             >
               {message}
+              {status === 'success' && bookingLinks && (
+                <div className="mt-3 flex flex-wrap gap-4 text-xs font-semibold">
+                  {bookingLinks.meetLink && <a href={bookingLinks.meetLink} className="underline underline-offset-4">Join Google Meet</a>}
+                  {bookingLinks.calendarLink && <a href={bookingLinks.calendarLink} className="underline underline-offset-4">Open calendar event</a>}
+                  {bookingLinks.manageUrl && <a href={bookingLinks.manageUrl} className="underline underline-offset-4">Manage booking</a>}
+                </div>
+              )}
             </div>
           ) : null}
 
