@@ -11,7 +11,7 @@ import { SeoHead } from './components/SeoHead.tsx';
 import { BirthdayConfetti } from './components/BirthdayConfetti.tsx';
 import { Terminal } from './components/Terminal.tsx';
 import { useTerminal } from './hooks/useTerminal.ts';
-import { BLOG_POSTS } from './blog/posts.ts';
+import { pathToSection, hashToSection, sectionToPath, type Section } from './routing.ts';
 
 import { lazy, Suspense } from 'react';
 
@@ -22,62 +22,12 @@ const SkillsPage = lazy(() => import('./pages/Skills.tsx'));
 const ExperiencePage = lazy(() => import('./pages/Experience.tsx'));
 const CertificatesPage = lazy(() => import('./pages/Certificates.tsx'));
 const PortfolioPage = lazy(() => import('./pages/Portfolio.tsx'));
+const ProjectDetailPage = lazy(() => import('./pages/ProjectDetail.tsx'));
 const BlogPage = lazy(() => import('./pages/Blog.tsx'));
 const ContactPage = lazy(() => import('./pages/Contact.tsx'));
 const BookCallPage = lazy(() => import('./pages/BookCall.tsx'));
 const AnnualRecapPage = lazy(() => import('./pages/AnnualRecap.tsx'));
 const NotFoundPage = lazy(() => import('./pages/NotFound.tsx'));
-
-type Section =
-  | 'home'
-  | 'about'
-  | 'skills'
-  | 'experience'
-  | 'certificates'
-  | 'portfolio'
-  | 'book'
-  | 'blog'
-  | 'contact'
-  | 'recap'
-  | 'not-found';
-
-type NavigableSection = Exclude<Section, 'not-found'>;
-
-const SECTIONS: NavigableSection[] = [
-  'home',
-  'about',
-  'skills',
-  'experience',
-  'certificates',
-  'portfolio',
-  'book',
-  'blog',
-  'contact',
-  'recap',
-];
-
-const RECAP_ALIASES = ['reflection', 'surprise', 'vault'];
-
-function sectionToPath(section: Section): string {
-  if (section === 'not-found') return '/404';
-  return section === 'home' ? '/' : `/${section}`;
-}
-
-function pathToSection(pathname: string): Section {
-  const segments = pathname.replace(/^\/+/, '').split('/');
-  const segment = segments[0];
-  if (!segment) return 'home';
-  if (segment === 'blog' && segments[1] && !BLOG_POSTS.some((post) => post.slug === segments[1])) return 'not-found';
-  if (RECAP_ALIASES.includes(segment)) return 'recap';
-  return SECTIONS.includes(segment as NavigableSection) ? (segment as Section) : 'not-found';
-}
-
-function hashToSection(hash: string): Section | null {
-  const segment = hash.replace(/^#/, '').split('/')[0];
-  if (!segment) return null;
-  if (RECAP_ALIASES.includes(segment)) return 'recap';
-  return SECTIONS.includes(segment as NavigableSection) ? (segment as Section) : null;
-}
 
 function checkIsJuly27Today(): boolean {
   const today = new Date();
@@ -89,6 +39,11 @@ export default function App() {
   const [activeSection, setActiveSection] = useState<Section>(() =>
     typeof window === 'undefined' ? 'home' : pathToSection(window.location.pathname),
   );
+  const [activeProjectSlug, setActiveProjectSlug] = useState<string | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const segments = window.location.pathname.replace(/^\/+/, '').split('/');
+    return segments[0] === 'portfolio' && segments[1] ? segments[1] : null;
+  });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBlogFocusMode, setIsBlogFocusMode] = useState(false);
 
@@ -130,6 +85,8 @@ export default function App() {
       }
 
       setActiveSection(pathToSection(window.location.pathname));
+      const segments = window.location.pathname.replace(/^\/+/, '').split('/');
+      setActiveProjectSlug(segments[0] === 'portfolio' && segments[1] ? segments[1] : null);
     };
 
     const handleDocumentClick = (event: MouseEvent) => {
@@ -152,6 +109,8 @@ export default function App() {
       event.preventDefault();
       window.history.pushState(null, '', url.pathname);
       window.dispatchEvent(new PopStateEvent('popstate'));
+      const segments = url.pathname.replace(/^\/+/, '').split('/');
+      setActiveProjectSlug(segments[0] === 'portfolio' && segments[1] ? segments[1] : null);
       setIsMenuOpen(false);
     };
 
@@ -237,7 +196,7 @@ export default function App() {
               className={`
                 px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200
                 ${
-                  activeSection === item.id
+                  (activeSection === item.id || (item.id === 'portfolio' && activeSection === 'portfolio-project'))
                     ? 'bg-brand-cyan/10 text-brand-cyan'
                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--surface-soft)]'
                 }
@@ -349,7 +308,7 @@ export default function App() {
                   className={`
                     flex items-center gap-4 px-4 py-3 rounded-xl transition-all
                     ${
-                      activeSection === item.id
+                      (activeSection === item.id || (item.id === 'portfolio' && activeSection === 'portfolio-project'))
                         ? 'bg-brand-cyan/10 text-brand-cyan'
                         : 'text-[var(--color-text-muted)]'
                     }
@@ -389,7 +348,7 @@ export default function App() {
         >
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeSection}
+              key={`${activeSection}:${activeProjectSlug ?? ''}`}
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.02 }}
@@ -401,6 +360,7 @@ export default function App() {
               {activeSection === 'experience' && <ExperiencePage />}
               {activeSection === 'certificates' && <CertificatesPage />}
               {activeSection === 'portfolio' && <PortfolioPage />}
+              {activeSection === 'portfolio-project' && <ProjectDetailPage slug={activeProjectSlug ?? ''} />}
               {activeSection === 'book' && <BookCallPage />}
               {activeSection === 'blog' && (
                 <BlogPage
