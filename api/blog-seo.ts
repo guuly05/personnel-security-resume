@@ -18,6 +18,7 @@ function replaceMeta(html: string, post: any, slug: string): string {
   const postUrl = `${SITE_URL}/blog/${slug}`;
   const postOgImage = `${SITE_URL}/blog/${slug}/og.png`;
   const postDateIso = new Date(post.date).toISOString();
+  const postModifiedIso = new Date(post.lastUpdated).toISOString();
 
   // Replace Title
   html = html.replace(/<title>[^<]*<\/title>/g, `<title>${escapeHtml(postTitle)}</title>`);
@@ -44,6 +45,7 @@ function replaceMeta(html: string, post: any, slug: string): string {
   const extraTags = `
     <meta property="article:author" content="${escapeHtml(FULL_NAME)}" />
     <meta property="article:published_time" content="${postDateIso}" />
+    <meta property="article:modified_time" content="${postModifiedIso}" />
   `;
   html = html.replace('<head>', `<head>${extraTags}`);
 
@@ -99,6 +101,7 @@ function replaceMeta(html: string, post: any, slug: string): string {
       },
     },
     datePublished: postDateIso,
+    dateModified: postModifiedIso,
     mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
     url: postUrl,
   };
