@@ -32,6 +32,7 @@ export function SeoHead({ section = 'home' }: SeoHeadProps) {
       <meta property="og:locale" content="en_US" />
       {meta.article && <meta property="article:author" content="Guuleed Maxmuud Aw Abdi" />}
       {meta.article && <meta property="article:published_time" content={meta.article.publishedTime} />}
+      {meta.article?.modifiedTime && <meta property="article:modified_time" content={meta.article.modifiedTime} />}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
@@ -42,6 +43,8 @@ export function SeoHead({ section = 'home' }: SeoHeadProps) {
       <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <link rel="manifest" href="/site.webmanifest" />
+      <link rel="alternate" type="application/rss+xml" title="Guuleed Maxmuud Aw Abdi — RSS" href={`${SITE_URL}/rss.xml`} />
+      <link rel="alternate" type="application/atom+xml" title="Guuleed Maxmuud Aw Abdi — Atom" href={`${SITE_URL}/atom.xml`} />
       <script type="application/ld+json">{JSON.stringify(meta.jsonLd)}</script>
     </Helmet>
   );
