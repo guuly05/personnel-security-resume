@@ -5,6 +5,7 @@ import SkillsPage from '../pages/Skills.tsx';
 import ExperiencePage from '../pages/Experience.tsx';
 import CertificatesPage from '../pages/Certificates.tsx';
 import PortfolioPage from '../pages/Portfolio.tsx';
+import ProjectDetailPage from '../pages/ProjectDetail.tsx';
 import BlogPage from '../pages/Blog.tsx';
 import ContactPage from '../pages/Contact.tsx';
 import BookCallPage from '../pages/BookCall.tsx';
@@ -32,6 +33,7 @@ function pageForPath(pathname: string) {
   if (pathname === '/experience') return <ExperiencePage />;
   if (pathname === '/certificates') return <CertificatesPage />;
   if (pathname === '/portfolio') return <PortfolioPage />;
+  if (pathname.startsWith('/portfolio/')) return <ProjectDetailPage slug={pathname.split('/')[2] ?? ''} />;
   if (pathname === '/book') return <BookCallPage />;
   if (pathname === '/contact') return <ContactPage />;
   if (pathname === '/recap') return <AnnualRecapPage />;
