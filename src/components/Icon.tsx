@@ -1,7 +1,7 @@
 import { 
   Activity, Braces, Calculator, Code2, Coffee, Cpu, FileCode, Layout, 
   LucideIcon, Mail, MapPin, Network, Phone, ShieldAlert, ShieldCheck, 
-  Target, Github, Linkedin, ExternalLink, Menu, X, ChevronRight, 
+  Target, Github, Linkedin, ExternalLink, Menu, X, ChevronRight, ArrowLeft, Check,
   Trophy, BookOpen, User, Briefcase, GraduationCap, Laptop, Terminal,
   Globe, Clock, Layers, Star, Info, MessageSquare, Search, Sun, Moon, Home,
   FileText, Download, Eye, Maximize2
@@ -276,6 +276,8 @@ const lucideIconMap: Record<string, LucideIcon> = {
   'menu': Menu,
   'x': X,
   'chevron-right': ChevronRight,
+  'arrow-left': ArrowLeft,
+  'check': Check,
   'trophy': Trophy,
   'book-open': BookOpen,
   'user': User,
