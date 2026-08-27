@@ -4,8 +4,14 @@ import { Icon } from '../components/Icon.tsx';
 
 type SubmitStatus = 'idle' | 'sending' | 'success' | 'error';
 
-
-
+type TurnstileWindow = Window & {
+  turnstile?: {
+    render: (container: HTMLElement, options: Record<string, string>) => string;
+    reset: (widgetId?: string) => void;
+    remove: (widgetId: string) => void;
+  };
+  onloadTurnstileCallback?: () => void;
+};
 
 const MIN_FILL_TIME_MS = 4500;
 const CONTACT_ERROR_MESSAGE = 'The message could not be sent right now. Please try again shortly.';
@@ -18,13 +24,15 @@ const ContactPage: React.FC = () => {
   const [status, setStatus] = useState<SubmitStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [pageLoadedAt] = useState(() => Date.now());
+  const turnstileWidgetIdRef = React.useRef<string | null>(null);
 
   useEffect(() => {
-    const globalWindow = window as any;
+    const globalWindow = window as TurnstileWindow;
     const renderWidget = () => {
-      if (globalWindow.turnstile && document.getElementById('contact-turnstile')) {
+      const container = document.getElementById('contact-turnstile');
+      if (globalWindow.turnstile && container && !turnstileWidgetIdRef.current) {
         try {
-          globalWindow.turnstile.render('#contact-turnstile', {
+          turnstileWidgetIdRef.current = globalWindow.turnstile.render(container, {
             sitekey: TURNSTILE_SITE_KEY,
             theme: 'auto',
             action: 'turnstile-spin-v2',
@@ -35,32 +43,35 @@ const ContactPage: React.FC = () => {
       }
     };
 
+    globalWindow.onloadTurnstileCallback = renderWidget;
     if (!document.querySelector('script[data-turnstile]')) {
       const script = document.createElement('script');
-      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback';
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onloadTurnstileCallback';
       script.async = true;
       script.defer = true;
       script.dataset.turnstile = 'true';
-      globalWindow.onloadTurnstileCallback = renderWidget;
       document.head.appendChild(script);
     } else {
       renderWidget();
     }
 
     return () => {
-      if (globalWindow.turnstile) {
+      if (globalWindow.turnstile && turnstileWidgetIdRef.current) {
         try {
-          globalWindow.turnstile.remove('#contact-turnstile');
+          globalWindow.turnstile.remove(turnstileWidgetIdRef.current);
         } catch (e) {
           // Ignore
         }
       }
+      turnstileWidgetIdRef.current = null;
     };
   }, []);
 
   const resetTurnstile = () => {
-    const globalWindow = window as any;
-    globalWindow.turnstile?.reset('#contact-turnstile');
+    const globalWindow = window as TurnstileWindow;
+    if (globalWindow.turnstile && turnstileWidgetIdRef.current) {
+      globalWindow.turnstile.reset(turnstileWidgetIdRef.current);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -186,10 +197,6 @@ const ContactPage: React.FC = () => {
 
           <div
             id="contact-turnstile"
-            className="cf-turnstile"
-            data-sitekey={TURNSTILE_SITE_KEY}
-            data-action="turnstile-spin-v2"
-            data-theme="auto"
           />
 
           {status === 'success' && (

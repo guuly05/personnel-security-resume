@@ -7,6 +7,15 @@ const TURNSTILE_SITE_KEY =
   ((import.meta as { env?: { VITE_TURNSTILE_SITE_KEY?: string } }).env?.VITE_TURNSTILE_SITE_KEY) ??
   '0x4AAAAAAEJeTjoANqG1MG63';
 
+type TurnstileWindow = Window & {
+  turnstile?: {
+    render: (container: HTMLElement, options: Record<string, string>) => string;
+    reset: (widgetId?: string) => void;
+    remove: (widgetId: string) => void;
+  };
+  onloadTurnstileCallback?: () => void;
+};
+
 type MonthAvailability = { month: string; days: string[] };
 type DayAvailability = { date: string; slots: Array<{ start: string; end: string; label: string }> };
 type ManagedBooking = { status: 'confirmed' | 'canceled'; date: string; time: string; timezone: string; meetLink: string | null; calendarLink: string | null };
@@ -64,6 +73,7 @@ export default function BookCallPage() {
   const [manageMessage, setManageMessage] = useState('');
   const [bookingLinks, setBookingLinks] = useState<BookingLinks | null>(null);
   const idempotencyKeyRef = useRef<string | null>(null);
+  const turnstileWidgetIdRef = useRef<string | null>(null);
 
   const resetIdempotencyKey = () => { idempotencyKeyRef.current = null; };
 
@@ -83,11 +93,12 @@ export default function BookCallPage() {
   }, []);
 
   useEffect(() => {
-    const globalWindow = window as any;
+    const globalWindow = window as TurnstileWindow;
     const renderWidget = () => {
-      if (globalWindow.turnstile && document.getElementById('booking-turnstile')) {
+      const container = document.getElementById('booking-turnstile');
+      if (globalWindow.turnstile && container && !turnstileWidgetIdRef.current) {
         try {
-          globalWindow.turnstile.render('#booking-turnstile', {
+          turnstileWidgetIdRef.current = globalWindow.turnstile.render(container, {
             sitekey: TURNSTILE_SITE_KEY,
             theme: 'dark',
             action: 'turnstile-booking-spin',
@@ -98,26 +109,27 @@ export default function BookCallPage() {
       }
     };
 
+    globalWindow.onloadTurnstileCallback = renderWidget;
     if (!document.querySelector('script[data-turnstile]')) {
       const script = document.createElement('script');
-      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback';
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onloadTurnstileCallback';
       script.async = true;
       script.defer = true;
       script.dataset.turnstile = 'true';
-      globalWindow.onloadTurnstileCallback = renderWidget;
       document.head.appendChild(script);
     } else {
       renderWidget();
     }
 
     return () => {
-      if (globalWindow.turnstile) {
+      if (globalWindow.turnstile && turnstileWidgetIdRef.current) {
         try {
-          globalWindow.turnstile.remove('#booking-turnstile');
+          globalWindow.turnstile.remove(turnstileWidgetIdRef.current);
         } catch (e) {
           // Ignore
         }
       }
+      turnstileWidgetIdRef.current = null;
     };
   }, []);
 
@@ -188,8 +200,10 @@ export default function BookCallPage() {
   const selectedDay = selectedDate ? formatBookingDay(selectedDate) : null;
 
   const resetTurnstile = () => {
-    const globalWindow = window as any;
-    globalWindow.turnstile?.reset('#booking-turnstile');
+    const globalWindow = window as TurnstileWindow;
+    if (globalWindow.turnstile && turnstileWidgetIdRef.current) {
+      globalWindow.turnstile.reset(turnstileWidgetIdRef.current);
+    }
   };
 
   const handleBooking = async (event: React.FormEvent) => {
@@ -496,10 +510,7 @@ export default function BookCallPage() {
 
           <div
             id="booking-turnstile"
-            className="cf-turnstile md:col-span-2"
-            data-sitekey={TURNSTILE_SITE_KEY}
-            data-action="turnstile-booking-spin"
-            data-theme="dark"
+            className="md:col-span-2"
           />
 
           {message ? (
