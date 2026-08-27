@@ -5,6 +5,7 @@ import React from 'react';
 import { BLOG_POSTS } from '../src/blog/posts.ts';
 import { metadataForRoute, SITE_URL, FULL_NAME } from '../src/seo/metadata.ts';
 import { StaticRoute } from '../src/ssr/StaticRoute.tsx';
+import { CASE_STUDIES } from '../src/pages/Portfolio.tsx';
 
 const projectRoot = process.cwd();
 const distRoot = join(projectRoot, 'dist');
@@ -12,6 +13,7 @@ const template = readFileSync(join(distRoot, 'index.html'), 'utf8');
 
 const routes = [
   '/', '/about', '/skills', '/experience', '/certificates', '/portfolio', '/book', '/blog', '/contact', '/recap',
+  ...CASE_STUDIES.map((study) => `/portfolio/${study.id}`),
   ...BLOG_POSTS.map((post) => `/blog/${post.slug}`),
 ];
 
@@ -45,7 +47,9 @@ function headForRoute(pathname: string) {
     <meta name="twitter:description" content="${escapeHtml(meta.description)}" />
     <meta name="twitter:image" content="${meta.ogImage}" />
     <meta name="twitter:image:alt" content="${escapeHtml(meta.title)}" />
-    ${meta.article ? `<meta property="article:author" content="${FULL_NAME}" /><meta property="article:published_time" content="${meta.article.publishedTime}" />` : ''}
+    ${meta.article ? `<meta property="article:author" content="${FULL_NAME}" /><meta property="article:published_time" content="${meta.article.publishedTime}" />${meta.article.modifiedTime ? `<meta property="article:modified_time" content="${meta.article.modifiedTime}" />` : ''}` : ''}
+    <link rel="alternate" type="application/rss+xml" title="${FULL_NAME} — RSS" href="${SITE_URL}/rss.xml" />
+    <link rel="alternate" type="application/atom+xml" title="${FULL_NAME} — Atom" href="${SITE_URL}/atom.xml" />
     <script type="application/ld+json">${jsonLd}</script>`;
 }
 
