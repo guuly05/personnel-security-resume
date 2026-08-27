@@ -1,5 +1,5 @@
 import { ImageResponse } from '@vercel/og';
-import { BLOG_POSTS } from '../src/blog/posts.js';
+import { BLOG_POSTS, formatBlogDate } from '../src/blog/posts.js';
 
 export const config = {
   runtime: 'nodejs',
@@ -143,7 +143,7 @@ export default async function handler(req: any) {
             }}
           >
             <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-              <span style={{ color: '#64748b', fontSize: '16px' }}>{post.date}</span>
+              <span style={{ color: '#64748b', fontSize: '16px' }}>{formatBlogDate(post.date)}</span>
               <div style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#475569' }} />
               <span style={{ color: '#64748b', fontSize: '16px' }}>{post.readTime}</span>
             </div>
