@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Guuleed Maxmuud Aw Abdi — Cybersecurity Blog</title>
+  <subtitle>Security research, vulnerability analysis, and technical writing.</subtitle>
+  <link href="https://www.guuleedmaxamuud.dev/blog" />
+  <link rel="self" href="https://www.guuleedmaxamuud.dev/atom.xml" type="application/atom+xml" />
+  <id>https://www.guuleedmaxamuud.dev/blog</id>
+  <updated>2026-08-12T12:00:00.000Z</updated>
+  <author><name>Guuleed Maxmuud Aw Abdi</name></author>
+  <entry>
+    <title>Spotify&apos;s Xirp: The Promise and Pitfalls of AI Agent Orchestration</title>
+    <link href="https://www.guuleedmaxamuud.dev/blog/spotify-xirp-orchestration" />
+    <id>https://www.guuleedmaxamuud.dev/blog/spotify-xirp-orchestration</id>
+    <published>2026-08-12T12:00:00.000Z</published>
+    <updated>2026-08-12T12:00:00.000Z</updated>
+    <summary type="html"><![CDATA[An analytical look at Spotify’s macOS agentic environment—its technical architecture, platform limitations, vendor lock-in risks, and community reception.
+
+Tags: AI agents · Developer tooling · Platform engineering · Security
+Last updated: August 12, 2026]]></summary>
+    <category term="AI agents" />
+  </entry>
+  <entry>
+    <title>RoguePlanet: The Defender Zero-Day That Turned Protection Into Privilege</title>
+    <link href="https://www.guuleedmaxamuud.dev/blog/rogueplanet-defender-zero-day" />
+    <id>https://www.guuleedmaxamuud.dev/blog/rogueplanet-defender-zero-day</id>
+    <published>2026-07-22T12:00:00.000Z</published>
+    <updated>2026-07-22T12:00:00.000Z</updated>
+    <summary type="html"><![CDATA[A deep research report on Nightmare-Eclipse, the mass disclosure campaign, and the destructive Microsoft Defender race condition tracked as CVE-2026-50656.
+
+Tags: Vulnerability research · Microsoft Defender · Windows security · Incident response
+Last updated: July 22, 2026]]></summary>
+    <category term="Vulnerability research" />
+  </entry>
+  <entry>
+    <title>No Rollback: The Animated Chronicles of Cyber Warfare</title>
+    <link href="https://www.guuleedmaxamuud.dev/blog/no-rollback" />
+    <id>https://www.guuleedmaxamuud.dev/blog/no-rollback</id>
+    <published>2026-07-15T12:00:00.000Z</published>
+    <updated>2026-07-15T12:00:00.000Z</updated>
+    <summary type="html"><![CDATA[An in-depth analysis of why Cybernews' flagship YouTube docuseries is the most important piece of technical storytelling on the web.
+
+Tags: Cybersecurity history · Incident response · Security storytelling
+Last updated: July 15, 2026]]></summary>
+    <category term="Cybersecurity history" />
+  </entry>
+</feed>
