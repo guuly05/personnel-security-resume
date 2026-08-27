@@ -3,12 +3,6 @@ import { toZonedTime } from 'date-fns-tz';
 import { Icon } from '../components/Icon';
 import { BOOKING_CONFIG } from '../booking/config';
 
-type TurnstileWindow = Window & {
-  turnstile?: {
-    reset: () => void;
-  };
-};
-
 const TURNSTILE_SITE_KEY =
   ((import.meta as { env?: { VITE_TURNSTILE_SITE_KEY?: string } }).env?.VITE_TURNSTILE_SITE_KEY) ??
   '0x4AAAAAAEJeTjoANqG1MG63';
@@ -89,13 +83,42 @@ export default function BookCallPage() {
   }, []);
 
   useEffect(() => {
-    if (document.querySelector('script[data-turnstile]')) return;
-    const script = document.createElement('script');
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-    script.async = true;
-    script.defer = true;
-    script.dataset.turnstile = 'true';
-    document.head.appendChild(script);
+    const globalWindow = window as any;
+    const renderWidget = () => {
+      if (globalWindow.turnstile && document.getElementById('booking-turnstile')) {
+        try {
+          globalWindow.turnstile.render('#booking-turnstile', {
+            sitekey: TURNSTILE_SITE_KEY,
+            theme: 'dark',
+            action: 'turnstile-booking-spin',
+          });
+        } catch (e) {
+          // Already rendered
+        }
+      }
+    };
+
+    if (!document.querySelector('script[data-turnstile]')) {
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback';
+      script.async = true;
+      script.defer = true;
+      script.dataset.turnstile = 'true';
+      globalWindow.onloadTurnstileCallback = renderWidget;
+      document.head.appendChild(script);
+    } else {
+      renderWidget();
+    }
+
+    return () => {
+      if (globalWindow.turnstile) {
+        try {
+          globalWindow.turnstile.remove('#booking-turnstile');
+        } catch (e) {
+          // Ignore
+        }
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -165,8 +188,8 @@ export default function BookCallPage() {
   const selectedDay = selectedDate ? formatBookingDay(selectedDate) : null;
 
   const resetTurnstile = () => {
-    const globalWindow = window as TurnstileWindow;
-    globalWindow.turnstile?.reset();
+    const globalWindow = window as any;
+    globalWindow.turnstile?.reset('#booking-turnstile');
   };
 
   const handleBooking = async (event: React.FormEvent) => {
@@ -472,6 +495,7 @@ export default function BookCallPage() {
           </label>
 
           <div
+            id="booking-turnstile"
             className="cf-turnstile md:col-span-2"
             data-sitekey={TURNSTILE_SITE_KEY}
             data-action="turnstile-booking-spin"

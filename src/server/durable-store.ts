@@ -3,8 +3,17 @@ import { createHash } from 'node:crypto';
 type RedisResponse<T> = { result?: T; error?: string };
 
 function getStoreConfig(): { url: string; token: string } | null {
-  const url = process.env.BOOKING_STORE_REST_URL ?? process.env.KV_REST_API_URL;
-  const token = process.env.BOOKING_STORE_REST_TOKEN ?? process.env.KV_REST_API_TOKEN;
+  const clean = (val: string | undefined) => {
+    if (!val) return undefined;
+    const trimmed = val.trim();
+    if (!trimmed || trimmed.startsWith('your_') || trimmed.includes('your-redis-endpoint') || trimmed.startsWith('MY_')) {
+      return undefined;
+    }
+    return trimmed;
+  };
+
+  const url = clean(process.env.BOOKING_STORE_REST_URL) ?? clean(process.env.KV_REST_API_URL);
+  const token = clean(process.env.BOOKING_STORE_REST_TOKEN) ?? clean(process.env.KV_REST_API_TOKEN);
   return url && token ? { url: url.replace(/\/$/, ''), token } : null;
 }
 

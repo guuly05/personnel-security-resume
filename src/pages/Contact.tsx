@@ -4,11 +4,8 @@ import { Icon } from '../components/Icon.tsx';
 
 type SubmitStatus = 'idle' | 'sending' | 'success' | 'error';
 
-type TurnstileWindow = Window & {
-  turnstile?: {
-    reset: () => void;
-  };
-};
+
+
 
 const MIN_FILL_TIME_MS = 4500;
 const CONTACT_ERROR_MESSAGE = 'The message could not be sent right now. Please try again shortly.';
@@ -23,18 +20,47 @@ const ContactPage: React.FC = () => {
   const [pageLoadedAt] = useState(() => Date.now());
 
   useEffect(() => {
-    if (document.querySelector('script[data-turnstile]')) return;
-    const script = document.createElement('script');
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-    script.async = true;
-    script.defer = true;
-    script.dataset.turnstile = 'true';
-    document.head.appendChild(script);
+    const globalWindow = window as any;
+    const renderWidget = () => {
+      if (globalWindow.turnstile && document.getElementById('contact-turnstile')) {
+        try {
+          globalWindow.turnstile.render('#contact-turnstile', {
+            sitekey: TURNSTILE_SITE_KEY,
+            theme: 'auto',
+            action: 'turnstile-spin-v2',
+          });
+        } catch (e) {
+          // Already rendered
+        }
+      }
+    };
+
+    if (!document.querySelector('script[data-turnstile]')) {
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback';
+      script.async = true;
+      script.defer = true;
+      script.dataset.turnstile = 'true';
+      globalWindow.onloadTurnstileCallback = renderWidget;
+      document.head.appendChild(script);
+    } else {
+      renderWidget();
+    }
+
+    return () => {
+      if (globalWindow.turnstile) {
+        try {
+          globalWindow.turnstile.remove('#contact-turnstile');
+        } catch (e) {
+          // Ignore
+        }
+      }
+    };
   }, []);
 
   const resetTurnstile = () => {
-    const globalWindow = window as TurnstileWindow;
-    globalWindow.turnstile?.reset();
+    const globalWindow = window as any;
+    globalWindow.turnstile?.reset('#contact-turnstile');
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -159,6 +185,7 @@ const ContactPage: React.FC = () => {
           </div>
 
           <div
+            id="contact-turnstile"
             className="cf-turnstile"
             data-sitekey={TURNSTILE_SITE_KEY}
             data-action="turnstile-spin-v2"
