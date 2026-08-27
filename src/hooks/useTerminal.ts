@@ -157,6 +157,18 @@ export function useTerminal(): UseTerminalReturn {
         return;
       }
 
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'l') {
+        e.preventDefault();
+        setLines([]);
+        return;
+      }
+
+      if (e.key === 'PageUp' || e.key === 'PageDown') {
+        e.preventDefault();
+        outputRef.current?.scrollBy({ top: e.key === 'PageUp' ? -outputRef.current.clientHeight * 0.8 : outputRef.current.clientHeight * 0.8, behavior: 'smooth' });
+        return;
+      }
+
       if (e.key === 'ArrowUp') {
         e.preventDefault();
         setHistoryIndex(prev => {
@@ -179,6 +191,7 @@ export function useTerminal(): UseTerminalReturn {
       }
 
       if (e.key === 'Tab') {
+        if (e.shiftKey) return;
         e.preventDefault();
         // Simple tab completion for known commands
         const COMPLETIONS = [
