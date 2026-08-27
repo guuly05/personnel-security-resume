@@ -1,4 +1,4 @@
-import { BOOKING_CONFIG } from '../src/booking/config.js';
+import { BOOKING_CONFIG } from '../booking/config.js';
 import { incrementDurableCounter, isDurableStoreConfigured, stableKey } from './durable-store.js';
 
 export type RateLimitResult = {

@@ -1,10 +1,10 @@
 import { BOOKING_CONFIG } from '../src/booking/config.js';
-import { getCalendarId, getGoogleCalendarClient } from './calendar.js';
-import { enforceBookRateLimit } from './rate-limit.js';
-import { stableKey } from './durable-store.js';
-import { claimIdempotencyKey, completeIdempotencyKey, createManageToken, releaseIdempotencyKey, saveBooking } from './booking-store.js';
-import { sendBookingConfirmation } from './booking-email.js';
-import { validateBookingInput } from './validation.js';
+import { getCalendarId, getGoogleCalendarClient } from '../src/server/calendar.js';
+import { enforceBookRateLimit } from '../src/server/rate-limit.js';
+import { stableKey } from '../src/server/durable-store.js';
+import { claimIdempotencyKey, completeIdempotencyKey, createManageToken, releaseIdempotencyKey, saveBooking } from '../src/server/booking-store.js';
+import { sendBookingConfirmation } from '../src/server/booking-email.js';
+import { validateBookingInput } from '../src/server/validation.js';
 import { buildSlotWindows, getDayWindow, isBookingWeekday, isSlotTooSoon, parseSlotString } from '../src/booking/time.js';
 
 function getAllowedOrigins(req: any): string[] {

@@ -1,8 +1,8 @@
 import { BOOKING_CONFIG } from '../src/booking/config.js';
 import { buildSlotWindows, getDayWindow, isBookingWeekday, isSlotTooSoon, parseSlotString } from '../src/booking/time.js';
-import { getCalendarId, getGoogleCalendarClient } from './calendar.js';
-import { sendBookingConfirmation } from './booking-email.js';
-import { BookingRecord, findBookingByToken, updateBooking } from './booking-store.js';
+import { getCalendarId, getGoogleCalendarClient } from '../src/server/calendar.js';
+import { sendBookingConfirmation } from '../src/server/booking-email.js';
+import { BookingRecord, findBookingByToken, updateBooking } from '../src/server/booking-store.js';
 
 function publicBooking(record: BookingRecord) {
   return {

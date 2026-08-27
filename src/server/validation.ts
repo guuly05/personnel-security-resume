@@ -1,4 +1,4 @@
-import { BOOKING_CONFIG, BOOKING_EMAIL_PATTERN } from '../src/booking/config.js';
+import { BOOKING_CONFIG, BOOKING_EMAIL_PATTERN } from '../booking/config.js';
 
 export type BookingInput = {
   date: string;

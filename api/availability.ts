@@ -1,8 +1,8 @@
 import { eachDayOfInterval, isSameMonth } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
-import { getCalendarId, getGoogleCalendarClient } from './calendar.js';
-import { enforceAvailabilityRateLimit } from './rate-limit.js';
-import { validateAvailabilityQuery } from './validation.js';
+import { getCalendarId, getGoogleCalendarClient } from '../src/server/calendar.js';
+import { enforceAvailabilityRateLimit } from '../src/server/rate-limit.js';
+import { validateAvailabilityQuery } from '../src/server/validation.js';
 import { BOOKING_CONFIG } from '../src/booking/config.js';
 import {
   buildSlotWindows,

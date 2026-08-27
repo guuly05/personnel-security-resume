@@ -1,5 +1,5 @@
 import { Resend } from 'resend';
-import { BOOKING_CONFIG } from '../src/booking/config.js';
+import { BOOKING_CONFIG } from '../booking/config.js';
 import { BookingRecord } from './booking-store.js';
 
 function escapeHtml(value: string): string {

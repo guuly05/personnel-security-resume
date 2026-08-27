@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { BOOKING_CONFIG } from '../src/booking/config.ts';
-import { validateAvailabilityQuery, validateBookingInput } from '../api/validation.ts';
+import { validateAvailabilityQuery, validateBookingInput } from '../src/server/validation.ts';
 
 test('accepts and normalizes a valid booking payload', () => {
   const result = validateBookingInput({
