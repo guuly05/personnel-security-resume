@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ABOUT_LETTER, PERSONAL_INFO, SOFT_SKILLS } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
+import { useFocusTrap } from '../hooks/useFocusTrap.ts';
 
 type MediaItem = {
   title: string;
@@ -236,6 +237,9 @@ const AboutPage: React.FC = () => {
   const [now, setNow] = useState(() => new Date());
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [isModalCvOpen, setIsModalCvOpen] = useState(false);
+  const cvModalRef = useRef<HTMLDivElement | null>(null);
+  const closeCvModal = useCallback(() => setIsModalCvOpen(false), []);
+  useFocusTrap(isModalCvOpen, cvModalRef, closeCvModal);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -273,6 +277,8 @@ const AboutPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsCvOpen(!isCvOpen)}
+                aria-expanded={isCvOpen}
+                aria-controls="cv-preview"
                 className="inline-flex items-center gap-2 rounded-3xl bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--color-bg)] shadow-[0_0_18px_rgba(16,185,129,0.25)] transition hover:scale-[1.02]"
               >
                 <Icon name={isCvOpen ? "x" : "eye"} size={16} />
@@ -336,7 +342,7 @@ const AboutPage: React.FC = () => {
 
         {/* Embedded Interactive PDF Viewer */}
         {isCvOpen && (
-          <div className="mt-8 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-6 shadow-2xl transition-all">
+          <div id="cv-preview" className="mt-8 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-6 shadow-2xl transition-all">
             <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] accent-text">
@@ -351,6 +357,8 @@ const AboutPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsModalCvOpen(true)}
+                  aria-haspopup="dialog"
+                  aria-label="Open CV in fullscreen dialog"
                   className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[var(--color-text)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition"
                   title="Expand to Fullscreen"
                 >
@@ -389,15 +397,15 @@ const AboutPage: React.FC = () => {
 
       {/* Fullscreen CV Viewer Modal */}
       {isModalCvOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md">
-          <div className="flex h-[92vh] w-full max-w-5xl flex-col rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md" onMouseDown={(event) => { if (event.target === event.currentTarget) closeCvModal(); }}>
+          <div ref={cvModalRef} role="dialog" aria-modal="true" aria-labelledby="cv-dialog-title" tabIndex={-1} className="flex h-[92vh] w-full max-w-5xl flex-col rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-2xl">
             <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] accent-text">
                   <Icon name="file-text" size={20} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-[var(--color-text)]">Guuleed Maxamuud Aw Abdi — CV</h3>
+                  <h3 id="cv-dialog-title" className="text-lg font-bold text-[var(--color-text)]">Guuleed Maxamuud Aw Abdi — CV</h3>
                   <p className="text-xs text-[var(--color-text-muted)]">Official Cybersecurity Resume PDF</p>
                 </div>
               </div>
@@ -412,7 +420,8 @@ const AboutPage: React.FC = () => {
                 </a>
                 <button
                   type="button"
-                  onClick={() => setIsModalCvOpen(false)}
+                  onClick={closeCvModal}
+                  aria-label="Close CV dialog"
                   className="flex h-9 w-9 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition"
                 >
                   <Icon name="x" size={18} />
