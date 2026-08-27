@@ -7,6 +7,7 @@
 import React, { useRef, useCallback, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { UseTerminalReturn } from '../hooks/useTerminal.ts';
+import { useFocusTrap } from '../hooks/useFocusTrap.ts';
 import { LineType } from '../commands/commandEngine.ts';
 
 interface TerminalProps {
@@ -158,6 +159,7 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
 
   // Click-outside to close (only on backdrop, not the window itself)
   const windowRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(isOpen, windowRef, closeTerminal);
   const handleBackdropClick = useCallback((e: React.MouseEvent) => {
     if (windowRef.current && !windowRef.current.contains(e.target as Node)) {
       closeTerminal();
@@ -189,6 +191,11 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
           {/* Terminal Window */}
           <motion.div
             ref={windowRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="terminal-dialog-title"
+            aria-describedby="terminal-dialog-help"
+            tabIndex={-1}
             className="terminal-window pointer-events-auto"
             style={{
               position: 'fixed',
@@ -225,7 +232,7 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
               </div>
 
               {/* Session label */}
-              <div className="terminal-session-label">
+              <div id="terminal-dialog-title" className="terminal-session-label">
                 <span className="terminal-prompt-host">guuleed</span>
                 <span className="text-[#6e7681]">@</span>
                 <span className="terminal-prompt-dir">portfolio</span>
@@ -242,6 +249,8 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
             <div
               ref={outputRef}
               className="terminal-output"
+              role="log"
+              tabIndex={0}
               aria-live="polite"
               aria-label="Terminal output"
             >
@@ -289,10 +298,10 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
             </div>
 
             {/* ── Status bar ── */}
-            <div className="terminal-statusbar">
+            <div id="terminal-dialog-help" className="terminal-statusbar">
               <span>● CONNECTED</span>
               <span>portfolio-shell v2.0</span>
-              <span>drag title · resize corner · ↑↓ history · Tab autocomplete · help</span>
+              <span>drag title · resize corner · ↑↓ history · Tab autocomplete · PgUp/PgDn scroll · Ctrl+L clear</span>
             </div>
 
             <button
