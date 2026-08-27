@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useCallback, useState, useRef, useEffect } from 'react';
 import { CORE_SKILLS, TOOLSET, COURSES } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
 import { motion, AnimatePresence } from 'motion/react';
+import { useFocusTrap } from '../hooks/useFocusTrap.ts';
 
 // Extended type definitions for enriched skill metrics & tool context
 export interface SkillCategory {
@@ -286,6 +287,9 @@ const SkillsPage: React.FC = () => {
   const [selectedTool, setSelectedTool] = useState<DetailedTool | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const courseListRef = useRef<HTMLDivElement | null>(null);
+  const toolDialogRef = useRef<HTMLDivElement | null>(null);
+  const closeToolDialog = useCallback(() => setSelectedTool(null), []);
+  useFocusTrap(Boolean(selectedTool), toolDialogRef, closeToolDialog);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -430,6 +434,10 @@ const SkillsPage: React.FC = () => {
                 whileHover={{ scale: 1.04, translateY: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedTool(tool)}
+                aria-expanded={isSelected}
+                aria-controls={isSelected ? 'tool-detail-dialog' : undefined}
+                aria-haspopup="dialog"
+                aria-label={`${tool.name}: view usage details`}
                 className={`group relative flex flex-col items-center justify-between rounded-2xl border p-4 text-center transition-all duration-300 ${
                   isSelected
                     ? 'border-[var(--accent)] bg-[var(--accent-soft)] shadow-[0_0_20px_rgba(16,185,129,0.25)]'
@@ -465,16 +473,20 @@ const SkillsPage: React.FC = () => {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 12 }}
-              className="surface-card border-2 border-[var(--accent)] p-6 sm:p-8 relative shadow-2xl space-y-6"
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
+              onMouseDown={(event) => { if (event.target === event.currentTarget) closeToolDialog(); }}
             >
-              <button
-                onClick={() => setSelectedTool(null)}
-                className="absolute right-4 top-4 rounded-full p-2 text-[var(--color-text-muted)] hover:bg-[var(--surface-soft)] hover:text-white transition"
-              >
-                <Icon name="x" size={18} />
-              </button>
+              <div ref={toolDialogRef} id="tool-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="tool-detail-title" tabIndex={-1} className="surface-card relative max-h-[90vh] w-full max-w-3xl overflow-y-auto border-2 border-[var(--accent)] p-6 shadow-2xl sm:p-8">
+                <button
+                  type="button"
+                  onClick={closeToolDialog}
+                  aria-label={`Close ${selectedTool.name} details`}
+                  className="absolute right-4 top-4 rounded-full p-2 text-[var(--color-text-muted)] hover:bg-[var(--surface-soft)] hover:text-white transition"
+                >
+                  <Icon name="x" size={18} />
+                </button>
 
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white p-3 shadow-md border border-slate-200">
                   {selectedTool.name in toolSvgMap ? (
                     <img src={toolSvgMap[selectedTool.name]} alt={selectedTool.name} className="h-10 w-10 object-contain" />
@@ -484,7 +496,7 @@ const SkillsPage: React.FC = () => {
                 </div>
                 <div>
                   <div className="flex items-center gap-3">
-                    <h3 className="text-2xl font-bold">{selectedTool.name}</h3>
+                    <h3 id="tool-detail-title" className="text-2xl font-bold">{selectedTool.name}</h3>
                     <span className="rounded-full bg-[var(--accent-soft)] px-3 py-1 text-xs font-semibold text-[var(--accent)] border border-[var(--accent)]/30">
                       {selectedTool.mastery} Level
                     </span>
@@ -493,9 +505,9 @@ const SkillsPage: React.FC = () => {
                 </div>
               </div>
 
-              <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">{selectedTool.description}</p>
+                <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">{selectedTool.description}</p>
 
-              <div className="space-y-3 rounded-2xl bg-[var(--surface-soft)] p-5 border border-[var(--border)]">
+                <div className="space-y-3 rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] p-5">
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--accent)]">
                   <Icon name="target" size={16} />
                   <span>Real-World Scenarios & How I Use It</span>
@@ -508,10 +520,10 @@ const SkillsPage: React.FC = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+                </div>
 
-              {selectedTool.associatedProjects.length > 0 && (
-                <div className="flex items-center gap-3 text-xs text-[var(--color-text-muted)]">
+                {selectedTool.associatedProjects.length > 0 && (
+                  <div className="flex items-center gap-3 text-xs text-[var(--color-text-muted)]">
                   <span className="font-semibold text-white">Associated Projects & Audits:</span>
                   <div className="flex flex-wrap gap-2">
                     {selectedTool.associatedProjects.map(proj => (
@@ -520,8 +532,9 @@ const SkillsPage: React.FC = () => {
                       </span>
                     ))}
                   </div>
-                </div>
-              )}
+                  </div>
+                )}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
