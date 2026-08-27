@@ -31,7 +31,7 @@ export function isDurableStoreConfigured(): boolean {
 }
 
 function encodeRedisCommand(command: string[]): Buffer {
-  return Buffer.from(`${command.length}\r\n${command.map((part) => `$${Buffer.byteLength(part)}\r\n${part}\r\n`).join('')}`);
+  return Buffer.from(`*${command.length}\r\n${command.map((part) => `$${Buffer.byteLength(part)}\r\n${part}\r\n`).join('')}`);
 }
 
 type ParsedRedisReply = { value: string | number | null; offset: number } | null;
@@ -73,7 +73,11 @@ class RedisConnection {
     socket.setTimeout(8000, () => this.fail(new Error('Redis connection timed out.')));
     socket.on('data', (chunk: Buffer) => {
       this.buffer = Buffer.concat([this.buffer, chunk]);
-      this.drain();
+      try {
+        this.drain();
+      } catch (error) {
+        this.fail(error instanceof Error ? error : new Error(String(error)));
+      }
     });
     socket.on('error', (error) => this.fail(error instanceof Error ? error : new Error(String(error))));
     socket.on('close', () => {
