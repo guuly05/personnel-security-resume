@@ -2,6 +2,7 @@ import { eachDayOfInterval, isSameMonth } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import { getCalendarId, getGoogleCalendarClient } from './calendar.js';
 import { enforceAvailabilityRateLimit } from './rate-limit.js';
+import { validateAvailabilityQuery } from './validation.js';
 import { BOOKING_CONFIG } from '../src/booking/config.js';
 import {
   buildSlotWindows,
@@ -25,24 +26,24 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const rateLimit = enforceAvailabilityRateLimit(req);
+  const rateLimit = await enforceAvailabilityRateLimit(req);
+  if (rateLimit.storageUnavailable) {
+    return res.status(503).json({ error: 'Booking protection is temporarily unavailable. Please try again shortly.' });
+  }
   if (rateLimit.limited) {
     res.setHeader('Retry-After', String(rateLimit.retryAfterSeconds));
     return res.status(429).json({ error: 'Too many requests. Please wait and try again.' });
   }
 
-  const month = typeof req.query.month === 'string' ? req.query.month : '';
-  const date = typeof req.query.date === 'string' ? req.query.date : '';
+  const validation = validateAvailabilityQuery(req.query);
+  if (validation.ok === false) return res.status(400).json({ error: validation.error });
+  const { month = '', date = '' } = validation.value;
 
   try {
     const calendar = await getGoogleCalendarClient();
     const calendarId = getCalendarId();
 
     if (month) {
-      if (!/^\d{4}-\d{2}$/.test(month)) {
-        return res.status(400).json({ error: 'Invalid month format.' });
-      }
-
       const cached = monthlyCache.get(month);
       if (cached && cached.expiresAt > Date.now()) {
         return res.status(200).json(cached.payload);
@@ -81,10 +82,6 @@ export default async function handler(req: any, res: any) {
     }
 
     if (date) {
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-        return res.status(400).json({ error: 'Invalid date format.' });
-      }
-
       const selectedDay = parseDayString(date);
       if (!isBookingWeekday(selectedDay)) {
         return res.status(200).json({ date, slots: [] });
