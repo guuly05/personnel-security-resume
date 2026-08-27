@@ -39,6 +39,25 @@ export type PageMetadata = {
 
 const TITLE_SUFFIX = `${FULL_NAME} — Cybersecurity Portfolio`;
 
+const PROJECT_SEO: Record<string, { title: string; description: string }> = {
+  'cyber-dashboard': {
+    title: 'Cyber Attack Monitoring Dashboard Case Study',
+    description: 'Architecture, security controls, testing methodology, and measurable results from Guuleed Maxmuud Aw Abdi’s threat intelligence dashboard.',
+  },
+  'gabay-keeper': {
+    title: 'Gabay Keeper Case Study',
+    description: 'A privacy-first Somali poetry archive case study covering ownership rules, local OCR, architecture, testing, and results.',
+  },
+  purpleprint: {
+    title: 'PurplePrint Case Study',
+    description: 'An offline Android Markdown editor case study covering the AST parser, native PDF engine, privacy posture, and testing approach.',
+  },
+  'infosec-course': {
+    title: 'Information Systems Security Course Case Study',
+    description: 'An open cybersecurity curriculum case study covering learning architecture, practical labs, framework alignment, and outcomes.',
+  },
+};
+
 const PERSON_SCHEMA = {
   '@type': 'Person',
   '@id': `${SITE_URL}/#person`,
@@ -164,6 +183,7 @@ function basePageMetadata(key: Exclude<RouteKey, 'reflection' | 'surprise' | 'va
 export function metadataForArticle(post: BlogPost): PageMetadata {
   const canonicalPath = `/blog/${post.slug}`;
   const publishedTime = new Date(`${post.date} 12:00:00 UTC`).toISOString();
+  const modifiedTime = new Date(`${post.lastUpdated} 12:00:00 UTC`).toISOString();
   return {
     title: `${post.title} | ${FULL_NAME}`,
     description: post.subtitle,
@@ -171,7 +191,7 @@ export function metadataForArticle(post: BlogPost): PageMetadata {
     robots: DEFAULT_ROBOTS,
     ogType: 'article',
     ogImage: `${SITE_URL}${canonicalPath}/og.png`,
-    article: { publishedTime },
+    article: { publishedTime, modifiedTime },
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
@@ -181,6 +201,7 @@ export function metadataForArticle(post: BlogPost): PageMetadata {
       author: { '@type': 'Person', name: FULL_NAME, url: `${SITE_URL}/about` },
       publisher: { '@type': 'Organization', name: FULL_NAME, logo: { '@type': 'ImageObject', url: PUBLISHER_LOGO } },
       datePublished: publishedTime,
+      dateModified: modifiedTime,
       mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}${canonicalPath}` },
       url: `${SITE_URL}${canonicalPath}`,
     },
@@ -189,6 +210,31 @@ export function metadataForArticle(post: BlogPost): PageMetadata {
 
 export function metadataForRoute(pathname: string, post?: BlogPost): PageMetadata {
   if (pathname.startsWith('/blog/') && post) return metadataForArticle(post);
+  if (pathname.startsWith('/portfolio/')) {
+    const slug = pathname.split('/')[2];
+    const project = PROJECT_SEO[slug];
+    if (project) {
+      const meta = { ...project, path: `/portfolio/${slug}` };
+      return {
+        title: `${meta.title} | ${FULL_NAME}`,
+        description: meta.description,
+        canonicalPath: meta.path,
+        robots: DEFAULT_ROBOTS,
+        ogType: 'website',
+        ogImage: OG_IMAGE,
+        jsonLd: webPageSchema(meta),
+      };
+    }
+    return {
+      title: `Project Not Found | ${TITLE_SUFFIX}`,
+      description: 'The requested project case study could not be found.',
+      canonicalPath: '/404',
+      robots: NOINDEX_ROBOTS,
+      ogType: 'website',
+      ogImage: OG_IMAGE,
+      jsonLd: webPageSchema({ title: 'Project Not Found', description: 'The requested project case study could not be found.', path: '/404' }),
+    };
+  }
   if (pathname === '/404' || pathname === '/does-not-exist') {
     return {
       title: `Page Not Found | ${TITLE_SUFFIX}`,
