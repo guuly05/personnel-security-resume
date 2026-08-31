@@ -363,7 +363,7 @@ export default function BookCallPage() {
         <div className="booking-panel surface-card p-6 md:p-8">
           <div className="flex flex-wrap items-end justify-between gap-4 border-b border-dashed border-[var(--border)] pb-6">
             <div>
-              <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--brand-purple)]">01 / Date selection</p>
+              <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)]">01 / Date selection</p>
               <h2 className="mt-3 font-display text-3xl font-bold text-[var(--color-text)]">{buildMonthLabel(selectedMonth)}</h2>
             </div>
             <input

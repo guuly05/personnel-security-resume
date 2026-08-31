@@ -162,7 +162,7 @@ export default function App() {
 
       {/* Top Navbar */}
       <nav
-        className={`max-w-7xl mx-auto mb-10 rounded-[2rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 shadow-[var(--shadow)] backdrop-blur-xl transition-all duration-300 flex flex-wrap items-center justify-between gap-4 ${chromeClassName}`}
+        className={`max-w-7xl mx-auto mb-10 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 transition-colors duration-300 flex flex-wrap items-center justify-between gap-4 ${chromeClassName}`}
       >
         <div className="flex items-center gap-3 pl-2">
           <a
@@ -174,7 +174,7 @@ export default function App() {
             className="inline-flex items-center gap-3"
             aria-label="Home"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-[var(--color-text)] shadow-[0_0_15px_rgba(34,211,238,0.4)]">
+            <div className="w-10 h-10 rounded-lg border border-[var(--accent)] bg-[var(--surface-soft)] flex items-center justify-center font-bold text-[var(--accent)]">
               GM
             </div>
           </a>
@@ -224,7 +224,7 @@ export default function App() {
             type="button"
             onClick={toggleTheme}
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            className="inline-flex items-center gap-2 rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
           >
             <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
             <span className="hidden sm:inline">{theme === 'dark' ? 'Light' : 'Dark'} Mode</span>
@@ -232,7 +232,7 @@ export default function App() {
 
           <a
             href="/contact"
-            className="rounded-3xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)] shadow-[0_0_18px_rgba(16,185,129,0.25)] transition hover:scale-[1.02] active:scale-[0.98]"
+            className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)] transition hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] active:translate-y-px"
           >
             Contact
           </a>
@@ -244,7 +244,7 @@ export default function App() {
             type="button"
             onClick={terminal.toggleTerminal}
             aria-label="Open terminal"
-            className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] px-2.5 py-2 text-[var(--color-text)] transition hover:border-[var(--accent)] font-mono text-xs font-semibold"
+            className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-2.5 py-2 text-[var(--color-text)] transition hover:border-[var(--accent)] font-mono text-xs font-semibold"
           >
             &gt;_
           </button>
@@ -253,7 +253,7 @@ export default function App() {
             type="button"
             onClick={toggleTheme}
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
+            className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
           >
             <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
           </button>
@@ -261,7 +261,7 @@ export default function App() {
           <button
             type="button"
             onClick={() => setIsMenuOpen((value) => !value)}
-            className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
+            className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
           >
             <Icon name={isMenuOpen ? 'x' : 'menu'} size={20} />
           </button>
@@ -275,11 +275,11 @@ export default function App() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden fixed inset-x-4 top-24 z-40 glass-card p-6 overflow-hidden shadow-2xl"
+            className="md:hidden fixed inset-x-4 top-24 z-40 surface-card p-6 overflow-hidden"
           >
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center font-bold text-[var(--color-text)]">
+                <div className="w-8 h-8 rounded-md border border-[var(--accent)] bg-[var(--surface-soft)] flex items-center justify-center font-bold text-[var(--accent)]">
                   GM
                 </div>
                 <div className="text-sm font-bold">{PERSONAL_INFO.name}</div>
@@ -289,7 +289,7 @@ export default function App() {
                   type="button"
                   onClick={() => toggleTheme()}
                   aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-                  className="inline-flex items-center gap-2 rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                  className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
                 >
                   <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
                   <span className="text-sm">{theme === 'dark' ? 'Light' : 'Dark'}</span>
@@ -338,7 +338,7 @@ export default function App() {
       <main className="max-w-7xl mx-auto relative">
         <Suspense
           fallback={
-            <div className="flex h-64 w-full items-center justify-center rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-8">
+            <div className="flex h-64 w-full items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-8">
               <div className="flex items-center gap-3 text-sm font-semibold text-[var(--color-text-muted)]">
                 <div className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent" />
                 <span>Loading section...</span>

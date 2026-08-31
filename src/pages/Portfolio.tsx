@@ -173,7 +173,7 @@ export const CASE_STUDIES: CaseStudy[] = [
 /* Metadata pill — compact inline badge */
 const MetaPill: React.FC<{ children: React.ReactNode; accent?: boolean }> = ({ children, accent }) => (
   <span
-    className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] leading-none ${
+    className={`inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] leading-none ${
       accent
         ? 'bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent)]/25'
         : 'bg-[var(--surface-soft)] text-[var(--color-text-muted)] border border-[var(--border)]'
@@ -186,11 +186,11 @@ const MetaPill: React.FC<{ children: React.ReactNode; accent?: boolean }> = ({ c
 /* Tech stack chip */
 const TechChip: React.FC<{ item: TechItem }> = ({ item }) => {
   const groupColors: Record<TechItem['group'], string> = {
-    frontend: 'border-sky-500/25 text-sky-400/90',
-    backend: 'border-amber-500/25 text-amber-400/90',
-    tooling: 'border-violet-500/25 text-violet-400/90',
-    platform: 'border-emerald-500/25 text-emerald-400/90',
-    native: 'border-rose-500/25 text-rose-400/90',
+    frontend: 'border-[var(--accent)]/35 text-[var(--accent)]',
+    backend: 'border-[var(--border)] text-[var(--color-text-muted)]',
+    tooling: 'border-[var(--border)] text-[var(--color-text-muted)]',
+    platform: 'border-[var(--accent)]/35 text-[var(--accent)]',
+    native: 'border-[var(--border)] text-[var(--color-text-muted)]',
   };
 
   return (
@@ -238,7 +238,6 @@ const FeaturedCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
           loading="eager"
         />
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg)]/90 via-[var(--color-bg)]/30 to-transparent" />
 
         {/* Floating badge */}
         <div className="absolute top-5 left-5 flex gap-2">
@@ -264,15 +263,15 @@ const FeaturedCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
 
         {/* Challenge / Approach / Outcome — tight grid */}
         <div className="grid gap-5 md:grid-cols-3 mb-6">
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 sm:p-5">
+          <div className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-4 sm:p-5">
             <SectionLabel>Challenge</SectionLabel>
             <p className="text-[13px] leading-relaxed text-[var(--color-text-muted)]">{study.challenge}</p>
           </div>
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 sm:p-5">
+          <div className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-4 sm:p-5">
             <SectionLabel>Approach</SectionLabel>
             <p className="text-[13px] leading-relaxed text-[var(--color-text-muted)]">{study.approach}</p>
           </div>
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 sm:p-5">
+          <div className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-4 sm:p-5">
             <SectionLabel>Outcome</SectionLabel>
             <p className="text-[13px] leading-relaxed text-[var(--color-text-muted)]">{study.outcome}</p>
           </div>
@@ -320,7 +319,7 @@ const FeaturedCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
         <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-[var(--border)]">
           <a
             href={`/portfolio/${study.id}`}
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--accent-soft)] px-5 py-2.5 text-[13px] font-semibold text-[var(--accent)] transition hover:border-[var(--accent)] active:scale-[0.97]"
+            className="inline-flex items-center gap-2 rounded-md border border-[var(--accent)]/35 bg-[var(--accent-soft)] px-5 py-2.5 text-[13px] font-semibold text-[var(--accent)] transition-colors hover:border-[var(--accent)] active:translate-y-px"
           >
             <Icon name="file-text" size={15} />
             Full Case Study
@@ -329,7 +328,7 @@ const FeaturedCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
             href={study.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-bg)] transition hover:opacity-90 active:scale-[0.97]"
+            className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-bg)] transition-colors hover:opacity-90 active:translate-y-px"
           >
             <Icon name="github" size={15} />
             View Source
@@ -339,7 +338,7 @@ const FeaturedCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
               href={study.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)]/50"
+              className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--accent)]/50"
             >
               <Icon name="external-link" size={14} />
               Live Demo
@@ -384,12 +383,11 @@ const ProjectCard: React.FC<{ study: CaseStudy; index: number }> = ({ study, ind
           <div
             className={`absolute inset-0 hidden lg:block ${
               isReversed
-                ? 'bg-gradient-to-l from-transparent via-transparent to-[var(--color-bg)]/20'
-                : 'bg-gradient-to-r from-transparent via-transparent to-[var(--color-bg)]/20'
+                ? 'border-l-4 border-l-[var(--accent)]/30'
+                : 'border-r-4 border-r-[var(--accent)]/30'
             }`}
           />
           {/* Mobile bottom gradient */}
-          <div className="absolute inset-0 lg:hidden bg-gradient-to-t from-[var(--color-bg)]/50 to-transparent" />
 
           {/* Floating badges */}
           <div className="absolute top-4 left-4 flex gap-2">
@@ -480,7 +478,7 @@ const ProjectCard: React.FC<{ study: CaseStudy; index: number }> = ({ study, ind
           <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-[var(--border)]">
             <a
               href={`/portfolio/${study.id}`}
-              className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/35 bg-[var(--accent-soft)] px-5 py-2.5 text-[13px] font-semibold text-[var(--accent)] transition hover:border-[var(--accent)] active:scale-[0.97]"
+              className="inline-flex items-center gap-2 rounded-md border border-[var(--accent)]/35 bg-[var(--accent-soft)] px-5 py-2.5 text-[13px] font-semibold text-[var(--accent)] transition-colors hover:border-[var(--accent)] active:translate-y-px"
             >
               <Icon name="file-text" size={15} />
               Full Case Study
@@ -489,7 +487,7 @@ const ProjectCard: React.FC<{ study: CaseStudy; index: number }> = ({ study, ind
               href={study.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-bg)] transition hover:opacity-90 active:scale-[0.97]"
+            className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-bg)] transition-colors hover:opacity-90 active:translate-y-px"
             >
               <Icon name="github" size={15} />
               View Source
@@ -499,7 +497,7 @@ const ProjectCard: React.FC<{ study: CaseStudy; index: number }> = ({ study, ind
                 href={study.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)]/50"
+                className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--accent)]/50"
               >
                 <Icon name="external-link" size={14} />
                 Live Demo
@@ -524,18 +522,16 @@ const PortfolioPage: React.FC = () => {
       {/* ── Intro section ─────────────────────── */}
       <section className="surface-card p-6 sm:p-8 lg:p-10 relative overflow-hidden">
         {/* Decorative glow */}
-        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[var(--accent)]/8 blur-3xl pointer-events-none" />
-        <div className="absolute -left-16 -bottom-16 h-48 w-48 rounded-full bg-[var(--brand-purple)]/6 blur-3xl pointer-events-none" />
 
         <div className="max-w-3xl relative z-10 space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-[var(--accent)]">
+          <div className="inline-flex items-center gap-2 rounded-md border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-[var(--accent)]">
             <Icon name="briefcase" size={12} />
             <span>Case Studies</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-tight leading-[1.15]">
             Products with a point of view,{' '}
-            <span className="text-gradient">built end to end.</span>
+            <span className="text-accent">built end to end.</span>
           </h1>
 
           <p className="text-sm sm:text-[15px] leading-relaxed text-[var(--color-text-muted)] max-w-2xl">
@@ -566,11 +562,11 @@ const PortfolioPage: React.FC = () => {
       {/* ── Featured project (first) ──────────── */}
       <section>
         <div className="flex items-center gap-3 mb-5">
-          <span className="h-px flex-1 bg-gradient-to-r from-[var(--accent)]/40 to-transparent" />
+          <span className="h-px flex-1 bg-[var(--accent)]" />
           <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-[var(--accent)]">
             Featured Project
           </span>
-          <span className="h-px flex-1 bg-gradient-to-l from-[var(--accent)]/40 to-transparent" />
+          <span className="h-px flex-1 bg-[var(--accent)]" />
         </div>
         <FeaturedCard study={featured} />
       </section>
@@ -579,11 +575,11 @@ const PortfolioPage: React.FC = () => {
       {rest.length > 0 && (
         <section>
           <div className="flex items-center gap-3 mb-5">
-            <span className="h-px flex-1 bg-gradient-to-r from-[var(--border)] to-transparent" />
+            <span className="h-px flex-1 bg-[var(--border)]" />
             <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-[var(--color-text-muted)]">
               More Work
             </span>
-            <span className="h-px flex-1 bg-gradient-to-l from-[var(--border)] to-transparent" />
+            <span className="h-px flex-1 bg-[var(--border)]" />
           </div>
 
           <div className="space-y-8">

@@ -279,7 +279,7 @@ const AboutPage: React.FC = () => {
                 onClick={() => setIsCvOpen(!isCvOpen)}
                 aria-expanded={isCvOpen}
                 aria-controls="cv-preview"
-                className="inline-flex items-center gap-2 rounded-3xl bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--color-bg)] shadow-[0_0_18px_rgba(16,185,129,0.25)] transition hover:scale-[1.02]"
+                className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--color-bg)] transition hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] active:translate-y-px"
               >
                 <Icon name={isCvOpen ? "x" : "eye"} size={16} />
                 <span>{isCvOpen ? "Hide CV Preview" : "See My CV"}</span>
@@ -288,7 +288,7 @@ const AboutPage: React.FC = () => {
               <a
                 href={pdfUrl}
                 download="Guuleed-Maxamuud-Awabdi-CV.pdf"
-                className="inline-flex items-center gap-2 rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-3 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-transparent px-5 py-3 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)] active:translate-y-px"
               >
                 <Icon name="download" size={16} />
                 <span>Download CV</span>
@@ -302,7 +302,7 @@ const AboutPage: React.FC = () => {
                 <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)]">Character Card</p>
                 <h2 className="mt-2 text-2xl font-bold text-[var(--color-text)]">Profile Stats</h2>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--accent-soft)] accent-text">
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--accent-soft)] accent-text">
                 <Icon name="layers" size={22} />
               </div>
             </div>
@@ -325,10 +325,10 @@ const AboutPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-6 rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] p-4">
+            <div className="mt-6 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-4">
               <div className="flex items-center justify-between gap-3">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--brand-purple)]">Graduation Health Bar</p>
-                <span className="text-xs font-bold text-[var(--brand-purple)]">{graduation.hpPercent.toFixed(1)}% HP</span>
+                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--accent)]">Graduation progress</p>
+                <span className="text-xs font-bold text-[var(--accent)]">{graduation.hpPercent.toFixed(1)}% remaining</span>
               </div>
               <div className="mt-3 hp-bar-track">
                 <div className="hp-bar-fill" style={{ width: `${graduation.hpPercent}%` }} />
@@ -342,7 +342,7 @@ const AboutPage: React.FC = () => {
 
         {/* Embedded Interactive PDF Viewer */}
         {isCvOpen && (
-          <div id="cv-preview" className="mt-8 overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-6 shadow-2xl transition-all">
+          <div id="cv-preview" className="mt-8 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-6 transition-colors">
             <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] accent-text">
@@ -384,7 +384,7 @@ const AboutPage: React.FC = () => {
               </div>
             </div>
             
-            <div className="mt-4 aspect-[1/1.3] w-full rounded-2xl overflow-hidden border border-[var(--border)] bg-black/20">
+            <div className="mt-4 aspect-[1/1.3] w-full rounded-lg overflow-hidden border border-[var(--border)] bg-black/20">
               <iframe
                 src={`${pdfUrl}#toolbar=0&navpanes=0`}
                 title="Guuleed Maxamuud Aw Abdi CV PDF"
@@ -397,8 +397,8 @@ const AboutPage: React.FC = () => {
 
       {/* Fullscreen CV Viewer Modal */}
       {isModalCvOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md" onMouseDown={(event) => { if (event.target === event.currentTarget) closeCvModal(); }}>
-          <div ref={cvModalRef} role="dialog" aria-modal="true" aria-labelledby="cv-dialog-title" tabIndex={-1} className="flex h-[92vh] w-full max-w-5xl flex-col rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget) closeCvModal(); }}>
+          <div ref={cvModalRef} role="dialog" aria-modal="true" aria-labelledby="cv-dialog-title" tabIndex={-1} className="flex h-[92vh] w-full max-w-5xl flex-col rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-2xl">
             <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] accent-text">
@@ -413,7 +413,7 @@ const AboutPage: React.FC = () => {
                 <a
                   href={pdfUrl}
                   download="Guuleed-Maxamuud-Awabdi-CV.pdf"
-                  className="inline-flex items-center gap-2 rounded-2xl bg-[var(--accent)] px-4 py-2.5 text-xs font-semibold text-[var(--color-bg)] transition hover:scale-[1.02]"
+                  className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2.5 text-xs font-semibold text-[var(--color-bg)] transition hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] active:translate-y-px"
                 >
                   <Icon name="download" size={14} />
                   <span>Download CV</span>
@@ -422,13 +422,13 @@ const AboutPage: React.FC = () => {
                   type="button"
                   onClick={closeCvModal}
                   aria-label="Close CV dialog"
-                  className="flex h-9 w-9 items-center justify-center rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--color-text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition"
                 >
                   <Icon name="x" size={18} />
                 </button>
               </div>
             </div>
-            <div className="mt-4 flex-1 rounded-2xl overflow-hidden border border-[var(--border)] bg-black/40">
+            <div className="mt-4 flex-1 rounded-lg overflow-hidden border border-[var(--border)] bg-black/40">
               <iframe
                 src={pdfUrl}
                 title="Full Screen CV Viewer"
@@ -458,7 +458,7 @@ const AboutPage: React.FC = () => {
         </div>
 
         <div className="surface-card p-6 md:p-8">
-          <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--brand-purple)]">Education Path</p>
+          <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)]">Education path</p>
           <h3 className="mt-3 text-2xl font-bold text-[var(--color-text)]">B.Sc. Computer Science</h3>
           <p className="mt-2 text-sm text-[var(--color-text-muted)]">University of Hargeisa</p>
           <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
@@ -489,7 +489,7 @@ const AboutPage: React.FC = () => {
                 </div>
                 <h3 className="mt-3 text-lg font-bold text-[var(--color-text)]">{category.title}</h3>
                 <p className="mt-2 text-sm text-[var(--color-text-muted)]">{category.blurb}</p>
-                <span className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[var(--brand-purple)]">
+                <span className="mt-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[var(--accent)]">
                   {isOpen ? 'Close' : 'Open'}
                   <Icon
                     name="chevron-right"
@@ -503,12 +503,12 @@ const AboutPage: React.FC = () => {
         </div>
 
         {activeCategory && (
-          <div className="mt-6 rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-5">
+          <div className="mt-6 rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-5">
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {hobbyCards
                 .find((category) => category.id === activeCategory)
                 ?.items.map((item) => (
-                  <article key={item.title} className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3">
+                  <article key={item.title} className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
                     <div className="rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--surface-soft)]">
                       <img
                         src={item.image}

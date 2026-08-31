@@ -60,7 +60,7 @@ export const AnnualRecapPage: React.FC = () => {
       <section className="relative overflow-hidden surface-card p-6 md:p-10 lg:p-12">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-3.5 py-1 text-xs font-mono font-bold uppercase tracking-widest accent-text">
+            <div className="inline-flex items-center gap-2 rounded-md border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-3.5 py-1 text-xs font-mono font-bold uppercase tracking-widest accent-text">
               <Icon name="sparkles" size={14} /> Annual Reflection & Video Vault
             </div>
             <h1 className="mt-4 font-display text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-[var(--color-text)]">
@@ -111,7 +111,7 @@ export const AnnualRecapPage: React.FC = () => {
                     px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2
                     ${
                       isSelected
-                        ? 'bg-[var(--accent)] text-[var(--color-bg)] shadow-md scale-105'
+                        ? 'bg-[var(--accent)] text-[var(--color-bg)]'
                         : 'border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:border-[var(--accent)]'
                     }
                   `}
@@ -133,7 +133,7 @@ export const AnnualRecapPage: React.FC = () => {
               <Icon name="film" size={14} /> Non-Stop Video Reel
             </div>
             <h2 className="mt-1 text-2xl font-bold text-[var(--color-text)]">
-              Continuous Video Showcase 🎬
+              Continuous Video Showcase
             </h2>
           </div>
           <div className="flex items-center gap-2 text-xs font-mono text-[var(--color-text-muted)]">
@@ -145,8 +145,8 @@ export const AnnualRecapPage: React.FC = () => {
         {/* Video Player & Playlist Grid */}
         <div className="mt-8 grid gap-8 lg:grid-cols-[1.6fr_1fr] items-start">
           {/* Main Non-Stop Video Container */}
-          <div className="rounded-3xl border border-[var(--border)] bg-black/80 p-4 md:p-6 shadow-2xl overflow-hidden relative">
-            <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-slate-950 flex items-center justify-center border border-white/10 group">
+          <div className="rounded-xl border border-[var(--border)] bg-black/80 p-4 md:p-6 overflow-hidden relative">
+            <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-slate-950 flex items-center justify-center border border-white/10 group">
               {currentVideo && !videoError ? (
                 <>
                   <video
@@ -163,9 +163,9 @@ export const AnnualRecapPage: React.FC = () => {
                   />
 
                   {/* Non-Stop Player Controls Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4 pointer-events-none">
+                  <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4 pointer-events-none">
                     <div className="flex justify-between items-start pointer-events-auto">
-                      <span className="rounded-xl bg-black/70 backdrop-blur-md px-3 py-1 text-xs font-mono font-bold text-emerald-400 border border-emerald-500/30">
+                      <span className="rounded-md bg-black/90 px-3 py-1 text-xs font-mono font-bold text-emerald-400 border border-emerald-500/30">
                         ▶ Playing: {currentVideo.title}
                       </span>
                     </div>
@@ -174,7 +174,7 @@ export const AnnualRecapPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={handlePlayToggle}
-                        className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--accent)] text-[var(--color-bg)] font-bold shadow-lg hover:scale-110 transition"
+                        className="flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--accent)] text-[var(--color-bg)] font-bold transition-colors hover:bg-[var(--color-text)] active:translate-y-px"
                       >
                         <Icon name={isPlaying ? 'pause' : 'play'} size={24} />
                       </button>
@@ -183,7 +183,7 @@ export const AnnualRecapPage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setIsMuted(!isMuted)}
-                          className="flex h-10 w-10 items-center justify-center rounded-xl bg-black/70 text-white backdrop-blur-md hover:bg-black/90 transition border border-white/10"
+                          className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-black/80 text-white transition-colors hover:bg-black"
                           title={isMuted ? 'Unmute' : 'Mute'}
                         >
                           <Icon name={isMuted ? 'volume-x' : 'volume-2'} size={18} />
@@ -196,7 +196,7 @@ export const AnnualRecapPage: React.FC = () => {
                               (prev) => (prev - 1 + videoList.length) % videoList.length
                             )
                           }
-                          className="flex h-10 w-10 items-center justify-center rounded-xl bg-black/70 text-white backdrop-blur-md hover:bg-black/90 transition border border-white/10"
+                           className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-black/80 text-white transition-colors hover:bg-black"
                           title="Previous Video"
                         >
                           <Icon name="chevron-left" size={18} />
@@ -205,7 +205,7 @@ export const AnnualRecapPage: React.FC = () => {
                         <button
                           type="button"
                           onClick={handleVideoEnded}
-                          className="flex h-10 w-10 items-center justify-center rounded-xl bg-black/70 text-white backdrop-blur-md hover:bg-black/90 transition border border-white/10"
+                           className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-black/80 text-white transition-colors hover:bg-black"
                           title="Next Video"
                         >
                           <Icon name="chevron-right" size={18} />
@@ -228,7 +228,7 @@ export const AnnualRecapPage: React.FC = () => {
 
             {/* Video Title Details */}
             {currentVideo && (
-              <div className="mt-4 p-4 rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] flex items-center justify-between gap-4">
+              <div className="mt-4 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-4 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] accent-text">
                     <Icon name="play" size={18} />
@@ -264,10 +264,10 @@ export const AnnualRecapPage: React.FC = () => {
                     key={vid.id}
                     onClick={() => setCurrentVideoIndex(index)}
                     className={`
-                      w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between gap-3
+                      w-full text-left rounded-lg border p-4 transition-colors flex items-center justify-between gap-3
                       ${
                         isActive
-                          ? 'border-[var(--accent)] bg-[var(--accent-soft)] shadow-md scale-[1.01]'
+                          ? 'border-[var(--accent)] bg-[var(--accent-soft)]'
                           : 'border-[var(--border)] bg-[var(--surface-soft)] hover:border-[var(--accent)]/50 hover:bg-[var(--surface)]'
                       }
                     `}
@@ -312,7 +312,7 @@ export const AnnualRecapPage: React.FC = () => {
               <Icon name="shield-check" size={14} /> Yearly Achievements
             </div>
             <h2 className="mt-1 text-2xl font-bold text-[var(--color-text)]">
-              What Was Gained for Age {yearConfig.age} 🚀
+              What Was Gained for Age {yearConfig.age}
             </h2>
           </div>
           <div className="text-xs font-mono text-[var(--color-text-muted)]">
@@ -324,7 +324,7 @@ export const AnnualRecapPage: React.FC = () => {
           {yearConfig.gains.map((gain, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] p-5 hover:border-[var(--accent)] transition-all"
+              className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-5 transition-colors hover:border-[var(--accent)]"
             >
               <div className="flex items-center justify-between gap-3">
                 <span className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--accent)]">

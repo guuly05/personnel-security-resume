@@ -27,16 +27,18 @@ export interface BlogPost extends BlogFrontmatter {
 type RawSources = Record<string, string>;
 
 function browserSources(): RawSources {
-  // Vite expands this at build time. The guarded access keeps the same module
-  // usable by the Node-based sitemap, feed, and prerender scripts.
-  if (typeof import.meta.glob === 'function') {
+  // Vite expands this direct call at build time. In the Node-based sitemap,
+  // feed, and prerender scripts import.meta.glob is unavailable, so fall back
+  // to the filesystem loader below.
+  try {
     return import.meta.glob('./posts/*.md', {
       eager: true,
       import: 'default',
       query: '?raw',
     }) as RawSources;
+  } catch {
+    return {};
   }
-  return {};
 }
 
 async function nodeSources(): Promise<RawSources> {

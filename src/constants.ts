@@ -325,7 +325,7 @@ export interface MediaItem {
 export interface HobbyCategory {
   id: string;
   label: string;
-  emoji: string;
+  icon: string;
   items: MediaItem[];
 }
 
@@ -333,7 +333,7 @@ export const HOBBY_CATEGORIES: HobbyCategory[] = [
   {
     id: 'anime',
     label: 'Anime',
-    emoji: '📺',
+    icon: 'tv',
     items: [
       {
         title: 'Code Geass',
@@ -365,7 +365,7 @@ export const HOBBY_CATEGORIES: HobbyCategory[] = [
   {
     id: 'games',
     label: 'Games',
-    emoji: '🎮',
+    icon: 'gamepad-2',
     items: [
       {
         title: 'Genshin Impact',
@@ -397,7 +397,7 @@ export const HOBBY_CATEGORIES: HobbyCategory[] = [
   {
     id: 'books',
     label: 'Books',
-    emoji: '📚',
+    icon: 'book-open',
     items: [
       {
         title: 'Pride and Prejudice',
@@ -429,7 +429,7 @@ export const HOBBY_CATEGORIES: HobbyCategory[] = [
   {
     id: 'manhwa',
     label: 'Manhwa',
-    emoji: '📖',
+    icon: 'book-marked',
     items: [
       {
         title: 'Barbarian Quest',

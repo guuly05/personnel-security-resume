@@ -16,9 +16,9 @@ const ExperiencePage: React.FC = () => {
 
         <div className="space-y-6">
           {EXPERIENCES.map((experience) => (
-            <div key={experience.title} className="grid gap-6 lg:grid-cols-[280px_1fr] rounded-[1.75rem] border border-[var(--border)] bg-[var(--surface-soft)] p-6 md:p-8">
+            <div key={experience.title} className="grid gap-6 lg:grid-cols-[280px_1fr] rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-6 md:p-8">
               <div className="space-y-4">
-                <div className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/15 bg-[var(--accent-soft)] px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-[var(--accent)]">
+                <div className="inline-flex items-center gap-2 rounded-md border border-[var(--accent)]/15 bg-[var(--accent-soft)] px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-[var(--accent)]">
                   <Icon name="clock" size={14} />
                   {experience.dateRange}
                 </div>
