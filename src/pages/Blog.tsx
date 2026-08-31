@@ -24,8 +24,8 @@ type MoodPalette = {
 const MOOD_PALETTES: Record<string, MoodPalette> = {
   Suspenseful: { ambientA: 'rgba(45, 212, 191, 0.1)', ambientB: 'rgba(56, 189, 248, 0.08)', accent: 'var(--accent)', soft: 'var(--surface-soft)', border: 'var(--border)' },
   Contemplative: { ambientA: 'rgba(45, 212, 191, 0.08)', ambientB: 'rgba(56, 189, 248, 0.06)', accent: 'var(--accent)', soft: 'var(--surface-soft)', border: 'var(--border)' },
-  Analytical: { ambientA: 'rgba(56, 189, 248, 0.08)', ambientB: 'rgba(8, 145, 178, 0.07)', accent: 'var(--brand-purple)', soft: 'var(--surface-soft)', border: 'var(--border)' },
-  'Deep-Dive': { ambientA: 'rgba(45, 212, 191, 0.08)', ambientB: 'rgba(56, 189, 248, 0.08)', accent: 'var(--brand-purple)', soft: 'var(--surface-soft)', border: 'var(--border)' },
+  Analytical: { ambientA: 'var(--accent-soft)', ambientB: 'var(--surface-soft)', accent: 'var(--accent)', soft: 'var(--surface-soft)', border: 'var(--border)' },
+  'Deep-Dive': { ambientA: 'var(--accent-soft)', ambientB: 'var(--surface-soft)', accent: 'var(--accent)', soft: 'var(--surface-soft)', border: 'var(--border)' },
 };
 
 const ALLOWED_PROTOCOLS = new Set(['http:', 'https:']);
