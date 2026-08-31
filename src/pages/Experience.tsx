@@ -7,10 +7,10 @@ const ExperiencePage: React.FC = () => {
     <div className="surface-card p-8 md:p-10 overflow-hidden">
       <div className="space-y-8">
         <div className="space-y-4">
-          <span className="text-[10px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold">Real engagements</span>
-          <h1 className="text-4xl font-semibold md:text-5xl">Cybersecurity and IT experience beyond theory.</h1>
+          <span className="text-[10px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold">Selected experience</span>
+          <h1 className="text-4xl font-semibold md:text-5xl">Building across the stack, from idea to operation.</h1>
           <p className="max-w-3xl text-[15px] leading-8 text-[var(--color-text-muted)]">
-            These engagements show how I turn discovery into clear action: find the issue, explain it clearly, and give the team a strong next step.
+            These engagements show how I move between product delivery, systems thinking, and security-minded engineering: understand the context, make the work clear, and leave behind something dependable.
           </p>
         </div>
 

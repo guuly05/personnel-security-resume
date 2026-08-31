@@ -6,18 +6,18 @@
   --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Space Grotesk', 'Manrope', ui-sans-serif, system-ui, sans-serif;
 
-  --color-bg: #0b1117;
-  --color-bg-secondary: #131c26;
-  --color-surface: rgba(12, 17, 25, 0.84);
-  --color-surface-soft: rgba(255, 255, 255, 0.05);
-  --color-border: rgba(148, 163, 184, 0.22);
-  --color-text: #f4f8fc;
-  --color-text-muted: #9fb1c6;
+  --color-bg: #0d1220;
+  --color-bg-secondary: #17162a;
+  --color-surface: rgba(18, 22, 38, 0.86);
+  --color-surface-soft: rgba(255, 255, 255, 0.055);
+  --color-border: rgba(180, 190, 216, 0.2);
+  --color-text: #f8f7f2;
+  --color-text-muted: #aeb4c7;
 
-  --accent: #2dd4bf;
-  --accent-soft: rgba(45, 212, 191, 0.15);
-  --brand-cyan: #2dd4bf;
-  --brand-purple: #38bdf8;
+  --accent: #f3b85b;
+  --accent-soft: rgba(243, 184, 91, 0.14);
+  --brand-cyan: #8dd9f5;
+  --brand-purple: #b9a1ff;
 
   --surface: var(--color-surface);
   --surface-soft: var(--color-surface-soft);
@@ -29,18 +29,18 @@
 :root[data-theme='light'] {
   color-scheme: light;
 
-  --color-bg: #eef3f8;
-  --color-bg-secondary: #dfe8f1;
+  --color-bg: #f5f2eb;
+  --color-bg-secondary: #e7e7f4;
   --color-surface: rgba(255, 255, 255, 0.86);
   --color-surface-soft: rgba(15, 23, 42, 0.04);
   --color-border: rgba(15, 23, 42, 0.14);
-  --color-text: #0f1c2e;
-  --color-text-muted: #4a5d73;
+  --color-text: #172033;
+  --color-text-muted: #5a6476;
 
-  --accent: #0891b2;
-  --accent-soft: rgba(8, 145, 178, 0.14);
-  --brand-cyan: #0891b2;
-  --brand-purple: #0369a1;
+  --accent: #c45d2c;
+  --accent-soft: rgba(196, 93, 44, 0.12);
+  --brand-cyan: #286f8e;
+  --brand-purple: #6652b9;
 
   --surface: var(--color-surface);
   --surface-soft: var(--color-surface-soft);
@@ -70,8 +70,8 @@
     margin: 0;
     font-family: var(--font-sans);
     background:
-      radial-gradient(circle at 8% 10%, rgba(45, 212, 191, 0.12), transparent 30%),
-      radial-gradient(circle at 92% 18%, rgba(56, 189, 248, 0.1), transparent 26%),
+      radial-gradient(circle at 10% 6%, color-mix(in srgb, var(--brand-purple) 15%, transparent), transparent 28%),
+      radial-gradient(circle at 94% 14%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 24%),
       linear-gradient(160deg, var(--color-bg), var(--color-bg-secondary));
     color: var(--color-text);
     transition: background 0.25s ease, color 0.25s ease;
@@ -125,7 +125,7 @@
   .surface-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 2rem;
+    border-radius: 1.75rem;
     box-shadow: var(--shadow);
     backdrop-filter: blur(18px);
     transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
@@ -143,6 +143,46 @@
 
   .accent-text {
     color: var(--accent);
+  }
+
+  .eyebrow {
+    color: var(--accent);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+    font-size: 0.625rem;
+    font-weight: 800;
+    letter-spacing: 0.28em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .home-hero {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .home-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.24;
+    background-image: linear-gradient(to right, color-mix(in srgb, var(--color-text) 6%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--color-text) 6%, transparent) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: linear-gradient(115deg, transparent 15%, black 55%, transparent 95%);
+  }
+
+  .home-hero > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .home-stack-card {
+    transform: rotate(1.5deg);
+    transition: transform 0.3s ease;
+  }
+
+  .home-stack-card:hover {
+    transform: rotate(0deg) translateY(-4px);
   }
 
   .brand-purple-text {

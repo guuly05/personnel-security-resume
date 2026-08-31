@@ -1,9 +1,5 @@
 /// <reference types="vite/client" />
 
-import { readdirSync, readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
 export interface BlogCitation {
   title: string;
   url: string;
@@ -43,9 +39,16 @@ function browserSources(): RawSources {
   return {};
 }
 
-function nodeSources(): RawSources {
+async function nodeSources(): Promise<RawSources> {
   if (typeof process === 'undefined' || !process.versions?.node) return {};
 
+  // Keep Node-only filesystem access out of the browser bundle. The browser
+  // path above is handled by Vite's import.meta.glob implementation.
+  const [{ readdirSync, readFileSync }, { dirname, join }, { fileURLToPath }] = await Promise.all([
+    import('node:fs'),
+    import('node:path'),
+    import('node:url'),
+  ]);
   const directory = join(dirname(fileURLToPath(import.meta.url)), 'posts');
   return Object.fromEntries(
     readdirSync(directory)
@@ -128,7 +131,7 @@ function postFromSource(path: string, source: string): BlogPost {
   };
 }
 
-const sources = Object.keys(browserSources()).length > 0 ? browserSources() : nodeSources();
+const sources = Object.keys(browserSources()).length > 0 ? browserSources() : await nodeSources();
 
 export const BLOG_POSTS: BlogPost[] = Object.entries(sources)
   .map(([path, source]) => postFromSource(path, source))

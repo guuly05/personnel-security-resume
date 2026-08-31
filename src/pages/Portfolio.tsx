@@ -534,15 +534,15 @@ const PortfolioPage: React.FC = () => {
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-tight leading-[1.15]">
-            Security-first engineering,{' '}
-            <span className="text-gradient">documented end to end.</span>
+            Products with a point of view,{' '}
+            <span className="text-gradient">built end to end.</span>
           </h1>
 
           <p className="text-sm sm:text-[15px] leading-relaxed text-[var(--color-text-muted)] max-w-2xl">
             Each project below is a complete case study — from identifying a real problem, through
-            architecture and security decisions, to a working product. I build tools that respect
-            user privacy, keep secrets off the client, and solve problems clearly enough to explain
-            to any team.
+            interface and architecture decisions, to a working product. I care about useful UX,
+            maintainable code, dependable delivery, and security that supports the experience instead
+            of getting in its way.
           </p>
 
           {/* Quick stats */}

@@ -238,11 +238,11 @@ const DETAILED_TOOLS: DetailedTool[] = [
 
 const SKILL_CATEGORIES: SkillCategory[] = [
   {
-    title: 'Cybersecurity & Penetration Testing',
-    subtitle: 'Vulnerability assessment, offensive testing, network forensics, and system hardening',
+    title: 'Security Practice',
+    subtitle: 'Vulnerability assessment, application testing, network visibility, and safer systems',
     icon: 'shield-check',
     color: 'from-emerald-500 to-teal-600',
-    badge: 'Core Focus',
+    badge: 'Specialization',
     skills: [
       { name: 'Vulnerability Assessment (Nessus, Nmap)', level: 92, experience: 'Hands-on audits & enterprise reports', tags: ['Offensive', 'CVEs', 'Compliance'] },
       { name: 'Penetration Testing (Burp Suite, Metasploit)', level: 88, experience: 'Web app interception, parameter fuzzing & exploit verification', tags: ['OWASP', 'Burp', 'Exploits'] },
@@ -252,11 +252,11 @@ const SKILL_CATEGORIES: SkillCategory[] = [
     ]
   },
   {
-    title: 'Full-Stack Web Development',
-    subtitle: 'Modern UI engineering, API architectures, serverless backends & cloud deployments',
+    title: 'Frontend & Full-Stack Development',
+    subtitle: 'Modern interfaces, API architecture, serverless backends, and cloud deployments',
     icon: 'code-2',
     color: 'from-blue-500 to-indigo-600',
-    badge: 'Engineering',
+    badge: 'Core Craft',
     skills: [
       { name: 'React (v19) & TypeScript', level: 90, experience: 'SPAs, custom hooks, dynamic UI components & state', tags: ['Frontend', 'React', 'TS'] },
       { name: 'Tailwind CSS & Modern UI Styling', level: 94, experience: 'Glassmorphism, dark/light themes, dynamic animation & design tokens', tags: ['UI/UX', 'Tailwind', 'CSS'] },
@@ -267,11 +267,11 @@ const SKILL_CATEGORIES: SkillCategory[] = [
     ]
   },
   {
-    title: 'Automation, Languages & Tools',
-    subtitle: 'Scripting languages, systems code & developer tooling',
+    title: 'DevOps, Automation & Systems',
+    subtitle: 'Delivery workflows, scripting, systems code, and developer tooling',
     icon: 'cpu',
     color: 'from-purple-500 to-pink-600',
-    badge: 'Toolkit',
+    badge: 'Delivery',
     skills: [
       { name: 'Python (Automation & Security Scripting)', level: 88, experience: 'Socket programming, report generation & AI integrations', tags: ['Python', 'Automation', 'AI'] },
       { name: 'JavaScript (ES6+) & Web Standards', level: 90, experience: 'Asynchronous workflows, DOM manipulation & client performance', tags: ['Web', 'JS', 'Async'] },
@@ -302,11 +302,18 @@ const SkillsPage: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const categories = ['All', 'Offensive Security', 'Full-Stack Development', 'Automation & Security', 'Vulnerability Assessment'];
+  const categories = ['All', 'Frontend & Full-Stack', 'Backend & Cloud', 'DevOps & Tooling', 'Security Practice'];
   
   const filteredTools = activeCategory === 'All' 
     ? DETAILED_TOOLS 
-    : DETAILED_TOOLS.filter(t => t.category.toLowerCase().includes(activeCategory.toLowerCase()));
+    : DETAILED_TOOLS.filter((tool) => {
+      const category = tool.category.toLowerCase();
+      if (activeCategory === 'Frontend & Full-Stack') return category.includes('frontend') || category.includes('full-stack');
+      if (activeCategory === 'Backend & Cloud') return category.includes('backend') || category.includes('cloud') || category.includes('service');
+      if (activeCategory === 'DevOps & Tooling') return category.includes('devops') || category.includes('tooling') || category.includes('deployment') || category.includes('automation') || category.includes('system');
+      if (activeCategory === 'Security Practice') return category.includes('security') || category.includes('vulnerability') || category.includes('reconnaissance') || category.includes('forensics') || category.includes('offensive');
+      return true;
+    });
 
   return (
     <div className="space-y-12">
@@ -315,12 +322,12 @@ const SkillsPage: React.FC = () => {
         <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[var(--accent)]/10 blur-3xl pointer-events-none" />
         <div className="max-w-3xl space-y-4 relative z-10">
           <div className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-3.5 py-1 text-xs font-semibold text-[var(--accent)]">
-            <Icon name="shield-check" size={14} />
-            <span>Cybersecurity & Full-Stack Engineering</span>
+            <Icon name="layers" size={14} />
+            <span>Full-Stack · DevOps · Secure Engineering</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Skills & Technical Proficiency</h1>
           <p className="text-base text-[var(--color-text-muted)] leading-relaxed">
-            A breakdown of my hands-on capabilities across vulnerability assessment, penetration testing, network security, and full-stack web development (React, Node/Express, Tailwind CSS, Firebase, and Vercel).
+            A practical breakdown of how I build and ship: frontend systems, backend APIs, cloud services, CI/CD workflows, automation, and the cybersecurity practices that strengthen the whole stack.
           </p>
         </div>
       </section>
@@ -330,7 +337,7 @@ const SkillsPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <span className="text-[10px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold">Interactive Breakdown</span>
-            <h2 className="text-2xl font-bold mt-1">Skill Mastery & Domain Breakdown</h2>
+            <h2 className="text-2xl font-bold mt-1">The stack, broken down.</h2>
           </div>
           <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)]">
             <span className="h-2.5 w-2.5 rounded-full bg-[var(--accent)] animate-pulse" />
@@ -401,7 +408,7 @@ const SkillsPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <span className="text-[10px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold">Interactive Toolset</span>
-            <h2 className="text-2xl font-bold mt-1">Tools & Services (Click for Real-World Usage Context)</h2>
+            <h2 className="text-2xl font-bold mt-1">Tools I reach for in real work.</h2>
           </div>
           
           {/* Category Filter Pills */}
@@ -510,7 +517,7 @@ const SkillsPage: React.FC = () => {
                 <div className="space-y-3 rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] p-5">
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--accent)]">
                   <Icon name="target" size={16} />
-                  <span>Real-World Scenarios & How I Use It</span>
+                  <span>Real-world scenarios & how I use it</span>
                 </div>
                 <ul className="space-y-2 text-sm text-[var(--color-text-muted)]">
                   {selectedTool.scenarios.map((sc, i) => (

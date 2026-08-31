@@ -37,7 +37,7 @@ export type PageMetadata = {
   };
 };
 
-const TITLE_SUFFIX = `${FULL_NAME} — Cybersecurity Portfolio`;
+const TITLE_SUFFIX = `${FULL_NAME} — Full-Stack Developer Portfolio`;
 
 const PROJECT_SEO: Record<string, { title: string; description: string }> = {
   'cyber-dashboard': {
@@ -65,9 +65,9 @@ const PERSON_SCHEMA = {
   alternateName: 'Guuleed Maxamuud',
   url: `${SITE_URL}/about`,
   email: 'guuleedmaxamuud40@gmail.com',
-  jobTitle: 'Vulnerability Assessment & Penetration Tester',
+  jobTitle: 'Full-Stack Developer & DevOps-minded Engineer',
   description:
-    'Cybersecurity professional specialising in penetration testing, vulnerability assessment, ethical hacking, and network security.',
+    'Full-stack developer building interfaces, APIs, delivery workflows, automation, and secure software systems.',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Hargeisa',
@@ -75,10 +75,12 @@ const PERSON_SCHEMA = {
   },
   sameAs: ['https://linkedin.com/in/guuleed-aw-abdi-517928277', 'https://github.com/guuly05'],
   knowsAbout: [
+    'Frontend Development',
+    'Backend Development',
+    'DevOps and CI/CD',
+    'Secure Software Engineering',
     'Penetration Testing',
     'Vulnerability Assessment',
-    'Ethical Hacking',
-    'Network Security',
     'Burp Suite',
     'Nessus',
     'Nmap',
@@ -92,56 +94,56 @@ const WEBSITE_SCHEMA = {
   '@id': `${SITE_URL}/#website`,
   url: `${SITE_URL}/`,
   name: `${FULL_NAME} Portfolio`,
-  description: 'Professional cybersecurity portfolio, security research, projects, and credentials.',
+  description: 'Full-stack developer portfolio covering product builds, backend systems, DevOps workflows, automation, and secure engineering.',
   inLanguage: 'en-US',
   publisher: { '@id': `${SITE_URL}/#person` },
 };
 
 const pageMeta: Record<Exclude<RouteKey, 'reflection' | 'surprise' | 'vault' | 'not-found'>, { title: string; description: string; path: string }> = {
   home: {
-    title: `${FULL_NAME} | Cybersecurity & Penetration Testing Portfolio`,
+    title: `${FULL_NAME} | Full-Stack Developer & DevOps Portfolio`,
     description:
-      `${FULL_NAME} — Vulnerability Assessment & Penetration Tester based in Hargeisa, Somaliland. Explore ethical hacking projects, verified certifications, security audits, and network protection research.`,
+      `${FULL_NAME} — Full-stack developer based in Hargeisa, Somaliland. Explore frontend and backend builds, DevOps workflows, automation, secure engineering, and technical case studies.`,
     path: '/',
   },
   about: {
-    title: `About ${FULL_NAME} | Cybersecurity Specialist`,
-    description: `Learn about ${FULL_NAME}, a cybersecurity specialist and Computer Science student focused on ethical hacking, vulnerability research, and systems protection.`,
+    title: `About ${FULL_NAME} | Full-Stack Developer`,
+    description: `Learn about ${FULL_NAME}, a full-stack developer and Computer Science student focused on useful products, dependable systems, and secure engineering.`,
     path: '/about',
   },
   skills: {
-    title: `Technical Security Skills | ${TITLE_SUFFIX}`,
-    description: `${FULL_NAME}'s security skills include Burp Suite, Nessus, Nmap, Python automation, Linux hardening, network analysis, and secure application design.`,
+    title: `Technical Capabilities | ${TITLE_SUFFIX}`,
+    description: `${FULL_NAME}'s capabilities span React, TypeScript, Node APIs, cloud deployment, CI/CD, Python automation, Linux systems, and secure application design.`,
     path: '/skills',
   },
   experience: {
-    title: `Cybersecurity & IT Experience | ${TITLE_SUFFIX}`,
-    description: `${FULL_NAME}'s hands-on experience spans web application testing, vulnerability remediation, security documentation, and enterprise IT support.`,
+    title: `Engineering Experience | ${TITLE_SUFFIX}`,
+    description: `${FULL_NAME}'s hands-on experience spans B2B web development, frontend architecture, delivery workflows, systems thinking, and security-minded engineering.`,
     path: '/experience',
   },
   certificates: {
-    title: `Cybersecurity Certifications & Credentials | ${TITLE_SUFFIX}`,
-    description: `Explore ${FULL_NAME}'s verified cybersecurity credentials, security training, and Computer Science education.`,
+    title: `Learning & Credentials | ${TITLE_SUFFIX}`,
+    description: `Explore ${FULL_NAME}'s verified credentials, engineering and security training, and Computer Science education.`,
     path: '/certificates',
   },
   portfolio: {
-    title: `Security Projects & Case Studies | ${TITLE_SUFFIX}`,
-    description: `Explore ${FULL_NAME}'s security engineering projects, penetration testing research, privacy-first tools, and documented case studies.`,
+    title: `Selected Work & Case Studies | ${TITLE_SUFFIX}`,
+    description: `Explore ${FULL_NAME}'s product builds, full-stack projects, privacy-first tools, security engineering work, and documented case studies.`,
     path: '/portfolio',
   },
   book: {
-    title: `Book a Cybersecurity Call | ${FULL_NAME}`,
-    description: `Schedule a focused conversation with ${FULL_NAME} about penetration testing, vulnerability assessment, security projects, or collaboration.`,
+    title: `Book a Project Call | ${FULL_NAME}`,
+    description: `Schedule a focused conversation with ${FULL_NAME} about a product build, engineering project, delivery workflow, security work, or collaboration.`,
     path: '/book',
   },
   blog: {
-    title: `Cybersecurity Blog & Research | ${TITLE_SUFFIX}`,
-    description: `Read technical write-ups and research commentary about cybersecurity, vulnerability disclosure, security engineering, and technology.`,
+    title: `Engineering Blog & Research | ${TITLE_SUFFIX}`,
+    description: `Read technical write-ups and research commentary about software engineering, systems, product thinking, cybersecurity, and technology.`,
     path: '/blog',
   },
   contact: {
-    title: `Contact ${FULL_NAME} | Cybersecurity Consulting`,
-    description: `Contact ${FULL_NAME} about vulnerability assessments, penetration testing, security consultations, or career opportunities.`,
+    title: `Contact ${FULL_NAME} | Software Engineering`,
+    description: `Contact ${FULL_NAME} about a software build, full-stack collaboration, delivery workflow, secure engineering, or career opportunities.`,
     path: '/contact',
   },
   recap: {

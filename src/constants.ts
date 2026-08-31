@@ -2,7 +2,7 @@ import { Achievement, Certificate, Course, Experience, Project, Skill } from './
 
 export const PERSONAL_INFO = {
   name: "Guuleed Maxmuud Aw Abdi",
-  title: "Vulnerability Assessment & Penetration Tester",
+  title: "Full-Stack Developer & DevOps-minded Engineer",
   location: "Hargeisa, Somaliland",
   phone: "+252 634406157",
   email: "guuleedmaxamuud40@gmail.com",
@@ -28,41 +28,43 @@ export const HOBBIES = [
 
 // New About Me intro content inserted for the enhanced About page.
 export const ABOUT_LETTER = [
-  "Hello, I am Guuleed, a cybersecurity-focused technologist who approaches every project with curiosity, discipline, and respect for the people who depend on the systems I help protect.",
-  "I enjoy turning complex technical problems into clear, practical solutions. Whether I am testing an application, documenting risks, or supporting users, I try to communicate calmly, work carefully, and leave things stronger than I found them.",
-  "Technology moves quickly, and that is exactly what keeps me motivated. I am committed to continuous learning through books, articles, online courses, documentation, and hands-on tinkering with new tools."
+  "Hello, I am Guuleed, a curious software builder who likes understanding the whole journey from a first interface to the systems that keep it running.",
+  "I work across frontend, backend, automation, deployment, and security. I enjoy turning a rough idea into a clear product, wiring the APIs behind it, and setting up a delivery path that is reliable enough for other people to build on.",
+  "Security is an important part of how I think, not the only thing I build. I bring that perspective to everyday engineering decisions while continuing to learn through books, documentation, online courses, and hands-on experiments."
 ];
 
 // New Experience content inserted for the Experience section.
 export const EXPERIENCES: Experience[] = [
   {
-    title: "Penetration Tester",
+    title: "Security & Software Engineering Intern",
     company: "Confidential Family-Owned Business",
     dateRange: "June 2024 - August 2024",
     bullets: [
-      "Conducted vulnerability assessments on internal web applications and network services, identifying 12 high-priority security issues that were remediated within the engagement period.",
-      "Validated authentication, access control, and input-handling weaknesses using tools such as Nmap, Burp Suite, and manual testing techniques.",
-      "Delivered a clear penetration test report with prioritized remediation steps, earning positive feedback from the business owner for its practical and actionable guidance."
+      "Mapped internal web applications and network services, identifying 12 high-priority issues and translating each one into a clear engineering fix.",
+      "Worked across application flows, authentication, access control, Linux services, and network tooling using Nmap, Burp Suite, and hands-on testing.",
+      "Delivered practical documentation that helped a small team understand both the immediate fix and the longer-term way to improve its delivery process."
     ]
   },
   {
-    title: "General IT Support",
-    company: "Confidential Family-Owned Business",
-    dateRange: "August 2025 - October 2025",
+    title: "Freelance Web Developer",
+    company: "Samaale General Trading Co.",
+    dateRange: "Freelance · Project-based",
     bullets: [
-      "Resolved over 95% of end-user IT support requests on first contact, covering laptop setup, software configuration, connectivity issues, and account access.",
-      "Streamlined onboarding for 5 remote workers by configuring laptops, VPN access, and required applications, completing setup work about 40% faster than the previous manual process.",
-      "Created quick-start guides and troubleshooting documentation that reduced repetitive support questions by an estimated 30% during the support period."
+      "Architected and deployed a type-safe B2B corporate web portal and bulk catalog from scratch for a trading and logistics firm in the Horn of Africa using React 19, Vite 6, TypeScript, Tailwind CSS v4, and Framer Motion.",
+      "Designed immutable product and category schemas with strict TypeScript constraints to eliminate an entire class of runtime errors and keep the client architecture scalable.",
+      "Optimized the build workflow with Vite, absolute path aliases, and strict tsc --noEmit checks; used Tailwind's Vite integration to keep theme compilation close to the design system.",
+      "Improved rendering performance with a custom LazyRender utility powered by IntersectionObserver, plus memoized inventory search and portal-based modal layers.",
+      "Built a dual-action quote flow that stores selections locally and generates URI-encoded WhatsApp Business messages for direct follow-up.",
+      "Added an ErrorBoundary for fault-tolerant UI behavior and embedded JSON-LD schemas for WholesaleStore, Organization, and FAQPage search visibility."
     ]
   }
 ];
 
 export const CORE_SKILLS = [
-  "Penetration testing (Nessus, Burp Suite)", "Vulnerability assessment", 
-  "Python / Java automation", "Linux system hardening", 
-  "Network security protocols", "Risk management", 
-  "Technical documentation", "TypeScript", "React", 
-  "JavaScript", "C", "Information Security"
+  "React / TypeScript", "Frontend architecture", "Node / Express APIs",
+  "Python / Java automation", "CI/CD pipelines", "Cloud deployment",
+  "Linux systems", "Git / GitHub workflows", "Database integration",
+  "Secure coding", "Penetration testing", "Technical documentation"
 ];
 
 export const TOOLSET = [
@@ -275,16 +277,16 @@ export const CERTIFICATES: Certificate[] = [
 ];
 
 export const ACHIEVEMENTS: Achievement[] = [
-  { text: "Increased system uptime through proactive Linux monitoring and tuning.", metric: "20%" },
-  { text: "Reduced manual security tasks using Python automation (log parsing, user audits).", metric: "30%" },
-  { text: "Strengthened access controls for freelance clients, passing all reviews.", metric: "5 Clients" },
-  { text: "System audits conducted bi-monthly, patching critical CVEs.", metric: "15+ CVEs" }
+  { text: "Improved system uptime through proactive Linux monitoring and tuning.", metric: "20%" },
+  { text: "Reduced repetitive technical work with Python automation and reusable scripts.", metric: "30%" },
+  { text: "Supported remote onboarding with repeatable setup and documentation workflows.", metric: "5 Users" },
+  { text: "Built projects that connect product thinking, delivery, and secure engineering habits.", metric: "End to End" }
 ];
 
 export const PROJECTS: Project[] = [
   {
     title: "BookWanag",
-    description: "A modern, simple online book store featuring a clean UI, intuitive navigation, and a secure checkout simulation. Built to demonstrate high-performance frontend architecture.",
+    description: "A modern online bookstore with a clean interface, intuitive navigation, and a checkout flow built to demonstrate thoughtful frontend architecture.",
     tech: ["React", "Tailwind CSS", "TypeScript", "Motion"],
     achievement: "Streamlined UX core for rapid browsing.",
     link: "https://github.com/guuly05"
@@ -298,7 +300,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: "Automated Vulnerability Scanner",
-    description: "Built a Python-based script that integrates with Nmap and OpenVAS API to scan network ranges, parse vulnerabilities, and generate prioritized email reports.",
+    description: "Built a Python automation workflow that integrates with Nmap and OpenVAS, parses scan results, and generates prioritized email reports.",
     tech: ["Python", "Nmap", "OpenVAS", "SMTP"],
     achievement: "Reduced scan-to-report time by 70%.",
     link: "#"
