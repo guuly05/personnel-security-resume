@@ -9,7 +9,6 @@ export interface SkillCategory {
   title: string;
   subtitle: string;
   icon: string;
-  color: string;
   badge: string;
   skills: {
     name: string;
@@ -241,7 +240,6 @@ const SKILL_CATEGORIES: SkillCategory[] = [
     title: 'Security Practice',
     subtitle: 'Vulnerability assessment, application testing, network visibility, and safer systems',
     icon: 'shield-check',
-    color: 'from-emerald-500 to-teal-600',
     badge: 'Specialization',
     skills: [
       { name: 'Vulnerability Assessment (Nessus, Nmap)', level: 92, experience: 'Hands-on audits & enterprise reports', tags: ['Offensive', 'CVEs', 'Compliance'] },
@@ -255,11 +253,10 @@ const SKILL_CATEGORIES: SkillCategory[] = [
     title: 'Frontend & Full-Stack Development',
     subtitle: 'Modern interfaces, API architecture, serverless backends, and cloud deployments',
     icon: 'code-2',
-    color: 'from-blue-500 to-indigo-600',
     badge: 'Core Craft',
     skills: [
       { name: 'React (v19) & TypeScript', level: 90, experience: 'SPAs, custom hooks, dynamic UI components & state', tags: ['Frontend', 'React', 'TS'] },
-      { name: 'Tailwind CSS & Modern UI Styling', level: 94, experience: 'Glassmorphism, dark/light themes, dynamic animation & design tokens', tags: ['UI/UX', 'Tailwind', 'CSS'] },
+      { name: 'Tailwind CSS & Modern UI Styling', level: 94, experience: 'Responsive layouts, dark/light themes, motion, and design tokens', tags: ['UI/UX', 'Tailwind', 'CSS'] },
       { name: 'Express.js & Node Backend APIs', level: 84, experience: 'REST APIs, Helmet security middleware, CORS & JWT auth', tags: ['Backend', 'Express', 'API'] },
       { name: 'Firebase (Auth, Firestore, Cloud Functions)', level: 82, experience: 'Real-time database, security rules & OAuth integration', tags: ['Cloud', 'NoSQL', 'Auth'] },
       { name: 'Vercel / Netlify Cloud Edge Deployments', level: 88, experience: 'CI/CD GitHub pipelines, environment config & speed optimization', tags: ['DevOps', 'Vercel', 'Edge'] },
@@ -270,7 +267,6 @@ const SKILL_CATEGORIES: SkillCategory[] = [
     title: 'DevOps, Automation & Systems',
     subtitle: 'Delivery workflows, scripting, systems code, and developer tooling',
     icon: 'cpu',
-    color: 'from-purple-500 to-pink-600',
     badge: 'Delivery',
     skills: [
       { name: 'Python (Automation & Security Scripting)', level: 88, experience: 'Socket programming, report generation & AI integrations', tags: ['Python', 'Automation', 'AI'] },
@@ -319,7 +315,6 @@ const SkillsPage: React.FC = () => {
     <div className="space-y-12">
       {/* Header Section */}
       <section className="surface-card p-8 sm:p-10 relative overflow-hidden">
-        <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[var(--accent)]/10 blur-3xl pointer-events-none" />
         <div className="max-w-3xl space-y-4 relative z-10">
           <div className="inline-flex items-center gap-2 rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-3.5 py-1 text-xs font-semibold text-[var(--accent)]">
             <Icon name="layers" size={14} />
@@ -350,7 +345,7 @@ const SkillsPage: React.FC = () => {
             <div key={cat.title} className="surface-card p-6 sm:p-8 space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--border)] pb-5">
                 <div className="flex items-center gap-3">
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br ${cat.color} text-white shadow-md`}>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent)] text-[var(--color-bg)]">
                     <Icon name={cat.icon} size={20} />
                   </div>
                   <div>
@@ -365,7 +360,7 @@ const SkillsPage: React.FC = () => {
 
               <div className="grid gap-6 md:grid-cols-2">
                 {cat.skills.map((skill) => (
-                  <div key={skill.name} className="space-y-2 rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)]/50 p-4 transition hover:border-[var(--accent)]/50">
+                  <div key={skill.name} className="space-y-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)]/50 p-4 transition-colors hover:border-[var(--accent)]/50">
                     <div className="flex items-center justify-between text-sm font-semibold">
                       <span className="text-sm font-medium">{skill.name}</span>
                       <span className="text-xs font-bold text-[var(--accent)] font-mono">{skill.level}%</span>
@@ -374,14 +369,12 @@ const SkillsPage: React.FC = () => {
                     {/* Animated Reactive Progress Bar */}
                     <div className="relative h-3 w-full overflow-hidden rounded-full bg-[var(--surface-soft)] border border-[var(--border)]">
                       <motion.div
-                        className="h-full rounded-full bg-gradient-to-r from-[var(--accent)] to-teal-400 relative overflow-hidden"
+                        className="h-full rounded-full bg-[var(--accent)] relative overflow-hidden"
                         initial={{ width: 0 }}
                         whileInView={{ width: `${skill.level}%` }}
                         viewport={{ once: true }}
                         transition={{ duration: 1.2, ease: "easeOut" }}
                       >
-                        {/* Moving shine glow effect inside bar */}
-                        <div className="absolute inset-0 bg-white/20 animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
                       </motion.div>
                     </div>
 
@@ -419,7 +412,7 @@ const SkillsPage: React.FC = () => {
                 onClick={() => setActiveCategory(c)}
                 className={`rounded-full px-3 py-1 text-xs font-medium transition ${
                   activeCategory === c
-                    ? 'bg-[var(--accent)] text-white shadow-md'
+                    ? 'bg-[var(--accent)] text-[var(--color-bg)]'
                     : 'bg-[var(--surface-soft)] text-[var(--color-text-muted)] hover:text-white border border-[var(--border)]'
                 }`}
               >
@@ -438,20 +431,19 @@ const SkillsPage: React.FC = () => {
               <motion.button
                 key={tool.name}
                 type="button"
-                whileHover={{ scale: 1.04, translateY: -2 }}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ translateY: 1 }}
                 onClick={() => setSelectedTool(tool)}
                 aria-expanded={isSelected}
                 aria-controls={isSelected ? 'tool-detail-dialog' : undefined}
                 aria-haspopup="dialog"
                 aria-label={`${tool.name}: view usage details`}
-                className={`group relative flex flex-col items-center justify-between rounded-2xl border p-4 text-center transition-all duration-300 ${
+                className={`group relative flex flex-col items-center justify-between rounded-lg border p-4 text-center transition-colors duration-300 ${
                   isSelected
-                    ? 'border-[var(--accent)] bg-[var(--accent-soft)] shadow-[0_0_20px_rgba(16,185,129,0.25)]'
-                    : 'border-[var(--border)] bg-[var(--surface-soft)] hover:border-[var(--accent)]/60 hover:shadow-lg'
+                    ? 'border-[var(--accent)] bg-[var(--accent-soft)]'
+                    : 'border-[var(--border)] bg-[var(--surface-soft)] hover:border-[var(--accent)]/60'
                 }`}
               >
-                <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-xl bg-white p-2.5 shadow-sm border border-slate-200 dark:border-slate-700 transition-transform group-hover:scale-110">
+                <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-lg bg-white p-2.5 border border-slate-200 dark:border-slate-700">
                   {svgPath ? (
                     <img src={svgPath} alt={tool.name} className="h-8 w-8 object-contain max-h-full max-w-full" loading="lazy" />
                   ) : (
@@ -480,10 +472,10 @@ const SkillsPage: React.FC = () => {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 12 }}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
               onMouseDown={(event) => { if (event.target === event.currentTarget) closeToolDialog(); }}
             >
-              <div ref={toolDialogRef} id="tool-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="tool-detail-title" tabIndex={-1} className="surface-card relative max-h-[90vh] w-full max-w-3xl overflow-y-auto border-2 border-[var(--accent)] p-6 shadow-2xl sm:p-8">
+              <div ref={toolDialogRef} id="tool-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="tool-detail-title" tabIndex={-1} className="surface-card relative max-h-[90vh] w-full max-w-3xl overflow-y-auto border-2 border-[var(--accent)] p-6 sm:p-8">
                 <button
                   type="button"
                   onClick={closeToolDialog}
@@ -494,7 +486,7 @@ const SkillsPage: React.FC = () => {
                 </button>
 
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white p-3 shadow-md border border-slate-200">
+                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-white p-3 border border-slate-200">
                   {selectedTool.name in toolSvgMap ? (
                     <img src={toolSvgMap[selectedTool.name]} alt={selectedTool.name} className="h-10 w-10 object-contain" />
                   ) : (
@@ -514,7 +506,7 @@ const SkillsPage: React.FC = () => {
 
                 <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">{selectedTool.description}</p>
 
-                <div className="space-y-3 rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] p-5">
+                <div className="space-y-3 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-5">
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--accent)]">
                   <Icon name="target" size={16} />
                   <span>Real-world scenarios & how I use it</span>
@@ -566,8 +558,8 @@ const SkillsPage: React.FC = () => {
                 type="button"
                 layout
                 onClick={() => setActiveCourseId(expanded ? null : course.id)}
-                className={`w-full rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] p-5 text-left transition-all duration-300 ${
-                  expanded ? 'shadow-[0_10px_30px_rgba(16,185,129,0.12)] border-[var(--accent)]' : 'hover:border-[var(--accent)]/50'
+                className={`w-full rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-5 text-left transition-colors duration-300 ${
+                  expanded ? 'border-[var(--accent)]' : 'hover:border-[var(--accent)]/50'
                 }`}
               >
                 <div className="flex items-start gap-4">

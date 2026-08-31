@@ -126,7 +126,7 @@ const CertificatesPage: React.FC = () => {
                 Credentials
               </span>
             <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-[var(--color-text)] md:text-5xl">
-                Security learning with <span className="text-gradient">practical outcomes.</span>
+                Security learning with <span className="text-accent">practical outcomes.</span>
             </h1>
               <p className="mt-5 text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
                 These certifications support the way I work: understand the risk, validate it carefully, document it clearly, and keep improving through structured learning.
@@ -134,14 +134,14 @@ const CertificatesPage: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-5">
+              <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-5">
                 <p className="font-display text-4xl font-bold accent-text">{CERTIFICATES.length}</p>
                 <p className="mt-2 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
                   Certificates
                 </p>
               </div>
-              <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-5">
-                <p className="font-display text-4xl font-bold text-[var(--brand-purple)]">{mappedSkillsCount}</p>
+              <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-5">
+                <p className="font-display text-4xl font-bold text-[var(--accent)]">{mappedSkillsCount}</p>
                 <p className="mt-2 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
                   Skills Mapped
                 </p>
@@ -150,7 +150,7 @@ const CertificatesPage: React.FC = () => {
           </div>
 
           <div className="space-y-5">
-            <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-5">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-5">
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <p className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-[var(--color-text-muted)]">
                   Browse by track
@@ -196,11 +196,11 @@ const CertificatesPage: React.FC = () => {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.22, delay: index * 0.03 }}
-                  className="group rounded-3xl border border-[var(--border)] bg-[var(--surface-soft)] p-5 transition-colors hover:border-[var(--accent)]"
+                  className="group rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-5 transition-colors hover:border-[var(--accent)]"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-4">
-                      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--accent-soft)] accent-text transition-transform group-hover:scale-110">
+                      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--accent-soft)] accent-text transition-colors group-hover:bg-[var(--accent)] group-hover:text-[var(--color-bg)]">
                         <Icon name={cert.icon} size={28} />
                       </div>
 
@@ -219,7 +219,7 @@ const CertificatesPage: React.FC = () => {
                         ) : (
                           <h3 className="text-lg font-bold leading-tight text-[var(--color-text)]">{cert.title}</h3>
                         )}
-                        <p className="mt-2 text-[11px] font-bold uppercase tracking-widest text-[var(--brand-purple)]">
+                        <p className="mt-2 text-[11px] font-bold uppercase tracking-widest text-[var(--accent)]">
                           {cert.issuer}
                         </p>
                         <p className="mt-2 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
@@ -254,7 +254,7 @@ const CertificatesPage: React.FC = () => {
                       <Icon
                         name="chevron-right"
                         size={12}
-                        className={`transition-transform ${isExpanded ? 'rotate-90 text-[var(--brand-purple)]' : ''}`}
+                        className={`transition-transform ${isExpanded ? 'rotate-90 text-[var(--accent)]' : ''}`}
                       />
                     </button>
 
@@ -263,7 +263,7 @@ const CertificatesPage: React.FC = () => {
                         href={cert.verifyLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-[var(--brand-purple)] transition-colors hover:accent-text"
+                        className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-[var(--accent)] transition-colors hover:accent-text"
                       >
                         <Icon name="external-link" size={10} />
                         Verify Authenticity
@@ -318,11 +318,11 @@ const CertificatesPage: React.FC = () => {
             aria-expanded={isEducationOpen}
           >
             <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--brand-purple)]/10 text-[var(--brand-purple)]">
+              <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]">
                 <Icon name="graduation-cap" size={28} />
               </div>
               <div>
-                <p className="text-xs font-mono font-bold uppercase tracking-widest text-[var(--brand-purple)]">
+                <p className="text-xs font-mono font-bold uppercase tracking-widest text-[var(--accent)]">
                   Education
                 </p>
                 <h3 className="mt-2 text-2xl font-bold leading-tight text-[var(--color-text)]">B.Sc. Computer Science</h3>
@@ -332,7 +332,7 @@ const CertificatesPage: React.FC = () => {
 
             <div className="flex items-center justify-between gap-4 md:flex-col md:items-end">
               <div className="text-right">
-                <p className="font-mono text-xs font-bold text-[var(--brand-purple)]">2023 - 2027</p>
+                <p className="font-mono text-xs font-bold text-[var(--accent)]">2023 - 2027</p>
                 <p className="text-[10px] text-[var(--color-text-muted)] mt-1">4 Years</p>
               </div>
               <span className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
@@ -340,7 +340,7 @@ const CertificatesPage: React.FC = () => {
                 <Icon
                   name="chevron-right"
                   size={14}
-                  className={`transition-transform ${isEducationOpen ? 'rotate-90 text-[var(--brand-purple)]' : ''}`}
+                  className={`transition-transform ${isEducationOpen ? 'rotate-90 text-[var(--accent)]' : ''}`}
                 />
               </span>
             </div>
@@ -397,7 +397,7 @@ const CertificatesPage: React.FC = () => {
             {['Network Security', 'Cryptography', 'Operating Systems', 'Web Security', 'Secure SDLC', 'Identity', 'Threat Response'].map((course) => (
               <span
                 key={course}
-                className="rounded-2xl border border-[var(--border)] bg-[var(--surface-soft)] px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]"
+                className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]"
               >
                 {course}
               </span>
@@ -405,7 +405,7 @@ const CertificatesPage: React.FC = () => {
           </div>
           </div>
           <div className="mt-6 border-t border-[var(--border)] pt-6">
-            <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--brand-purple)] mb-2">Next Steps</p>
+            <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)] mb-2">Next Steps</p>
             <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
               The certificates and degree work support the same direction: stronger fundamentals, better documentation, more confident collaboration, and practical security judgment.
             </p>

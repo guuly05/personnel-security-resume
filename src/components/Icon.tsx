@@ -4,7 +4,7 @@ import {
   Target, Github, Linkedin, ExternalLink, Menu, X, ChevronRight, ArrowLeft, Check,
   Trophy, BookOpen, User, Briefcase, GraduationCap, Laptop, Terminal,
   Globe, Clock, Layers, Star, Info, MessageSquare, Search, Sun, Moon, Home,
-  ArrowRight, ArrowUpRight, Server, GitBranch, Sparkles,
+  ArrowRight, ArrowUpRight, Server, GitBranch, Sparkles, Tv, Gamepad2, BookMarked,
   FileText, Download, Eye, Maximize2
 } from 'lucide-react';
 import React from 'react';
@@ -299,6 +299,9 @@ const lucideIconMap: Record<string, LucideIcon> = {
   'server': Server,
   'git-branch': GitBranch,
   'sparkles': Sparkles,
+  'tv': Tv,
+  'gamepad-2': Gamepad2,
+  'book-marked': BookMarked,
   'sun': Sun,
   'moon': Moon,
   'file-text': FileText,
@@ -324,7 +327,7 @@ export const Icon: React.FC<IconProps> = ({ name, className, size = 24 }) => {
   if (svgFilePath) {
     return (
       <div 
-        className="inline-flex items-center justify-center rounded-xl bg-white p-2 shadow-sm border border-slate-200 dark:border-slate-700 transition-all duration-300 hover:scale-105"
+        className="inline-flex items-center justify-center rounded-lg bg-white p-2 border border-slate-200 dark:border-slate-700"
         style={{ width: size + 14, height: size + 14 }}
       >
         <img
