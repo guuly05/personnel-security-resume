@@ -105,6 +105,26 @@
   }
 }
 
+/* Minimal visual system: controls and content surfaces use a quiet, squared geometry. */
+@layer components {
+  button,
+  a[class*="rounded-"] {
+    border-radius: 4px !important;
+    box-shadow: none !important;
+  }
+
+  button:hover,
+  a[class*="rounded-"]:hover {
+    box-shadow: none !important;
+  }
+
+  .surface-card,
+  .glass-card {
+    border-radius: 4px;
+    box-shadow: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
