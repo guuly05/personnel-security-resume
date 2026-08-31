@@ -151,8 +151,8 @@ function BlogCatalog({ posts, allPosts, onOpen, searchQuery, onSearchChange, act
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
           <div className="space-y-4">
             <p className="blog-eyebrow">Blog / Research archive</p>
-            <h1 className="blog-hero-title">Cybersecurity writing shaped like a premium magazine spread.</h1>
-            <p className="max-w-3xl text-sm leading-7 text-[var(--color-text-muted)] md:text-base">Technical research, security history, and practical commentary—stored as portable Markdown and published with a searchable editorial index.</p>
+            <h1 className="blog-hero-title">Engineering notes shaped like a premium magazine spread.</h1>
+            <p className="max-w-3xl text-sm leading-7 text-[var(--color-text-muted)] md:text-base">Technical research, product thinking, systems notes, security history, and practical commentary—stored as portable Markdown and published with a searchable editorial index.</p>
           </div>
           <div className="blog-meta-stack"><span className="blog-meta-chip">{allPosts.length} stories</span><span className="blog-meta-chip">RSS + Atom ready</span><span className="blog-meta-chip">Frontmatter indexed</span></div>
         </div>

@@ -4,6 +4,7 @@ import {
   Target, Github, Linkedin, ExternalLink, Menu, X, ChevronRight, ArrowLeft, Check,
   Trophy, BookOpen, User, Briefcase, GraduationCap, Laptop, Terminal,
   Globe, Clock, Layers, Star, Info, MessageSquare, Search, Sun, Moon, Home,
+  ArrowRight, ArrowUpRight, Server, GitBranch, Sparkles,
   FileText, Download, Eye, Maximize2
 } from 'lucide-react';
 import React from 'react';
@@ -277,6 +278,8 @@ const lucideIconMap: Record<string, LucideIcon> = {
   'x': X,
   'chevron-right': ChevronRight,
   'arrow-left': ArrowLeft,
+  'arrow-right': ArrowRight,
+  'arrow-up-right': ArrowUpRight,
   'check': Check,
   'trophy': Trophy,
   'book-open': BookOpen,
@@ -293,6 +296,9 @@ const lucideIconMap: Record<string, LucideIcon> = {
   'info': Info,
   'message-square': MessageSquare,
   'search': Search,
+  'server': Server,
+  'git-branch': GitBranch,
+  'sparkles': Sparkles,
   'sun': Sun,
   'moon': Moon,
   'file-text': FileText,

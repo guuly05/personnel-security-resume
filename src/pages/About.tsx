@@ -263,7 +263,7 @@ const AboutPage: React.FC = () => {
           <div>
             <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">About Me</p>
             <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-[var(--color-text)] md:text-5xl">
-              Security learner, builder, and long-term systems thinker.
+              Product-minded builder, systems thinker, and lifelong learner.
             </h1>
             <div className="mt-5 space-y-4">
               {ABOUT_LETTER.map((paragraph) => (
@@ -303,7 +303,7 @@ const AboutPage: React.FC = () => {
                 <h2 className="mt-2 text-2xl font-bold text-[var(--color-text)]">Profile Stats</h2>
               </div>
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--accent-soft)] accent-text">
-                <Icon name="shield-check" size={22} />
+                <Icon name="layers" size={22} />
               </div>
             </div>
 
@@ -350,7 +350,7 @@ const AboutPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-[var(--color-text)]">Curriculum Vitae</h3>
-                  <p className="text-xs text-[var(--color-text-muted)]">Guuleed Maxamuud Aw Abdi - Cybersecurity Resume</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Guuleed Maxamuud Aw Abdi - Full-Stack Developer Resume</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -406,7 +406,7 @@ const AboutPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 id="cv-dialog-title" className="text-lg font-bold text-[var(--color-text)]">Guuleed Maxamuud Aw Abdi — CV</h3>
-                  <p className="text-xs text-[var(--color-text-muted)]">Official Cybersecurity Resume PDF</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">Official Full-Stack Developer Resume PDF</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -443,7 +443,7 @@ const AboutPage: React.FC = () => {
         <div className="surface-card p-6 md:p-8">
           <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">Current Focus</p>
           <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
-            I am currently focused on security practice, technical depth, and consistency in execution. My goal is to keep improving the quality of testing, reporting, and collaboration in every project.
+            I am currently focused on building stronger products, deeper technical fundamentals, and consistent execution. My goal is to keep improving the quality of the code, systems, documentation, and collaboration behind every project.
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
             {SOFT_SKILLS.map((skill) => (
@@ -462,7 +462,7 @@ const AboutPage: React.FC = () => {
           <h3 className="mt-3 text-2xl font-bold text-[var(--color-text)]">B.Sc. Computer Science</h3>
           <p className="mt-2 text-sm text-[var(--color-text-muted)]">University of Hargeisa</p>
           <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
-            Degree timeline: 2023 to 2027. I align classwork with practical cybersecurity implementation and project-based learning.
+            Degree timeline: 2023 to 2027. I align classwork with practical software engineering, systems thinking, secure development, and project-based learning.
           </p>
         </div>
       </section>

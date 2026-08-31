@@ -142,7 +142,7 @@ const ContactPage: React.FC = () => {
           <Icon name="message-square" className="text-brand-cyan" />
           Contact Guuleed Maxmuud Aw Abdi
         </h1>
-        <p className="mb-8 max-w-2xl text-sm leading-7 text-[var(--color-text-muted)]">Get in touch about security assessments, penetration testing, collaboration, or career opportunities.</p>
+        <p className="mb-8 max-w-2xl text-sm leading-7 text-[var(--color-text-muted)]">Get in touch about a product idea, a frontend or backend build, delivery workflows, secure engineering, collaboration, or career opportunities.</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="hidden">

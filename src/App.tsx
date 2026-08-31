@@ -135,10 +135,10 @@ export default function App() {
   const navItems = [
     { id: 'home', label: 'Home', icon: 'layout' },
     { id: 'about', label: 'About', icon: 'user' },
-    { id: 'skills', label: 'Skills', icon: 'terminal' },
+    { id: 'skills', label: 'Capabilities', icon: 'terminal' },
     { id: 'experience', label: 'Experience', icon: 'briefcase' },
-    { id: 'certificates', label: 'Credentials', icon: 'graduation-cap' },
-    { id: 'portfolio', label: 'Portfolio', icon: 'layout' },
+    { id: 'certificates', label: 'Learning', icon: 'graduation-cap' },
+    { id: 'portfolio', label: 'Selected Work', icon: 'layout' },
     { id: 'book', label: 'Book a Call', icon: 'calendar' },
     { id: 'blog', label: 'Blog', icon: 'book-open' },
     { id: 'contact', label: 'Contact', icon: 'mail' },
@@ -379,7 +379,7 @@ export default function App() {
       <footer
         className={`max-w-7xl mx-auto mt-20 pt-8 border-t border-brand-border flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-slate-500 font-mono uppercase tracking-widest px-4 pb-12 ${chromeClassName}`}
       >
-        <p>© 2026 {PERSONAL_INFO.name} — Secure by Design</p>
+        <p>© 2026 {PERSONAL_INFO.name} — Built with care</p>
         <div className="flex flex-wrap items-center gap-6">
           {(isJuly27 || activeSection === 'recap') && (
             <a
