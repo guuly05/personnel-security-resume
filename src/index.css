@@ -392,6 +392,12 @@
     pointer-events: none;
     background: var(--color-bg);
     opacity: 1;
+    z-index: 0;
+  }
+
+  .blog-page > section {
+    position: relative;
+    z-index: 1;
   }
 
   .blog-gate,
