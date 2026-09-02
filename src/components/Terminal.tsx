@@ -154,6 +154,8 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
           handleSubmit, handleKeyDown, inputRef, outputRef } = terminal;
 
   const callbacks = { onNavigate, onTheme };
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
 
   const { rect, beginDrag, beginResize } = useWindowControls();
 
@@ -165,6 +167,18 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
       closeTerminal();
     }
   }, [closeTerminal]);
+
+  const toggleMaximize = useCallback(() => {
+    setIsMaximized(value => !value);
+    setIsMinimized(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsMinimized(false);
+      setIsMaximized(false);
+    }
+  }, [isOpen]);
 
   // Esc to close
   useEffect(() => {
@@ -199,10 +213,11 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
             className="terminal-window pointer-events-auto"
             style={{
               position: 'fixed',
-              left: rect.x,
-              top: rect.y,
-              width: rect.width,
-              height: rect.height,
+              left: isMaximized ? 8 : rect.x,
+              top: isMaximized ? 8 : rect.y,
+              width: isMaximized ? 'calc(100vw - 16px)' : rect.width,
+              height: isMaximized ? 'calc(100vh - 16px)' : isMinimized ? 'auto' : rect.height,
+              maxHeight: isMaximized ? 'none' : undefined,
             }}
             initial={{ opacity: 0, scale: 0.92, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -213,7 +228,10 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
             {/* ── Title bar ── */}
             <div
               className="terminal-titlebar"
-              onPointerDown={beginDrag}
+              onPointerDown={e => {
+                if (e.target instanceof HTMLButtonElement) return;
+                beginDrag(e);
+              }}
               style={{ cursor: 'grab' }}
             >
               {/* Traffic lights */}
@@ -227,8 +245,22 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
                 >
                   <span className="terminal-dot-icon opacity-0 group-hover:opacity-100">✕</span>
                 </button>
-                <div className="terminal-dot terminal-dot-yellow" aria-hidden />
-                <div className="terminal-dot terminal-dot-green"  aria-hidden />
+                <button
+                  type="button"
+                  className="terminal-dot terminal-dot-yellow"
+                  aria-label={isMinimized ? 'Restore terminal' : 'Minimize terminal'}
+                  aria-pressed={isMinimized}
+                  onClick={() => setIsMinimized(value => !value)}
+                  onPointerDown={e => e.stopPropagation()}
+                />
+                <button
+                  type="button"
+                  className="terminal-dot terminal-dot-green"
+                  aria-label={isMaximized ? 'Restore terminal size' : 'Maximize terminal'}
+                  aria-pressed={isMaximized}
+                  onClick={toggleMaximize}
+                  onPointerDown={e => e.stopPropagation()}
+                />
               </div>
 
               {/* Session label */}
@@ -242,6 +274,7 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
               <div className="w-14" aria-hidden /> {/* spacer for symmetry */}
             </div>
 
+            {!isMinimized && <>
             {/* ── Scanline overlay ── */}
             <div className="terminal-scanlines" aria-hidden />
 
@@ -312,6 +345,7 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
             >
               <span aria-hidden>⋱</span>
             </button>
+            </>}
           </motion.div>
         </motion.div>
       )}
