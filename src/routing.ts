@@ -11,6 +11,8 @@ export type Section =
   | 'book'
   | 'blog'
   | 'contact'
+  | 'privacy-policy'
+  | 'terms-of-service'
   | 'recap'
   | 'not-found';
 
@@ -26,6 +28,8 @@ const SECTIONS: NavigableSection[] = [
   'book',
   'blog',
   'contact',
+  'privacy-policy',
+  'terms-of-service',
   'recap',
 ];
 
@@ -42,6 +46,8 @@ export function pathToSection(pathname: string): Section {
   if (!segment) return 'home';
   if (segment === 'portfolio' && segments[1]) return 'portfolio-project';
   if (segment === 'blog' && segments[1] && !BLOG_POSTS.some((post) => post.slug === segments[1])) return 'not-found';
+  if (segment === 'privacy-policy') return 'privacy-policy';
+  if (segment === 'terms-of-service') return 'terms-of-service';
   if (RECAP_ALIASES.includes(segment)) return 'recap';
   return SECTIONS.includes(segment as NavigableSection) ? (segment as Section) : 'not-found';
 }

@@ -26,6 +26,7 @@ const ProjectDetailPage = lazy(() => import('./pages/ProjectDetail.tsx'));
 const BlogPage = lazy(() => import('./pages/Blog.tsx'));
 const ContactPage = lazy(() => import('./pages/Contact.tsx'));
 const BookCallPage = lazy(() => import('./pages/BookCall.tsx'));
+const LegalPage = lazy(() => import('./pages/Legal.tsx'));
 const AnnualRecapPage = lazy(() => import('./pages/AnnualRecap.tsx'));
 const NotFoundPage = lazy(() => import('./pages/NotFound.tsx'));
 
@@ -369,6 +370,8 @@ export default function App() {
                 />
               )}
               {activeSection === 'contact' && <ContactPage />}
+              {activeSection === 'privacy-policy' && <LegalPage kind="privacy" />}
+              {activeSection === 'terms-of-service' && <LegalPage kind="terms" />}
               {activeSection === 'recap' && <AnnualRecapPage />}
               {activeSection === 'not-found' && <NotFoundPage />}
             </motion.div>
@@ -401,6 +404,12 @@ export default function App() {
           </a>
           <a href="/blog" className="hover:text-brand-cyan transition-colors">
             Blog
+          </a>
+          <a href="/privacy-policy" onClick={() => setActiveSection('privacy-policy')} className="hover:text-brand-cyan transition-colors">
+            Privacy Policy
+          </a>
+          <a href="/terms-of-service" onClick={() => setActiveSection('terms-of-service')} className="hover:text-brand-cyan transition-colors">
+            Terms of Service
           </a>
         </div>
       </footer>

@@ -17,6 +17,8 @@ export type RouteKey =
   | 'book'
   | 'blog'
   | 'contact'
+  | 'privacy-policy'
+  | 'terms-of-service'
   | 'recap'
   | 'reflection'
   | 'surprise'
@@ -145,6 +147,16 @@ const pageMeta: Record<Exclude<RouteKey, 'reflection' | 'surprise' | 'vault' | '
     title: `Contact ${FULL_NAME} | Software Engineering`,
     description: `Contact ${FULL_NAME} about a software build, full-stack collaboration, delivery workflow, secure engineering, or career opportunities.`,
     path: '/contact',
+  },
+  'privacy-policy': {
+    title: 'Privacy Policy | Website Legal',
+    description: 'Simple privacy policy covering personal data, cookies, analytics, and contact information on this website.',
+    path: '/privacy-policy',
+  },
+  'terms-of-service': {
+    title: 'Terms of Service | Website Legal',
+    description: 'Simple terms of service covering website use, content, contact, and limitations of liability.',
+    path: '/terms-of-service',
   },
   recap: {
     title: `${FULL_NAME} | Annual Reflection`,
