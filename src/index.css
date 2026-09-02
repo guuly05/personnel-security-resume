@@ -7,31 +7,9 @@
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Space Grotesk', 'Manrope', ui-sans-serif, system-ui, sans-serif;
-
-  --color-bg: #0a0c0b;
-  --color-bg-secondary: #0a0c0b;
-  --color-surface: #111512;
-  --color-surface-soft: #171c18;
-  --color-border: #2c382e;
-  --color-text: #f4f7f2;
-  --color-text-muted: #a6b0a8;
-
-  --accent: #68d391;
-  --accent-soft: rgba(104, 211, 145, 0.13);
-  --brand-cyan: var(--accent);
-
-  --surface: var(--color-surface);
-  --surface-soft: var(--color-surface-soft);
-  --border: var(--color-border);
-
-  --shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-}
-
-:root[data-theme='light'] {
-  color-scheme: light;
 
   --color-bg: #f7f8f5;
   --color-bg-secondary: #f7f8f5;
