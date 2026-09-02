@@ -13,7 +13,7 @@ type TurnstileWindow = Window & {
     reset: (widgetId?: string) => void;
     remove: (widgetId: string) => void;
   };
-  onloadTurnstileCallback?: () => void;
+  onloadBookingTurnstileCallback?: () => void;
 };
 
 type MonthAvailability = { month: string; days: string[] };
@@ -96,26 +96,33 @@ export default function BookCallPage() {
     const globalWindow = window as TurnstileWindow;
     const renderWidget = () => {
       const container = document.getElementById('booking-turnstile');
-      if (globalWindow.turnstile && container && !turnstileWidgetIdRef.current) {
+      if (!container) return;
+
+      if (globalWindow.turnstile) {
         try {
+          if (turnstileWidgetIdRef.current) {
+            globalWindow.turnstile.remove(turnstileWidgetIdRef.current);
+            turnstileWidgetIdRef.current = null;
+          }
           turnstileWidgetIdRef.current = globalWindow.turnstile.render(container, {
             sitekey: TURNSTILE_SITE_KEY,
-            theme: 'dark',
+            theme: document.documentElement.dataset.theme === 'light' ? 'light' : 'dark',
             action: 'turnstile-booking-spin',
           });
         } catch (e) {
-          // Already rendered
+          // Already rendered or script still initializing.
         }
       }
     };
 
-    globalWindow.onloadTurnstileCallback = renderWidget;
-    if (!document.querySelector('script[data-turnstile]')) {
+    globalWindow.onloadBookingTurnstileCallback = renderWidget;
+
+    if (!document.querySelector('script[data-turnstile-booking]')) {
       const script = document.createElement('script');
-      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onloadTurnstileCallback';
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onloadBookingTurnstileCallback';
       script.async = true;
       script.defer = true;
-      script.dataset.turnstile = 'true';
+      script.dataset.turnstileBooking = 'true';
       document.head.appendChild(script);
     } else {
       renderWidget();
@@ -130,6 +137,9 @@ export default function BookCallPage() {
         }
       }
       turnstileWidgetIdRef.current = null;
+      if (globalWindow.onloadBookingTurnstileCallback === renderWidget) {
+        globalWindow.onloadBookingTurnstileCallback = undefined;
+      }
     };
   }, []);
 
