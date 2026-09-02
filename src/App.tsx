@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { PERSONAL_INFO } from './constants.ts';
 import { Icon } from './components/Icon.tsx';
 import { SeoHead } from './components/SeoHead.tsx';
@@ -48,6 +48,7 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBlogFocusMode, setIsBlogFocusMode] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('light');
+  const shouldReduceMotion = useReducedMotion();
 
   const terminal = useTerminal();
 
@@ -310,10 +311,10 @@ export default function App() {
           <AnimatePresence mode="wait">
             <motion.div
               key={`${activeSection}:${activeProjectSlug ?? ''}`}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.02 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -4 }}
+              transition={{ duration: shouldReduceMotion ? 0.01 : 0.24, ease: 'easeOut' }}
             >
               {activeSection === 'home' && <HomePage />}
               {activeSection === 'about' && <AboutPage />}
