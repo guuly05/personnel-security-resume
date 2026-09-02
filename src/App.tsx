@@ -47,8 +47,14 @@ export default function App() {
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBlogFocusMode, setIsBlogFocusMode] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>('light');
 
   const terminal = useTerminal();
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+  }, [theme]);
 
   const isJuly27 = checkIsJuly27Today();
 

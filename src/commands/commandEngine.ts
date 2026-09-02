@@ -13,6 +13,7 @@ import {
   PROJECTS,
   ABOUT_LETTER,
 } from '../constants.ts';
+import { NAVIGABLE_SECTIONS, sectionToPath, type NavigableSection } from '../routing.ts';
 
 export type LineType = 'output' | 'error' | 'success' | 'info' | 'warn' | 'prompt' | 'dim' | 'accent';
 
@@ -24,7 +25,7 @@ export interface TerminalLine {
 
 let _lineCounter = 0;
 function line(type: LineType, text: string): TerminalLine {
-  return { id: String(++_lineCounter), type, text };
+  return { id: `command-${++_lineCounter}`, type, text };
 }
 
 // ── Individual command handlers ────────────────────────────────────────────
@@ -39,6 +40,7 @@ function cmdHelp(): TerminalLine[] {
     line('output',  '  ls                  List all sections'),
     line('output',  '  goto <section>      Navigate to a section'),
     line('output',  '  cd <section>        Alias for goto'),
+    line('output',  '  open <section>      Alias for goto'),
     line('dim',     ''),
     line('accent',  'Information'),
     line('output',  '  whoami              Display name & title'),
@@ -49,11 +51,14 @@ function cmdHelp(): TerminalLine[] {
     line('output',  '  cat portfolio       Show project portfolio'),
     line('output',  '  cat projects        Alias for cat portfolio'),
     line('output',  '  ping contact        Display contact information'),
+    line('output',  '  status              Show portfolio runtime status'),
     line('dim',     ''),
     line('accent',  'System'),
     line('output',  '  theme dark|light    Toggle site theme'),
     line('output',  '  date                Print current timestamp'),
     line('output',  '  uname               Display system banner'),
+    line('output',  '  pwd                 Print the current directory'),
+    line('output',  '  echo <text>         Print text safely'),
     line('output',  '  clear               Clear the terminal'),
     line('output',  '  exit                Close the terminal'),
     line('dim',     ''),
@@ -70,13 +75,30 @@ function cmdWhoami(): TerminalLine[] {
 }
 
 function cmdLs(): TerminalLine[] {
-  const sections = ['home', 'about', 'skills', 'experience', 'certificates', 'portfolio', 'blog', 'contact'];
+  const sections = NAVIGABLE_SECTIONS.map(section => sectionToPath(section));
   return [
     line('accent', 'Available sections:'),
     line('output', sections.map(s => `  /${s}`).join('\n')),
     line('dim',    ''),
     line('dim',    'Use: goto <section>   to navigate'),
   ];
+}
+
+function cmdStatus(): TerminalLine[] {
+  return [
+    line('success', '● ONLINE  portfolio shell is ready'),
+    line('output', `  Routes   : ${NAVIGABLE_SECTIONS.length} available`),
+    line('output', '  Runtime  : React + TypeScript + Vite'),
+    line('output', '  Access   : read-only portfolio interface'),
+  ];
+}
+
+function cmdPwd(): TerminalLine[] {
+  return [line('output', '/portfolio')];
+}
+
+function cmdEcho(text: string): TerminalLine[] {
+  return [line('output', text)];
 }
 
 function cmdCatAbout(): TerminalLine[] {
@@ -214,8 +236,10 @@ export interface CommandResult {
 
 export function executeCommand(raw: string): CommandResult {
   const trimmed = raw.trim();
-  const [cmd, ...args] = trimmed.toLowerCase().split(/\s+/);
+  const [rawCommand = '', ...args] = trimmed.split(/\s+/);
+  const cmd = rawCommand.toLowerCase();
   const arg = args.join(' ');
+  const normalizedArg = arg.toLowerCase();
 
   switch (cmd) {
     case 'help':
@@ -230,38 +254,48 @@ export function executeCommand(raw: string): CommandResult {
       return { lines: cmdLs() };
 
     case 'cat': {
-      const target = arg.trim();
+      const target = normalizedArg.trim();
       if (target === 'about')                      return { lines: cmdCatAbout() };
       if (target === 'skills')                     return { lines: cmdCatSkills() };
       if (target === 'experience')                 return { lines: cmdCatExperience() };
       if (target === 'certificates' || target === 'certs') return { lines: cmdCatCertificates() };
       if (target === 'portfolio' || target === 'projects')  return { lines: cmdCatPortfolio() };
+      if (target === 'contact') return { lines: cmdPingContact() };
       if (!target) return { lines: [line('error', 'cat: missing operand. Try: cat skills, cat about, cat experience')] };
       return { lines: [line('error', `cat: ${target}: No such file or directory`)] };
     }
 
     case 'ping': {
-      if (arg === 'contact' || arg === '') return { lines: cmdPingContact() };
+      if (normalizedArg === 'contact' || normalizedArg === '') return { lines: cmdPingContact() };
       return { lines: [line('error', `ping: ${arg}: unknown host. Try: ping contact`)] };
     }
 
+    case 'status':
+      return { lines: cmdStatus() };
+
+    case 'pwd':
+      return { lines: cmdPwd() };
+
+    case 'echo':
+      return { lines: cmdEcho(arg) };
+
     case 'goto':
-    case 'cd': {
-      const VALID = ['home', 'about', 'skills', 'experience', 'certificates', 'portfolio', 'blog', 'contact', 'recap'];
-      const target = arg.replace(/^\//, '').trim();
+    case 'cd':
+    case 'open': {
+      const target = normalizedArg.replace(/^\//, '').trim();
       if (!target) return { lines: [line('warn', `Usage: ${cmd} <section>   (try: ls)`)], navigate: undefined };
-      if (!VALID.includes(target)) {
+      if (!NAVIGABLE_SECTIONS.includes(target as NavigableSection)) {
         return { lines: [line('error', `${cmd}: '${target}': unknown section. Run 'ls' to see options.`)] };
       }
       return {
-        lines: [line('success', `→ Navigating to /${target}…`)],
+        lines: [line('success', `→ Navigating to ${sectionToPath(target as NavigableSection)}…`)],
         navigate: target,
       };
     }
 
     case 'theme': {
-      if (arg === 'dark')  return { lines: [line('success', '✓ Theme switched to dark mode.')],  theme: 'dark' };
-      if (arg === 'light') return { lines: [line('success', '✓ Theme switched to light mode.')], theme: 'light' };
+      if (normalizedArg === 'dark')  return { lines: [line('success', '✓ Theme switched to dark mode.')],  theme: 'dark' };
+      if (normalizedArg === 'light') return { lines: [line('success', '✓ Theme switched to light mode.')], theme: 'light' };
       return { lines: [line('error', `theme: unknown argument '${arg}'. Use: theme dark   or   theme light`)] };
     }
 

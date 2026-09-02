@@ -16,9 +16,9 @@ export type Section =
   | 'recap'
   | 'not-found';
 
-type NavigableSection = Exclude<Section, 'not-found'>;
+export type NavigableSection = Exclude<Section, 'not-found' | 'portfolio-project'>;
 
-const SECTIONS: NavigableSection[] = [
+export const NAVIGABLE_SECTIONS: readonly NavigableSection[] = [
   'home',
   'about',
   'skills',
@@ -49,12 +49,12 @@ export function pathToSection(pathname: string): Section {
   if (segment === 'privacy-policy') return 'privacy-policy';
   if (segment === 'terms-of-service') return 'terms-of-service';
   if (RECAP_ALIASES.includes(segment)) return 'recap';
-  return SECTIONS.includes(segment as NavigableSection) ? (segment as Section) : 'not-found';
+  return NAVIGABLE_SECTIONS.includes(segment as NavigableSection) ? (segment as Section) : 'not-found';
 }
 
 export function hashToSection(hash: string): Section | null {
   const segment = hash.replace(/^#/, '').split('/')[0];
   if (!segment) return null;
   if (RECAP_ALIASES.includes(segment)) return 'recap';
-  return SECTIONS.includes(segment as NavigableSection) ? (segment as Section) : null;
+  return NAVIGABLE_SECTIONS.includes(segment as NavigableSection) ? (segment as Section) : null;
 }

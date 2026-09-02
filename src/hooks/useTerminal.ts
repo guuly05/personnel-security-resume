@@ -39,7 +39,7 @@ export interface UseTerminalReturn {
 }
 
 let _idCounter = 0;
-function uid() { return String(++_idCounter); }
+function uid(prefix: string) { return `${prefix}-${++_idCounter}`; }
 
 const BOOT_SEQUENCE = [
   { type: 'dim' as const,     text: 'Initializing secure shell session…' },
@@ -85,7 +85,7 @@ export function useTerminal(): UseTerminalReturn {
     BOOT_SEQUENCE.forEach((l, i) => {
       delay += i === 0 ? 0 : 120;
       setTimeout(() => {
-        setLines(prev => [...prev, { id: uid(), type: l.type, text: l.text }]);
+        setLines(prev => [...prev, { id: uid('boot'), type: l.type, text: l.text }]);
       }, delay);
     });
     setTimeout(() => setBootDone(true), delay + 150);
@@ -116,7 +116,7 @@ export function useTerminal(): UseTerminalReturn {
       const trimmed = input.trim();
 
       // Echo the user's prompt line
-      appendLines([{ id: uid(), type: 'prompt', text: trimmed }]);
+      appendLines([{ id: uid('prompt'), type: 'prompt', text: trimmed }]);
 
       if (trimmed) {
         setCmdHistory(prev => [trimmed, ...prev.slice(0, 49)]);
@@ -195,11 +195,13 @@ export function useTerminal(): UseTerminalReturn {
         e.preventDefault();
         // Simple tab completion for known commands
         const COMPLETIONS = [
-          'help', 'whoami', 'ls', 'date', 'uname', 'clear', 'exit',
+          'help', 'whoami', 'ls', 'status', 'pwd', 'date', 'uname', 'clear', 'exit',
           'cat about', 'cat skills', 'cat experience', 'cat certificates', 'cat portfolio',
-          'ping contact',
+          'cat contact', 'ping contact',
           'goto home', 'goto about', 'goto skills', 'goto experience',
-          'goto certificates', 'goto portfolio', 'goto blog', 'goto contact',
+          'goto certificates', 'goto portfolio', 'goto book', 'goto blog', 'goto contact',
+          'goto privacy-policy', 'goto terms-of-service', 'goto recap',
+          'open home', 'open portfolio', 'open book', 'open blog',
           'theme dark', 'theme light',
         ];
         const match = COMPLETIONS.find(c => c.startsWith(inputValue) && c !== inputValue);
