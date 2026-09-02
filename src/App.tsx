@@ -50,7 +50,19 @@ export default function App() {
 
   const terminal = useTerminal();
 
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    if (typeof window === 'undefined') return 'dark';
+    const stored = window.localStorage.getItem('portfolio-theme');
+    if (stored === 'light' || stored === 'dark') return stored;
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  });
+
   const isJuly27 = checkIsJuly27Today();
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem('portfolio-theme', theme);
+  }, [theme]);
 
   // Global keyboard shortcut: Ctrl+Alt+G toggles the terminal
   useEffect(() => {
@@ -118,6 +130,8 @@ export default function App() {
       setIsBlogFocusMode(false);
     }
   }, [activeSection]);
+
+  const toggleTheme = () => setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
 
   const navItems = [
     { id: 'home', label: 'Home', icon: 'layout' },
@@ -207,6 +221,16 @@ export default function App() {
             <span>&gt;_</span>
           </button>
 
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          >
+            <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
+            <span className="hidden sm:inline">{theme === 'dark' ? 'Light' : 'Dark'} Mode</span>
+          </button>
+
           <a
             href="/contact"
             className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)] transition hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] active:translate-y-px"
@@ -228,6 +252,15 @@ export default function App() {
 
           <button
             type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
+          >
+            <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
+          </button>
+
+          <button
+            type="button"
             onClick={() => setIsMenuOpen((value) => !value)}
             className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
           >
@@ -245,11 +278,24 @@ export default function App() {
             exit={{ opacity: 0, y: -20 }}
             className="md:hidden fixed inset-x-4 top-24 z-40 surface-card p-6 overflow-hidden"
           >
-            <div className="mb-4 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-md border border-[var(--accent)] bg-[var(--surface-soft)] flex items-center justify-center font-bold text-[var(--accent)]">
-                GM
+            <div className="mb-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-md border border-[var(--accent)] bg-[var(--surface-soft)] flex items-center justify-center font-bold text-[var(--accent)]">
+                  GM
+                </div>
+                <div className="text-sm font-bold">{PERSONAL_INFO.name}</div>
               </div>
-              <div className="text-sm font-bold">{PERSONAL_INFO.name}</div>
+              <div>
+                <button
+                  type="button"
+                  onClick={() => toggleTheme()}
+                  aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                  className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                >
+                  <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={16} />
+                  <span className="text-sm">{theme === 'dark' ? 'Light' : 'Dark'}</span>
+                </button>
+              </div>
             </div>
             <div className="flex flex-col gap-4">
               {navItems.map((item) => (
