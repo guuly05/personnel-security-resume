@@ -1,6 +1,7 @@
 import React from 'react';
 import { ACHIEVEMENTS, CORE_SKILLS, PERSONAL_INFO } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
+import { CASE_STUDIES } from './Portfolio.tsx';
 
 const exploreCards = [
   { id: 'about', title: 'About Me', description: 'The story, mindset, and interests behind the work.', icon: 'user' },
@@ -16,6 +17,8 @@ const lanes = [
   { label: 'Backend', detail: 'APIs that do the work', icon: 'server', tone: 'text-[var(--accent)]' },
   { label: 'Delivery', detail: 'Pipelines that keep shipping', icon: 'git-branch', tone: 'text-[var(--accent)]' },
 ];
+
+const featuredStudy = CASE_STUDIES[0];
 
 const HomePage: React.FC = () => (
   <div className="space-y-5">
@@ -68,6 +71,41 @@ const HomePage: React.FC = () => (
             <div className="mt-5 flex items-center gap-2 rounded-xl border border-[var(--accent)]/20 bg-[var(--accent-soft)] px-3 py-2.5 text-xs text-[var(--color-text-muted)]"><Icon name="sparkles" size={14} className="text-[var(--accent)]" /> Security is part of the craft, not the whole headline.</div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section className="surface-card overflow-hidden border-[var(--accent)]/25 p-6 md:p-8 lg:p-10">
+      <div className="flex flex-col justify-between gap-4 border-b border-[var(--border)] pb-6 md:flex-row md:items-end">
+        <div className="max-w-3xl">
+          <p className="eyebrow">Featured case study</p>
+          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight md:text-4xl">{featuredStudy.title}</h2>
+          <p className="mt-3 text-sm leading-7 text-[var(--color-text-muted)] md:text-base">{featuredStudy.subtitle}</p>
+        </div>
+        <span className="inline-flex w-fit items-center gap-2 rounded-md border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--accent)]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" /> Live platform
+        </span>
+      </div>
+      <div className="grid gap-3 py-6 md:grid-cols-3">
+        <div className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-5">
+          <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--accent)]">Problem</p>
+          <p className="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{featuredStudy.challenge}</p>
+        </div>
+        <div className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-5">
+          <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--accent)]">Solution</p>
+          <p className="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{featuredStudy.approach}</p>
+        </div>
+        <div className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-5">
+          <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--accent)]">Measurable result</p>
+          <p className="mt-3 text-sm leading-7 text-[var(--color-text-muted)]">{featuredStudy.outcome}</p>
+        </div>
+      </div>
+      <div className="flex flex-wrap items-center gap-3 border-t border-[var(--border)] pt-5">
+        <a href={`/portfolio/${featuredStudy.id}`} className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-bold text-[var(--color-bg)] transition hover:opacity-90">
+          Read the case study <Icon name="arrow-up-right" size={16} />
+        </a>
+        <a href={featuredStudy.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-sm font-semibold transition hover:border-[var(--accent)]">
+          <Icon name="github" size={16} /> View code on GitHub
+        </a>
       </div>
     </section>
 
