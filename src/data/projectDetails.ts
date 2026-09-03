@@ -36,6 +36,42 @@ export interface ProjectDetail {
  * client data, or exploitable findings are included in the public case studies.
  */
 export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
+  'portfolio-platform': {
+    screenshots: [
+      { title: 'Product surface', description: 'A content-first portfolio connects identity, capabilities, case studies, writing, and contact in one navigable experience.' },
+      { title: 'Booking workflow', description: 'Availability, protected booking, Google Meet creation, and self-service management form a complete public workflow.' },
+    ],
+    architectureSummary: 'A prerendered React frontend shares route and content models with the build pipeline, while Vercel functions connect validated browser actions to external services and durable storage.',
+    architecture: [
+      { label: 'Experience', items: ['React 19 pages', 'History-based routing', 'Lazy-loaded modules'] },
+      { label: 'Server workflows', items: ['Input validation', 'Turnstile checks', 'Google Calendar API'] },
+      { label: 'Delivery', items: ['Prerendered HTML', 'Sitemap / RSS / Atom', 'Vercel security headers'] },
+    ],
+    reportIntro: 'Public platform review snapshot. Credentials, booking tokens, provider responses, and personal submissions are excluded.',
+    reportRows: [
+      { label: 'Public experiences', value: '9+ routes and workflows', status: 'INFO' },
+      { label: 'Server workflows', value: '4 protected APIs', status: 'PASS' },
+      { label: 'Browser secrets', value: 'Server-only credentials', status: 'PASS' },
+      { label: 'SEO output', value: 'Prerendered route documents', status: 'INFO' },
+    ],
+    reportExcerpt: 'SYSTEM: production portfolio platform\nCONTROL: secrets and booking tokens remain server-side\nOUTPUT: route HTML, feeds, metadata, and protected workflows generated',
+    methodology: [
+      { title: 'Model the public product', detail: 'Designed the site as a working product surface rather than a collection of resume sections, with direct routes for every meaningful experience.' },
+      { title: 'Protect external boundaries', detail: 'Validated form input server-side and added origin checks, Turnstile, rate limits, idempotency, and hashed booking management tokens.' },
+      { title: 'Verify the shipped experience', detail: 'Used typed tests, production builds, prerendered output, sitemap generation, and SEO assertions to check both behavior and discoverability.' },
+    ],
+    results: [
+      { value: '9+', label: 'public experiences', detail: 'Portfolio, blog, booking, contact, legal, and content routes ship as direct URLs.' },
+      { value: '4', label: 'server workflows', detail: 'Availability, booking, management, and contact APIs support real user actions.' },
+      { value: '5+', label: 'security controls', detail: 'Validation, Turnstile, rate limits, headers, and idempotency protect the public surface.' },
+    ],
+    contribution: [
+      'Owned product direction, information architecture, visual system, and end-to-end implementation.',
+      'Built the typed React frontend, lightweight router, lazy page loading, theme system, and interactive terminal.',
+      'Implemented protected contact and Google Calendar booking workflows with durable storage and self-service management.',
+      'Created Markdown publishing, social image generation, feeds, prerendering, metadata, and deployment security headers.',
+    ],
+  },
   'cyber-dashboard': {
     screenshots: [
       { title: 'Threat feed workspace', description: 'Live indicators, risk scores, and investigation shortcuts in one analyst view.' },
