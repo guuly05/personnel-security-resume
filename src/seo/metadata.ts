@@ -42,6 +42,10 @@ export type PageMetadata = {
 const TITLE_SUFFIX = `${FULL_NAME} — Full-Stack Developer Portfolio`;
 
 const PROJECT_SEO: Record<string, { title: string; description: string }> = {
+  'portfolio-platform': {
+    title: 'Full-Stack Portfolio Platform Case Study',
+    description: 'A production-oriented React portfolio platform case study covering typed architecture, protected APIs, Google Calendar booking, prerendered SEO, and measurable delivery results.',
+  },
   'cyber-dashboard': {
     title: 'Cyber Attack Monitoring Dashboard Case Study',
     description: 'Architecture, security controls, testing methodology, and measurable results from Guuleed Maxmuud Aw Abdi’s threat intelligence dashboard.',
