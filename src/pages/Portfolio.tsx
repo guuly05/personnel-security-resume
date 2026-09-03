@@ -36,6 +36,40 @@ export interface CaseStudy {
 
 export const CASE_STUDIES: CaseStudy[] = [
   {
+    id: 'portfolio-platform',
+    title: 'Full-Stack Portfolio Platform',
+    subtitle: 'A production-oriented portfolio, technical blog, contact service, and calendar booking system in one typed React application.',
+    type: 'Full-Stack Web Platform',
+    year: '2026',
+    status: 'Live',
+    role: 'Sole Developer & Designer',
+    imageUrl: '/assets/og-preview.png',
+    imageAlt: 'Guuleed Maxmuud Aw Abdi portfolio platform preview',
+    challenge:
+      'A resume alone could not show the engineering behind the work. The site needed to communicate product thinking while also supporting searchable writing, protected contact, real calendar booking, and strong direct-route SEO.',
+    approach:
+      'Built a typed React 19 and Vite application with lightweight history routing, lazy-loaded pages, Markdown publishing, shared server validation, Google Calendar integration, Turnstile protection, durable booking storage, and a prerendered static output for every public route.',
+    outcome:
+      'A live portfolio platform that turns proof of engineering into a working product: 4 server workflows, 9+ public experiences, generated SEO assets, Google Meet booking, and a security-minded deployment model with no secrets in the browser.',
+    highlights: [
+      '9+ public experiences including portfolio, blog, booking, contact, and legal routes',
+      '4 server workflows for availability, booking, management, and protected contact',
+      '5+ security controls across validation, Turnstile, rate limits, headers, and idempotency',
+      'Prerendered HTML, sitemap, RSS, Atom, and route-specific metadata for discoverability',
+    ],
+    techStack: [
+      { name: 'React 19', group: 'frontend' },
+      { name: 'TypeScript', group: 'frontend' },
+      { name: 'Vite', group: 'tooling' },
+      { name: 'Vercel Functions', group: 'platform' },
+      { name: 'Google Calendar API', group: 'backend' },
+      { name: 'Redis-compatible store', group: 'backend' },
+      { name: 'Turnstile', group: 'tooling' },
+    ],
+    githubUrl: 'https://github.com/guuly05/personnel-security-resume',
+    liveUrl: 'https://www.guuleedmaxamuud.dev',
+  },
+  {
     id: 'cyber-dashboard',
     title: 'Cyber Attack Monitoring Dashboard',
     subtitle: 'Real-time threat intelligence and investigation toolkit for security analysts.',
