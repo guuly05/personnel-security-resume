@@ -48,14 +48,14 @@ export const EXPERIENCES: Experience[] = [
   {
     title: "Freelance Web Developer",
     company: "Samaale General Trading Co.",
-    dateRange: "Freelance · Project-based",
+    dateRange: "June 2026 - August 2026",
     bullets: [
-      "Architected and deployed a type-safe B2B corporate web portal and bulk catalog from scratch for a trading and logistics firm in the Horn of Africa using React 19, Vite 6, TypeScript, Tailwind CSS v4, and Framer Motion.",
-      "Designed immutable product and category schemas with strict TypeScript constraints to eliminate an entire class of runtime errors and keep the client architecture scalable.",
-      "Optimized the build workflow with Vite, absolute path aliases, and strict tsc --noEmit checks; used Tailwind's Vite integration to keep theme compilation close to the design system.",
-      "Improved rendering performance with a custom LazyRender utility powered by IntersectionObserver, plus memoized inventory search and portal-based modal layers.",
-      "Built a dual-action quote flow that stores selections locally and generates URI-encoded WhatsApp Business messages for direct follow-up.",
-      "Added an ErrorBoundary for fault-tolerant UI behavior and embedded JSON-LD schemas for WholesaleStore, Organization, and FAQPage search visibility."
+      "Architected and shipped a production B2B trading platform from scratch using React 19, TypeScript, and Vite, structuring 30+ source files (~9,000 LOC) around strict type-safe data models to eliminate an entire class of runtime errors.",
+      "Improved load performance by implementing double-layer lazy loading -- React.lazy() code-splitting paired with a custom IntersectionObserver-based render utility -- alongside vendor chunk splitting for faster Time-to-Interactive.",
+      "Built a zero-dependency bilingual (English/Somali) internationalization system from the ground up using React Context, covering the entire UI without adding third-party i18n libraries.",
+      "Designed and deployed a secure serverless API on Cloudflare Workers, chaining bot protection (Turnstile), field validation, and SHA-256 hash-based rate limiting to safely handle form submissions at the edge.",
+      "Achieved WCAG-compliant accessibility by engineering a custom focus-trap hook for nested modal dialogs, validated through automated Playwright + axe-core audits in CI.",
+      "Developed an interactive Leaflet-based logistics map and decoupled event-driven architecture (custom pub/sub via browser CustomEvents) to keep unrelated components loosely coupled and maintainable."
     ]
   }
 ];
