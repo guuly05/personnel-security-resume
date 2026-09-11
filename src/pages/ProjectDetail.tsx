@@ -179,10 +179,34 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
         <ArchitectureDiagram detail={detail} />
       </section>
 
+      {detail.caseStudySections && detail.caseStudySections.length > 0 && (
+        <section className="space-y-5">
+          <SectionHeading eyebrow="03 / Implementation notes" title="Architecture, code, and techniques" />
+          <div className="grid gap-5 lg:grid-cols-2">
+            {detail.caseStudySections.map((section) => (
+              <article key={section.title} className="surface-card p-6 sm:p-8">
+                <h3 className="mb-3 text-xl font-bold tracking-tight">{section.title}</h3>
+                <p className="text-sm leading-7 text-[var(--color-text-muted)]">{section.body}</p>
+                {section.bullets && (
+                  <ul className="mt-5 space-y-3 border-t border-[var(--border)] pt-5">
+                    {section.bullets.map((bullet) => (
+                      <li key={bullet} className="flex gap-3 text-sm leading-6 text-[var(--color-text-muted)]">
+                        <Icon name="check" size={15} className="mt-1 flex-shrink-0 text-[var(--accent)]" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
       <section className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
         <SanitizedReport detail={detail} />
         <div>
-          <SectionHeading eyebrow="03 / Verification" title="Testing methodology" />
+          <SectionHeading eyebrow="04 / Verification" title="Testing methodology" />
           <div className="space-y-3">
             {detail.methodology.map((step, index) => (
               <div key={step.title} className="surface-card flex gap-4 p-5">
@@ -197,7 +221,7 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
       <section className="surface-card overflow-hidden p-6 sm:p-8 lg:p-10">
         <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
           <div>
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--accent)]">04 / Ownership</p>
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--accent)]">05 / Ownership</p>
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">What I personally contributed</h2>
             <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)]">Clear ownership matters in security work. These are the decisions and deliverables I directly handled for this project.</p>
           </div>
@@ -212,7 +236,8 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
       </section>
 
       <div className="flex flex-wrap gap-3 border-t border-[var(--border)] pt-6">
-        <a href={study.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-bg)] transition-colors hover:opacity-90"><Icon name="github" size={15} /> View source</a>
+        {study.liveUrl && <a href={study.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-bg)] transition-colors hover:opacity-90"><Icon name="arrow-up-right" size={15} /> See live deployment</a>}
+        {study.githubUrl && <a href={study.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-sm font-semibold transition-colors hover:border-[var(--accent)]/50"><Icon name="github" size={15} /> View source</a>}
         <a href="/portfolio" className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-sm font-semibold transition-colors hover:border-[var(--accent)]/50"><Icon name="layout" size={15} /> More projects</a>
       </div>
     </motion.div>

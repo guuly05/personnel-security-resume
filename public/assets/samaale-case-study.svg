@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 720" role="img" aria-labelledby="title desc">
+  <title id="title">Samaale General Trading Co. digital headquarters</title>
+  <desc id="desc">A stylized preview of the Samaale commerce and logistics website.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#082f3d"/><stop offset="1" stop-color="#0e766e"/></linearGradient>
+    <linearGradient id="card" x1="0" x2="1"><stop stop-color="#ffffff" stop-opacity=".98"/><stop offset="1" stop-color="#e9f6f2" stop-opacity=".94"/></linearGradient>
+  </defs>
+  <rect width="1600" height="720" fill="url(#bg)"/>
+  <circle cx="1370" cy="80" r="270" fill="#5eead4" opacity=".12"/>
+  <circle cx="150" cy="680" r="250" fill="#fbbf24" opacity=".10"/>
+  <path d="M0 545 C260 490 420 620 670 540 S1160 410 1600 505 V720 H0Z" fill="#052632" opacity=".45"/>
+  <g transform="translate(92 68)" font-family="Arial, Helvetica, sans-serif">
+    <text fill="#f8fafc" font-size="22" font-weight="700" letter-spacing="5">SAMAALE GENERAL TRADING CO.</text>
+    <text y="82" fill="#ffffff" font-size="70" font-weight="700">Your regional trade partner.</text>
+    <text y="130" fill="#b6e8df" font-size="25">Essential goods · Electronics · Premium tyres · Logistics</text>
+    <rect y="184" width="254" height="52" rx="8" fill="#fbbf24"/>
+    <text x="30" y="218" fill="#082f3d" font-size="18" font-weight="700">EXPLORE CATALOGUE</text>
+    <g transform="translate(0 300)">
+      <rect width="365" height="156" rx="14" fill="url(#card)"/>
+      <rect x="388" width="365" height="156" rx="14" fill="url(#card)"/>
+      <rect x="776" width="365" height="156" rx="14" fill="url(#card)"/>
+      <g fill="#0b4f5b">
+        <text x="28" y="48" font-size="18" font-weight="700">PRODUCT CATALOGUE</text>
+        <text x="28" y="82" font-size="15">27+ products · search · filters</text>
+        <text x="416" y="48" font-size="18" font-weight="700">LOGISTICS NETWORK</text>
+        <text x="416" y="82" font-size="15">7 locations across the region</text>
+        <text x="804" y="48" font-size="18" font-weight="700">BILINGUAL EXPERIENCE</text>
+        <text x="804" y="82" font-size="15">English + Somali · accessible by design</text>
+      </g>
+      <g fill="#0e766e" opacity=".9">
+        <circle cx="42" cy="121" r="9"/><circle cx="416" cy="121" r="9"/><circle cx="804" cy="121" r="9"/>
+      </g>
+    </g>
+  </g>
+</svg>

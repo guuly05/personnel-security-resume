@@ -26,7 +26,7 @@ export interface CaseStudy {
   outcome: string;
   highlights: string[];
   techStack: TechItem[];
-  githubUrl: string;
+  githubUrl?: string;
   liveUrl?: string;
 }
 
@@ -35,6 +35,42 @@ export interface CaseStudy {
    ───────────────────────────────────────────── */
 
 export const CASE_STUDIES: CaseStudy[] = [
+  {
+    id: 'samaale-general-trading',
+    title: 'Samaale General Trading Co. Digital Headquarters',
+    subtitle: 'A production-grade bilingual commerce and logistics website that turns a regional distributor\'s catalogue, branch network, and procurement services into a fast, discoverable, and conversion-focused digital experience.',
+    type: 'Enterprise Web Platform',
+    year: '2026',
+    status: 'Live',
+    role: 'Sole Developer & Technical Architect',
+    imageUrl: '/assets/samaale-case-study.svg',
+    imageAlt: 'Samaale General Trading Co. digital headquarters case study preview',
+    challenge:
+      'Samaale needed more than a brochure site. The business spans essential commodities, electronics and appliances, tyres, spare parts, lubricants, procurement, warehousing, freight, and customs clearing across the Horn of Africa. The website therefore had to explain a complex business clearly, help buyers find the right product or service quickly, support English and Somali audiences, and provide a trustworthy path from discovery to inquiry without sacrificing performance or accessibility.',
+    approach:
+      'Designed and built a typed React 19 single-page application with React Router, Tailwind CSS, Motion, a structured data layer, reusable section components, portal-based catalog and article modals, Leaflet logistics visualization, bilingual React Context state persisted with localStorage, dynamic SEO metadata, lazy rendering, vendor chunk splitting, and a Cloudflare Workers contact boundary protected by validation, Turnstile, SHA-256 rate limiting, and Resend.',
+    outcome:
+      'A live, production-ready company platform that presents 27+ products, seven branch locations, four logistics offerings, a regional route map, partner and testimonial proof, three news articles, WhatsApp inquiry paths, and a secure contact workflow. The system is deployed through Vercel and Cloudflare with edge delivery, serverless email handling, cache-friendly bundles, route-aware metadata, and an accessibility-focused interaction model.',
+    highlights: [
+      'Bilingual English/Somali experience with 11 client-side routes and persistent language preference',
+      '27+ product catalogue with category navigation, search, filtering, detail modals, skeleton states, and WhatsApp inquiry handoff',
+      'Interactive Leaflet logistics map connecting seven operational locations across Somaliland, Djibouti, Ethiopia, and Somalia',
+      'Cloudflare Worker contact API with six-field validation, Turnstile verification, SHA-256/KV rate limiting, and Resend delivery',
+      'Performance and discoverability system combining React.lazy, IntersectionObserver rendering, manual vendor chunks, prerendering, canonical metadata, sitemap, and social previews',
+    ],
+    techStack: [
+      { name: 'React 19', group: 'frontend' },
+      { name: 'TypeScript 5.8', group: 'frontend' },
+      { name: 'Vite 6', group: 'tooling' },
+      { name: 'Tailwind CSS 4', group: 'frontend' },
+      { name: 'Motion', group: 'tooling' },
+      { name: 'React Router 7', group: 'frontend' },
+      { name: 'Leaflet / React-Leaflet', group: 'tooling' },
+      { name: 'Cloudflare Workers', group: 'platform' },
+      { name: 'Resend + Turnstile', group: 'backend' },
+    ],
+    liveUrl: 'https://samaale-general-trading.com',
+  },
   {
     id: 'portfolio-platform',
     title: 'Full-Stack Portfolio Platform',
@@ -358,7 +394,7 @@ const FeaturedCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
             <Icon name="file-text" size={15} />
             Full Case Study
           </a>
-          <a
+          {study.githubUrl && <a
             href={study.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -366,7 +402,7 @@ const FeaturedCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
           >
             <Icon name="github" size={15} />
             View Source
-          </a>
+          </a>}
           {study.liveUrl && (
             <a
               href={study.liveUrl}
@@ -375,7 +411,7 @@ const FeaturedCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
               className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--accent)]/50"
             >
               <Icon name="external-link" size={14} />
-              Live Demo
+              {study.githubUrl ? 'Live Demo' : 'See live deployment'}
             </a>
           )}
         </div>

@@ -103,9 +103,9 @@ const HomePage: React.FC = () => (
         <a href={`/portfolio/${featuredStudy.id}`} className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-bold text-[var(--color-bg)] transition hover:opacity-90">
           Read the case study <Icon name="arrow-up-right" size={16} />
         </a>
-        <a href={featuredStudy.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-sm font-semibold transition hover:border-[var(--accent)]">
-          <Icon name="github" size={16} /> View code on GitHub
-        </a>
+        {featuredStudy.liveUrl && <a href={featuredStudy.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-sm font-semibold transition hover:border-[var(--accent)]">
+          <Icon name="arrow-up-right" size={16} /> See live deployment
+        </a>}
       </div>
     </section>
 

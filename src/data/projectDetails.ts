@@ -19,6 +19,12 @@ export interface TestStep {
   detail: string;
 }
 
+export interface CaseStudySection {
+  title: string;
+  body: string;
+  bullets?: string[];
+}
+
 export interface ProjectDetail {
   screenshots: ProjectScreenshot[];
   architectureSummary: string;
@@ -29,6 +35,7 @@ export interface ProjectDetail {
   methodology: TestStep[];
   results: { value: string; label: string; detail: string }[];
   contribution: string[];
+  caseStudySections?: CaseStudySection[];
 }
 
 /**
@@ -36,6 +43,85 @@ export interface ProjectDetail {
  * client data, or exploitable findings are included in the public case studies.
  */
 export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
+  'samaale-general-trading': {
+    screenshots: [
+      { title: 'Commercial homepage', description: 'A high-signal landing experience introduces the company, its product categories, regional reach, and next actions without making visitors decode the business model.' },
+      { title: 'Catalogue and logistics workflow', description: 'Structured product discovery and an interactive route map turn a broad wholesale operation into navigable, evidence-backed information.' },
+    ],
+    architectureSummary: 'The platform separates the customer-facing React application from the contact trust boundary: static assets and prerendered routes are delivered at the edge, while the only server-side workflow validates and protects inquiry submissions before sending them through Resend.',
+    architecture: [
+      { label: 'Experience layer', items: ['React 19 + TypeScript', 'React Router 7 SPA routes', 'Tailwind CSS + Motion', 'English / Somali context'] },
+      { label: 'Interaction layer', items: ['Product and news portals', 'Leaflet logistics map', 'Search, filters, and WhatsApp CTAs', 'LazyRender + ErrorBoundary'] },
+      { label: 'Delivery layer', items: ['Vite manual chunks', 'Vercel edge hosting', 'Cloudflare Worker /api/contact', 'Resend + Turnstile + KV'] },
+    ],
+    reportIntro: 'Public technical case-study snapshot based on the implementation documentation. Credentials, private customer data, and provider secrets are intentionally excluded.',
+    reportRows: [
+      { label: 'Source footprint', value: '30+ TS / TSX files', status: 'INFO' },
+      { label: 'UI surface', value: '22 React components', status: 'INFO' },
+      { label: 'Catalogue', value: '27+ products', status: 'PASS' },
+      { label: 'Languages', value: 'English + Somali', status: 'PASS' },
+      { label: 'Contact protection', value: 'Turnstile + KV limit', status: 'PASS' },
+    ],
+    reportExcerpt: 'SYSTEM: bilingual commerce and logistics SPA\nDELIVERY: Vercel edge + Cloudflare Worker API\nCONTROL: typed validation, bot verification, rate limiting\nOUTPUT: catalogue, map, news, SEO, and inquiry workflows',
+    methodology: [
+      { title: 'Translate the business model into information architecture', detail: 'Grouped the company around the decisions a buyer actually needs to make: what Samaale supplies, where it operates, which logistics services it provides, and how to start an inquiry.' },
+      { title: 'Build reusable interaction primitives', detail: 'Used typed data arrays, shared components, portals, Motion transitions, and event-based coordination so catalogue, news, navigation, and location experiences could evolve without duplicating stateful UI logic.' },
+      { title: 'Protect the only server-side boundary', detail: 'Kept email credentials and abuse controls out of the browser. The Worker checks configuration, body size, JSON shape, field types and limits, Turnstile, then a SHA-256-derived KV rate limit before calling Resend.' },
+      { title: 'Verify delivery, accessibility, and discoverability', detail: 'Combined strict TypeScript checks, production bundling, prerendering, route metadata, sitemap and feed generation, Playwright/axe accessibility auditing, reduced-motion handling, semantic HTML, and keyboard focus management.' },
+    ],
+    results: [
+      { value: '11', label: 'client-side routes', detail: 'The SPA supports direct navigation across company, catalogue, news, contact, and legal surfaces.' },
+      { value: '7', label: 'mapped locations', detail: 'The logistics map visualizes the operational network and regional movement of goods.' },
+      { value: '2', label: 'supported languages', detail: 'English and Somali content share one React Context translation system with local persistence.' },
+    ],
+    contribution: [
+      'Owned the information architecture, visual system, frontend implementation, deployment model, and technical documentation.',
+      'Designed the catalogue and news systems with typed content models, category filtering, search, portals, detail views, and shareable URL states.',
+      'Built the logistics story as both service content and an interactive Leaflet map with custom location nodes and animated route polylines.',
+      'Implemented bilingual content, responsive navigation, scroll-aware header behavior, keyboard focus traps, skip links, semantic landmarks, and reduced-motion support.',
+      'Created the Cloudflare Worker contact pipeline, including validation, Turnstile verification, SHA-256 rate limiting, Resend email templates, and safe environment-variable handling.',
+    ],
+    caseStudySections: [
+      {
+        title: 'Architecture and code organization',
+        body: 'The codebase is organized around a single React application entry point and a component dependency tree that keeps business sections independent while sharing infrastructure utilities. App.tsx owns global concerns such as routing, page loading, error recovery, floating actions, and route-change analytics. Feature components then own their local data and interaction state: Hero manages the timed media and typing state machine, ProductCatalog manages search and filtering, NewsArticleModal manages article galleries and sharing, and LogisticsMap owns the Leaflet view. This boundary keeps the main composition readable and lets individual sections be lazy-loaded or audited in isolation.',
+        bullets: [
+          'Typed data models make products, news, branches, partners, testimonials, and translations predictable to render and safer to refactor.',
+          'ReactDOM.createPortal keeps catalogue and article dialogs above layout constraints while preserving a clean parent component tree.',
+          'A CustomEvent channel connects the header brand menu to the catalogue without prop drilling across unrelated sections.',
+          'ErrorBoundary, LazyRender, ScrollReveal, RouteChangeTracker, and the focus-trap hook provide reusable cross-cutting behavior instead of one-off page logic.',
+        ],
+      },
+      {
+        title: 'Customer-facing techniques',
+        body: 'The experience was designed around progressive disclosure. The homepage establishes trust with company history, product categories, service cards, partner logos, testimonials, and regional reach; deeper content is available through modals and direct routes when a visitor is ready to explore. The product catalogue uses useMemo-backed search and filtering, loading skeletons, aspect-ratio media, and a product detail modal. Product inquiries can then move directly into WhatsApp, reducing the distance between discovery and a real commercial conversation.',
+        bullets: [
+          'The header changes height, contrast, and shadow after scrolling, while the mobile drawer uses a spring animation and trapped keyboard focus.',
+          'The hero combines a nine-item media slideshow, AnimatePresence crossfades, a Ken Burns effect, and a locale-aware typing animation.',
+          'News articles are deep-linkable, support image galleries and Web Share API handoff, and migrate legacy hash URLs to path-based URLs.',
+          'The logistics section pairs service descriptions with a Leaflet map, seven custom location nodes, and animated route polylines to make regional capability concrete.',
+        ],
+      },
+      {
+        title: 'Performance, SEO, and accessibility',
+        body: 'Performance was treated as an architectural concern, not a final polish step. React.lazy and Suspense split page-level code, LazyRender defers below-the-fold work with IntersectionObserver, and Vite manualChunks separates React, Motion, Leaflet, and icons for cache-friendly delivery. The post-build pipeline prerenders route HTML, optimizes media with Sharp, and generates sitemap and feed assets. Dynamic head management supplies route-specific titles, descriptions, canonical URLs, Open Graph data, and a large social preview.',
+        bullets: [
+          'The reduced-motion system combines MotionConfig reducedMotion="user" with component-level useReducedMotion checks.',
+          'Semantic landmarks, skip-to-content navigation, descriptive image alt text, ARIA menu/dialog states, Escape-key handling, and focus restoration support keyboard and assistive-technology users.',
+          'Playwright and axe-core are part of the documented verification workflow, so accessibility can be checked against the shipped interface rather than assumed from the source.',
+        ],
+      },
+      {
+        title: 'Secure contact and deployment design',
+        body: 'The contact form is the deliberate trust boundary in the system. The browser performs immediate UX validation, but the Cloudflare Worker treats every request as untrusted: it verifies environment configuration, rejects oversized bodies, parses JSON, validates six fields with type, length, and pattern constraints, verifies the Turnstile token with Cloudflare, hashes the request identity with SHA-256 for a short-lived KV limit, and only then sends an HTML notification through Resend. This keeps provider credentials and abuse controls server-side while preserving a simple form experience for visitors.',
+        bullets: [
+          'The frontend is delivered as a static SPA through Vercel and its edge CDN, while the API runs in the Cloudflare Workers isolate runtime.',
+          'Vercel build and deployment, Cloudflare Pages Functions, Resend, Turnstile, KV, Leaflet tiles, and GA4 are connected through explicit environment boundaries.',
+          'The deployment model supports HTTPS, edge caching, Brotli compression, route rewrites, prerendered HTML, and server-only secrets without adding a traditional application server.',
+        ],
+      },
+    ],
+  },
   'portfolio-platform': {
     screenshots: [
       { title: 'Product surface', description: 'A content-first portfolio connects identity, capabilities, case studies, writing, and contact in one navigable experience.' },
@@ -217,4 +303,3 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
     ],
   },
 };
-
