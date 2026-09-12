@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { ABOUT_LETTER, PERSONAL_INFO, SOFT_SKILLS } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
 import { useFocusTrap } from '../hooks/useFocusTrap.ts';
@@ -18,9 +19,74 @@ type HobbyCard = {
   items: MediaItem[];
 };
 
+type ProjectMilestone = {
+  period: string;
+  title: string;
+  description: string;
+  tags: string[];
+  href?: string;
+  icon: string;
+};
+
 const birthDate = new Date('2005-07-27T00:00:00');
 const graduationStart = new Date('2023-08-01T00:00:00');
 const graduationDate = new Date('2027-08-01T00:00:00');
+
+const projectTimeline: ProjectMilestone[] = [
+  {
+    period: '2023',
+    title: 'Started Computer Science',
+    description: 'Built the foundation through programming, systems thinking, and project-based learning.',
+    tags: ['B.Sc. Computer Science', 'University of Hargeisa'],
+    icon: 'graduation-cap',
+  },
+  {
+    period: 'Project milestone',
+    title: 'Gabay Keeper',
+    description: 'Created a private digital archive for Somali oral poetry with OCR and visual export tools.',
+    tags: ['React', 'Firebase', 'OCR'],
+    href: '/portfolio/gabay-keeper',
+    icon: 'book-marked',
+  },
+  {
+    period: 'Security focus',
+    title: 'Cyber Attack Monitoring Dashboard',
+    description: 'Designed a threat-intelligence and investigation workspace for security analysts.',
+    tags: ['Next.js', 'Threat intelligence', 'Security'],
+    href: '/portfolio/cyber-dashboard',
+    icon: 'shield-check',
+  },
+  {
+    period: 'Commercial build',
+    title: 'Samaale General Trading',
+    description: 'Built a bilingual commerce and logistics platform for a regional distributor.',
+    tags: ['React', 'Somali / English', 'Edge delivery'],
+    href: '/portfolio/samaale-general-trading',
+    icon: 'briefcase',
+  },
+  {
+    period: 'Current build',
+    title: 'Portfolio Platform',
+    description: 'Turned this portfolio into a working product with case studies, publishing, contact, and booking workflows.',
+    tags: ['React', 'TypeScript', 'Production systems'],
+    href: '/portfolio/portfolio-platform',
+    icon: 'layout',
+  },
+  {
+    period: '2027',
+    title: 'Expected graduation',
+    description: 'Completing the B.Sc. Computer Science degree while continuing to build useful, secure products.',
+    tags: ['Next chapter'],
+    icon: 'trophy',
+  },
+];
+
+const personalPrinciples = [
+  { title: 'Build useful systems', description: 'I care about products that solve a real problem and feel dependable to use.', icon: 'layers' },
+  { title: 'Keep learning', description: 'Every project is a chance to strengthen fundamentals and discover a better approach.', icon: 'sparkles' },
+  { title: 'Think securely', description: 'Good experiences should also respect privacy, boundaries, and the people using them.', icon: 'shield-check' },
+  { title: 'Finish with care', description: 'Documentation, accessibility, polish, and consistency are part of the work.', icon: 'check' },
+];
 
 const hobbyCards: HobbyCard[] = [
   {
@@ -237,6 +303,7 @@ const AboutPage: React.FC = () => {
   const [now, setNow] = useState(() => new Date());
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [isModalCvOpen, setIsModalCvOpen] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
   const cvModalRef = useRef<HTMLDivElement | null>(null);
   const closeCvModal = useCallback(() => setIsModalCvOpen(false), []);
   useFocusTrap(isModalCvOpen, cvModalRef, closeCvModal);
@@ -258,7 +325,12 @@ const AboutPage: React.FC = () => {
 
   return (
     <div className="space-y-5">
-      <section className="surface-card p-6 md:p-10 lg:p-12">
+      <motion.section
+        className="surface-card p-6 md:p-10 lg:p-12"
+        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: shouldReduceMotion ? 0.01 : 0.5, ease: 'easeOut' }}
+      >
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">About Me</p>
@@ -393,7 +465,7 @@ const AboutPage: React.FC = () => {
             </div>
           </div>
         )}
-      </section>
+      </motion.section>
 
       {/* Fullscreen CV Viewer Modal */}
       {isModalCvOpen && (
@@ -439,50 +511,97 @@ const AboutPage: React.FC = () => {
         </div>
       )}
 
-      <section className="grid gap-4 md:grid-cols-2">
-        <div className="surface-card p-6 md:p-8">
-          <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">Current Focus</p>
-          <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
-            I am currently focused on building stronger products, deeper technical fundamentals, and consistent execution. My goal is to keep improving the quality of the code, systems, documentation, and collaboration behind every project.
+      <motion.section
+        className="surface-card p-6 md:p-8"
+        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: shouldReduceMotion ? 0.01 : 0.5, ease: 'easeOut' }}
+      >
+        <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">Build journey</p>
+            <h2 className="mt-3 text-3xl font-bold text-[var(--color-text)] md:text-4xl">Learning by building.</h2>
+          </div>
+          <p className="max-w-xl text-sm leading-relaxed text-[var(--color-text-muted)]">
+            A timeline of the ideas, projects, and technical foundations that have shaped the way I work.
           </p>
-          <div className="mt-5 flex flex-wrap gap-2">
-            {SOFT_SKILLS.map((skill) => (
-              <span
-                key={skill}
-                className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]"
+        </div>
+
+        <div className="mt-8 grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <p className="text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
+              I am currently focused on building stronger products, deeper technical fundamentals, and consistent execution. My goal is to keep improving the quality of the code, systems, documentation, and collaboration behind every project.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {SOFT_SKILLS.map((skill) => (
+                <span key={skill} className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="about-timeline">
+            {projectTimeline.map((milestone, index) => (
+              <motion.article
+                key={milestone.title}
+                className="about-timeline-item"
+                initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 18 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: shouldReduceMotion ? 0.01 : 0.4, delay: shouldReduceMotion ? 0 : index * 0.06, ease: 'easeOut' }}
               >
-                {skill}
-              </span>
+                <div className="about-timeline-marker"><Icon name={milestone.icon} size={15} /></div>
+                <div className="about-timeline-content">
+                  <p className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-[var(--accent)]">{milestone.period}</p>
+                  <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
+                    <h3 className="text-lg font-bold text-[var(--color-text)]">{milestone.title}</h3>
+                    {milestone.href && (
+                      <a href={milestone.href} className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--accent)] hover:underline">
+                        View case study <Icon name="arrow-up-right" size={13} />
+                      </a>
+                    )}
+                  </div>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">{milestone.description}</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {milestone.tags.map((tag) => <span key={tag} className="timeline-tag">{tag}</span>)}
+                  </div>
+                </div>
+              </motion.article>
             ))}
           </div>
         </div>
+      </motion.section>
 
-        <div className="surface-card p-6 md:p-8">
-          <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)]">Education path</p>
-          <h3 className="mt-3 text-2xl font-bold text-[var(--color-text)]">B.Sc. Computer Science</h3>
-          <p className="mt-2 text-sm text-[var(--color-text-muted)]">University of Hargeisa</p>
-          <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
-            Degree timeline: 2023 to 2027. I align classwork with practical software engineering, systems thinking, secure development, and project-based learning.
+      <motion.section
+        className="surface-card p-6 md:p-8"
+        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.12 }}
+        transition={{ duration: shouldReduceMotion ? 0.01 : 0.5, ease: 'easeOut' }}
+      >
+        <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)]">Outside the build</p>
+        <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <h2 className="text-3xl font-bold text-[var(--color-text)] md:text-4xl">Stories, worlds, and ideas.</h2>
+          <p className="max-w-2xl text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
+            My favourite media is a small window into how I think, what inspires me, and what I enjoy when I am away from the keyboard.
           </p>
         </div>
-      </section>
-
-      <section className="surface-card p-6 md:p-8">
-        <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)]">Hobbies and Interests</p>
-        <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
-          I have compiled here my top hobbies and my fav media in each of them, browsing them should help you to understand how i am outside my work.
-        </p>
 
         <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           {hobbyCards.map((category) => {
             const isOpen = activeCategory === category.id;
 
             return (
-              <button
+              <motion.button
                 type="button"
                 key={category.id}
                 className={`hobby-card ${isOpen ? 'border-accent' : ''}`}
                 onClick={() => setActiveCategory(isOpen ? null : category.id)}
+                whileHover={shouldReduceMotion ? undefined : { y: -4 }}
+                whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+                transition={{ duration: 0.2 }}
               >
                 <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] accent-text">
                   <Icon name={category.icon} size={18} />
@@ -497,18 +616,38 @@ const AboutPage: React.FC = () => {
                     className={isOpen ? 'rotate-90 transition-transform' : 'transition-transform'}
                   />
                 </span>
-              </button>
+              </motion.button>
             );
           })}
         </div>
 
-        {activeCategory && (
-          <div className="mt-6 rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-5">
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {hobbyCards
-                .find((category) => category.id === activeCategory)
-                ?.items.map((item) => (
-                  <article key={item.title} className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3">
+        <AnimatePresence mode="wait">
+          {activeCategory && (
+            <motion.div
+              key={activeCategory}
+              className="mt-6 rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-5"
+              initial={{ opacity: 0, height: 0, y: -8 }}
+              animate={{ opacity: 1, height: 'auto', y: 0 }}
+              exit={{ opacity: 0, height: 0, y: -8 }}
+              transition={{ duration: shouldReduceMotion ? 0.01 : 0.35, ease: 'easeOut' }}
+              style={{ overflow: 'hidden' }}
+            >
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-[var(--accent)]">Favourite media</p>
+                  <p className="mt-1 text-sm text-[var(--color-text-muted)]">Five picks from my {activeCategory} list.</p>
+                </div>
+                <span className="rounded-full border border-[var(--border)] px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">5 favourites</span>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {hobbyCards.find((category) => category.id === activeCategory)?.items.map((item, index) => (
+                  <motion.article
+                    key={item.title}
+                    className={`rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3 ${index === 0 ? 'xl:col-span-2' : ''}`}
+                    initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: shouldReduceMotion ? 0.01 : 0.3, delay: shouldReduceMotion ? 0 : index * 0.05 }}
+                  >
                     <div className="rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--surface-soft)]">
                       <img
                         src={item.image}
@@ -528,14 +667,15 @@ const AboutPage: React.FC = () => {
                     <h4 className="mt-3 text-base font-bold text-[var(--color-text)]">{item.title}</h4>
                     <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">{item.description}</p>
                     <p className="mt-3 text-xs font-semibold uppercase tracking-widest text-[var(--accent)]">
-                      What i like about this: {item.highlight}
+                      Why it stands out: {item.highlight}
                     </p>
-                  </article>
+                  </motion.article>
                 ))}
-            </div>
-          </div>
-        )}
-      </section>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.section>
     </div>
   );
 };
