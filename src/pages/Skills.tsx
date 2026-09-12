@@ -35,13 +35,21 @@ const toolSvgMap: Record<string, string> = {
   'Wireshark': '/images/SVG/wireshark.svg',
   'Metasploit': '/images/SVG/metasploit.svg',
   'Nmap': '/images/SVG/nmap.svg',
+  'React': '/images/SVG/reactjs.svg',
   'Git/GitHub': '/images/SVG/github-wordmark.svg',
+  'Git / GitHub': '/images/SVG/github-wordmark.svg',
   'Bash': '/images/SVG/bash.svg',
+  'Bash / Shell Scripting': '/images/SVG/bash.svg',
   'Python': '/images/SVG/python.svg',
   'Java': '/images/SVG/java.svg',
   'Linux': '/images/SVG/linux.svg',
   'VMware': '/images/SVG/vmware-workstation.svg',
   'VirtualBox': '/images/SVG/virtualbox.svg',
+  'TailwindCSS': '/images/SVG/tailwindcss.svg',
+  'Express.js': '/images/SVG/express-js.svg',
+  'Firebase': '/images/SVG/firebase.svg',
+  'Vercel / Netlify': '/images/SVG/netlify.svg',
+  'Resend': 'https://cdn.resend.com/brand/resend-wordmark-black.svg',
 };
 
 const DETAILED_TOOLS: DetailedTool[] = [
