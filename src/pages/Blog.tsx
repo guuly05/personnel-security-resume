@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { ArrowLeft, BookOpen, Maximize2, Minimize2, Search, Shield, Sparkles, TimerReset, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Maximize2, Minimize2, Search, X } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import rehypeSanitize from 'rehype-sanitize';
 import remarkGfm from 'remark-gfm';
@@ -125,52 +125,52 @@ function Tag({ children, onClick, active = false }: { children: string; onClick?
   return onClick ? <button type="button" className={className} onClick={onClick}>{children}</button> : <span className={className}>{children}</span>;
 }
 
-function IntroGate({ onEnter, palette }: { onEnter: () => void; palette: MoodPalette }) {
-  const [pointer, setPointer] = useState({ x: 0, y: 0 });
+function PostVisual({ post, featured = false }: { post: BlogPost; featured?: boolean }) {
+  const palette = moodPalette(post.mood);
   return (
-    <motion.section className="blog-gate" onPointerMove={(event) => { const bounds = event.currentTarget.getBoundingClientRect(); setPointer({ x: (event.clientX - bounds.left) / bounds.width - 0.5, y: (event.clientY - bounds.top) / bounds.height - 0.5 }); }} initial={{ opacity: 0, scale: 0.99 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, clipPath: 'inset(0% 100% 0% 0%)' }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }} style={{ '--ambient-a': palette.ambientA, '--ambient-b': palette.ambientB, '--gate-accent': palette.accent } as React.CSSProperties}>
-      <div className="blog-gate-veil" />
-      <div className="blog-gate-copy" style={{ transform: `translate(${pointer.x * 18}px, ${pointer.y * 18}px)` }}>
-        <p className="blog-eyebrow">Editorial gate</p>
-        <h1 className="blog-gate-title">A quiet blog for technical stories, mood, and reflection.</h1>
-        <p className="blog-gate-text">Enter the archive to read one piece at a time, with the page atmosphere shifting to match the tone of the story.</p>
-        <button type="button" onClick={onEnter} className="blog-enter-button">Enter Blog <Sparkles size={16} /></button>
-      </div>
-    </motion.section>
+    <div className={`blog-post-visual ${featured ? 'is-featured' : ''}`} style={{ '--visual-accent': palette.accent, '--visual-soft': palette.soft } as React.CSSProperties} aria-hidden="true">
+      <span className="blog-visual-grid" />
+      <span className="blog-visual-index">{post.tags[0] ?? 'Notes'}</span>
+      <span className="blog-visual-mark">{featured ? '01' : '↗'}</span>
+      <span className="blog-visual-mood">{post.mood}</span>
+    </div>
   );
+}
+
+function PostMeta({ post }: { post: BlogPost }) {
+  return <div className="blog-post-meta"><span>{formatBlogDate(post.date)}</span><span className="blog-meta-dot" /><span>{post.readTime}</span></div>;
 }
 
 function BlogCatalog({ posts, allPosts, onOpen, searchQuery, onSearchChange, activeTag, onTagChange }: { posts: BlogPost[]; allPosts: BlogPost[]; onOpen: (slug: string) => void; searchQuery: string; onSearchChange: (value: string) => void; activeTag: string; onTagChange: (value: string) => void }) {
   const post = posts[0];
   const allTags = [...new Set(allPosts.flatMap((entry) => entry.tags))].sort((a, b) => a.localeCompare(b));
-  const palette = moodPalette(post?.mood ?? 'Contemplative');
 
   return (
-    <section className="space-y-6">
-      <div className="blog-catalog-hero surface-card p-6 md:p-8 lg:p-10">
-        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-          <div className="space-y-4">
-            <p className="blog-eyebrow">Blog / Research archive</p>
-            <h1 className="blog-hero-title">Engineering notes shaped like a premium magazine spread.</h1>
-            <p className="max-w-3xl text-sm leading-7 text-[var(--color-text-muted)] md:text-base">Technical research, product thinking, systems notes, security history, and practical commentary—stored as portable Markdown and published with a searchable editorial index.</p>
-          </div>
-          <div className="blog-meta-stack"><span className="blog-meta-chip">{allPosts.length} stories</span><span className="blog-meta-chip">RSS + Atom ready</span><span className="blog-meta-chip">Frontmatter indexed</span></div>
+    <section className="blog-catalog">
+      <header className="blog-catalog-intro">
+        <div>
+          <p className="blog-eyebrow">Blog / Research journal</p>
+          <h1 className="blog-hero-title">Ideas on security, systems, and the future of technology.</h1>
+          <p className="blog-catalog-lede">Technical research, practical commentary, and long-form notes from the desk of Guuleed Maxmuud Aw Abdi.</p>
         </div>
-        <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
-          <label className="blog-search"><Search size={17} /><span className="sr-only">Search posts</span><input value={searchQuery} onChange={(event) => onSearchChange(event.target.value)} placeholder="Search titles, topics, and tags" type="search" /></label>
-          <div className="flex flex-wrap gap-2" aria-label="Filter by tag"><Tag active={!activeTag} onClick={() => onTagChange('')}>All topics</Tag>{allTags.map((tag) => <Tag key={tag} active={activeTag === tag} onClick={() => onTagChange(tag)}>{tag}</Tag>)}</div>
-        </div>
+        <div className="blog-catalog-count"><strong>{allPosts.length}</strong><span>published notes</span></div>
+      </header>
+
+      <div className="blog-catalog-toolbar">
+        <label className="blog-search"><Search size={17} /><span className="sr-only">Search posts</span><input value={searchQuery} onChange={(event) => onSearchChange(event.target.value)} placeholder="Search the journal" type="search" /></label>
+        <div className="blog-filter-row" aria-label="Filter by topic"><Tag active={!activeTag} onClick={() => onTagChange('')}>All topics</Tag>{allTags.map((tag) => <Tag key={tag} active={activeTag === tag} onClick={() => onTagChange(tag)}>{tag}</Tag>)}</div>
       </div>
 
-      {!post ? <div className="surface-card p-10 text-center"><p className="blog-eyebrow">No matches</p><p className="mt-3 text-sm text-[var(--color-text-muted)]">Try another search term or clear the topic filter.</p></div> : <>
-        <div className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
-          <article className="blog-card-large surface-card overflow-hidden"><a href={`/blog/${post.slug}`} onClick={() => onOpen(post.slug)} className="block w-full text-left">
-            <div className="blog-hero-frame"><div className="blog-hero-art" style={{ '--mood-accent': palette.accent, '--mood-soft': palette.soft } as React.CSSProperties}><span className="blog-kicker">Featured story</span><strong className="blog-hero-art-title">{post.title}</strong><span className="blog-hero-art-subtitle">{post.subtitle}</span></div></div>
-            <div className="space-y-4 p-6 md:p-8"><div className="flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-[0.34em] text-[var(--color-text-muted)]"><span>{formatBlogDate(post.date)}</span><span className="h-1 w-1 rounded-full bg-[var(--border)]" /><span>{post.readTime}</span><span className="h-1 w-1 rounded-full bg-[var(--border)]" /><span>{post.mood}</span></div><h2 className="text-3xl font-display font-semibold leading-tight text-[var(--color-text)] md:text-4xl">{post.title}</h2><p className="max-w-2xl text-sm leading-7 text-[var(--color-text-muted)] md:text-[15px]">{post.subtitle}</p><div className="flex flex-wrap gap-2">{post.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}</div></div>
-          </a></article>
-          <aside className="space-y-4"><div className="surface-card p-6"><p className="blog-eyebrow">Catalog notes</p><div className="mt-5 space-y-3 text-sm leading-7 text-[var(--color-text-muted)]"><p>Every story is a standalone Markdown file with validated frontmatter, making publishing and review auditable.</p><p>Search covers titles, summaries, tags, and related topics. Use the feed links in the page footer to subscribe.</p></div></div><div className="surface-card p-6"><p className="blog-eyebrow">Current issue</p><div className="mt-5 grid gap-3"><div className="blog-side-stat"><BookOpen size={16} /><div><span className="block text-[10px] uppercase tracking-[0.34em] text-[var(--color-text-muted)]">Subtitle</span><strong className="block text-sm text-[var(--color-text)]">{post.subtitle}</strong></div></div><div className="blog-side-stat"><TimerReset size={16} /><div><span className="block text-[10px] uppercase tracking-[0.34em] text-[var(--color-text-muted)]">Published</span><strong className="block text-sm text-[var(--color-text)]">{formatBlogDate(post.date)}</strong></div></div><div className="blog-side-stat"><Shield size={16} /><div><span className="block text-[10px] uppercase tracking-[0.34em] text-[var(--color-text-muted)]">Last updated</span><strong className="block text-sm text-[var(--color-text)]">{formatBlogDate(post.lastUpdated)}</strong></div></div></div></div></aside>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2">{posts.slice(1).map((entry) => <article key={entry.slug} className="surface-card p-6 md:p-7"><a href={`/blog/${entry.slug}`} onClick={() => onOpen(entry.slug)} className="block w-full text-left"><div className="flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-[0.34em] text-[var(--color-text-muted)]"><span>{formatBlogDate(entry.date)}</span><span className="h-1 w-1 rounded-full bg-[var(--border)]" /><span>{entry.readTime}</span><span className="h-1 w-1 rounded-full bg-[var(--border)]" /></div><h2 className="mt-5 text-2xl font-display font-semibold leading-tight text-[var(--color-text)]">{entry.title}</h2><p className="mt-4 text-sm leading-7 text-[var(--color-text-muted)]">{entry.subtitle}</p><div className="mt-4 flex flex-wrap gap-2">{entry.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}</div></a></article>)}</div>
+      {!post ? <div className="blog-empty-state surface-card"><p className="blog-eyebrow">No matches</p><p>Try another search term or clear the topic filter.</p></div> : <>
+        <article className="blog-featured-post surface-card">
+          <a href={`/blog/${post.slug}`} onClick={() => onOpen(post.slug)} className="blog-featured-link">
+            <PostVisual post={post} featured />
+            <div className="blog-featured-copy"><p className="blog-section-label">Featured note</p><PostMeta post={post} /><h2>{post.title}</h2><p>{post.subtitle}</p><div className="blog-card-footer"><div className="blog-card-tags">{post.tags.slice(0, 2).map((tag) => <Tag key={tag}>{tag}</Tag>)}</div><span className="blog-read-link">Read note <ArrowRight size={15} /></span></div></div>
+          </a>
+        </article>
+
+        <div className="blog-section-heading"><div><p className="blog-section-label">The archive</p><h2>Latest notes</h2></div><span>{posts.length} {posts.length === 1 ? 'result' : 'results'}</span></div>
+        <div className="blog-post-grid">{posts.slice(1).map((entry) => <article key={entry.slug} className="blog-post-card surface-card"><a href={`/blog/${entry.slug}`} onClick={() => onOpen(entry.slug)}><PostVisual post={entry} /><div className="blog-post-card-copy"><PostMeta post={entry} /><h3>{entry.title}</h3><p>{entry.subtitle}</p><div className="blog-card-footer"><div className="blog-card-tags">{entry.tags.slice(0, 2).map((tag) => <Tag key={tag}>{tag}</Tag>)}</div><span className="blog-read-link" aria-hidden="true"><ArrowRight size={15} /></span></div></div></a></article>)}</div>
       </>}
     </section>
   );
@@ -183,8 +183,13 @@ function BlogReader({ post, onBack, isFocusMode, onFocusModeChange, progress }: 
   return (
     <section className={`blog-reader-shell ${isFocusMode ? 'is-focus-mode' : ''}`} style={{ '--ambient-a': palette.ambientA, '--ambient-b': palette.ambientB, '--accent-color': palette.accent, '--soft-color': palette.soft, '--border-color': palette.border } as React.CSSProperties}>
       <div className="blog-reader-topbar"><a href="/blog" onClick={onBack} className="blog-back-button"><ArrowLeft size={16} />Back to catalog</a><button type="button" onClick={() => onFocusModeChange(!isFocusMode)} className="blog-focus-button">{isFocusMode ? <Minimize2 size={16} /> : <Maximize2 size={16} />}{isFocusMode ? 'Exit focus' : 'Focus mode'}</button></div>
-      <header className="blog-reader-hero surface-card p-6 md:p-8 lg:p-10"><div className="grid gap-6 lg:grid-cols-[1.08fr_0.92fr] lg:items-end"><div className="space-y-5"><p className="blog-eyebrow"><a href="/blog">Blog</a> / Technical research</p><div className="flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-[0.34em] text-[var(--color-text-muted)]"><span>{formatBlogDate(post.date)}</span><span className="h-1 w-1 rounded-full bg-[var(--border)]" /><span>{post.readTime}</span><span className="h-1 w-1 rounded-full bg-[var(--border)]" /><span>{post.mood}</span></div><h1 className="blog-article-title">{post.title}</h1><p className="max-w-3xl text-sm leading-7 text-[var(--color-text-muted)] md:text-base">{post.subtitle}</p><p className="text-xs leading-6 text-[var(--color-text-muted)]">By <a href="/about" className="text-[var(--accent)]">Guuleed Maxmuud Aw Abdi</a> · Published {formatBlogDate(post.date)} · Updated {formatBlogDate(post.lastUpdated)}</p><div className="flex flex-wrap gap-2">{post.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}</div></div><div className="blog-reader-meta-panel"><div className="blog-progress-chip"><span className="text-[10px] uppercase tracking-[0.34em] text-[var(--color-text-muted)]">Reading progress</span><strong className="mt-2 block text-lg text-[var(--color-text)]">{Math.round(progress * 100)}%</strong></div><div className="blog-progress-chip"><span className="text-[10px] uppercase tracking-[0.34em] text-[var(--color-text-muted)]">Last updated</span><strong className="mt-2 block text-lg text-[var(--color-text)]">{formatBlogDate(post.lastUpdated)}</strong></div></div></div></header>
-      <div className={`blog-reader-layout ${isFocusMode ? 'is-focus-mode' : ''}`}><article className="blog-article surface-card p-6 md:p-8 lg:p-10"><div className="blog-article-prose"><MarkdownRenderer content={post.content} /></div><section className="blog-citation-panel" aria-labelledby="citations-heading"><p className="blog-eyebrow" id="citations-heading">Citations</p>{post.citations.length ? <ol>{post.citations.map((citation) => { const safeCitationUrl = safeUrlTransform(citation.url); return <li key={citation.url}>{safeCitationUrl ? <a href={safeCitationUrl} target="_blank" rel="noreferrer noopener">{citation.title}</a> : <span>{citation.title}</span>}{citation.publisher ? <span> · {citation.publisher}</span> : null}</li>; })}</ol> : <p>No citations listed for this post.</p>}</section></article><aside className="blog-article-rail"><div className="surface-card p-6 sticky top-6"><p className="blog-eyebrow">Issue details</p><div className="mt-5 space-y-4 text-sm leading-7 text-[var(--color-text-muted)]"><p><strong className="text-[var(--color-text)]">Published:</strong> {formatBlogDate(post.date)}</p><p><strong className="text-[var(--color-text)]">Last updated:</strong> {formatBlogDate(post.lastUpdated)}</p><div><strong className="text-[var(--color-text)]">Related topics</strong><div className="mt-3 flex flex-wrap gap-2">{post.relatedTopics.map((topic) => <Tag key={topic}>{topic}</Tag>)}</div></div><p>Images expand into a lightbox, citations stay visible at the end of the article, and code blocks remain easy to scan.</p></div></div></aside></div>
+      <header className="blog-reader-hero surface-card">
+        <div className="blog-reader-heading">
+          <div className="blog-reader-copy"><p className="blog-eyebrow"><a href="/blog">Blog</a> / Technical research</p><PostMeta post={post} /><h1 className="blog-article-title">{post.title}</h1><p className="blog-article-subtitle">{post.subtitle}</p><p className="blog-article-byline">By <a href="/about">Guuleed Maxmuud Aw Abdi</a> · Updated {formatBlogDate(post.lastUpdated)}</p><div className="blog-card-tags">{post.tags.slice(0, 3).map((tag) => <Tag key={tag}>{tag}</Tag>)}</div></div>
+          <div className="blog-reader-visual"><PostVisual post={post} featured /><div className="blog-reader-progress"><span>Reading progress</span><strong>{Math.round(progress * 100)}%</strong></div></div>
+        </div>
+      </header>
+      <div className={`blog-reader-layout ${isFocusMode ? 'is-focus-mode' : ''}`}><article className="blog-article surface-card p-6 md:p-8 lg:p-10"><div className="blog-article-prose"><MarkdownRenderer content={post.content} /></div><section className="blog-citation-panel" aria-labelledby="citations-heading"><p className="blog-eyebrow" id="citations-heading">Sources</p>{post.citations.length ? <ol>{post.citations.map((citation) => { const safeCitationUrl = safeUrlTransform(citation.url); return <li key={citation.url}>{safeCitationUrl ? <a href={safeCitationUrl} target="_blank" rel="noreferrer noopener">{citation.title}</a> : <span>{citation.title}</span>}{citation.publisher ? <span> · {citation.publisher}</span> : null}</li>; })}</ol> : <p>No sources listed for this post.</p>}</section></article><aside className="blog-article-rail"><div className="surface-card p-6 sticky top-6"><p className="blog-section-label">Keep exploring</p><h2 className="blog-rail-title">Related topics</h2><div className="blog-related-topics">{post.relatedTopics.map((topic) => <Tag key={topic}>{topic}</Tag>)}</div><div className="blog-rail-details"><span>Published</span><strong>{formatBlogDate(post.date)}</strong><span>Read time</span><strong>{post.readTime}</strong></div></div></aside></div>
       <div className="blog-progress-line" aria-hidden="true"><span style={{ width: `${Math.round(progress * 1000) / 10}%` }} /></div><div className="blog-progress-orb" aria-hidden="true" style={{ transform: `translateX(${Math.max(0, Math.min(100, progress * 100))}vw)` }} /><nav aria-label="Related articles" className="mt-6 grid gap-4 md:grid-cols-2">{fallbackRelated.map((entry) => <a key={entry.slug} href={`/blog/${entry.slug}`} className="surface-card p-5 text-sm font-semibold text-[var(--color-text)] hover:border-[var(--accent)]">Read related article: {entry.title}</a>)}</nav>
     </section>
   );
