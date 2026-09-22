@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "tsx scripts/generate-sitemap.ts && tsx scripts/generate-feeds.ts && vite build && tsx scripts/prerender.ts",
+    "build:cv": "node scripts/build_cv_pdf.cjs",
     "preview": "vite preview",
     "test": "tsx --test tests/*.test.ts",
     "clean": "rm -rf dist",

@@ -321,7 +321,7 @@ const AboutPage: React.FC = () => {
   const age = useMemo(() => getAge(now), [now]);
   const graduation = useMemo(() => getGraduationStats(now), [now]);
 
-  const pdfUrl = "/assets/Guuleed-Maxamuud-Awabdi-CV-1.pdf";
+  const pdfUrl = "/assets/Guuleed-Maxamuud-Awabdi-CV.pdf";
 
   return (
     <div className="space-y-5">

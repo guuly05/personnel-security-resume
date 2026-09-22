@@ -129,12 +129,8 @@ export default function App() {
   const navItems = [
     { id: 'home', label: 'Home', icon: 'layout' },
     { id: 'about', label: 'About', icon: 'user' },
-    { id: 'skills', label: 'Capabilities', icon: 'terminal' },
-    { id: 'experience', label: 'Experience', icon: 'briefcase' },
-    { id: 'certificates', label: 'Learning', icon: 'graduation-cap' },
-    { id: 'portfolio', label: 'Selected Work', icon: 'layout' },
-    { id: 'book', label: 'Book a Call', icon: 'calendar' },
-    { id: 'blog', label: 'Blog', icon: 'book-open' },
+    { id: 'portfolio', label: 'Work', icon: 'layout' },
+    { id: 'blog', label: 'Notes', icon: 'book-open' },
     { id: 'contact', label: 'Contact', icon: 'mail' },
   ];
 
