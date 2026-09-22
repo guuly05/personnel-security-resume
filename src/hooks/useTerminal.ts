@@ -197,7 +197,9 @@ export function useTerminal(): UseTerminalReturn {
         const COMPLETIONS = [
           'help', 'whoami', 'ls', 'status', 'pwd', 'date', 'uname', 'clear', 'exit',
           'cat about', 'cat skills', 'cat experience', 'cat certificates', 'cat portfolio',
-          'cat contact', 'ping contact',
+          'cat contact', 'cat blog', 'ping contact', 'social', 'tree',
+          'latest', 'posts', 'read latest', 'find security', 'stack', 'stack react',
+          'notes', 'blog',
           'goto home', 'goto about', 'goto skills', 'goto experience',
           'goto certificates', 'goto portfolio', 'goto book', 'goto blog', 'goto contact',
           'goto privacy-policy', 'goto terms-of-service', 'goto recap',

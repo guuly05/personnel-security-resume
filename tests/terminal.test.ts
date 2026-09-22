@@ -34,3 +34,24 @@ test('exposes terminal side effects as explicit result flags', () => {
   assert.equal(executeCommand('clear').clear, true);
   assert.equal(executeCommand('quit').exit, true);
 });
+
+test('supports blog discovery commands and safe note navigation', () => {
+  const latest = executeCommand('latest');
+  assert.match(latest.lines[0].text, /latest note/i);
+  assert.match(latest.navigate ?? '', /^\/blog\//);
+
+  const posts = executeCommand('posts');
+  assert.match(posts.lines[0].text, /latest-notes/i);
+
+  const invalid = executeCommand('read does-not-exist');
+  assert.equal(invalid.navigate, undefined);
+  assert.match(invalid.lines[0].text, /not found/i);
+});
+
+test('supports filtered stack and project searches', () => {
+  const stack = executeCommand('stack react');
+  assert.match(stack.lines.map((entry) => entry.text).join('\n'), /React/i);
+
+  const search = executeCommand('find security');
+  assert.match(search.lines.map((entry) => entry.text).join('\n'), /PROJECTS|NOTES/);
+});

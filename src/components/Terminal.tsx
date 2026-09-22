@@ -18,13 +18,13 @@ interface TerminalProps {
 
 // ── Color map for each line type ──────────────────────────────────────────
 const LINE_COLORS: Record<LineType, string> = {
-  output:  'text-[#cdd9e5]',
-  info:    'text-[var(--brand-cyan)]',
-  success: 'text-[#3fb950]',
-  error:   'text-[#f85149]',
-  warn:    'text-[#d29922]',
-  prompt:  'text-[#cdd9e5]',
-  dim:     'text-[#6e7681]',
+  output:  'text-[var(--color-text)]',
+  info:    'text-[var(--accent)]',
+  success: 'text-[var(--accent)]',
+  error:   'text-red-700',
+  warn:    'text-amber-700',
+  prompt:  'text-[var(--color-text)]',
+  dim:     'text-[var(--color-text-muted)]',
   accent:  'text-[var(--accent)] font-semibold',
 };
 
@@ -210,7 +210,7 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
             aria-labelledby="terminal-dialog-title"
             aria-describedby="terminal-dialog-help"
             tabIndex={-1}
-            className="terminal-window pointer-events-auto"
+            className={`terminal-window pointer-events-auto${isMinimized ? ' is-minimized' : ''}`}
             style={{
               position: 'fixed',
               left: isMaximized ? 8 : rect.x,
@@ -266,9 +266,9 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
               {/* Session label */}
               <div id="terminal-dialog-title" className="terminal-session-label">
                 <span className="terminal-prompt-host">guuleed</span>
-                <span className="text-[#6e7681]">@</span>
+                <span className="text-[var(--color-text-muted)]">@</span>
                 <span className="terminal-prompt-dir">portfolio</span>
-                <span className="text-[#6e7681]">: — bash</span>
+                <span className="text-[var(--color-text-muted)]">: — bash</span>
               </div>
 
               <div className="w-14" aria-hidden /> {/* spacer for symmetry */}
@@ -295,7 +295,7 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
                   {l.type === 'prompt' && (
                     <span className="terminal-inline-prompt" aria-hidden>
                       <span className="terminal-prompt-host">guuleed</span>
-                      <span className="text-[#6e7681]">@</span>
+                      <span className="text-[var(--color-text-muted)]">@</span>
                       <span className="terminal-prompt-dir">portfolio</span>
                       <span className="terminal-prompt-symbol">:~$</span>
                       {' '}
@@ -309,7 +309,7 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
             {/* ── Input row ── */}
             <div className="terminal-input-row">
               <span className="terminal-prompt-host" aria-hidden>guuleed</span>
-              <span className="text-[#6e7681]" aria-hidden>@</span>
+              <span className="text-[var(--color-text-muted)]" aria-hidden>@</span>
               <span className="terminal-prompt-dir" aria-hidden>portfolio</span>
               <span className="terminal-prompt-symbol" aria-hidden>:~$</span>
 

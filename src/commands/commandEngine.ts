@@ -13,6 +13,7 @@ import {
   PROJECTS,
   ABOUT_LETTER,
 } from '../constants.ts';
+import { BLOG_POSTS, formatBlogDate } from '../blog/posts.ts';
 import { NAVIGABLE_SECTIONS, sectionToPath, type NavigableSection } from '../routing.ts';
 
 export type LineType = 'output' | 'error' | 'success' | 'info' | 'warn' | 'prompt' | 'dim' | 'accent';
@@ -32,9 +33,8 @@ function line(type: LineType, text: string): TerminalLine {
 
 function cmdHelp(): TerminalLine[] {
   return [
-    line('info',    '╔══════════════════════════════════════════════════╗'),
-    line('info',    '║          GUULEED MAXMUUD — PORTFOLIO SHELL        ║'),
-    line('info',    '╚══════════════════════════════════════════════════╝'),
+    line('accent',  'GUULEED / PORTFOLIO SHELL'),
+    line('dim',     'A read-only interface to the work behind this site.'),
     line('dim',     ''),
     line('accent',  'Navigation'),
     line('output',  '  ls                  List all sections'),
@@ -50,8 +50,17 @@ function cmdHelp(): TerminalLine[] {
     line('output',  '  cat certificates    Show certificates & badges'),
     line('output',  '  cat portfolio       Show project portfolio'),
     line('output',  '  cat projects        Alias for cat portfolio'),
+    line('output',  '  tree                Show the site map'),
     line('output',  '  ping contact        Display contact information'),
+    line('output',  '  social              Show profile links'),
     line('output',  '  status              Show portfolio runtime status'),
+    line('dim',     ''),
+    line('accent',  'Discovery'),
+    line('output',  '  latest              Open the newest blog note'),
+    line('output',  '  posts               List recent blog notes'),
+    line('output',  '  read <slug>         Open a specific blog note'),
+    line('output',  '  find <term>         Search projects and notes'),
+    line('output',  '  stack [filter]      Explore the toolkit'),
     line('dim',     ''),
     line('accent',  'System'),
     line('output',  '  theme dark|light    Toggle site theme'),
@@ -88,6 +97,8 @@ function cmdStatus(): TerminalLine[] {
   return [
     line('success', '● ONLINE  portfolio shell is ready'),
     line('output', `  Routes   : ${NAVIGABLE_SECTIONS.length} available`),
+    line('output', `  Notes    : ${BLOG_POSTS.length} published`),
+    line('output', `  Projects : ${PROJECTS.length} indexed`),
     line('output', '  Runtime  : React + TypeScript + Vite'),
     line('output', '  Access   : read-only portfolio interface'),
   ];
@@ -175,6 +186,90 @@ function cmdCatPortfolio(): TerminalLine[] {
   return lines;
 }
 
+function cmdPosts(): TerminalLine[] {
+  const lines: TerminalLine[] = [
+    line('accent', '── latest-notes.txt ───────────────────────────────'),
+    line('dim', ''),
+  ];
+  BLOG_POSTS.slice(0, 6).forEach((post, index) => {
+    lines.push(line('info', `[${String(index + 1).padStart(2, '0')}] ${post.title}`));
+    lines.push(line('output', `    ${formatBlogDate(post.date)} · ${post.readTime} · ${post.mood}`));
+    lines.push(line('dim', `    read ${post.slug}`));
+    if (index < Math.min(BLOG_POSTS.length, 6) - 1) lines.push(line('dim', ''));
+  });
+  return lines;
+}
+
+function cmdLatest(): TerminalLine[] {
+  const post = BLOG_POSTS[0];
+  if (!post) return [line('error', 'latest: no blog notes found')];
+  return [
+    line('accent', '── latest note ────────────────────────────────────'),
+    line('info', post.title),
+    line('output', post.subtitle),
+    line('dim', `${formatBlogDate(post.date)} · ${post.readTime} · ${post.mood}`),
+    line('success', `→ read ${post.slug}`),
+  ];
+}
+
+function cmdStack(filter = ''): TerminalLine[] {
+  const allTools = [...CORE_SKILLS, ...TOOLSET];
+  const uniqueTools = [...new Set(allTools)];
+  const matches = filter ? uniqueTools.filter((item) => item.toLowerCase().includes(filter.toLowerCase())) : uniqueTools;
+  if (!matches.length) return [line('error', `stack: no tools match '${filter}'`), line('dim', 'Try: stack, stack react, or stack security')];
+  return [
+    line('accent', filter ? `── stack / ${filter} ───────────────────────────────` : '── stack.txt ───────────────────────────────────────'),
+    ...matches.map((item) => line('output', `  · ${item}`)),
+    line('dim', ''),
+    line('dim', `${matches.length} tools indexed`),
+  ];
+}
+
+function cmdFind(query: string): TerminalLine[] {
+  const term = query.trim().toLowerCase();
+  if (!term) return [line('error', 'find: missing search term. Try: find security')];
+  const projects = PROJECTS.filter((project) => [project.title, project.description, ...project.tech].join(' ').toLowerCase().includes(term));
+  const posts = BLOG_POSTS.filter((post) => [post.title, post.subtitle, ...post.tags].join(' ').toLowerCase().includes(term));
+  if (!projects.length && !posts.length) return [line('warn', `find: no matches for '${query}'`)];
+  const lines: TerminalLine[] = [line('accent', `── search / ${query} ────────────────────────────────`), line('dim', '')];
+  if (projects.length) {
+    lines.push(line('info', `PROJECTS (${projects.length})`));
+    projects.forEach((project) => lines.push(line('output', `  · ${project.title}`)));
+  }
+  if (posts.length) {
+    if (projects.length) lines.push(line('dim', ''));
+    lines.push(line('info', `NOTES (${posts.length})`));
+    posts.slice(0, 6).forEach((post) => lines.push(line('output', `  · ${post.title}`)));
+  }
+  return lines;
+}
+
+function cmdSocial(): TerminalLine[] {
+  return [
+    line('accent', '── profiles ───────────────────────────────────────'),
+    line('output', `  GitHub   ${PERSONAL_INFO.github}`),
+    line('output', `  LinkedIn ${PERSONAL_INFO.linkedin}`),
+    line('output', `  Email    ${PERSONAL_INFO.email}`),
+    line('dim', ''),
+    line('dim', 'Use ping contact for the full contact card.'),
+  ];
+}
+
+function cmdTree(): TerminalLine[] {
+  return [
+    line('accent', '── portfolio.map ─────────────────────────────────'),
+    line('output', '  /'),
+    line('output', '  ├── about        how I think and work'),
+    line('output', '  ├── portfolio    selected projects'),
+    line('output', '  ├── blog         technical and personal notes'),
+    line('output', '  ├── skills       tools and capabilities'),
+    line('output', '  ├── experience   work history'),
+    line('output', '  └── contact      start a conversation'),
+    line('dim', ''),
+    line('dim', 'Try: goto blog, latest, or find react'),
+  ];
+}
+
 function cmdPingContact(): TerminalLine[] {
   return [
     line('info',    'PING guuleed.portfolio — transmitting contact data…'),
@@ -260,6 +355,7 @@ export function executeCommand(raw: string): CommandResult {
       if (target === 'experience')                 return { lines: cmdCatExperience() };
       if (target === 'certificates' || target === 'certs') return { lines: cmdCatCertificates() };
       if (target === 'portfolio' || target === 'projects')  return { lines: cmdCatPortfolio() };
+      if (target === 'blog' || target === 'notes') return { lines: cmdPosts() };
       if (target === 'contact') return { lines: cmdPingContact() };
       if (!target) return { lines: [line('error', 'cat: missing operand. Try: cat skills, cat about, cat experience')] };
       return { lines: [line('error', `cat: ${target}: No such file or directory`)] };
@@ -273,6 +369,41 @@ export function executeCommand(raw: string): CommandResult {
     case 'status':
       return { lines: cmdStatus() };
 
+    case 'latest':
+      return BLOG_POSTS[0]
+        ? { lines: cmdLatest(), navigate: `/blog/${BLOG_POSTS[0].slug}` }
+        : { lines: [line('error', 'latest: no blog notes found')] };
+
+    case 'posts':
+    case 'notes':
+    case 'blog':
+      return { lines: cmdPosts() };
+
+    case 'read':
+    case 'article': {
+      const target = normalizedArg.trim();
+      const post = target === 'latest' || target === '1'
+        ? BLOG_POSTS[0]
+        : BLOG_POSTS.find((entry) => entry.slug === target);
+      if (!post) return { lines: [line('error', `read: '${arg || 'latest'}' not found. Try: posts`)] };
+      return {
+        lines: [line('success', `→ Opening ${post.title}…`)],
+        navigate: `/blog/${post.slug}`,
+      };
+    }
+
+    case 'find':
+      return { lines: cmdFind(arg) };
+
+    case 'stack':
+      return { lines: cmdStack(arg.trim()) };
+
+    case 'social':
+      return { lines: cmdSocial() };
+
+    case 'tree':
+      return { lines: cmdTree() };
+
     case 'pwd':
       return { lines: cmdPwd() };
 
@@ -284,6 +415,11 @@ export function executeCommand(raw: string): CommandResult {
     case 'open': {
       const target = normalizedArg.replace(/^\//, '').trim();
       if (!target) return { lines: [line('warn', `Usage: ${cmd} <section>   (try: ls)`)], navigate: undefined };
+      if (target === 'latest' || target === 'note') {
+        return BLOG_POSTS[0]
+          ? { lines: [line('success', `→ Opening latest note…`)], navigate: `/blog/${BLOG_POSTS[0].slug}` }
+          : { lines: [line('error', 'No blog notes are available.') ] };
+      }
       if (!NAVIGABLE_SECTIONS.includes(target as NavigableSection)) {
         return { lines: [line('error', `${cmd}: '${target}': unknown section. Run 'ls' to see options.`)] };
       }

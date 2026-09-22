@@ -374,8 +374,9 @@ export default function App() {
       {/* Terminal overlay — rendered at root so it floats above everything */}
       <Terminal
         terminal={terminal}
-        onNavigate={(section) => {
-          window.history.pushState(null, '', sectionToPath(section as Section));
+        onNavigate={(destination) => {
+          const path = destination.startsWith('/') ? destination : sectionToPath(destination as Section);
+          window.history.pushState(null, '', path);
           window.dispatchEvent(new PopStateEvent('popstate'));
         }}
         onTheme={(t) => setTheme(t)}

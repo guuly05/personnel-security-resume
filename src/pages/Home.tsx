@@ -1,10 +1,12 @@
 import React from 'react';
 import { ACHIEVEMENTS, CORE_SKILLS, PERSONAL_INFO } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
+import { BLOG_POSTS, formatBlogDate } from '../blog/posts.ts';
 import { CASE_STUDIES } from './Portfolio.tsx';
 
 const featuredStudy = CASE_STUDIES[0];
 const supportingStudies = CASE_STUDIES.slice(1, 4);
+const latestPost = BLOG_POSTS[0];
 
 const proofPoints = [
   { value: '01', label: 'production platform', detail: 'Designed, built, and shipped end to end.' },
@@ -173,9 +175,43 @@ const HomePage: React.FC = () => (
       </div>
     </section>
 
+    {latestPost && (
+      <section className="landing-latest-note">
+        <div className="landing-section-heading landing-section-heading-compact">
+          <div>
+            <span className="landing-section-index">04 / latest note</span>
+            <h2>What I’m thinking about now.</h2>
+          </div>
+          <a href="/blog" className="landing-text-link">Browse all notes <Icon name="arrow-up-right" size={16} /></a>
+        </div>
+
+        <a href={`/blog/${latestPost.slug}`} className="landing-latest-note-card">
+          <div className="landing-latest-note-visual" aria-hidden="true">
+            <span className="landing-latest-note-orbit landing-latest-note-orbit-one" />
+            <span className="landing-latest-note-orbit landing-latest-note-orbit-two" />
+            <span className="landing-latest-note-mark">/</span>
+            <span className="landing-latest-note-visual-label">field note / 01</span>
+            <span className="landing-latest-note-mood">{latestPost.mood}</span>
+          </div>
+          <div className="landing-latest-note-copy">
+            <div className="landing-project-meta">
+              <span>{formatBlogDate(latestPost.date)}</span>
+              <span>{latestPost.readTime}</span>
+            </div>
+            <h3>{latestPost.title}</h3>
+            <p>{latestPost.subtitle}</p>
+            <div className="landing-latest-note-footer">
+              <div className="landing-note-tags">{latestPost.tags.slice(0, 3).map((tag) => <span key={tag}>{tag}</span>)}</div>
+              <span className="landing-text-link">Read note <Icon name="arrow-up-right" size={16} /></span>
+            </div>
+          </div>
+        </a>
+      </section>
+    )}
+
     <section className="landing-closing">
       <div>
-        <span className="landing-section-index">04 / next move</span>
+        <span className="landing-section-index">05 / next move</span>
         <h2>Have a real problem worth working through?</h2>
       </div>
       <div className="landing-closing-action">
