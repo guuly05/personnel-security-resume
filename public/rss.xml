@@ -5,8 +5,24 @@
     <link>https://www.guuleedmaxamuud.dev/blog</link>
     <description>Security research, vulnerability analysis, and technical writing by Guuleed Maxmuud Aw Abdi.</description>
     <language>en-us</language>
-    <lastBuildDate>2026-09-19T12:00:00.000Z</lastBuildDate>
+    <lastBuildDate>2026-09-23T12:00:00.000Z</lastBuildDate>
     <atom:link href="https://www.guuleedmaxamuud.dev/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Claude Opus 5.5, ChatGPT-6 (Sol, Luna, Astra), and Grok: The Frontier Showdown &amp; The Future of Agentic AI</title>
+      <link>https://www.guuleedmaxamuud.dev/blog/claude-opus-5-5-chatgpt-6-sol-luna-astra-grok-agentic-ai</link>
+      <guid isPermaLink="true">https://www.guuleedmaxamuud.dev/blog/claude-opus-5-5-chatgpt-6-sol-luna-astra-grok-agentic-ai</guid>
+      <pubDate>2026-09-23T12:00:00.000Z</pubDate>
+      <description><![CDATA[An exhaustive technical breakdown of 2026's state-of-the-art model releases—evaluating architectural divergence, benchmark performance, security implications, and what their competing paradigms mean for autonomous multi-agent systems.
+
+Tags: Frontier AI · Claude Opus 5.5 · ChatGPT-6 · xAI Grok · Agentic AI · AI Security
+Last updated: September 23, 2026]]></description>
+      <category>Frontier AI</category>
+      <category>Claude Opus 5.5</category>
+      <category>ChatGPT-6</category>
+      <category>xAI Grok</category>
+      <category>Agentic AI</category>
+      <category>AI Security</category>
+    </item>
     <item>
       <title>The AI Speed Debate: Why Some Leaders Want a Pause—and Why Jensen Huang Says Run Faster</title>
       <link>https://www.guuleedmaxamuud.dev/blog/ai-speed-debate-anthropic-jensen-huang</link>
