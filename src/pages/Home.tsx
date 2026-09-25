@@ -9,10 +9,10 @@ const supportingStudies = CASE_STUDIES.slice(1, 4);
 const latestPost = BLOG_POSTS[0];
 
 const proofPoints = [
-  { value: '01', label: 'production platform', detail: 'Designed, built, and shipped end to end.' },
-  { value: '27+', label: 'products represented', detail: 'A complex catalogue made easy to navigate.' },
-  { value: '02', label: 'languages supported', detail: 'English and Somali in one experience.' },
-  { value: '05+', label: 'security controls', detail: 'Protection built into the delivery path.' },
+  { value: '06', label: 'documented case studies', detail: 'Products, systems, security work, and learning.' },
+  { value: '03', label: 'engineering lanes', detail: 'Product software, delivery systems, and security.' },
+  { value: '02', label: 'languages shipped', detail: 'English and Somali experiences in production work.' },
+  { value: '05+', label: 'security controls', detail: 'Validation, rate limits, headers, and abuse protection.' },
 ];
 
 const exploreLinks = [
@@ -49,6 +49,9 @@ const HomePage: React.FC = () => (
           <a href="/contact" className="landing-button landing-button-secondary">
             Start a conversation <Icon name="arrow-right" size={16} />
           </a>
+          <a href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf" download="Guuleed-Maxamuud-Awabdi-CV.pdf" className="landing-button landing-button-secondary">
+            Download CV <Icon name="download" size={16} />
+          </a>
         </div>
 
         <div className="landing-skill-line" aria-label="Core skills">
@@ -81,6 +84,18 @@ const HomePage: React.FC = () => (
           <p>Software that feels considered on the surface and dependable underneath.</p>
           <span>Scroll to explore ↓</span>
         </div>
+      </div>
+    </section>
+
+    <section className="landing-positioning" aria-label="What Guuleed helps with">
+      <div>
+        <span className="landing-section-index">/ what I help with</span>
+        <h2>From useful interface to dependable operation.</h2>
+      </div>
+      <div className="landing-positioning-grid">
+        <div><strong>Product engineering</strong><p>React, TypeScript, APIs, and thoughtful interfaces that solve a real problem.</p></div>
+        <div><strong>Delivery systems</strong><p>CI/CD, cloud deployment, Linux operations, automation, and documentation that reduce friction.</p></div>
+        <div><strong>Secure engineering</strong><p>Practical validation, access control, vulnerability assessment, and security-minded architecture.</p></div>
       </div>
     </section>
 

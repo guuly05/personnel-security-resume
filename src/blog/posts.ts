@@ -43,13 +43,13 @@ function browserSources(): RawSources {
 
 async function nodeSources(): Promise<RawSources> {
   if (typeof process === 'undefined' || !process.versions?.node) return {};
-
-  // Keep Node-only filesystem access out of the browser bundle. The browser
-  // path above is handled by Vite's import.meta.glob implementation.
+  const fsModule = 'node:fs';
+  const pathModule = 'node:path';
+  const urlModule = 'node:url';
   const [{ readdirSync, readFileSync }, { dirname, join }, { fileURLToPath }] = await Promise.all([
-    import('node:fs'),
-    import('node:path'),
-    import('node:url'),
+    import(/* @vite-ignore */ fsModule),
+    import(/* @vite-ignore */ pathModule),
+    import(/* @vite-ignore */ urlModule),
   ]);
   const directory = join(dirname(fileURLToPath(import.meta.url)), 'posts');
   return Object.fromEntries(

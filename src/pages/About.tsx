@@ -322,6 +322,11 @@ const AboutPage: React.FC = () => {
   const graduation = useMemo(() => getGraduationStats(now), [now]);
 
   const pdfUrl = "/assets/Guuleed-Maxamuud-Awabdi-CV.pdf";
+  const cvOptions = [
+    { label: 'General software engineering', file: 'Guuleed-Maxamuud-Awabdi-General-Software-Engineering-CV.pdf' },
+    { label: 'Cybersecurity-focused', file: 'Guuleed-Maxamuud-Awabdi-Cybersecurity-CV.pdf' },
+    { label: 'One-page ATS-friendly', file: 'Guuleed-Maxamuud-Awabdi-ATS-CV.pdf' },
+  ];
 
   return (
     <div className="space-y-5">
@@ -365,6 +370,23 @@ const AboutPage: React.FC = () => {
                 <Icon name="download" size={16} />
                 <span>Download CV</span>
               </a>
+            </div>
+
+            <div className="mt-5 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-4">
+              <p className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Choose a CV version</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {cvOptions.map((option) => (
+                  <a
+                    key={option.file}
+                    href={`/assets/${option.file}`}
+                    download={option.file}
+                    className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                  >
+                    <Icon name="download" size={13} />
+                    {option.label}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 

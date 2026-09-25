@@ -151,11 +151,13 @@ const ContactPage: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="pl-1 font-mono text-[10px] uppercase tracking-widest text-[var(--accent)]">
+            <label htmlFor="contact-name" className="pl-1 font-mono text-[10px] uppercase tracking-widest text-[var(--accent)]">
               Full Name
             </label>
             <input
               type="text"
+              id="contact-name"
+              name="name"
               required
               value={formData.name}
               onChange={(event) => setFormData({ ...formData, name: event.target.value })}
@@ -166,11 +168,13 @@ const ContactPage: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="pl-1 font-mono text-[10px] uppercase tracking-widest text-[var(--accent)]">
+            <label htmlFor="contact-email" className="pl-1 font-mono text-[10px] uppercase tracking-widest text-[var(--accent)]">
               Email Address
             </label>
             <input
               type="email"
+              id="contact-email"
+              name="email"
               required
               value={formData.email}
               onChange={(event) => setFormData({ ...formData, email: event.target.value })}
@@ -181,11 +185,13 @@ const ContactPage: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="pl-1 font-mono text-[10px] uppercase tracking-widest text-[var(--accent)]">
+            <label htmlFor="contact-message" className="pl-1 font-mono text-[10px] uppercase tracking-widest text-[var(--accent)]">
               Your Message
             </label>
             <textarea
               required
+              id="contact-message"
+              name="message"
               rows={5}
               value={formData.message}
               onChange={(event) => setFormData({ ...formData, message: event.target.value })}
@@ -200,13 +206,13 @@ const ContactPage: React.FC = () => {
           />
 
           {status === 'success' && (
-            <div className="rounded-lg border border-[var(--accent)]/30 bg-[var(--accent-soft)] p-4 text-sm text-[var(--accent)]">
+            <div role="status" aria-live="polite" className="rounded-lg border border-[var(--accent)]/30 bg-[var(--accent-soft)] p-4 text-sm text-[var(--accent)]">
               Your message was sent successfully. I’ll reply as soon as I can.
             </div>
           )}
 
           {status === 'error' && (
-            <div className="rounded-lg border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-200">
+            <div role="alert" aria-live="assertive" className="rounded-lg border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-200">
               {errorMessage || 'Something went wrong while sending your message.'}
             </div>
           )}

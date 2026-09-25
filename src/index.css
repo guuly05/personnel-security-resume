@@ -1803,6 +1803,23 @@
 .landing-proof-item strong { display: block; font-size: 0.88rem; }
 .landing-proof-item p { margin: 0.45rem 0 0; color: var(--landing-muted); font-size: 0.75rem; line-height: 1.55; }
 
+.landing-positioning {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.3fr);
+  gap: 2rem;
+  align-items: start;
+  margin-top: 7rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--landing-line);
+  border-bottom: 1px solid var(--landing-line);
+}
+
+.landing-positioning h2 { max-width: 24rem; margin: 0.8rem 0 0; font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.5rem); letter-spacing: -0.06em; line-height: 0.98; }
+.landing-positioning-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.landing-positioning-grid > div { padding: 1.1rem; border: 1px solid var(--landing-line); background: var(--surface-soft); }
+.landing-positioning-grid strong { display: block; color: var(--landing-accent); font-size: 0.86rem; }
+.landing-positioning-grid p { margin: 0.65rem 0 0; color: var(--landing-muted); font-size: 0.78rem; line-height: 1.65; }
+
 .landing-featured,
 .landing-work-list,
 .landing-notes-grid,
@@ -1921,7 +1938,9 @@
   .landing-aside-caption { align-items: start; flex-direction: column; }
   .landing-proof-item { min-height: 8.5rem; padding: 1rem; }
   .landing-proof-item p { font-size: 0.7rem; }
-  .landing-featured, .landing-work-list, .landing-notes-grid, .landing-latest-note, .landing-closing { margin-top: 4.5rem; }
+  .landing-featured, .landing-work-list, .landing-notes-grid, .landing-latest-note, .landing-closing, .landing-positioning { margin-top: 4.5rem; }
+  .landing-positioning { grid-template-columns: 1fr; }
+  .landing-positioning-grid { grid-template-columns: 1fr; }
   .landing-section-heading { align-items: start; flex-direction: column; gap: 1rem; }
   .landing-section-heading h2, .landing-notes-intro h2, .landing-closing h2 { font-size: 2.5rem; }
   .landing-project-image-wrap, .landing-project-image { min-height: 15rem; }
