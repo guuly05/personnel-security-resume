@@ -216,6 +216,13 @@ export default function App() {
           >
             Contact
           </a>
+          <a
+            href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf"
+            download="Guuleed-Maxamuud-Awabdi-CV.pdf"
+            className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-4 py-2 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          >
+            Download CV
+          </a>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
@@ -277,6 +284,14 @@ export default function App() {
                 </a>
               ))}
             </div>
+
+            <a
+              href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf"
+              download="Guuleed-Maxamuud-Awabdi-CV.pdf"
+              className="mt-5 flex items-center justify-center gap-2 rounded-lg border border-[var(--accent)] bg-[var(--accent-soft)] px-4 py-3 text-sm font-bold text-[var(--accent)]"
+            >
+              <Icon name="download" size={16} /> Download CV
+            </a>
 
             {/* Terminal shortcut hint inside mobile menu */}
             <button
