@@ -5,6 +5,7 @@ import {
   Trophy, BookOpen, User, Briefcase, GraduationCap, Laptop, Terminal,
   Globe, Clock, Layers, Star, Info, MessageSquare, Search, Sun, Moon, Home,
   ArrowRight, ArrowUpRight, Server, GitBranch, Sparkles, Tv, Gamepad2, BookMarked,
+  CalendarDays,
   FileText, Download, Eye, Maximize2
 } from 'lucide-react';
 import React from 'react';
@@ -302,6 +303,7 @@ const lucideIconMap: Record<string, LucideIcon> = {
   'tv': Tv,
   'gamepad-2': Gamepad2,
   'book-marked': BookMarked,
+  'calendar-days': CalendarDays,
   'sun': Sun,
   'moon': Moon,
   'file-text': FileText,

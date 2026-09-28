@@ -130,6 +130,7 @@ export default function App() {
     { id: 'home', label: 'Home', icon: 'layout' },
     { id: 'about', label: 'About', icon: 'user' },
     { id: 'portfolio', label: 'Work', icon: 'layout' },
+    { id: 'book', label: 'Book a Call', icon: 'calendar-days' },
     { id: 'blog', label: 'Notes', icon: 'book-open' },
     { id: 'contact', label: 'Contact', icon: 'mail' },
   ];
@@ -211,8 +212,15 @@ export default function App() {
           </button>
 
           <a
+            href="/book"
+            className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)] transition hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] active:translate-y-px"
+          >
+            <Icon name="calendar-days" size={15} />
+            Book a Call
+          </a>
+          <a
             href="/contact"
-            className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)] transition hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] active:translate-y-px"
+            className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-4 py-2 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
           >
             Contact
           </a>

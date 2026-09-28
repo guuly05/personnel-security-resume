@@ -43,7 +43,10 @@ const HomePage: React.FC = () => (
         </p>
 
         <div className="landing-actions">
-          <a href="/portfolio" className="landing-button landing-button-primary">
+          <a href="/book" className="landing-button landing-button-primary">
+            Book a call with me <Icon name="calendar-days" size={16} />
+          </a>
+          <a href="/portfolio" className="landing-button landing-button-secondary">
             View selected work <Icon name="arrow-up-right" size={16} />
           </a>
           <a href="/contact" className="landing-button landing-button-secondary">
@@ -97,6 +100,25 @@ const HomePage: React.FC = () => (
         <div><strong>Delivery systems</strong><p>CI/CD, cloud deployment, Linux operations, automation, and documentation that reduce friction.</p></div>
         <div><strong>Secure engineering</strong><p>Practical validation, access control, vulnerability assessment, and security-minded architecture.</p></div>
       </div>
+    </section>
+
+    <section className="landing-booking" aria-label="Book a call with Guuleed">
+      <div className="landing-booking-label">
+        <span className="landing-section-index">/ make a plan</span>
+        <span className="landing-booking-status"><span className="landing-booking-status-dot" /> Google Meet available</span>
+      </div>
+      <div className="landing-booking-copy">
+        <h2>Have a problem worth a focused conversation?</h2>
+        <p>Book a 30-minute call to talk through what you are building, fixing, or trying to secure. Pick a time that works and I’ll send the invite.</p>
+      </div>
+      <div className="landing-booking-meta">
+        <div><span>Availability</span><strong>Thursday + Friday</strong></div>
+        <div><span>Timezone</span><strong>Africa/Nairobi · EAT</strong></div>
+        <div><span>Format</span><strong>30-minute Google Meet</strong></div>
+      </div>
+      <a href="/book" className="landing-button landing-button-primary">
+        Choose a time <Icon name="arrow-up-right" size={16} />
+      </a>
     </section>
 
     <section className="landing-proof" aria-label="Selected proof points">
@@ -231,7 +253,8 @@ const HomePage: React.FC = () => (
       </div>
       <div className="landing-closing-action">
         <p>Tell me what you are building, fixing, or trying to understand.</p>
-        <a href="/contact" className="landing-button landing-button-primary">Get in touch <Icon name="arrow-up-right" size={16} /></a>
+        <a href="/book" className="landing-button landing-button-primary">Book a call <Icon name="calendar-days" size={16} /></a>
+        <a href="/contact" className="landing-button landing-button-secondary">Send a message <Icon name="arrow-right" size={16} /></a>
       </div>
     </section>
 
