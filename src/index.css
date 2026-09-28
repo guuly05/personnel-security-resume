@@ -2141,6 +2141,21 @@
   opacity: 0.42;
 }
 
+.blog-visual-arrow {
+  position: absolute;
+  right: clamp(1rem, 4vw, 2rem);
+  bottom: clamp(0.8rem, 3vw, 1.5rem);
+  width: clamp(5.5rem, 15vw, 10rem);
+  height: auto;
+  color: color-mix(in srgb, var(--visual-accent) 62%, var(--color-text));
+  opacity: 0.58;
+  overflow: visible;
+}
+
+.blog-visual-arrow path {
+  fill: currentColor;
+}
+
 .blog-post-meta {
   display: flex;
   align-items: center;

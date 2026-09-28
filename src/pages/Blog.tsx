@@ -131,7 +131,13 @@ function PostVisual({ post, featured = false }: { post: BlogPost; featured?: boo
     <div className={`blog-post-visual ${featured ? 'is-featured' : ''}`} style={{ '--visual-accent': palette.accent, '--visual-soft': palette.soft } as React.CSSProperties} aria-hidden="true">
       <span className="blog-visual-grid" />
       <span className="blog-visual-index">{post.tags[0] ?? 'Notes'}</span>
-      <span className="blog-visual-mark">{featured ? '01' : '↗'}</span>
+      {featured ? (
+        <span className="blog-visual-mark">01</span>
+      ) : (
+        <svg className="blog-visual-arrow" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <path d="M16 73 27 84 68 43v18h14V18H39v14h19L16 73Z" />
+        </svg>
+      )}
       <span className="blog-visual-mood">{post.mood}</span>
     </div>
   );
