@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react';
-
 type LegalKind = 'privacy' | 'terms';
 
 const legalContent = {
@@ -98,10 +96,10 @@ const legalContent = {
 
 function SectionBlock({ heading, body }: { heading: string; body: string }) {
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
-      <h2 className="mb-3 text-lg font-bold text-[var(--color-text)]">{heading}</h2>
-      <p className="text-sm leading-7 text-[var(--color-text-muted)]">{body}</p>
-    </div>
+    <section className="legal-section" id={`legal-${heading.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>
+      <h2>{heading}</h2>
+      <p>{body}</p>
+    </section>
   );
 }
 
@@ -109,18 +107,18 @@ function LegalPage({ kind }: { kind: LegalKind }) {
   const content = legalContent[kind];
 
   return (
-    <div className="mx-auto max-w-5xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-      <div className="surface-card p-6 sm:p-8 lg:p-10">
-        <div className="mb-8 flex items-center gap-3">
-          <span className="eyebrow">{content.eyebrow}</span>
-        </div>
-
-        <h1 className="mb-4 text-3xl font-black tracking-tight text-[var(--color-text)] sm:text-4xl">
-          {content.title}
-        </h1>
-        <p className="mb-8 max-w-3xl text-base leading-7 text-[var(--color-text-muted)]">{content.intro}</p>
-
-        <div className="space-y-4">
+    <div className="editorial-page legal-page">
+      <header className="editorial-hero legal-hero">
+        <span className="landing-section-index">/ {content.eyebrow.toLowerCase()}</span>
+        <h1>{content.title}</h1>
+        <p>{content.intro}</p>
+      </header>
+      <div className="legal-layout">
+        <nav className="legal-toc" aria-label={`${content.title} sections`}>
+          <span className="editorial-overline">On this page</span>
+          {content.sections.map((section) => <a key={section.heading} href={`#legal-${section.heading.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>{section.heading}</a>)}
+        </nav>
+        <div className="legal-sections">
           {content.sections.map((section) => (
             <SectionBlock key={section.heading} heading={section.heading} body={section.body} />
           ))}
