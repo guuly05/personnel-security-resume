@@ -117,40 +117,25 @@ const CertificatesPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-4">
-      <section className="surface-card p-6 md:p-10 lg:p-12">
+    <div className="editorial-page credentials-page">
+      <section className="credentials-hero">
         <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
           <div className="flex flex-col justify-between gap-8">
             <div>
-              <span className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">
-                Credentials
-              </span>
-            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-[var(--color-text)] md:text-5xl">
+              <span className="landing-section-index">/ credentials</span>
+            <h1 className="editorial-hero-title">
                 Security learning with <span className="text-accent">practical outcomes.</span>
             </h1>
-              <p className="mt-5 text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
+              <p className="editorial-hero-copy">
                 These certifications support the way I work: understand the risk, validate it carefully, document it clearly, and keep improving through structured learning.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-5">
-                <p className="font-display text-4xl font-bold accent-text">{CERTIFICATES.length}</p>
-                <p className="mt-2 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
-                  Certificates
-                </p>
-              </div>
-              <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-5">
-                <p className="font-display text-4xl font-bold text-[var(--accent)]">{mappedSkillsCount}</p>
-                <p className="mt-2 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
-                  Skills Mapped
-                </p>
-              </div>
-            </div>
+            <div className="credentials-counts"><strong>{CERTIFICATES.length}</strong><span>certifications and focused learning paths</span><strong>{mappedSkillsCount}</strong><span>topics represented across the collection</span></div>
           </div>
 
           <div className="space-y-5">
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-5">
+            <div className="credentials-toolbar">
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <p className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-[var(--color-text-muted)]">
                   Browse by track
@@ -165,11 +150,8 @@ const CertificatesPage: React.FC = () => {
                     key={track}
                     type="button"
                     onClick={() => setActiveTrack(track)}
-                    className={`rounded-xl border px-3 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors ${
-                      activeTrack === track
-                        ? 'border-[var(--accent)] bg-[var(--accent-soft)] accent-text'
-                        : 'border-[var(--border)] bg-[var(--surface-soft)] text-[var(--color-text-muted)] hover:border-[var(--accent)] hover:text-[var(--color-text)]'
-                    }`}
+                    aria-pressed={activeTrack === track}
+                    className="credentials-filter"
                   >
                     {track}
                   </button>
@@ -179,7 +161,7 @@ const CertificatesPage: React.FC = () => {
 
             <motion.div
               layout
-              className="grid gap-4 md:grid-cols-2"
+              className="credentials-list"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.25 }}
@@ -196,11 +178,11 @@ const CertificatesPage: React.FC = () => {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.22, delay: index * 0.03 }}
-                  className="group rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-5 transition-colors hover:border-[var(--accent)]"
+                  className="credential-row"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-4">
-                      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--accent-soft)] accent-text transition-colors group-hover:bg-[var(--accent)] group-hover:text-[var(--color-bg)]">
+                      <div className="credential-logo">
                         <Icon name={cert.icon} size={28} />
                       </div>
 
@@ -210,25 +192,25 @@ const CertificatesPage: React.FC = () => {
                             href={cert.verifyLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group/title"
+                            className="credential-title-link"
                           >
-                            <h3 className="text-lg font-bold leading-tight text-[var(--color-text)] transition-colors group-hover/title:accent-text">
+                            <h3 className="credential-title">
                               {cert.title}
                             </h3>
                           </a>
                         ) : (
-                          <h3 className="text-lg font-bold leading-tight text-[var(--color-text)]">{cert.title}</h3>
+                          <h3 className="credential-title">{cert.title}</h3>
                         )}
-                        <p className="mt-2 text-[11px] font-bold uppercase tracking-widest text-[var(--accent)]">
+                        <p className="credential-issuer">
                           {cert.issuer}
                         </p>
-                        <p className="mt-2 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
+                        <p className="credential-track">
                           {track}
                         </p>
                       </div>
                     </div>
 
-                    <span className="rounded bg-[var(--accent-soft)] px-2 py-1 font-mono text-[10px] font-bold uppercase accent-text">
+                    <span className="credential-date">
                       {cert.date}
                     </span>
                   </div>
@@ -237,7 +219,7 @@ const CertificatesPage: React.FC = () => {
                     {(insight?.skills ?? []).slice(0, 4).map((skill) => (
                       <span
                         key={skill}
-                        className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]"
+                        className="credential-skill"
                       >
                         {skill}
                       </span>
@@ -309,8 +291,8 @@ const CertificatesPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="surface-card overflow-hidden">
+      <section className="credentials-education-grid">
+        <div className="credentials-education">
           <button
             type="button"
             onClick={() => setIsEducationOpen((current) => !current)}
@@ -385,7 +367,7 @@ const CertificatesPage: React.FC = () => {
           </AnimatePresence>
         </div>
 
-        <div className="surface-card p-6 md:p-8">
+          <div className="credentials-learning">
           <p className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-[var(--accent)]">
             Learning Focus
           </p>
