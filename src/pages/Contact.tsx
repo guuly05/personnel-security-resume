@@ -136,13 +136,14 @@ const ContactPage: React.FC = () => {
   };
 
   return (
-    <div className="bento-grid">
-      <div className="lg:col-span-2 lg:row-span-3 surface-card p-6 sm:p-8 lg:p-10">
-        <h1 className="mb-4 flex items-center gap-3 text-3xl font-bold">
-          <Icon name="message-square" className="text-[var(--accent)]" />
-          Contact Guuleed Maxmuud Aw Abdi
-        </h1>
-        <p className="mb-8 max-w-2xl text-sm leading-7 text-[var(--color-text-muted)]">Get in touch about a product idea, a frontend or backend build, delivery workflows, secure engineering, collaboration, or career opportunities.</p>
+    <div className="editorial-page contact-page bento-grid">
+      <header className="contact-intro">
+        <span className="landing-section-index">/ contact</span>
+        <h1>Have a project or question?</h1>
+        <p>Get in touch about a product idea, a frontend or backend build, delivery workflows, secure engineering, collaboration, or career opportunities.</p>
+      </header>
+      <div className="contact-form-panel lg:col-span-2 lg:row-span-3">
+        <h2 className="contact-panel-heading">Send a message</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="hidden">
@@ -234,54 +235,15 @@ const ContactPage: React.FC = () => {
         </form>
       </div>
 
-      <div className="surface-card relative flex flex-col justify-between overflow-hidden p-6 sm:p-8 lg:p-10 lg:col-span-2">
-        <div className="space-y-8">
-          <div className="group flex items-center gap-6">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--accent)] transition-colors group-hover:border-[var(--accent)]">
-              <Icon name="mail" size={24} />
-            </div>
-            <div>
-              <p className="mb-1 font-mono text-[10px] uppercase tracking-widest text-slate-500">Email</p>
-              <p className="text-sm font-bold">{PERSONAL_INFO.email}</p>
-            </div>
-          </div>
-
-          <div className="group flex items-center gap-6">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--accent)] transition-colors group-hover:border-[var(--accent)]">
-              <Icon name="phone" size={24} />
-            </div>
-            <div>
-              <p className="mb-1 font-mono text-[10px] uppercase tracking-widest text-slate-500">Phone</p>
-              <p className="text-sm font-bold">{PERSONAL_INFO.phone}</p>
-            </div>
-          </div>
-
-          <div className="group flex items-center gap-6">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--accent)] transition-colors group-hover:border-[var(--accent)]">
-              <Icon name="linkedin" size={24} />
-            </div>
-            <div>
-              <p className="mb-1 font-mono text-[10px] uppercase tracking-widest text-slate-500">LinkedIn</p>
-              <p className="truncate text-sm font-bold">/in/guuleed-aw-abdi</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="group relative mt-8 h-48 w-full overflow-hidden rounded-xl border border-dashed border-[var(--border)] surface-card opacity-70 transition-opacity hover:opacity-100">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center grayscale transition-transform duration-700 group-hover:scale-110" />
-          <div className="absolute inset-0 bg-[var(--color-bg)]/50" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="flex items-center gap-2 rounded-lg border border-[var(--accent)]/40 bg-[var(--color-bg)]/90 px-4 py-2">
-              <Icon name="map-pin" className="text-[var(--accent)]" size={14} />
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-white">
-                Hargeisa, Somaliland
-              </span>
-            </div>
-          </div>
-        </div>
+      <div className="contact-details lg:col-span-2">
+        <span className="editorial-overline">Direct contact</span>
+        <a href={`mailto:${PERSONAL_INFO.email}`}><span>Email</span><strong>{PERSONAL_INFO.email}</strong><Icon name="arrow-up-right" size={15} /></a>
+        <a href={`tel:${PERSONAL_INFO.phone.replace(/\s/g, '')}`}><span>Phone</span><strong>{PERSONAL_INFO.phone}</strong><Icon name="arrow-up-right" size={15} /></a>
+        <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><strong>/in/guuleed-aw-abdi</strong><Icon name="arrow-up-right" size={15} /></a>
+        <div className="contact-location"><span>Based in</span><strong>Hargeisa, Somaliland</strong><small>Available for remote collaboration</small></div>
       </div>
 
-      <div className="surface-card flex items-center justify-center gap-8 bg-[var(--surface-soft)] p-8 lg:col-span-2">
+      <div className="contact-socials lg:col-span-2">
         <a
           href={PERSONAL_INFO.github}
           target="_blank"
@@ -303,7 +265,7 @@ const ContactPage: React.FC = () => {
         </a>
       </div>
 
-      <div className="surface-card p-6 md:p-8 lg:col-span-4">
+      <div className="contact-fallback lg:col-span-4">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)]">

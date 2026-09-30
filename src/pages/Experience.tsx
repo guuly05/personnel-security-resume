@@ -2,44 +2,37 @@ import React from 'react';
 import { EXPERIENCES } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
 
-const ExperiencePage: React.FC = () => {
-  return (
-    <div className="surface-card p-8 md:p-10 overflow-hidden">
-      <div className="space-y-8">
-        <div className="space-y-4">
-          <span className="text-[10px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold">Selected experience</span>
-          <h1 className="text-4xl font-semibold md:text-5xl">Building across the stack, from idea to operation.</h1>
-          <p className="max-w-3xl text-[15px] leading-8 text-[var(--color-text-muted)]">
-            These engagements show how I move between product delivery, systems thinking, and security-minded engineering: understand the context, make the work clear, and leave behind something dependable.
-          </p>
-        </div>
+const ExperiencePage: React.FC = () => (
+  <div className="editorial-page experience-page">
+    <header className="editorial-hero">
+      <span className="landing-section-index">/ experience</span>
+      <h1>Building across the stack, <span>from idea to operation.</span></h1>
+      <p>Selected work across product delivery, systems thinking, and security-minded engineering. Each role starts with understanding the context and ends with something a team can use.</p>
+    </header>
 
-        <div className="space-y-6">
-          {EXPERIENCES.map((experience) => (
-            <div key={experience.title} className="grid gap-6 lg:grid-cols-[280px_1fr] rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-6 md:p-8">
-              <div className="space-y-4">
-                <div className="inline-flex items-center gap-2 rounded-md border border-[var(--accent)]/15 bg-[var(--accent-soft)] px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-[var(--accent)]">
-                  <Icon name="clock" size={14} />
-                  {experience.dateRange}
-                </div>
-                <h3 className="text-2xl font-semibold">{experience.title}</h3>
-                <p className="text-[12px] uppercase tracking-[0.4em] text-[var(--color-text-muted)]">{experience.company}</p>
-              </div>
-
-              <ul className="space-y-4">
-                {experience.bullets.map((bullet) => (
-                  <li key={bullet} className="flex gap-3 text-sm leading-7 text-[var(--color-text-muted)]">
-                    <Icon name="chevron-right" size={18} className="text-[var(--accent)] flex-shrink-0 mt-1" />
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+    <section className="editorial-section" aria-labelledby="experience-list-title">
+      <div className="editorial-section-heading">
+        <div><span className="landing-section-index">01 / selected roles</span><h2 id="experience-list-title">Work and contribution.</h2></div>
+        <span className="editorial-section-count">0{EXPERIENCES.length} roles</span>
       </div>
-    </div>
-  );
-};
+      <div className="experience-list">
+        {EXPERIENCES.map((experience, index) => (
+          <article key={experience.title} className="experience-entry">
+            <div className="experience-entry-meta">
+              <span className="editorial-index">0{index + 1}</span>
+              <span>{experience.dateRange}</span>
+            </div>
+            <div className="experience-entry-copy">
+              <p className="editorial-overline">{experience.company}</p>
+              <h3>{experience.title}</h3>
+              <ul>{experience.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>
+            </div>
+          </article>
+        ))}
+      </div>
+      <a className="landing-text-link experience-portfolio-link" href="/portfolio">Explore the related projects <Icon name="arrow-up-right" size={16} /></a>
+    </section>
+  </div>
+);
 
 export default ExperiencePage;

@@ -1,32 +1,25 @@
-import React, { useCallback, useState, useRef, useEffect } from 'react';
-import { CORE_SKILLS, TOOLSET, COURSES } from '../constants.ts';
+import React, { useCallback, useState, useRef } from 'react';
+import { COURSES } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
-import { motion, AnimatePresence } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useFocusTrap } from '../hooks/useFocusTrap.ts';
 
-// Extended type definitions for enriched skill metrics & tool context
-export interface SkillCategory {
-  title: string;
-  subtitle: string;
-  icon: string;
-  badge: string;
-  skills: {
-    name: string;
-    level: number; // Percentage 0 - 100
-    experience: string;
-    tags: string[];
-  }[];
-}
-
-export interface DetailedTool {
+interface DetailedTool {
   name: string;
   category: string;
   svgPath?: string;
   fallbackIcon: string;
-  mastery: string;
   description: string;
   scenarios: string[];
-  associatedProjects: string[];
+  associatedProjects: { name: string; href: string }[];
+}
+
+interface Capability {
+  number: string;
+  title: string;
+  summary: string;
+  examples: string[];
+  tools: string[];
 }
 
 const toolSvgMap: Record<string, string> = {
@@ -36,582 +29,188 @@ const toolSvgMap: Record<string, string> = {
   'Metasploit': '/images/SVG/metasploit.svg',
   'Nmap': '/images/SVG/nmap.svg',
   'React': '/images/SVG/reactjs.svg',
-  'Git/GitHub': '/images/SVG/github-wordmark.svg',
   'Git / GitHub': '/images/SVG/github-wordmark.svg',
   'Bash': '/images/SVG/bash.svg',
-  'Bash / Shell Scripting': '/images/SVG/bash.svg',
   'Python': '/images/SVG/python.svg',
   'Java': '/images/SVG/java.svg',
   'Linux': '/images/SVG/linux.svg',
   'VMware': '/images/SVG/vmware-workstation.svg',
   'VirtualBox': '/images/SVG/virtualbox.svg',
-  'TailwindCSS': '/images/SVG/tailwindcss.svg',
+  'Tailwind CSS': '/images/SVG/tailwindcss.svg',
   'Express.js': '/images/SVG/express-js.svg',
   'Firebase': '/images/SVG/firebase.svg',
   'Vercel / Netlify': '/images/SVG/netlify.svg',
   'Resend': 'https://cdn.resend.com/brand/resend-wordmark-black.svg',
 };
 
-const DETAILED_TOOLS: DetailedTool[] = [
-  {
-    name: 'Burp Suite',
-    category: 'Offensive Security',
-    svgPath: '/images/SVG/burpsuite.svg',
-    fallbackIcon: 'shield-alert',
-    mastery: 'Advanced',
-    description: 'Premier web application security testing toolkit used for interception proxy, vulnerability scanning, and manual payload construction.',
-    scenarios: [
-      'Intercepting & tampering with HTTP requests and responses to test authentication mechanisms.',
-      'Constructing custom Burp Intruder brute-force payloads & fuzzing parameters for SQLi/XSS.',
-      'Automating active & passive vulnerability scanning on target web endpoints.'
-    ],
-    associatedProjects: ['Vulnerability Assessment - Family Business App', 'Web Security Audit']
-  },
-  {
-    name: 'Nessus',
-    category: 'Vulnerability Assessment',
-    svgPath: '/images/SVG/Nessus-Professional-FullColor-RGB.svg',
-    fallbackIcon: 'shield-check',
-    mastery: 'Advanced',
-    description: 'Industry-standard vulnerability scanner for automated discovery of network host flaws, unpatched software, and configuration compliance.',
-    scenarios: [
-      'Configuring credentialed & non-credentialed network vulnerability scans across subnet IP ranges.',
-      'Filtering false positives and prioritizing critical/high CVE findings for executive reporting.',
-      'Conducting system compliance audits against CIS benchmarks.'
-    ],
-    associatedProjects: ['Internal Infrastructure Security Scan', 'Family Business Network Audit']
-  },
-  {
-    name: 'Wireshark',
-    category: 'Network Forensics',
-    svgPath: '/images/SVG/wireshark.svg',
-    fallbackIcon: 'network',
-    mastery: 'Proficient',
-    description: 'Deep-packet network protocol analyzer used to inspect packet captures (PCAP), analyze traffic anomalies, and trace packet flows.',
-    scenarios: [
-      'Filtering PCAP streams using display filters (tcp.flags, ip.src, http.request) during incident investigations.',
-      'Analyzing unencrypted protocol leaks (HTTP, FTP, Telnet) and inspecting TLS handshake exchanges.',
-      'Troubleshooting latency, packet drops, and ARP spoofing attempts.'
-    ],
-    associatedProjects: ['Network Traffic Analysis Lab', 'Protocol Security Benchmark']
-  },
-  {
-    name: 'Metasploit',
-    category: 'Offensive Security',
-    svgPath: '/images/SVG/metasploit.svg',
-    fallbackIcon: 'terminal',
-    mastery: 'Proficient',
-    description: 'Penetration testing framework used for exploit verification, payload creation, and post-exploitation validation.',
-    scenarios: [
-      'Generating custom Meterpreter payloads and stagers for authorized proof-of-concept exploits.',
-      'Running msfconsole auxiliary scanners to verify unpatched service vulnerabilities.',
-      'Demonstrating privilege escalation vectors in lab environments.'
-    ],
-    associatedProjects: ['Family Business Pen Test', 'Lab Exploit Verification']
-  },
-  {
-    name: 'Nmap',
-    category: 'Reconnaissance',
-    svgPath: '/images/SVG/nmap.svg',
-    fallbackIcon: 'search',
-    mastery: 'Expert',
-    description: 'Network discovery and vulnerability probing utility for host discovery, port scanning, OS detection, and NSE scripting.',
-    scenarios: [
-      'Executing stealth SYN scans (-sS), service versioning (-sV), and default script scans (-sC).',
-      'Writing and executing custom Nmap Scripting Engine (NSE) scripts to detect vulnerable services.',
-      'Mapping network topographies and active IP subnets.'
-    ],
-    associatedProjects: ['Subnet Reconnaissance', 'Family Business Pen Test']
-  },
-  {
-    name: 'React',
-    category: 'Full-Stack Development',
-    fallbackIcon: 'layout',
-    mastery: 'Advanced',
-    description: 'Modern component-driven UI library for building reactive, fast, and interactive user interfaces.',
-    scenarios: [
-      'Building dynamic Single Page Applications (SPAs) with state management, hooks, and clean component hierarchy.',
-      'Implementing glassmorphic dark-mode dashboards with fluid Motion animation effects.',
-      'Integrating REST & GraphQL backend services into secure frontend views.'
-    ],
-    associatedProjects: ['Cybersecurity Portfolio & Resume Hub', 'Family Business Internal Portal']
-  },
-  {
-    name: 'TailwindCSS',
-    category: 'Full-Stack Development',
-    fallbackIcon: 'code-2',
-    mastery: 'Advanced',
-    description: 'Utility-first CSS framework for rapidly assembling modern, responsive, and aesthetically stunning user interfaces.',
-    scenarios: [
-      'Crafting fluid responsive layouts (mobile to ultra-wide) with custom color tokens and HSL palettes.',
-      'Creating dark/light mode themes with smooth CSS variable transitions.',
-      'Styling micro-animations, glassmorphism containers, and interactive card states.'
-    ],
-    associatedProjects: ['Cybersecurity Portfolio Website']
-  },
-  {
-    name: 'Express.js',
-    category: 'Backend Development',
-    fallbackIcon: 'cpu',
-    mastery: 'Proficient',
-    description: 'Fast, unopinionated backend web application framework for Node.js powering API endpoints and serverless routes.',
-    scenarios: [
-      'Designing RESTful API routes with JWT authentication middleware and CORS policies.',
-      'Implementing rate-limiting, Helmet security headers, and input sanitization to block OWASP Top 10 flaws.',
-      'Handling serverless proxy functions for Vercel/Netlify integrations.'
-    ],
-    associatedProjects: ['Secure Contact API Endpoint', 'AI Security Bot Serverless Backend']
-  },
-  {
-    name: 'Firebase',
-    category: 'Full-Stack & Cloud',
-    fallbackIcon: 'globe',
-    mastery: 'Proficient',
-    description: 'Google Cloud backend platform offering real-time databases, authentication, serverless functions, and hosting.',
-    scenarios: [
-      'Configuring Firebase Authentication (OAuth, Email/Password) with secure Security Rules.',
-      'Storing dynamic application state in Firestore real-time collections.',
-      'Deploying web applications via Firebase Hosting CLI.'
-    ],
-    associatedProjects: ['Interactive Real-Time App Sandbox']
-  },
-  {
-    name: 'Vercel / Netlify',
-    category: 'Cloud Deployment & DevOps',
-    fallbackIcon: 'external-link',
-    mastery: 'Advanced',
-    description: 'Modern edge hosting platforms for continuous deployment, automated git previews, serverless functions, and analytics.',
-    scenarios: [
-      'Configuring automated CI/CD deployment pipelines directly from GitHub repository commits.',
-      'Deploying edge functions and serverless backend handlers with environment variable protection.',
-      'Monitoring performance metrics with Vercel Speed Insights.'
-    ],
-    associatedProjects: ['Cybersecurity Resume & Portfolio Live Hosting']
-  },
-  {
-    name: 'Resend',
-    category: 'Full-Stack Services',
-    fallbackIcon: 'mail',
-    mastery: 'Proficient',
-    description: 'Modern developer-first transactional email API for secure notification delivery and automated contact messaging.',
-    scenarios: [
-      'Integrating secure serverless contact forms with HTML email templates and DKIM/SPF domain verification.',
-      'Automating instant email notifications upon user submissions.'
-    ],
-    associatedProjects: ['Portfolio Contact Form Integration']
-  },
-  {
-    name: 'Python',
-    category: 'Automation & Security',
-    svgPath: '/images/SVG/python.svg',
-    fallbackIcon: 'file-code',
-    mastery: 'Advanced',
-    description: 'Versatile programming language for building custom security exploits, network parsers, and backend scripts.',
-    scenarios: [
-      'Writing custom socket & Scapy scripts for automated port probing and packet manipulation.',
-      'Parsing JSON/XML vulnerability reports into formatted executive summaries.',
-      'Integrating AI LLM APIs (@google/genai) for automated intelligence triage.'
-    ],
-    associatedProjects: ['Automated Security Log Parser', 'Portfolio AI Integration']
-  },
-  {
-    name: 'Git / GitHub',
-    category: 'DevOps & Version Control',
-    svgPath: '/images/SVG/github-wordmark.svg',
-    fallbackIcon: 'github',
-    mastery: 'Advanced',
-    description: 'Distributed version control system and repository hosting platform for collaborative software development.',
-    scenarios: [
-      'Managing feature branches, pull requests, and code reviews.',
-      'Configuring GitHub Actions for automated linting, security scanning, and deployments.',
-      'Securing repository secrets and maintaining clean commit histories.'
-    ],
-    associatedProjects: ['All Open-Source & Private Repositories']
-  },
-  {
-    name: 'Bash / Shell Scripting',
-    category: 'System Hardening & DevOps',
-    svgPath: '/images/SVG/bash.svg',
-    fallbackIcon: 'terminal',
-    mastery: 'Advanced',
-    description: 'Unix shell command language for task automation, system hardening, and server administration.',
-    scenarios: [
-      'Writing Linux system hardening scripts to audit SSH configs, firewall rules, and active services.',
-      'Automating backup, log rotation, and batch security scans.'
-    ],
-    associatedProjects: ['Linux Hardening Scripts', 'IT Support Automation']
-  }
+const TOOLS: DetailedTool[] = [
+  { name: 'React', category: 'Product engineering', fallbackIcon: 'layout', description: 'Component-driven interface development, application state, reusable UI, and responsive product flows.', scenarios: ['Built React 19 interfaces with TypeScript and reusable components.', 'Delivered a bilingual commerce platform with catalogue, news, and logistics experiences.'], associatedProjects: [{ name: 'Samaale General Trading', href: '/portfolio/samaale-general-trading' }, { name: 'Portfolio platform', href: '/portfolio/portfolio-platform' }] },
+  { name: 'Tailwind CSS', category: 'Product engineering', fallbackIcon: 'code-2', description: 'Responsive styling with shared design tokens, clear layout rules, and accessible interaction states.', scenarios: ['Built responsive page layouts and reusable interface patterns.', 'Applied consistent visual tokens across a multi-route portfolio.'], associatedProjects: [{ name: 'Samaale General Trading', href: '/portfolio/samaale-general-trading' }] },
+  { name: 'Express.js', category: 'Product engineering', fallbackIcon: 'cpu', description: 'Node.js API development and server-side request handling.', scenarios: ['Structured API routes and validation boundaries.', 'Applied rate limiting, security headers, and controlled cross-origin access where appropriate.'], associatedProjects: [{ name: 'Portfolio platform', href: '/portfolio/portfolio-platform' }] },
+  { name: 'Firebase', category: 'Product engineering', fallbackIcon: 'globe', description: 'Application authentication and data services, including Firebase Auth and Firestore.', scenarios: ['Connected application flows to authentication and hosted data services.', 'Worked with security rules to control access to stored records.'], associatedProjects: [{ name: 'Selected work', href: '/portfolio' }] },
+  { name: 'Resend', category: 'Product engineering', fallbackIcon: 'mail', description: 'Transactional email delivery integrated through protected server-side workflows.', scenarios: ['Connected validated form submissions to email notifications.', 'Kept provider credentials on the server side.'], associatedProjects: [{ name: 'Samaale General Trading', href: '/portfolio/samaale-general-trading' }, { name: 'Portfolio platform', href: '/portfolio/portfolio-platform' }] },
+  { name: 'Nessus', category: 'Security practice', svgPath: '/images/SVG/Nessus-Professional-FullColor-RGB.svg', fallbackIcon: 'shield-check', description: 'Vulnerability scanning to identify exposed services, outdated software, and configuration issues for review.', scenarios: ['Ran vulnerability assessment workflows and reviewed findings.', 'Prioritized issues for clear remediation notes and reporting.'], associatedProjects: [{ name: 'Security case studies', href: '/portfolio' }] },
+  { name: 'Burp Suite', category: 'Security practice', fallbackIcon: 'shield-alert', description: 'Web application testing through request inspection, manual validation, and focused input testing.', scenarios: ['Inspected application requests and authentication flows.', 'Validated web findings in authorized projects and lab environments.'], associatedProjects: [{ name: 'Security case studies', href: '/portfolio' }] },
+  { name: 'Wireshark', category: 'Security practice', fallbackIcon: 'network', description: 'Packet capture inspection for understanding protocols, traffic patterns, and network behavior.', scenarios: ['Used display filters to isolate relevant traffic.', 'Reviewed protocol behavior during security analysis and troubleshooting.'], associatedProjects: [{ name: 'Information security project', href: '/portfolio/infosec-course' }] },
+  { name: 'Metasploit', category: 'Security practice', fallbackIcon: 'terminal', description: 'A penetration-testing framework used in controlled lab work to validate known vulnerabilities.', scenarios: ['Verified exploit behavior in authorized lab environments.', 'Documented findings and post-exploitation impact for security study.'], associatedProjects: [{ name: 'Information security project', href: '/portfolio/infosec-course' }] },
+  { name: 'Nmap', category: 'Security practice', fallbackIcon: 'search', description: 'Network discovery and service enumeration to establish what is exposed and needs further investigation.', scenarios: ['Mapped hosts and listening services in approved environments.', 'Used scan output as an input to vulnerability review and reporting.'], associatedProjects: [{ name: 'Information security project', href: '/portfolio/infosec-course' }] },
+  { name: 'Python', category: 'Systems & delivery', fallbackIcon: 'file-code', description: 'Scripting for automation, data handling, and security-oriented utilities.', scenarios: ['Built a vulnerability scanning workflow that parses results into prioritized reports.', 'Used scripts to reduce repetitive technical work.'], associatedProjects: [{ name: 'Selected work', href: '/portfolio' }] },
+  { name: 'Bash', category: 'Systems & delivery', fallbackIcon: 'terminal', description: 'Shell scripting for Linux operations, repeatable tasks, and system administration.', scenarios: ['Automated routine system and security checks.', 'Worked with Linux services, permissions, and operational troubleshooting.'], associatedProjects: [{ name: 'Experience', href: '/experience' }] },
+  { name: 'Linux', category: 'Systems & delivery', fallbackIcon: 'terminal', description: 'Linux environments for system administration, service review, and security labs.', scenarios: ['Reviewed services, permissions, and SSH configuration.', 'Used Kali Linux and Linux-based tooling in authorized security labs.'], associatedProjects: [{ name: 'Information security project', href: '/portfolio/infosec-course' }] },
+  { name: 'Git / GitHub', category: 'Systems & delivery', fallbackIcon: 'github', description: 'Version control and repository workflows for collaborative, reviewable software delivery.', scenarios: ['Managed code changes with Git and GitHub.', 'Used repository workflows to support builds and deployment.'], associatedProjects: [{ name: 'Portfolio platform', href: '/portfolio/portfolio-platform' }] },
+  { name: 'Java', category: 'Systems & delivery', fallbackIcon: 'coffee', description: 'Object-oriented programming and foundational software development.', scenarios: ['Applied core object-oriented programming concepts.', 'Built programming foundations through coursework and practice.'], associatedProjects: [{ name: 'Academic foundation', href: '#coursework' }] },
+  { name: 'VMware', category: 'Systems & delivery', fallbackIcon: 'server', description: 'Virtualized environments for isolated operating system and security lab work.', scenarios: ['Set up and used virtual machines for hands-on technical practice.', 'Kept lab exercises separated from everyday systems.'], associatedProjects: [{ name: 'Security case studies', href: '/portfolio' }] },
+  { name: 'VirtualBox', category: 'Systems & delivery', fallbackIcon: 'server', description: 'Desktop virtualization for building and managing isolated lab environments.', scenarios: ['Used virtual machines to support Linux and security exercises.', 'Configured isolated environments for technical learning.'], associatedProjects: [{ name: 'Security case studies', href: '/portfolio' }] },
+  { name: 'Vercel / Netlify', category: 'Systems & delivery', fallbackIcon: 'external-link', description: 'Web deployment platforms used to publish frontend applications and serverless workflows.', scenarios: ['Connected deployments to repository workflows.', 'Configured production hosting and environment settings.'], associatedProjects: [{ name: 'Portfolio platform', href: '/portfolio/portfolio-platform' }] },
 ];
 
-const SKILL_CATEGORIES: SkillCategory[] = [
+const CAPABILITIES: Capability[] = [
   {
-    title: 'Security Practice',
-    subtitle: 'Vulnerability assessment, application testing, network visibility, and safer systems',
-    icon: 'shield-check',
-    badge: 'Specialization',
-    skills: [
-      { name: 'Vulnerability Assessment (Nessus, Nmap)', level: 92, experience: 'Hands-on audits & enterprise reports', tags: ['Offensive', 'CVEs', 'Compliance'] },
-      { name: 'Penetration Testing (Burp Suite, Metasploit)', level: 88, experience: 'Web app interception, parameter fuzzing & exploit verification', tags: ['OWASP', 'Burp', 'Exploits'] },
-      { name: 'Network Security & Protocol Analysis (Wireshark)', level: 85, experience: 'PCAP packet inspection & protocol hardening', tags: ['PCAP', 'Protocols', 'Forensics'] },
-      { name: 'Linux System Hardening & Security Audit', level: 90, experience: 'SSH configuration, permission auditing & bash automation', tags: ['Linux', 'Hardening', 'Bash'] },
-      { name: 'Risk Management & Security Documentation', level: 86, experience: 'Actionable executive reports & developer remediation guidance', tags: ['GRC', 'Reporting', 'Risk'] }
-    ]
+    number: '01', title: 'Product engineering',
+    summary: 'I build interfaces and application flows that make a product easy to understand and use, then connect them to the services behind them.',
+    examples: ['React 19 and TypeScript application development', 'Responsive interfaces and reusable component systems', 'API integrations, authentication, and data flows'],
+    tools: ['React', 'Tailwind CSS', 'Express.js', 'Firebase', 'Resend'],
   },
   {
-    title: 'Frontend & Full-Stack Development',
-    subtitle: 'Modern interfaces, API architecture, serverless backends, and cloud deployments',
-    icon: 'code-2',
-    badge: 'Core Craft',
-    skills: [
-      { name: 'React (v19) & TypeScript', level: 90, experience: 'SPAs, custom hooks, dynamic UI components & state', tags: ['Frontend', 'React', 'TS'] },
-      { name: 'Tailwind CSS & Modern UI Styling', level: 94, experience: 'Responsive layouts, dark/light themes, motion, and design tokens', tags: ['UI/UX', 'Tailwind', 'CSS'] },
-      { name: 'Express.js & Node Backend APIs', level: 84, experience: 'REST APIs, Helmet security middleware, CORS & JWT auth', tags: ['Backend', 'Express', 'API'] },
-      { name: 'Firebase (Auth, Firestore, Cloud Functions)', level: 82, experience: 'Real-time database, security rules & OAuth integration', tags: ['Cloud', 'NoSQL', 'Auth'] },
-      { name: 'Vercel / Netlify Cloud Edge Deployments', level: 88, experience: 'CI/CD GitHub pipelines, environment config & speed optimization', tags: ['DevOps', 'Vercel', 'Edge'] },
-      { name: 'Resend Email API & Serverless Services', level: 85, experience: 'Automated contact messaging & DKIM/SPF verification', tags: ['APIs', 'Resend', 'Email'] }
-    ]
+    number: '02', title: 'Systems & delivery',
+    summary: 'I work across the code and the path it takes to production: automation, Linux operations, source control, and deployment.',
+    examples: ['Python utilities and repeatable automation', 'Linux administration, shell scripting, and C programming foundations', 'Repository workflows and cloud deployment'],
+    tools: ['Python', 'Bash', 'Linux', 'Git / GitHub', 'Java', 'VMware', 'VirtualBox', 'Vercel / Netlify'],
   },
   {
-    title: 'DevOps, Automation & Systems',
-    subtitle: 'Delivery workflows, scripting, systems code, and developer tooling',
-    icon: 'cpu',
-    badge: 'Delivery',
-    skills: [
-      { name: 'Python (Automation & Security Scripting)', level: 88, experience: 'Socket programming, report generation & AI integrations', tags: ['Python', 'Automation', 'AI'] },
-      { name: 'JavaScript (ES6+) & Web Standards', level: 90, experience: 'Asynchronous workflows, DOM manipulation & client performance', tags: ['Web', 'JS', 'Async'] },
-      { name: 'Bash & Shell Automation', level: 86, experience: 'Cron jobs, system scripts & server setup automation', tags: ['CLI', 'Shell', 'DevOps'] },
-      { name: 'Java Programming', level: 80, experience: 'Object-oriented architecture & JVM memory management', tags: ['OOP', 'Java', 'Enterprise'] },
-      { name: 'C Programming & Systems Memory', level: 78, experience: 'Low-level pointer management & buffer memory analysis', tags: ['C', 'Low-Level', 'Memory'] }
-    ]
-  }
+    number: '03', title: 'Secure engineering',
+    summary: 'Security is part of how I approach software: understand the attack surface, validate risk in authorized settings, and make the next fix clear.',
+    examples: ['Application and network vulnerability assessment', 'Web request inspection and controlled exploit validation', 'Risk prioritization and developer-focused documentation'],
+    tools: ['Nessus', 'Burp Suite', 'Wireshark', 'Metasploit', 'Nmap'],
+  },
 ];
+
+const FILTERS = ['All tools', 'Product engineering', 'Systems & delivery', 'Security practice'];
 
 const SkillsPage: React.FC = () => {
-  const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState(FILTERS[0]);
   const [selectedTool, setSelectedTool] = useState<DetailedTool | null>(null);
-  const [activeCategory, setActiveCategory] = useState<string>('All');
-  const courseListRef = useRef<HTMLDivElement | null>(null);
-  const toolDialogRef = useRef<HTMLDivElement | null>(null);
-  const closeToolDialog = useCallback(() => setSelectedTool(null), []);
-  useFocusTrap(Boolean(selectedTool), toolDialogRef, closeToolDialog);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const closeDialog = useCallback(() => setSelectedTool(null), []);
+  useFocusTrap(Boolean(selectedTool), dialogRef, closeDialog);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (courseListRef.current && !courseListRef.current.contains(event.target as Node)) {
-        setActiveCourseId(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const categories = ['All', 'Frontend & Full-Stack', 'Backend & Cloud', 'DevOps & Tooling', 'Security Practice'];
-  
-  const filteredTools = activeCategory === 'All' 
-    ? DETAILED_TOOLS 
-    : DETAILED_TOOLS.filter((tool) => {
-      const category = tool.category.toLowerCase();
-      if (activeCategory === 'Frontend & Full-Stack') return category.includes('frontend') || category.includes('full-stack');
-      if (activeCategory === 'Backend & Cloud') return category.includes('backend') || category.includes('cloud') || category.includes('service');
-      if (activeCategory === 'DevOps & Tooling') return category.includes('devops') || category.includes('tooling') || category.includes('deployment') || category.includes('automation') || category.includes('system');
-      if (activeCategory === 'Security Practice') return category.includes('security') || category.includes('vulnerability') || category.includes('reconnaissance') || category.includes('forensics') || category.includes('offensive');
-      return true;
-    });
+  const visibleTools = activeFilter === FILTERS[0]
+    ? TOOLS
+    : TOOLS.filter((tool) => tool.category === activeFilter);
 
   return (
-    <div className="space-y-12">
-      {/* Header Section */}
-      <section className="surface-card p-8 sm:p-10 relative overflow-hidden">
-        <div className="max-w-3xl space-y-4 relative z-10">
-          <div className="inline-flex items-center gap-2 rounded-md border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-3.5 py-1 text-xs font-semibold text-[var(--accent)]">
-            <Icon name="layers" size={14} />
-            <span>Full-Stack · DevOps · Secure Engineering</span>
+    <div className="skills-page">
+      <header className="skills-hero">
+        <div className="skills-hero-copy">
+          <span className="landing-section-index">/ capabilities</span>
+          <h1 className="skills-title">Good software needs <span>the whole picture.</span></h1>
+          <p className="skills-lede">I work across product engineering, delivery, and security—building useful interfaces, connecting the systems behind them, and thinking about what happens after launch.</p>
+          <div className="skills-hero-index" aria-label="Core capabilities">
+            <span>Product engineering</span><i>·</i><span>Systems & delivery</span><i>·</i><span>Secure engineering</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Skills & Technical Proficiency</h1>
-          <p className="text-base text-[var(--color-text-muted)] leading-relaxed">
-            A practical breakdown of how I build and ship: frontend systems, backend APIs, cloud services, CI/CD workflows, automation, and the cybersecurity practices that strengthen the whole stack.
-          </p>
         </div>
+        <aside className="skills-hero-aside" aria-label="How I approach engineering">
+          <span className="skills-aside-label">/ working approach</span>
+          <div className="skills-approach-mark" aria-hidden="true"><span>build</span><b>→</b><span>ship</span><b>→</b><span>learn</span></div>
+          <p>Make the interface clear. Make the system dependable. Keep improving it with evidence.</p>
+        </aside>
+      </header>
+
+      <section className="skills-proof" aria-label="Selected experience">
+        <div className="skills-proof-item"><strong>12</strong><span>high-priority issues identified during an internship assessment</span></div>
+        <div className="skills-proof-item"><strong>30+</strong><span>source files in a production B2B platform built from scratch</span></div>
+        <div className="skills-proof-item"><strong>2</strong><span>languages supported in the Samaale platform</span></div>
+        <div className="skills-proof-item"><strong>4</strong><span>protected server workflows in this portfolio platform</span></div>
       </section>
 
-      {/* 1. REACTIVE & MOVING MASTERY BARS SECTION */}
-      <section className="space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <span className="text-[10px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold">Interactive Breakdown</span>
-            <h2 className="text-2xl font-bold mt-1">The stack, broken down.</h2>
-          </div>
-          <div className="flex items-center gap-2 text-xs text-[var(--color-text-muted)]">
-            <span className="h-2.5 w-2.5 rounded-full bg-[var(--accent)] animate-pulse" />
-            <span>Interactive animated indicators</span>
-          </div>
+      <section className="skills-capabilities" aria-labelledby="skills-capabilities-title">
+        <div className="landing-section-heading skills-section-heading">
+          <div><span className="landing-section-index">01 / how I work</span><h2 id="skills-capabilities-title">Three connected disciplines.</h2></div>
+          <p>My strongest work happens where product quality, reliable delivery, and security meet.</p>
         </div>
-
-        <div className="grid gap-8 lg:grid-cols-1">
-          {SKILL_CATEGORIES.map((cat) => (
-            <div key={cat.title} className="surface-card p-6 sm:p-8 space-y-6">
-              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--border)] pb-5">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent)] text-[var(--color-bg)]">
-                    <Icon name={cat.icon} size={20} />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold">{cat.title}</h3>
-                    <p className="text-xs text-[var(--color-text-muted)]">{cat.subtitle}</p>
-                  </div>
+        <div className="skills-capability-list">
+          {CAPABILITIES.map((capability) => (
+            <article className="skills-capability" key={capability.number}>
+              <span className="skills-capability-number">{capability.number}</span>
+              <div className="skills-capability-main">
+                <h3>{capability.title}</h3>
+                <p className="skills-capability-summary">{capability.summary}</p>
+                <ul className="skills-example-list">
+                  {capability.examples.map((example) => <li key={example}>{example}</li>)}
+                </ul>
+              </div>
+              <div className="skills-capability-tools">
+                <span className="skills-mini-label">Tools I use</span>
+                <div className="skills-inline-tools">
+                  {capability.tools.map((name, index) => (
+                    <React.Fragment key={name}>
+                      {index > 0 && <span className="skills-tool-separator" aria-hidden="true">·</span>}
+                      <button type="button" onClick={() => setSelectedTool(TOOLS.find((tool) => tool.name === name) ?? null)}>{name}</button>
+                    </React.Fragment>
+                  ))}
                 </div>
-                <span className="rounded-md bg-[var(--surface-soft)] border border-[var(--border)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
-                  {cat.badge}
-                </span>
               </div>
-
-              <div className="grid gap-6 md:grid-cols-2">
-                {cat.skills.map((skill) => (
-                  <div key={skill.name} className="space-y-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)]/50 p-4 transition-colors hover:border-[var(--accent)]/50">
-                    <div className="flex items-center justify-between text-sm font-semibold">
-                      <span className="text-sm font-medium">{skill.name}</span>
-                      <span className="text-xs font-bold text-[var(--accent)] font-mono">{skill.level}%</span>
-                    </div>
-                    
-                    {/* Animated Reactive Progress Bar */}
-                    <div className="relative h-3 w-full overflow-hidden rounded-md bg-[var(--surface-soft)] border border-[var(--border)]">
-                      <motion.div
-                        className="h-full rounded-md bg-[var(--accent)] relative overflow-hidden"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1.2, ease: "easeOut" }}
-                      >
-                      </motion.div>
-                    </div>
-
-                    <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-                      <span className="text-[11px] text-[var(--color-text-muted)] italic">{skill.experience}</span>
-                      <div className="flex gap-1">
-                        {skill.tags.map(t => (
-                          <span key={t} className="rounded bg-[var(--surface)] border border-[var(--border)] px-1.5 py-0.5 text-[9px] font-mono text-[var(--color-text-muted)]">
-                            #{t}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            </article>
           ))}
         </div>
       </section>
 
-      {/* 2. INTERACTIVE TOOLSET GRID & USAGE CONTEXT (MODAL / HOVER CARDS) */}
-      <section className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <span className="text-[10px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold">Interactive Toolset</span>
-            <h2 className="text-2xl font-bold mt-1">Tools I reach for in real work.</h2>
-          </div>
-          
-          {/* Category Filter Pills */}
-          <div className="flex flex-wrap gap-1.5">
-            {categories.map((c) => (
-              <button
-                key={c}
-                onClick={() => setActiveCategory(c)}
-                className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
-                  activeCategory === c
-                    ? 'bg-[var(--accent)] text-[var(--color-bg)]'
-                    : 'bg-[var(--surface-soft)] text-[var(--color-text-muted)] hover:text-white border border-[var(--border)]'
-                }`}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
+      <section className="skills-tool-section" aria-labelledby="skills-tools-title">
+        <div className="landing-section-heading skills-section-heading">
+          <div><span className="landing-section-index">02 / toolkit</span><h2 id="skills-tools-title">Tools behind the work.</h2></div>
+          <p>Select a tool to see how it fits into my work and the projects where it appears.</p>
         </div>
-
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
-          {filteredTools.map((tool) => {
-            const svgPath = tool.name in toolSvgMap ? toolSvgMap[tool.name] : tool.svgPath;
-            const isSelected = selectedTool?.name === tool.name;
-
-            return (
-              <motion.button
-                key={tool.name}
-                type="button"
-                whileTap={{ translateY: 1 }}
-                onClick={() => setSelectedTool(tool)}
-                aria-expanded={isSelected}
-                aria-controls={isSelected ? 'tool-detail-dialog' : undefined}
-                aria-haspopup="dialog"
-                aria-label={`${tool.name}: view usage details`}
-                className={`group relative flex flex-col items-center justify-between rounded-lg border p-4 text-center transition-colors duration-300 ${
-                  isSelected
-                    ? 'border-[var(--accent)] bg-[var(--accent-soft)]'
-                    : 'border-[var(--border)] bg-[var(--surface-soft)] hover:border-[var(--accent)]/60'
-                }`}
-              >
-                <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-lg bg-white p-2.5 border border-slate-200 dark:border-slate-700">
-                  {svgPath ? (
-                    <img src={svgPath} alt={tool.name} className="h-8 w-8 object-contain max-h-full max-w-full" loading="lazy" />
-                  ) : (
-                    <Icon name={tool.fallbackIcon} size={26} className="text-slate-800" />
-                  )}
-                </div>
-                <div>
-                  <p className="text-xs font-semibold text-[var(--color-text)]">{tool.name}</p>
-                  <span className="mt-1 inline-block rounded-md bg-[var(--surface)] border border-[var(--border)] px-2 py-0.5 text-[9px] font-medium text-[var(--accent)]">
-                    {tool.mastery}
-                  </span>
-                </div>
-                <div className="mt-2 text-[10px] text-[var(--color-text-muted)] opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
-                  <span>View Details</span>
-                  <Icon name="chevron-right" size={10} />
-                </div>
-              </motion.button>
-            );
-          })}
+        <div className="skills-tool-filters" role="group" aria-label="Filter tools by category">
+          {FILTERS.map((filter) => <button key={filter} type="button" aria-pressed={activeFilter === filter} onClick={() => setActiveFilter(filter)}>{filter}</button>)}
         </div>
+        <div className="skills-tool-list" aria-live="polite">
+          {visibleTools.map((tool, index) => (
+            <button type="button" className="skills-tool-row" key={tool.name} onClick={() => setSelectedTool(tool)} aria-label={`View how I use ${tool.name}`}>
+              <span className="skills-tool-number">{String(index + 1).padStart(2, '0')}</span>
+              <span className="skills-tool-logo" aria-hidden="true">
+                {tool.svgPath || tool.name in toolSvgMap
+                  ? <img src={tool.svgPath ?? toolSvgMap[tool.name]} alt="" loading="lazy" />
+                  : <Icon name={tool.fallbackIcon} size={23} />}
+              </span>
+              <span className="skills-tool-name">{tool.name}</span>
+              <span className="skills-tool-category">{tool.category}</span>
+              <Icon name="arrow-up-right" size={17} className="skills-tool-arrow" />
+            </button>
+          ))}
+        </div>
+      </section>
 
-        {/* TOOL USAGE DETAIL MODAL / EXPANDED CARD */}
-        <AnimatePresence>
-          {selectedTool && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 12 }}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-              onMouseDown={(event) => { if (event.target === event.currentTarget) closeToolDialog(); }}
-            >
-              <div ref={toolDialogRef} id="tool-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="tool-detail-title" tabIndex={-1} className="surface-card relative max-h-[90vh] w-full max-w-3xl overflow-y-auto border-2 border-[var(--accent)] p-6 sm:p-8">
-                <button
-                  type="button"
-                  onClick={closeToolDialog}
-                  aria-label={`Close ${selectedTool.name} details`}
-                  className="absolute right-4 top-4 rounded-md p-2 text-[var(--color-text-muted)] hover:bg-[var(--surface-soft)] hover:text-[var(--color-text)] transition-colors"
-                >
-                  <Icon name="x" size={18} />
-                </button>
+      <section className="skills-coursework" id="coursework" aria-labelledby="skills-coursework-title">
+        <div className="landing-section-heading skills-section-heading">
+          <div><span className="landing-section-index">03 / foundations</span><h2 id="skills-coursework-title">Built on fundamentals.</h2></div>
+          <p>Coursework that supports the way I reason about software, systems, and security.</p>
+        </div>
+        <div className="skills-course-list">
+          {COURSES.map((course, index) => (
+            <details className="skills-course-row" key={course.id}>
+              <summary><span className="skills-course-number">{String(index + 1).padStart(2, '0')}</span><span className="skills-course-title">{course.title}</span><span className="skills-course-description">{course.description}</span><Icon name="arrow-right" size={16} className="skills-course-plus" /></summary>
+              <div className="skills-course-detail"><p><strong>Challenge</strong>{course.challenge}</p><div><strong>Key takeaways</strong><ul>{course.outcomes.map((outcome) => <li key={outcome}>{outcome}</li>)}</ul></div></div>
+            </details>
+          ))}
+        </div>
+      </section>
 
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-white p-3 border border-slate-200">
-                  {selectedTool.name in toolSvgMap ? (
-                    <img src={toolSvgMap[selectedTool.name]} alt={selectedTool.name} className="h-10 w-10 object-contain" />
-                  ) : (
-                    <Icon name={selectedTool.fallbackIcon} size={32} className="text-slate-800" />
-                  )}
-                </div>
-                <div>
-                  <div className="flex items-center gap-3">
-                    <h3 id="tool-detail-title" className="text-2xl font-bold">{selectedTool.name}</h3>
-                    <span className="rounded-md bg-[var(--accent-soft)] px-3 py-1 text-xs font-semibold text-[var(--accent)] border border-[var(--accent)]/30">
-                      {selectedTool.mastery} Level
-                    </span>
-                  </div>
-                  <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{selectedTool.category}</p>
-                </div>
+      <AnimatePresence>
+        {selectedTool && (
+          <motion.div className="skills-dialog-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={(event) => { if (event.target === event.currentTarget) closeDialog(); }}>
+            <motion.div ref={dialogRef} className="skills-dialog" role="dialog" aria-modal="true" aria-labelledby="skills-dialog-title" tabIndex={-1} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.18 }}>
+              <button type="button" className="skills-dialog-close" aria-label="Close tool details" onClick={closeDialog}><Icon name="x" size={19} /></button>
+              <div className="skills-dialog-heading">
+                <span className="skills-dialog-logo" aria-hidden="true">{selectedTool.svgPath || selectedTool.name in toolSvgMap ? <img src={selectedTool.svgPath ?? toolSvgMap[selectedTool.name]} alt="" /> : <Icon name={selectedTool.fallbackIcon} size={27} />}</span>
+                <div><span className="skills-mini-label">{selectedTool.category}</span><h3 id="skills-dialog-title">{selectedTool.name}</h3></div>
               </div>
-
-                <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">{selectedTool.description}</p>
-
-                <div className="space-y-3 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-5">
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--accent)]">
-                  <Icon name="target" size={16} />
-                  <span>Real-world scenarios & how I use it</span>
-                </div>
-                <ul className="space-y-2 text-sm text-[var(--color-text-muted)]">
-                  {selectedTool.scenarios.map((sc, i) => (
-                    <li key={i} className="flex items-start gap-2.5">
-                      <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[var(--accent)] flex-shrink-0" />
-                      <span>{sc}</span>
-                    </li>
-                  ))}
-                </ul>
-                </div>
-
-                {selectedTool.associatedProjects.length > 0 && (
-                  <div className="flex items-center gap-3 text-xs text-[var(--color-text-muted)]">
-                  <span className="font-semibold text-white">Associated Projects & Audits:</span>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedTool.associatedProjects.map(proj => (
-                      <span key={proj} className="rounded-md bg-[var(--surface-soft)] border border-[var(--border)] px-2.5 py-1 font-mono text-[11px]">
-                        {proj}
-                      </span>
-                    ))}
-                  </div>
-                  </div>
-                )}
-              </div>
+              <p className="skills-dialog-description">{selectedTool.description}</p>
+              <div className="skills-dialog-section"><span className="skills-mini-label">How it shows up in my work</span><ul>{selectedTool.scenarios.map((scenario) => <li key={scenario}>{scenario}</li>)}</ul></div>
+              <div className="skills-dialog-projects"><span className="skills-mini-label">Related work</span><div>{selectedTool.associatedProjects.map((project) => <a href={project.href} key={project.name}>{project.name}<Icon name="arrow-up-right" size={14} /></a>)}</div></div>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </section>
-
-      {/* 3. ACADEMIC COURSEWORK & BACKGROUND (EXPANDABLE) */}
-      <section className="surface-card p-8 space-y-6">
-        <div className="space-y-2">
-          <span className="text-[10px] uppercase tracking-[0.35em] text-[var(--accent)] font-semibold">Academic Foundation</span>
-          <h2 className="text-2xl font-bold">Core Coursework & Specialized Training</h2>
-          <p className="text-sm text-[var(--color-text-muted)] max-w-3xl">
-            Key university courses that established my foundations in systems architecture, low-level memory, math, and software engineering.
-          </p>
-        </div>
-
-        <div ref={courseListRef} className="grid gap-4 md:grid-cols-2">
-          {COURSES.map((course) => {
-            const expanded = activeCourseId === course.id;
-            return (
-              <motion.button
-                key={course.id}
-                type="button"
-                layout
-                onClick={() => setActiveCourseId(expanded ? null : course.id)}
-                className={`w-full rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-5 text-left transition-colors duration-300 ${
-                  expanded ? 'border-[var(--accent)]' : 'hover:border-[var(--accent)]/50'
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)]">
-                    <Icon name={course.icon} size={20} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between gap-2">
-                      <h3 className="text-base font-semibold">{course.title}</h3>
-                      <span className={`text-[10px] uppercase tracking-wider font-semibold ${expanded ? 'text-[var(--accent)]' : 'text-[var(--color-text-muted)]'}`}>
-                        {expanded ? 'Close' : 'Details'}
-                      </span>
-                    </div>
-                    <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-muted)]">{course.description}</p>
-                  </div>
-                </div>
-
-                {expanded && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="mt-5 space-y-3 border-t border-[var(--border)] pt-4 text-xs"
-                  >
-                    <div className="rounded-xl bg-[var(--surface)] p-3 border border-[var(--border)]">
-                      <p className="font-semibold text-[var(--accent)] mb-1">Key Challenge</p>
-                      <p className="text-[var(--color-text-muted)]">{course.challenge}</p>
-                    </div>
-                    <div className="rounded-xl bg-[var(--surface)] p-3 border border-[var(--border)]">
-                      <p className="font-semibold text-[var(--accent)] mb-1">Key Takeaways</p>
-                      <ul className="list-disc list-inside space-y-1 text-[var(--color-text-muted)]">
-                        {course.outcomes.map((outcome) => (
-                          <li key={outcome}>{outcome}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
-                )}
-              </motion.button>
-            );
-          })}
-        </div>
-      </section>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -293,7 +293,7 @@ export default function BookCallPage() {
   };
 
   return (
-    <div className="booking-shell space-y-5">
+    <div className="editorial-page booking-shell">
       <section className="booking-hero surface-card relative overflow-hidden p-6 md:p-8 lg:p-10">
         <div className="absolute right-0 top-0 h-32 w-32 border-b border-l border-dashed border-[var(--border)]" aria-hidden />
         <div className="booking-hero-index absolute right-7 top-6 font-mono text-5xl font-bold leading-none text-[var(--border)]" aria-hidden>03</div>
