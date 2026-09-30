@@ -13,7 +13,7 @@ const MetaPill: React.FC<{ children: React.ReactNode; accent?: boolean }> = ({ c
 );
 
 const SectionHeading: React.FC<{ eyebrow: string; title: string; children?: React.ReactNode }> = ({ eyebrow, title, children }) => (
-  <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+  <div className="case-study-section-heading mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
     <div>
       <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--accent)]">{eyebrow}</p>
       <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h2>
@@ -112,7 +112,7 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="w-full space-y-10 lg:space-y-14">
+    <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="editorial-page project-detail-page w-full space-y-10 lg:space-y-14">
       <a href="/portfolio" className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] text-[var(--accent)] transition hover:gap-3">
         <Icon name="arrow-left" size={14} /> Back to all case studies
       </a>
