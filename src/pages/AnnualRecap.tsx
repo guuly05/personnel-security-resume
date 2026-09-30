@@ -1,18 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  getRecapConfigForYear,
-  BIRTH_YEAR,
-  VideoClip,
-} from '../config/annualRecapData.ts';
+import { getRecapConfigForYear, type VideoClip } from '../config/annualRecapData.ts';
 import { Icon } from '../components/Icon.tsx';
 
 export const AnnualRecapPage: React.FC = () => {
-  const currentYear = new Date().getFullYear();
-  const [selectedYear, setSelectedYear] = useState<number>(2026);
+  const selectedYear = 2026;
   const [currentVideoIndex, setCurrentVideoIndex] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [videoError, setVideoError] = useState<boolean>(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -20,17 +16,18 @@ export const AnnualRecapPage: React.FC = () => {
   const videoList = yearConfig.videos;
   const currentVideo: VideoClip | undefined = videoList[currentVideoIndex];
 
-  // Auto-play and handle video changes
+  // Start playback only after the visitor chooses to play the reel.
   useEffect(() => {
     setVideoError(false);
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
-      videoRef.current
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch(() => setIsPlaying(false));
+      if (hasStarted) {
+        videoRef.current.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+      } else {
+        setIsPlaying(false);
+      }
     }
-  }, [selectedYear, currentVideoIndex]);
+  }, [selectedYear, currentVideoIndex, hasStarted]);
 
   // Non-stop continuous playback handler
   const handleVideoEnded = () => {
@@ -45,6 +42,7 @@ export const AnnualRecapPage: React.FC = () => {
       videoRef.current.pause();
       setIsPlaying(false);
     } else {
+      setHasStarted(true);
       videoRef.current
         .play()
         .then(() => setIsPlaying(true))
@@ -52,93 +50,42 @@ export const AnnualRecapPage: React.FC = () => {
     }
   };
 
-  const availableYears = [2026, 2027];
-
   return (
-    <div className="space-y-8 pb-12">
+    <div className="editorial-page recap-page">
       {/* Top Header Card */}
-      <section className="relative overflow-hidden surface-card p-6 md:p-10 lg:p-12">
+      <section className="recap-hero">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 rounded-md border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-3.5 py-1 text-xs font-mono font-bold uppercase tracking-widest accent-text">
-              <Icon name="sparkles" size={14} /> Annual Reflection & Video Vault
-            </div>
-            <h1 className="mt-4 font-display text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-[var(--color-text)]">
+            <span className="landing-section-index">/ annual reflection · {yearConfig.year}</span>
+            <h1 className="editorial-hero-title">
               {yearConfig.title}
             </h1>
-            <p className="mt-3 text-sm sm:text-base text-[var(--color-text-muted)] leading-relaxed">
+            <p className="editorial-hero-copy">
               {yearConfig.summary}
             </p>
           </div>
 
           {/* Age Level & Stats Card */}
           <div className="w-full md:w-auto shrink-0">
-            <div className="rpg-card p-6 text-center min-w-[200px]">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
-                Completed Milestone
-              </span>
-              <div className="mt-1 font-display text-4xl sm:text-5xl font-extrabold text-[var(--accent)] age-counter">
-                {yearConfig.age} YEARS
-              </div>
-              <div className="mt-2 text-xs font-semibold text-[var(--color-text-muted)]">
-                Birth Date: July 27, {BIRTH_YEAR}
-              </div>
-              <div className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-[var(--surface-soft)] px-3 py-1 text-xs font-mono text-[var(--color-text)] border border-[var(--border)]">
-                <Icon name="shield-check" size={14} /> July 27 Edition
-              </div>
+            <div className="recap-year-note">
+              <span className="editorial-overline">A year in review</span>
+              <div className="recap-age">{yearConfig.age}<small> years</small></div>
+              <div className="recap-birthday">{yearConfig.subtitle}</div>
             </div>
           </div>
         </div>
 
-        {/* Year Selector */}
-        <div className="mt-8 flex flex-wrap items-center gap-3 pt-6 border-t border-[var(--border)]">
-          <span className="text-xs font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)] flex items-center gap-2">
-            <Icon name="calendar" size={14} /> Select Year:
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {availableYears.map((yr) => {
-              const isSelected = selectedYear === yr;
-              const ageForYr = yr - BIRTH_YEAR;
-              return (
-                <button
-                  type="button"
-                  key={yr}
-                  onClick={() => {
-                    setSelectedYear(yr);
-                    setCurrentVideoIndex(0);
-                  }}
-                  className={`
-                    px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2
-                    ${
-                      isSelected
-                        ? 'bg-[var(--accent)] text-[var(--color-bg)]'
-                        : 'border border-[var(--border)] bg-[var(--surface-soft)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:border-[var(--accent)]'
-                    }
-                  `}
-                >
-                  <span>July 27, {yr}</span>
-                  <span className="opacity-75 font-mono">({ageForYr} yo)</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
       </section>
 
       {/* Non-Stop Video Player & Playlist Grid */}
       <section className="surface-card p-6 md:p-10 lg:p-12">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[var(--border)]">
           <div>
-            <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-brand-cyan">
-              <Icon name="film" size={14} /> Non-Stop Video Reel
-            </div>
-            <h2 className="mt-1 text-2xl font-bold text-[var(--color-text)]">
-              Continuous Video Showcase
-            </h2>
+            <p className="landing-section-index">02 / personal archive</p>
+            <h2 className="editorial-section-title">A few moments on film.</h2>
           </div>
-          <div className="flex items-center gap-2 text-xs font-mono text-[var(--color-text-muted)]">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Non-stop looping playlist ({currentVideoIndex + 1}/{videoList.length})</span>
+          <div className="text-xs font-mono text-[var(--color-text-muted)]">
+            <span>{currentVideoIndex + 1} / {videoList.length} · Select play to start</span>
           </div>
         </div>
 
@@ -154,7 +101,6 @@ export const AnnualRecapPage: React.FC = () => {
                     src={currentVideo.videoUrl}
                     muted={isMuted}
                     playsInline
-                    autoPlay
                     onEnded={handleVideoEnded}
                     onError={() => setVideoError(true)}
                     onPlay={() => setIsPlaying(true)}
@@ -163,10 +109,10 @@ export const AnnualRecapPage: React.FC = () => {
                   />
 
                   {/* Non-Stop Player Controls Overlay */}
-                  <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4 pointer-events-none">
+                  <div className="recap-player-controls absolute inset-0 flex flex-col justify-between p-4">
                     <div className="flex justify-between items-start pointer-events-auto">
-                      <span className="rounded-md bg-black/90 px-3 py-1 text-xs font-mono font-bold text-emerald-400 border border-emerald-500/30">
-                        ▶ Playing: {currentVideo.title}
+                      <span className="recap-play-state">
+                        {isPlaying ? 'Playing' : 'Paused'} · {currentVideo.title}
                       </span>
                     </div>
 
@@ -174,41 +120,42 @@ export const AnnualRecapPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={handlePlayToggle}
+                        aria-label={isPlaying ? 'Pause video' : 'Play video'}
                         className="flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--accent)] text-[var(--color-bg)] font-bold transition-colors hover:bg-[var(--color-text)] active:translate-y-px"
                       >
-                        <Icon name={isPlaying ? 'pause' : 'play'} size={24} />
+                        <span aria-hidden="true">{isPlaying ? 'Ⅱ' : '▶'}</span>
                       </button>
 
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
                           onClick={() => setIsMuted(!isMuted)}
+                          aria-label={isMuted ? 'Unmute video' : 'Mute video'}
                           className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-black/80 text-white transition-colors hover:bg-black"
-                          title={isMuted ? 'Unmute' : 'Mute'}
                         >
-                          <Icon name={isMuted ? 'volume-x' : 'volume-2'} size={18} />
+                          <span aria-hidden="true">{isMuted ? '×' : '♪'}</span>
                         </button>
 
                         <button
-                          type="button"
-                          onClick={() =>
-                            setCurrentVideoIndex(
-                              (prev) => (prev - 1 + videoList.length) % videoList.length
-                            )
-                          }
+                           type="button"
+                           onClick={() =>
+                             setCurrentVideoIndex(
+                               (prev) => (prev - 1 + videoList.length) % videoList.length
+                             )
+                           }
+                           aria-label="Previous video"
                            className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-black/80 text-white transition-colors hover:bg-black"
-                          title="Previous Video"
                         >
-                          <Icon name="chevron-left" size={18} />
+                          <Icon name="arrow-left" size={18} />
                         </button>
 
                         <button
                           type="button"
                           onClick={handleVideoEnded}
+                          aria-label="Next video"
                            className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-black/80 text-white transition-colors hover:bg-black"
-                          title="Next Video"
                         >
-                          <Icon name="chevron-right" size={18} />
+                          <Icon name="arrow-right" size={18} />
                         </button>
                       </div>
                     </div>
@@ -217,10 +164,10 @@ export const AnnualRecapPage: React.FC = () => {
               ) : (
                 /* Fallback if video file cannot be decoded */
                 <div className="h-full w-full bg-slate-900 p-8 flex flex-col items-center justify-center text-center">
-                  <Icon name="film" size={48} className="text-[var(--accent)] opacity-60 mb-3" />
-                  <h3 className="text-lg font-bold text-white">Video Footage Loaded</h3>
+                  <span className="mb-3 font-mono text-3xl text-[var(--accent)]">/ /</span>
+                  <h3 className="text-lg font-bold text-white">This clip could not be played.</h3>
                   <p className="mt-1 text-xs text-slate-400 max-w-sm">
-                    Playing files from <code className="text-emerald-400">dist/images/videos/</code>
+                    Try another item in the playlist.
                   </p>
                 </div>
               )}
@@ -229,22 +176,11 @@ export const AnnualRecapPage: React.FC = () => {
             {/* Video Title Details */}
             {currentVideo && (
               <div className="mt-4 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-4 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-soft)] accent-text">
-                    <Icon name="play" size={18} />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold text-[var(--color-text)]">
-                      {currentVideo.title}
-                    </h3>
-                    <p className="text-xs text-[var(--color-text-muted)] font-mono">
-                      Location: {currentVideo.videoUrl}
-                    </p>
-                  </div>
-                </div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] font-bold">
-                  Non-Stop Reel
-                </span>
+                    <div>
+                      <h3 className="text-sm font-bold text-[var(--color-text)]">{currentVideo.title}</h3>
+                      <p className="text-xs text-[var(--color-text-muted)]">{currentVideo.source}</p>
+                    </div>
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[var(--accent)] font-bold">Birthday reel</span>
               </div>
             )}
           </div>
@@ -273,9 +209,7 @@ export const AnnualRecapPage: React.FC = () => {
                     `}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--surface)] font-bold text-xs accent-text border border-[var(--border)]">
-                        {index + 1}
-                      </div>
+                      <span className="editorial-index">{String(index + 1).padStart(2, '0')}</span>
                       <div>
                         <div className="text-sm font-bold text-[var(--color-text)]">
                           {vid.title}
@@ -290,11 +224,7 @@ export const AnnualRecapPage: React.FC = () => {
                       {isActive && (
                         <span className="flex h-2 w-2 rounded-full bg-[var(--accent)] animate-ping" />
                       )}
-                      <Icon
-                        name={isActive ? 'play' : 'chevron-right'}
-                        size={16}
-                        className={isActive ? 'accent-text' : 'text-[var(--color-text-muted)]'}
-                      />
+                      <span aria-hidden="true" className={isActive ? 'text-[var(--accent)]' : 'text-[var(--color-text-muted)]'}>{isActive ? '●' : '↗'}</span>
                     </div>
                   </button>
                 );
@@ -305,32 +235,28 @@ export const AnnualRecapPage: React.FC = () => {
       </section>
 
       {/* Surrounding Yearly Achievements & What Was Gained */}
-      <section className="surface-card p-6 md:p-10 lg:p-12">
+      <section className="recap-milestones">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[var(--border)]">
           <div>
-            <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-[var(--accent)]">
-              <Icon name="shield-check" size={14} /> Yearly Achievements
-            </div>
-            <h2 className="mt-1 text-2xl font-bold text-[var(--color-text)]">
-              What Was Gained for Age {yearConfig.age}
-            </h2>
+            <p className="landing-section-index">01 / milestones</p>
+            <h2 className="editorial-section-title">What shaped this year.</h2>
           </div>
           <div className="text-xs font-mono text-[var(--color-text-muted)]">
             July 27, {selectedYear} Milestones
           </div>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <div className="recap-milestone-list">
           {yearConfig.gains.map((gain, i) => (
             <div
               key={i}
-              className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-5 transition-colors hover:border-[var(--accent)]"
+              className="recap-milestone-row"
             >
               <div className="flex items-center justify-between gap-3">
-                <span className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--accent)]">
+                <span className="editorial-overline">
                   {gain.category}
                 </span>
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--accent-soft)] accent-text">
+                <div className="recap-milestone-icon">
                   <Icon name={gain.icon} size={18} />
                 </div>
               </div>
