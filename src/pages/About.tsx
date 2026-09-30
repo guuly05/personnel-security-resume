@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { ABOUT_LETTER, PERSONAL_INFO, SOFT_SKILLS } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
@@ -27,10 +27,6 @@ type ProjectMilestone = {
   href?: string;
   icon: string;
 };
-
-const birthDate = new Date('2005-07-27T00:00:00');
-const graduationStart = new Date('2023-08-01T00:00:00');
-const graduationDate = new Date('2027-08-01T00:00:00');
 
 const projectTimeline: ProjectMilestone[] = [
   {
@@ -258,68 +254,14 @@ const hobbyCards: HobbyCard[] = [
   },
 ];
 
-const getAge = (now: Date) => {
-  const millisecondsPerYear = 1000 * 60 * 60 * 24 * 365.2425;
-  const preciseYears = (now.getTime() - birthDate.getTime()) / millisecondsPerYear;
-  const years = Math.floor(preciseYears);
-
-  const birthdayThisYear = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate());
-  const baseDate =
-    now >= birthdayThisYear
-      ? birthdayThisYear
-      : new Date(now.getFullYear() - 1, birthDate.getMonth(), birthDate.getDate());
-  const nextDate = new Date(baseDate.getFullYear() + 1, birthDate.getMonth(), birthDate.getDate());
-  const progressInYear = (now.getTime() - baseDate.getTime()) / (nextDate.getTime() - baseDate.getTime());
-  const months = Math.floor(progressInYear * 12);
-
-  return {
-    preciseYears,
-    years,
-    months,
-  };
-};
-
-const getGraduationStats = (now: Date) => {
-  const totalDuration = graduationDate.getTime() - graduationStart.getTime();
-  const elapsed = Math.min(Math.max(now.getTime() - graduationStart.getTime(), 0), totalDuration);
-  const remaining = Math.max(graduationDate.getTime() - now.getTime(), 0);
-
-  const progressPercent = totalDuration === 0 ? 100 : (elapsed / totalDuration) * 100;
-  const hpPercent = Math.max(0, 100 - progressPercent);
-
-  const remainingMonths = Math.max(0, Math.ceil(remaining / (1000 * 60 * 60 * 24 * 30.4375)));
-  const yearsLeft = Math.floor(remainingMonths / 12);
-  const monthsLeft = remainingMonths % 12;
-
-  return {
-    hpPercent,
-    yearsLeft,
-    monthsLeft,
-  };
-};
-
 const AboutPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<HobbyCard['id'] | null>(null);
-  const [now, setNow] = useState(() => new Date());
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [isModalCvOpen, setIsModalCvOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const cvModalRef = useRef<HTMLDivElement | null>(null);
   const closeCvModal = useCallback(() => setIsModalCvOpen(false), []);
   useFocusTrap(isModalCvOpen, cvModalRef, closeCvModal);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setNow(new Date());
-    }, 1000);
-
-    return () => {
-      window.clearInterval(timer);
-    };
-  }, []);
-
-  const age = useMemo(() => getAge(now), [now]);
-  const graduation = useMemo(() => getGraduationStats(now), [now]);
 
   const pdfUrl = "/assets/Guuleed-Maxamuud-Awabdi-CV.pdf";
   const cvOptions = [
@@ -329,22 +271,22 @@ const AboutPage: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-5">
+    <div className="editorial-page about-page">
       <motion.section
-        className="surface-card p-6 md:p-10 lg:p-12"
+        className="about-hero"
         initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: shouldReduceMotion ? 0.01 : 0.5, ease: 'easeOut' }}
       >
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
-            <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">About Me</p>
-            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-[var(--color-text)] md:text-5xl">
-              Product-minded builder, systems thinker, and lifelong learner.
+            <p className="landing-section-index">/ about</p>
+            <h1 className="about-title">
+              Product-minded builder, <span>systems thinker, and lifelong learner.</span>
             </h1>
             <div className="mt-5 space-y-4">
               {ABOUT_LETTER.map((paragraph) => (
-                <p key={paragraph} className="text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
+                <p key={paragraph}>
                   {paragraph}
                 </p>
               ))}
@@ -356,7 +298,7 @@ const AboutPage: React.FC = () => {
                 onClick={() => setIsCvOpen(!isCvOpen)}
                 aria-expanded={isCvOpen}
                 aria-controls="cv-preview"
-                className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-[var(--color-bg)] transition hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] active:translate-y-px"
+                className="landing-button landing-button-primary"
               >
                 <Icon name={isCvOpen ? "x" : "eye"} size={16} />
                 <span>{isCvOpen ? "Hide CV Preview" : "See My CV"}</span>
@@ -365,22 +307,22 @@ const AboutPage: React.FC = () => {
               <a
                 href={pdfUrl}
                 download="Guuleed-Maxamuud-Awabdi-CV.pdf"
-                className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-transparent px-5 py-3 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)] active:translate-y-px"
+                className="landing-button landing-button-secondary"
               >
                 <Icon name="download" size={16} />
                 <span>Download CV</span>
               </a>
             </div>
 
-            <div className="mt-5 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-4">
-              <p className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Choose a CV version</p>
-              <div className="mt-3 flex flex-wrap gap-2">
+            <div className="about-cv-options">
+              <p className="editorial-overline">Other CV versions</p>
+              <div>
                 {cvOptions.map((option) => (
                   <a
                     key={option.file}
                     href={`/assets/${option.file}`}
                     download={option.file}
-                    className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                    className="landing-text-link"
                   >
                     <Icon name="download" size={13} />
                     {option.label}
@@ -390,46 +332,13 @@ const AboutPage: React.FC = () => {
             </div>
           </div>
 
-          <aside className="rpg-card p-6 md:p-8">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)]">Character Card</p>
-                <h2 className="mt-2 text-2xl font-bold text-[var(--color-text)]">Profile Stats</h2>
-              </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--accent-soft)] accent-text">
-                <Icon name="layers" size={22} />
-              </div>
-            </div>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <div className="stat-badge items-start">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">Name</p>
-                <p className="mt-1 text-sm font-semibold text-[var(--color-text)]">{PERSONAL_INFO.name}</p>
-              </div>
-              <div className="stat-badge items-start">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">Occupation</p>
-                <p className="mt-1 text-sm font-semibold text-[var(--color-text)]">{PERSONAL_INFO.title}</p>
-              </div>
-              <div className="stat-badge items-start sm:col-span-2">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">Age</p>
-                <p className="mt-1 text-xl font-bold text-[var(--accent)] age-counter">{age.preciseYears.toFixed(8)} years</p>
-                <p className="mt-1 text-xs text-[var(--color-text-muted)]">
-                  {age.years} years and {age.months} months
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-6 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-4">
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--accent)]">Graduation progress</p>
-                <span className="text-xs font-bold text-[var(--accent)]">{graduation.hpPercent.toFixed(1)}% remaining</span>
-              </div>
-              <div className="mt-3 hp-bar-track">
-                <div className="hp-bar-fill" style={{ width: `${graduation.hpPercent}%` }} />
-              </div>
-              <p className="mt-3 text-xs text-[var(--color-text-muted)]">
-                Time left until August 2027: {graduation.yearsLeft} year(s), {graduation.monthsLeft} month(s)
-              </p>
+          <aside className="about-profile">
+            <span className="editorial-overline">A little context</span>
+            <h2>{PERSONAL_INFO.name}</h2>
+            <div className="about-profile-facts">
+              <div><span>Focus</span><strong>{PERSONAL_INFO.title}</strong></div>
+              <div><span>Based in</span><strong>{PERSONAL_INFO.location}</strong></div>
+              <div><span>Education</span><strong>B.Sc. Computer Science · 2023–2027</strong></div>
             </div>
           </aside>
         </div>
@@ -534,7 +443,7 @@ const AboutPage: React.FC = () => {
       )}
 
       <motion.section
-        className="surface-card p-6 md:p-8"
+        className="editorial-section about-journey"
         initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 18 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.15 }}
@@ -542,8 +451,8 @@ const AboutPage: React.FC = () => {
       >
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-brand-cyan">Build journey</p>
-            <h2 className="mt-3 text-3xl font-bold text-[var(--color-text)] md:text-4xl">Learning by building.</h2>
+          <p className="landing-section-index">01 / build journey</p>
+          <h2 className="editorial-section-title">Learning by building.</h2>
           </div>
           <p className="max-w-xl text-sm leading-relaxed text-[var(--color-text-muted)]">
             A timeline of the ideas, projects, and technical foundations that have shaped the way I work.
@@ -555,9 +464,9 @@ const AboutPage: React.FC = () => {
             <p className="text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
               I am currently focused on building stronger products, deeper technical fundamentals, and consistent execution. My goal is to keep improving the quality of the code, systems, documentation, and collaboration behind every project.
             </p>
-            <div className="mt-5 flex flex-wrap gap-2">
+            <div className="about-principle-list">
               {SOFT_SKILLS.map((skill) => (
-                <span key={skill} className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
+                <span key={skill}>
                   {skill}
                 </span>
               ))}
@@ -597,15 +506,15 @@ const AboutPage: React.FC = () => {
       </motion.section>
 
       <motion.section
-        className="surface-card p-6 md:p-8"
+        className="editorial-section about-interests"
         initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 18 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.12 }}
         transition={{ duration: shouldReduceMotion ? 0.01 : 0.5, ease: 'easeOut' }}
       >
-        <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)]">Outside the build</p>
+        <p className="landing-section-index">02 / outside the build</p>
         <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <h2 className="text-3xl font-bold text-[var(--color-text)] md:text-4xl">Stories, worlds, and ideas.</h2>
+          <h2 className="editorial-section-title">Stories, worlds, and ideas.</h2>
           <p className="max-w-2xl text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
             My favourite media is a small window into how I think, what inspires me, and what I enjoy when I am away from the keyboard.
           </p>
@@ -621,6 +530,7 @@ const AboutPage: React.FC = () => {
                 key={category.id}
                 className={`hobby-card ${isOpen ? 'border-accent' : ''}`}
                 onClick={() => setActiveCategory(isOpen ? null : category.id)}
+                aria-pressed={isOpen}
                 whileHover={shouldReduceMotion ? undefined : { y: -4 }}
                 whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
                 transition={{ duration: 0.2 }}
@@ -647,7 +557,7 @@ const AboutPage: React.FC = () => {
           {activeCategory && (
             <motion.div
               key={activeCategory}
-              className="mt-6 rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 md:p-5"
+              className="about-interest-detail"
               initial={{ opacity: 0, height: 0, y: -8 }}
               animate={{ opacity: 1, height: 'auto', y: 0 }}
               exit={{ opacity: 0, height: 0, y: -8 }}
@@ -659,13 +569,13 @@ const AboutPage: React.FC = () => {
                   <p className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-[var(--accent)]">Favourite media</p>
                   <p className="mt-1 text-sm text-[var(--color-text-muted)]">Five picks from my {activeCategory} list.</p>
                 </div>
-                <span className="rounded-full border border-[var(--border)] px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--color-text-muted)]">5 favourites</span>
+                <span className="editorial-overline">5 favourites</span>
               </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {hobbyCards.find((category) => category.id === activeCategory)?.items.map((item, index) => (
                   <motion.article
                     key={item.title}
-                    className={`rounded-lg border border-[var(--border)] bg-[var(--surface)] p-3 ${index === 0 ? 'xl:col-span-2' : ''}`}
+                    className={`about-media-item ${index === 0 ? 'is-featured' : ''}`}
                     initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: shouldReduceMotion ? 0.01 : 0.3, delay: shouldReduceMotion ? 0 : index * 0.05 }}
