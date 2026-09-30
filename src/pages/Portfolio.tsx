@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Github } from 'lucide-react';
 import { Icon } from '../components/Icon.tsx';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -400,7 +401,7 @@ const FeaturedCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-bg)] transition-colors hover:opacity-90 active:translate-y-px"
           >
-            <Icon name="github" size={15} />
+            <Github size={15} aria-hidden="true" className="shrink-0" />
             View Source
           </a>}
           {study.liveUrl && (
@@ -559,7 +560,7 @@ const ProjectCard: React.FC<{ study: CaseStudy; index: number }> = ({ study, ind
               rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-bg)] transition-colors hover:opacity-90 active:translate-y-px"
             >
-              <Icon name="github" size={15} />
+              <Github size={15} aria-hidden="true" className="shrink-0" />
               View Source
             </a>
             {study.liveUrl && (
@@ -588,7 +589,7 @@ const PortfolioPage: React.FC = () => {
   const [featured, ...rest] = CASE_STUDIES;
 
   return (
-    <div className="w-full space-y-10 lg:space-y-14">
+    <div className="editorial-page portfolio-page w-full space-y-10 lg:space-y-14">
       {/* ── Intro section ─────────────────────── */}
       <section className="surface-card p-6 sm:p-8 lg:p-10 relative overflow-hidden">
         {/* Decorative glow */}
