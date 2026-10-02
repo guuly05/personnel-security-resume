@@ -72,6 +72,17 @@ export default function App() {
   }, [terminal]);
 
   useEffect(() => {
+    // Let the app own scroll restoration so client-side route changes behave
+    // like document navigations while browser back/forward restores prior pages.
+    window.history.scrollRestoration = 'manual';
+
+    const saveScrollPosition = () => {
+      const state = window.history.state && typeof window.history.state === 'object'
+        ? window.history.state
+        : {};
+      window.history.replaceState({ ...state, scrollY: window.scrollY }, '', window.location.href);
+    };
+
     const applyCurrentRoute = () => {
       const legacyHashSection = hashToSection(window.location.hash);
       if (legacyHashSection) {
@@ -103,19 +114,43 @@ export default function App() {
       if (!isKnownRoute) return;
 
       event.preventDefault();
-      window.history.pushState(null, '', url.pathname);
+      saveScrollPosition();
+      window.history.pushState({ scrollY: 0 }, '', url.pathname);
       window.dispatchEvent(new PopStateEvent('popstate'));
+      window.scrollTo(0, 0);
       const segments = url.pathname.replace(/^\/+/, '').split('/');
       setActiveProjectSlug(segments[0] === 'portfolio' && segments[1] ? segments[1] : null);
       setIsMenuOpen(false);
     };
 
     window.addEventListener('popstate', applyCurrentRoute);
+    let pendingScrollSave: number | null = null;
+    const handleScroll = () => {
+      if (pendingScrollSave !== null) return;
+      pendingScrollSave = window.requestAnimationFrame(() => {
+        pendingScrollSave = null;
+        saveScrollPosition();
+      });
+    };
+    const handlePopScroll = (event: PopStateEvent) => {
+      if (pendingScrollSave !== null) {
+        window.cancelAnimationFrame(pendingScrollSave);
+        pendingScrollSave = null;
+      }
+      const scrollY = typeof event.state?.scrollY === 'number' ? event.state.scrollY : 0;
+      window.requestAnimationFrame(() => window.scrollTo(0, scrollY));
+    };
+    window.addEventListener('popstate', handlePopScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    saveScrollPosition();
     document.addEventListener('click', handleDocumentClick);
     applyCurrentRoute();
 
     return () => {
       window.removeEventListener('popstate', applyCurrentRoute);
+      window.removeEventListener('popstate', handlePopScroll);
+      window.removeEventListener('scroll', handleScroll);
+      if (pendingScrollSave !== null) window.cancelAnimationFrame(pendingScrollSave);
       document.removeEventListener('click', handleDocumentClick);
     };
   }, []);
@@ -399,11 +434,15 @@ export default function App() {
         terminal={terminal}
         onNavigate={(destination) => {
           const path = destination.startsWith('/') ? destination : sectionToPath(destination as Section);
-          window.history.pushState(null, '', path);
+          const state = window.history.state && typeof window.history.state === 'object' ? window.history.state : {};
+          window.history.replaceState({ ...state, scrollY: window.scrollY }, '', window.location.href);
+          window.history.pushState({ scrollY: 0 }, '', path);
           window.dispatchEvent(new PopStateEvent('popstate'));
+          window.scrollTo(0, 0);
         }}
         onTheme={(t) => setTheme(t)}
       />
     </div>
   );
 }
+
