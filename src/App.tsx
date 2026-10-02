@@ -124,11 +124,24 @@ export default function App() {
     };
 
     window.addEventListener('popstate', applyCurrentRoute);
+    let pendingScrollSave: number | null = null;
+    const handleScroll = () => {
+      if (pendingScrollSave !== null) return;
+      pendingScrollSave = window.requestAnimationFrame(() => {
+        pendingScrollSave = null;
+        saveScrollPosition();
+      });
+    };
     const handlePopScroll = (event: PopStateEvent) => {
+      if (pendingScrollSave !== null) {
+        window.cancelAnimationFrame(pendingScrollSave);
+        pendingScrollSave = null;
+      }
       const scrollY = typeof event.state?.scrollY === 'number' ? event.state.scrollY : 0;
       window.requestAnimationFrame(() => window.scrollTo(0, scrollY));
     };
     window.addEventListener('popstate', handlePopScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     saveScrollPosition();
     document.addEventListener('click', handleDocumentClick);
     applyCurrentRoute();
@@ -136,6 +149,8 @@ export default function App() {
     return () => {
       window.removeEventListener('popstate', applyCurrentRoute);
       window.removeEventListener('popstate', handlePopScroll);
+      window.removeEventListener('scroll', handleScroll);
+      if (pendingScrollSave !== null) window.cancelAnimationFrame(pendingScrollSave);
       document.removeEventListener('click', handleDocumentClick);
     };
   }, []);
