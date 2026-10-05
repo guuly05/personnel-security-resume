@@ -1,0 +1,41 @@
+name: Bug report
+description: Report a reproducible problem with the site or repository.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: "Please do not include passwords, API keys, private booking links, or other personal information. For security vulnerabilities, follow SECURITY.md instead."
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the problem and what you expected to happen.
+      placeholder: A clear summary of the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the steps needed to see the issue.
+      placeholder: |
+        1. Open ...
+        2. Select ...
+        3. See ...
+    validations:
+      required: true
+  - type: input
+    id: route
+    attributes:
+      label: Page or route
+      placeholder: "/contact"
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and device
+      description: Include versions if known.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant error or screenshot
+      description: Remove secrets and personal information before sharing.

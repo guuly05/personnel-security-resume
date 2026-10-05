@@ -42,6 +42,7 @@ The site represents Guuleed Maxmuud Aw Abdi, a full-stack developer and DevOps-m
 - [How to update the site](#how-to-update-the-site)
 - [Known implementation notes](#known-implementation-notes)
 - [Roadmap](#roadmap)
+- [Community and project policies](#community-and-project-policies)
 - [License](#license)
 - [Contact](#contact)
 
@@ -905,9 +906,18 @@ Potential future work, subject to product priorities:
 - Add a dedicated integration test harness for local Vercel-style API execution.
 - Add privacy-focused analytics only if it can be introduced without undermining the site's privacy posture.
 
+## Community and project policies
+
+- [Code of conduct](CODE_OF_CONDUCT.md)
+- [Contributing guide](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+- [Accessibility statement](ACCESSIBILITY.md)
+- [Issue templates](.github/ISSUE_TEMPLATE/)
+- [Pull request template](.github/PULL_REQUEST_TEMPLATE.md)
+
 ## License
 
-This is a personal portfolio codebase. It is available for viewing and reference. Reuse, redistribution, branding, personal information, certificates, media, and portfolio content are not automatically granted by viewing the repository; ask the author before treating it as a reusable template or publishing a derivative portfolio.
+This is a personal portfolio codebase provided for viewing and reference only. Reuse, redistribution, branding, personal information, certificates, media, and portfolio content are not granted by viewing the repository. See [LICENSE](LICENSE) and contact the author to request permission.
 
 ## Contact
 
