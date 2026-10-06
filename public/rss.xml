@@ -5,8 +5,38 @@
     <link>https://www.guuleedmaxamuud.dev/blog</link>
     <description>Security research, vulnerability analysis, and technical writing by Guuleed Maxmuud Aw Abdi.</description>
     <language>en-us</language>
-    <lastBuildDate>2026-09-23T12:00:00.000Z</lastBuildDate>
+    <lastBuildDate>2026-10-06T12:00:00.000Z</lastBuildDate>
     <atom:link href="https://www.guuleedmaxamuud.dev/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The AI-Era Developer: Faster Code, Stronger Fundamentals</title>
+      <link>https://www.guuleedmaxamuud.dev/blog/ai-era-developer-fundamentals</link>
+      <guid isPermaLink="true">https://www.guuleedmaxamuud.dev/blog/ai-era-developer-fundamentals</guid>
+      <pubDate>2026-10-06T12:00:00.000Z</pubDate>
+      <description><![CDATA[AI has lowered the barrier to producing software. The developers who thrive will pair that speed with the fundamentals to understand, verify, and improve what they build.
+
+Tags: Software development · Artificial intelligence · Careers · Learning
+Last updated: October 6, 2026]]></description>
+      <category>Software development</category>
+      <category>Artificial intelligence</category>
+      <category>Careers</category>
+      <category>Learning</category>
+    </item>
+    <item>
+      <title>OpenAI DevDay 2026: Every Major Announcement, Explained</title>
+      <link>https://www.guuleedmaxamuud.dev/blog/openai-devday-2026-everything-announced-gpt-6-1</link>
+      <guid isPermaLink="true">https://www.guuleedmaxamuud.dev/blog/openai-devday-2026-everything-announced-gpt-6-1</guid>
+      <pubDate>2026-09-30T12:00:00.000Z</pubDate>
+      <description><![CDATA[Dots, GPT-6.1 Sol, Codex, ChatGPT Space, new APIs, plugins, and a Pro tier: a practical breakdown of OpenAI’s biggest developer event—and why GPT-6.1 followed GPT-6 so quickly.
+
+Tags: OpenAI · DevDay 2026 · GPT-6.1 · AI agents · Codex · Cybersecurity
+Last updated: September 30, 2026]]></description>
+      <category>OpenAI</category>
+      <category>DevDay 2026</category>
+      <category>GPT-6.1</category>
+      <category>AI agents</category>
+      <category>Codex</category>
+      <category>Cybersecurity</category>
+    </item>
     <item>
       <title>Claude Opus 5.5, ChatGPT-6 (Sol, Luna, Astra), and Grok: The Frontier Showdown &amp; The Future of Agentic AI</title>
       <link>https://www.guuleedmaxamuud.dev/blog/claude-opus-5-5-chatgpt-6-sol-luna-astra-grok-agentic-ai</link>
