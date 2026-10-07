@@ -9,7 +9,7 @@ const supportingStudies = CASE_STUDIES.slice(1, 4);
 const latestPost = BLOG_POSTS[0];
 const heroSkills = ['Full-stack engineering', 'Cybersecurity', 'DevOps', 'React / TypeScript', 'Cloud deployment'];
 
-const clientQuoteDrafts = [
+const clientTestimonials = [
   {
     quote: 'I liked that Guuleed took time to understand our business. The website brings our products and services together in one place and gives customers a clear way to reach us.',
     name: 'Esse Haji Ismail Mohamed',
@@ -200,15 +200,14 @@ const HomePage: React.FC = () => (
     <section className="landing-client-quotes" aria-labelledby="client-quotes-title">
       <div className="landing-section-heading">
         <div>
-          <span className="landing-section-index">/ client quote drafts</span>
+          <span className="landing-section-index">/ client feedback</span>
           <h2 id="client-quotes-title">The work, in their words.</h2>
         </div>
-        <p>Draft wording for each client to review. These are not verbatim or approved statements.</p>
+        <p>Two client perspectives on building useful tools for their businesses.</p>
       </div>
       <div className="landing-client-quote-grid">
-        {clientQuoteDrafts.map((item) => (
+        {clientTestimonials.map((item) => (
           <figure className="landing-client-quote-card" key={item.name}>
-            <span className="landing-client-quote-status">Draft · client approval pending</span>
             <blockquote>“{item.quote}”</blockquote>
             <figcaption>
               <strong>{item.name}</strong>
