@@ -235,9 +235,9 @@ export default function App() {
           <button
             type="button"
             onClick={terminal.toggleTerminal}
-            aria-label="Open terminal"
+aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
             aria-expanded={terminal.isOpen}
-            title="Open terminal (Ctrl+Alt+G)"
+            title={terminal.isOpen ? 'Close terminal (Ctrl+Alt+G)' : 'Open terminal (Ctrl+Alt+G)'}
             className="rounded-md border border-[var(--border)] p-2 text-[var(--color-text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
           >
             <Icon name="terminal" size={18} />
