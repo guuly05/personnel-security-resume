@@ -162,11 +162,10 @@ export default function App() {
   }, [activeSection]);
 
   const navItems = [
-    { id: 'home', label: 'Home', icon: 'layout' },
-    { id: 'about', label: 'About', icon: 'user' },
     { id: 'portfolio', label: 'Work', icon: 'layout' },
-    { id: 'book', label: 'Book a Call', icon: 'calendar-days' },
+    { id: 'about', label: 'About', icon: 'user' },
     { id: 'blog', label: 'Notes', icon: 'book-open' },
+    { id: 'book', label: 'Book a Call', icon: 'calendar-days' },
     { id: 'contact', label: 'Contact', icon: 'mail' },
   ];
 
@@ -188,7 +187,8 @@ export default function App() {
 
       {/* Top Navbar */}
       <nav
-        className={`max-w-7xl mx-auto mb-10 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 transition-colors duration-300 flex flex-wrap items-center justify-between gap-4 ${chromeClassName}`}
+        aria-label="Primary navigation"
+        className={`max-w-7xl mx-auto mb-10 border-b border-[var(--border)] px-1 py-4 transition-colors duration-300 flex flex-wrap items-center justify-between gap-4 ${chromeClassName}`}
       >
         <div className="flex items-center gap-3 pl-2">
           <a
@@ -213,75 +213,40 @@ export default function App() {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex gap-1 items-center">
+        <div className="hidden lg:flex items-center gap-6">
           {navItems.map((item) => (
             <a
               key={item.id}
               href={sectionToPath(item.id as Section)}
               onClick={() => setActiveSection(item.id as Section)}
-              className={`
-                px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200
-                ${
-                  (activeSection === item.id || (item.id === 'portfolio' && activeSection === 'portfolio-project'))
-                    ? 'bg-brand-cyan/10 text-brand-cyan'
-                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--surface-soft)]'
-                }
-              `}
+              aria-current={activeSection === item.id || (item.id === 'portfolio' && activeSection === 'portfolio-project') ? 'page' : undefined}
+              className={`border-b-2 py-2 text-sm transition-colors duration-200 ${
+                (activeSection === item.id || (item.id === 'portfolio' && activeSection === 'portfolio-project'))
+                  ? 'border-[var(--accent)] font-semibold text-[var(--color-text)]'
+                  : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+              }`}
             >
               {item.label}
             </a>
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-3">
-          {/* Terminal toggle button */}
-          <button
-            type="button"
-            id="terminal-open-btn"
-            onClick={terminal.toggleTerminal}
-            aria-label="Open terminal"
-            className="terminal-nav-btn"
-          >
-            <span style={{ fontSize: 14 }}>⌨</span>
-            <span>&gt;_</span>
-          </button>
-
-          <a
-            href="/book"
-            className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)] transition hover:bg-[var(--color-text)] hover:text-[var(--color-bg)] active:translate-y-px"
-          >
-            <Icon name="calendar-days" size={15} />
-            Book a Call
-          </a>
-          <a
-            href="/contact"
-            className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-4 py-2 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
-          >
-            Contact
-          </a>
+        <div className="hidden lg:flex items-center">
           <a
             href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf"
             download="Guuleed-Maxamuud-Awabdi-CV.pdf"
-            className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-4 py-2 text-sm font-semibold text-[var(--color-text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)] transition hover:opacity-85 active:translate-y-px"
           >
             Download CV
           </a>
         </div>
 
-        <div className="flex items-center gap-2 md:hidden">
-          {/* Mobile terminal toggle */}
-          <button
-            type="button"
-            onClick={terminal.toggleTerminal}
-            aria-label="Open terminal"
-            className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-2.5 py-2 text-[var(--color-text)] transition hover:border-[var(--accent)] font-mono text-xs font-semibold"
-          >
-            &gt;_
-          </button>
-
+        <div className="flex items-center gap-2 lg:hidden">
           <button
             type="button"
             onClick={() => setIsMenuOpen((value) => !value)}
+            aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={isMenuOpen}
             className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
           >
             <Icon name={isMenuOpen ? 'x' : 'menu'} size={20} />
@@ -296,7 +261,7 @@ export default function App() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden fixed inset-x-4 top-24 z-40 surface-card p-6 overflow-hidden"
+            className="lg:hidden fixed inset-x-4 top-24 z-40 surface-card p-6 overflow-hidden"
           >
             <div className="mb-4 flex items-center gap-3">
               <div className="w-8 h-8 rounded-md border border-[var(--accent)] bg-[var(--surface-soft)] flex items-center justify-center font-bold text-[var(--accent)]">
@@ -304,7 +269,7 @@ export default function App() {
               </div>
               <div className="text-sm font-bold">{PERSONAL_INFO.name}</div>
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
               {navItems.map((item) => (
                 <a
                   key={item.id}
@@ -314,16 +279,16 @@ export default function App() {
                     setIsMenuOpen(false);
                   }}
                   className={`
-                    flex items-center gap-4 px-4 py-3 rounded-xl transition-all
+                    flex items-center gap-4 px-4 py-3 rounded-md transition-colors
                     ${
                       (activeSection === item.id || (item.id === 'portfolio' && activeSection === 'portfolio-project'))
-                        ? 'bg-brand-cyan/10 text-brand-cyan'
-                        : 'text-[var(--color-text-muted)]'
+                        ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
+                        : 'text-[var(--color-text-muted)] hover:bg-[var(--surface-soft)] hover:text-[var(--color-text)]'
                     }
                   `}
                 >
                   <Icon name={item.icon} size={20} />
-                  <span className="font-bold uppercase tracking-widest text-xs">{item.label}</span>
+                  <span className="text-sm font-medium">{item.label}</span>
                 </a>
               ))}
             </div>
@@ -331,21 +296,11 @@ export default function App() {
             <a
               href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf"
               download="Guuleed-Maxamuud-Awabdi-CV.pdf"
-              className="mt-5 flex items-center justify-center gap-2 rounded-lg border border-[var(--accent)] bg-[var(--accent-soft)] px-4 py-3 text-sm font-bold text-[var(--accent)]"
+              className="mt-5 flex items-center justify-center gap-2 rounded-md bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-[var(--color-bg)] transition hover:opacity-85"
             >
               <Icon name="download" size={16} /> Download CV
             </a>
 
-            {/* Terminal shortcut hint inside mobile menu */}
-            <button
-              type="button"
-              onClick={() => { terminal.openTerminal(); setIsMenuOpen(false); }}
-              className="flex items-center gap-4 px-4 py-3 rounded-xl transition-all text-[var(--color-text-muted)] hover:text-[var(--accent)]"
-            >
-              <span className="font-mono text-base font-bold">&gt;_</span>
-              <span className="font-bold uppercase tracking-widest text-xs">Terminal</span>
-              <span className="ml-auto font-mono text-[10px] opacity-50">Ctrl+Alt+G</span>
-            </button>
           </motion.div>
         )}
       </AnimatePresence>

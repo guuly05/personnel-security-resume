@@ -1409,29 +1409,6 @@
   cursor: nwse-resize;
 }
 
-/* ── Navbar terminal button ──────────────────────────────────────────────── */
-
-.terminal-nav-btn {
-  display:       inline-flex;
-  align-items:   center;
-  gap:           6px;
-  border-radius: 9999px;
-  border:        1px solid var(--border);
-  background:    var(--surface-soft);
-  padding:       7px 14px;
-  font-size:     13px;
-  font-weight:   600;
-  font-family:   var(--term-font);
-  color:         var(--color-text);
-  transition:    border-color 0.18s ease, color 0.18s ease;
-  white-space:   nowrap;
-}
-
-.terminal-nav-btn:hover {
-  border-color: var(--accent);
-  color:        var(--accent);
-}
-
 /* ── Mobile: full-width at bottom ──────────────────────────────────────── */
 
 @media (max-width: 640px) {
