@@ -231,7 +231,17 @@ export default function App() {
           ))}
         </div>
 
-        <div className="hidden lg:flex items-center">
+        <div className="hidden lg:flex items-center gap-2">
+          <button
+            type="button"
+            onClick={terminal.toggleTerminal}
+aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
+            aria-expanded={terminal.isOpen}
+            title={terminal.isOpen ? 'Close terminal (Ctrl+Alt+G)' : 'Open terminal (Ctrl+Alt+G)'}
+            className="rounded-md border border-[var(--border)] p-2 text-[var(--color-text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+          >
+            <Icon name="terminal" size={18} />
+          </button>
           <a
             href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf"
             download="Guuleed-Maxamuud-Awabdi-CV.pdf"
@@ -300,7 +310,18 @@ export default function App() {
             >
               <Icon name="download" size={16} /> Download CV
             </a>
-
+            <div className="mt-4 flex items-center justify-between border-t border-[var(--border)] pt-3">
+              <button
+                type="button"
+                onClick={() => { terminal.openTerminal(); setIsMenuOpen(false); }}
+                aria-label="Open terminal"
+                className="inline-flex items-center gap-2 rounded-md py-2 text-sm font-medium text-[var(--color-text-muted)] transition-colors hover:text-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+              >
+                <Icon name="terminal" size={17} />
+                <span>Open terminal</span>
+              </button>
+              <span className="text-xs text-[var(--color-text-muted)]">Ctrl + Alt + G</span>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -349,38 +370,43 @@ export default function App() {
         </Suspense>
       </main>
 
-      <footer
-        className={`max-w-7xl mx-auto mt-20 pt-8 border-t border-brand-border flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-slate-500 font-mono uppercase tracking-widest px-4 pb-12 ${chromeClassName}`}
-      >
-        <p>© 2026 {PERSONAL_INFO.name} — Built with care</p>
-        <div className="flex flex-wrap items-center gap-6">
-          {(isJuly27 || activeSection === 'recap') && (
-            <a
-              href="/recap"
-              onClick={() => setActiveSection('recap')}
-              className="hover:text-brand-cyan transition-colors"
-            >
-              Annual Reflection
+      <footer className={`max-w-7xl mx-auto mt-20 px-1 pb-8 ${chromeClassName}`}>
+        <div className="flex flex-col gap-6 border-t border-[var(--border)] py-8 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-base font-semibold text-[var(--color-text)]">{PERSONAL_INFO.name}</p>
+            <p className="mt-1 text-sm text-[var(--color-text-muted)]">{PERSONAL_INFO.title}</p>
+          </div>
+          <div role="group" aria-label="Social and contact links" className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
+            <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noreferrer" className="text-[var(--color-text-muted)] transition-colors hover:text-[var(--accent)]">
+              LinkedIn
             </a>
-          )}
-          <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noreferrer" className="hover:text-brand-cyan transition-colors">
-            LinkedIn
-          </a>
-          <a href={PERSONAL_INFO.github} target="_blank" rel="noreferrer" className="hover:text-brand-cyan transition-colors">
-            GitHub
-          </a>
-          <a href="/" className="hover:text-brand-cyan transition-colors">
-            Home
-          </a>
-          <a href="/blog" className="hover:text-brand-cyan transition-colors">
-            Blog
-          </a>
-          <a href="/privacy-policy" onClick={() => setActiveSection('privacy-policy')} className="hover:text-brand-cyan transition-colors">
-            Privacy Policy
-          </a>
-          <a href="/terms-of-service" onClick={() => setActiveSection('terms-of-service')} className="hover:text-brand-cyan transition-colors">
-            Terms of Service
-          </a>
+            <a href={PERSONAL_INFO.github} target="_blank" rel="noreferrer" className="text-[var(--color-text-muted)] transition-colors hover:text-[var(--accent)]">
+              GitHub
+            </a>
+            <a href="/contact" onClick={() => setActiveSection('contact')} className="text-[var(--color-text-muted)] transition-colors hover:text-[var(--accent)]">
+              Contact
+            </a>
+            {(isJuly27 || activeSection === 'recap') && (
+              <a
+                href="/recap"
+                onClick={() => setActiveSection('recap')}
+                className="text-[var(--color-text-muted)] transition-colors hover:text-[var(--accent)]"
+              >
+                Annual Reflection
+              </a>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col gap-3 border-t border-[var(--border)] py-5 text-sm text-[var(--color-text-muted)] sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} {PERSONAL_INFO.name}</p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <a href="/privacy-policy" onClick={() => setActiveSection('privacy-policy')} className="transition-colors hover:text-[var(--accent)]">
+              Privacy Policy
+            </a>
+            <a href="/terms-of-service" onClick={() => setActiveSection('terms-of-service')} className="transition-colors hover:text-[var(--accent)]">
+              Terms of Service
+            </a>
+          </div>
         </div>
       </footer>
 
