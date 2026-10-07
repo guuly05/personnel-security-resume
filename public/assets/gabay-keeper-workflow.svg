@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Gabay Keeper preservation workflow</title>
+  <desc id="desc">Original architecture illustration showing local OCR, reader review, private Firestore archive storage, and visual poem card export.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#14120f"/><stop offset="1" stop-color="#342516"/></linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2f261d"/><stop offset="1" stop-color="#201b16"/></linearGradient>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto"><path d="M1 1 10 6 1 11" fill="none" stroke="#d5a464" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1470" cy="70" r="270" fill="#c58b44" opacity=".08"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="96" y="115" fill="#d5a464" font-size="20" font-weight="700" letter-spacing="5">GABAY KEEPER · ARCHITECTURE ILLUSTRATION</text>
+    <text x="96" y="198" fill="#fff9ed" font-size="58" font-weight="700">Preserve, review, share</text>
+    <text x="96" y="247" fill="#c5b49e" font-size="23">Local text recognition keeps the page image in the browser.</text>
+    <g>
+      <rect x="100" y="360" width="300" height="230" rx="18" fill="url(#card)" stroke="#997141"/>
+      <rect x="148" y="410" width="92" height="120" rx="5" fill="#e8d7ba"/><path d="M164 440h60M164 457h60M164 474h50M164 491h56" stroke="#997141" stroke-width="4" stroke-linecap="round"/>
+      <text x="275" y="443" fill="#d5a464" font-size="14" font-weight="700" letter-spacing="2">01 · SOURCE</text><text x="275" y="478" fill="#fff9ed" font-size="23" font-weight="700">Printed poem</text><text x="275" y="507" fill="#c5b49e" font-size="16">User-selected image</text>
+    </g>
+    <path d="M414 475h98" stroke="#d5a464" stroke-width="3" marker-end="url(#arr)"/>
+    <g>
+      <rect x="530" y="360" width="300" height="230" rx="18" fill="url(#card)" stroke="#d5a464" stroke-width="2"/>
+      <circle cx="595" cy="438" r="32" fill="#d5a464" opacity=".14" stroke="#d5a464"/><path d="M580 438h30M595 423v30M584 427l22 22M606 427l-22 22" stroke="#edc58f" stroke-width="2" stroke-linecap="round"/>
+      <text x="650" y="443" fill="#d5a464" font-size="14" font-weight="700" letter-spacing="2">02 · LOCAL</text><text x="575" y="507" fill="#fff9ed" font-size="23" font-weight="700">Browser OCR</text><text x="575" y="538" fill="#c5b49e" font-size="16">Tesseract.js</text>
+    </g>
+    <path d="M844 475h98" stroke="#d5a464" stroke-width="3" marker-end="url(#arr)"/>
+    <g>
+      <rect x="960" y="360" width="300" height="230" rx="18" fill="url(#card)" stroke="#997141"/>
+      <rect x="1010" y="414" width="50" height="46" rx="8" fill="#d5a464" opacity=".16" stroke="#d5a464"/><path d="m1022 437 9 9 18-20" fill="none" stroke="#edc58f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="1080" y="443" fill="#d5a464" font-size="14" font-weight="700" letter-spacing="2">03 · REVIEW</text><text x="1010" y="507" fill="#fff9ed" font-size="23" font-weight="700">Reader review</text><text x="1010" y="538" fill="#c5b49e" font-size="16">Edit before saving</text>
+    </g>
+    <path d="M1274 475h98" stroke="#d5a464" stroke-width="3" marker-end="url(#arr)"/>
+    <g>
+      <rect x="1390" y="360" width="150" height="230" rx="18" fill="url(#card)" stroke="#997141"/>
+      <path d="M1465 403 1490 414v18c0 22-13 37-25 43-12-6-25-21-25-43v-18l25-11Z" fill="#d5a464" opacity=".15" stroke="#d5a464"/><path d="M1453 436h24M1465 424v24" stroke="#edc58f" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="1410" y="507" fill="#fff9ed" font-size="20" font-weight="700">Private</text><text x="1410" y="537" fill="#c5b49e" font-size="15">Firestore</text>
+    </g>
+    <rect x="530" y="648" width="300" height="96" rx="15" fill="#2b2118" stroke="#80603c"/><text x="565" y="689" fill="#d5a464" font-size="14" font-weight="700" letter-spacing="2">OPTIONAL EXPORT</text><text x="565" y="720" fill="#fff9ed" font-size="20" font-weight="700">Shareable poem card</text>
+    <path d="M680 602v34" stroke="#d5a464" stroke-width="2.5" marker-end="url(#arr)"/>
+    <text x="96" y="814" fill="#c5b49e" font-size="17">Architecture illustration · not a product screenshot</text>
+  </g>
+</svg>

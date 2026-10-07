@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Information systems security curriculum map</title>
+  <desc id="desc">Original illustration mapping security foundations to guided labs, case studies, and professional frameworks.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#101d25"/><stop offset="1" stop-color="#1c3743"/></linearGradient>
+    <linearGradient id="box" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1c3039"/><stop offset="1" stop-color="#17272e"/></linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto"><path d="M1 1 10 6 1 11" fill="none" stroke="#82c4d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/><circle cx="1380" cy="65" r="320" fill="#48a3b6" opacity=".08"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="96" y="114" fill="#82c4d1" font-size="20" font-weight="700" letter-spacing="5">INFORMATION SYSTEMS SECURITY · CURRICULUM MAP</text>
+    <text x="96" y="196" fill="#f2fbfc" font-size="56" font-weight="700">Learn → practice → connect</text>
+    <text x="96" y="244" fill="#b4cbd0" font-size="23">A repository structure for concepts, guided work, and references.</text>
+    <g>
+      <rect x="110" y="355" width="300" height="250" rx="20" fill="url(#box)" stroke="#4c7882"/>
+      <circle cx="260" cy="422" r="34" fill="#82c4d1" opacity=".13" stroke="#82c4d1"/><path d="M260 400 279 411v22l-19 11-19-11v-22l19-11Z" fill="none" stroke="#a9e1e8" stroke-width="2.5"/><path d="M248 422h24M260 410v24" stroke="#a9e1e8" stroke-width="2"/>
+      <text x="160" y="508" fill="#82c4d1" font-size="14" font-weight="700" letter-spacing="2">01 · FOUNDATIONS</text><text x="160" y="550" fill="#f2fbfc" font-size="27" font-weight="700">Core concepts</text><text x="160" y="579" fill="#b4cbd0" font-size="16">Chapters and terminology</text>
+    </g>
+    <path d="M425 480h105" stroke="#82c4d1" stroke-width="3" marker-end="url(#arrow)"/>
+    <g>
+      <rect x="550" y="355" width="300" height="250" rx="20" fill="url(#box)" stroke="#82c4d1" stroke-width="2"/>
+      <rect x="660" y="391" width="80" height="63" rx="10" fill="#82c4d1" opacity=".12" stroke="#82c4d1"/><path d="M674 410h52M674 423h38M674 436h45" stroke="#a9e1e8" stroke-width="3" stroke-linecap="round"/>
+      <text x="600" y="508" fill="#82c4d1" font-size="14" font-weight="700" letter-spacing="2">02 · PRACTICE</text><text x="600" y="550" fill="#f2fbfc" font-size="27" font-weight="700">Guided labs</text><text x="600" y="579" fill="#b4cbd0" font-size="16">Scoped exercises and tools</text>
+    </g>
+    <path d="M865 480h105" stroke="#82c4d1" stroke-width="3" marker-end="url(#arrow)"/>
+    <g>
+      <rect x="990" y="355" width="300" height="250" rx="20" fill="url(#box)" stroke="#4c7882"/>
+      <path d="M1090 405h96v73h-96z" fill="none" stroke="#a9e1e8" stroke-width="2.5"/><path d="M1107 425h62M1107 441h52M1107 457h42" stroke="#82c4d1" stroke-width="3" stroke-linecap="round"/>
+      <text x="1040" y="508" fill="#82c4d1" font-size="14" font-weight="700" letter-spacing="2">03 · ANALYZE</text><text x="1040" y="550" fill="#f2fbfc" font-size="27" font-weight="700">Cases + quizzes</text><text x="1040" y="579" fill="#b4cbd0" font-size="16">Apply and check understanding</text>
+    </g>
+    <path d="M1305 480h105" stroke="#82c4d1" stroke-width="3" marker-end="url(#arrow)"/>
+    <g>
+      <rect x="1430" y="355" width="120" height="250" rx="20" fill="url(#box)" stroke="#4c7882"/>
+      <circle cx="1490" cy="431" r="30" fill="none" stroke="#82c4d1" stroke-width="2.5"/><path d="M1490 410v42M1469 431h42M1475 416l30 30M1505 416l-30 30" stroke="#a9e1e8" stroke-width="2"/>
+      <text x="1453" y="508" fill="#f2fbfc" font-size="19" font-weight="700">Frameworks</text><text x="1453" y="540" fill="#b4cbd0" font-size="14">NIST · OWASP</text>
+    </g>
+    <rect x="550" y="664" width="740" height="82" rx="15" fill="#17272e" stroke="#4c7882"/><text x="920" y="713" fill="#f2fbfc" font-size="21" font-weight="700" text-anchor="middle">Reusable policy templates connect learning to structured work products</text>
+    <text x="96" y="814" fill="#b4cbd0" font-size="17">Original curriculum illustration · repository structure, not a product screenshot</text>
+  </g>
+</svg>

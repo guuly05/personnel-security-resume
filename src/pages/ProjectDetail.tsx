@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Icon } from '../components/Icon.tsx';
 import { CASE_STUDIES } from './Portfolio.tsx';
 import { PROJECT_DETAILS, type ProjectDetail } from '../data/projectDetails.ts';
+import { timelineEntryForProject } from '../data/projectTimeline.ts';
 
 const MetaPill: React.FC<{ children: React.ReactNode; accent?: boolean }> = ({ children, accent }) => (
   <span className={`inline-flex items-center rounded-md px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] leading-none ${accent
@@ -27,54 +28,53 @@ const DetailLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const ArchitectureDiagram: React.FC<{ detail: ProjectDetail }> = ({ detail }) => (
-  <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-4 sm:p-6">
-    <div className="mb-5 flex items-center justify-between gap-4 border-b border-[var(--border)] pb-4">
-      <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
-        <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-        System flow
-      </div>
-      <span className="font-mono text-[10px] text-[var(--color-text-muted)]">PUBLIC VIEW</span>
-    </div>
-    <div className="grid gap-3 md:grid-cols-3 md:items-stretch">
-      {detail.architecture.map((layer, index) => (
-        <React.Fragment key={layer.label}>
-          <div className="relative rounded-lg border border-[var(--accent)]/25 bg-[var(--surface)] p-4">
-            <div className="mb-3 flex items-center justify-between gap-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--accent)]">0{index + 1}</span>
-              <Icon name="layers" size={15} className="text-[var(--color-text-muted)]" />
+  <div className="space-y-5">
+    <p className="max-w-4xl text-sm leading-relaxed text-[var(--color-text-muted)]">{detail.architectureSummary}</p>
+    <div className="space-y-5">
+      {detail.architecture.map((flow, flowIndex) => (
+        <article key={flow.title} className="architecture-flow-card">
+          <header className="architecture-flow-heading">
+            <span className="architecture-flow-index">0{flowIndex + 1}</span>
+            <div>
+              <h3>{flow.title}</h3>
+              <p>{flow.description}</p>
             </div>
-            <h3 className="mb-3 font-bold">{layer.label}</h3>
-            <ul className="space-y-2">
-              {layer.items.map((item) => (
-                <li key={item} className="flex items-start gap-2 text-xs leading-relaxed text-[var(--color-text-muted)]">
-                  <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-[var(--accent)]" />
-                  {item}
-                </li>
-              ))}
-            </ul>
+          </header>
+          <div className="architecture-flow-steps" role="list" aria-label={`${flow.title} flow`}>
+            {flow.steps.map((step, stepIndex) => (
+              <React.Fragment key={`${flow.title}-${step.name}`}>
+                <article className="architecture-flow-node" role="listitem">
+                  <span className="architecture-flow-node-index">STEP {String(stepIndex + 1).padStart(2, '0')}</span>
+                  <p className="architecture-flow-technology">{step.technology}</p>
+                  <h4>{step.name}</h4>
+                  <p className="architecture-flow-detail">{step.detail}</p>
+                  {step.boundary && <span className="architecture-boundary">{step.boundary}</span>}
+                </article>
+                {stepIndex < flow.steps.length - 1 && (
+                  <div className="architecture-flow-connector" aria-hidden="true">
+                    <span>{flow.connections[stepIndex] ?? 'data flow'}</span>
+                    <Icon name="arrow-right" size={17} />
+                  </div>
+                )}
+              </React.Fragment>
+            ))}
           </div>
-          {index < detail.architecture.length - 1 && (
-            <div className="hidden items-center justify-center md:flex" aria-hidden="true">
-              <span className="h-px w-full bg-[var(--accent)]" />
-              <Icon name="chevron-right" size={16} className="-ml-2 flex-shrink-0 text-[var(--accent)]" />
-            </div>
-          )}
-        </React.Fragment>
+        </article>
       ))}
     </div>
-    <p className="mt-5 max-w-3xl text-sm leading-relaxed text-[var(--color-text-muted)]">{detail.architectureSummary}</p>
+    <p className="architecture-flow-legend">Arrows show the main request or data handoff. Boundary labels mark local-only processing, browser-to-server transitions, or external services.</p>
   </div>
 );
 
-const SanitizedReport: React.FC<{ detail: ProjectDetail }> = ({ detail }) => (
+const ProjectEvidence: React.FC<{ detail: ProjectDetail }> = ({ detail }) => (
   <div className="surface-card p-6 sm:p-8">
     <div className="mb-5 flex items-start justify-between gap-4">
       <div>
         <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Evidence</p>
-        <h2 className="text-2xl font-bold tracking-tight">Sanitized report</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Evidence snapshot</h2>
       </div>
-      <div className="rounded-xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] p-2.5 text-[var(--accent)]" title="Sensitive values removed">
-        <Icon name="shield-check" size={18} />
+      <div className="rounded-xl border border-[var(--accent)]/25 bg-[var(--accent-soft)] p-2.5 text-[var(--accent)]" title="Evidence and scope">
+        <Icon name="info" size={18} />
       </div>
     </div>
     <p className="mb-5 text-sm leading-relaxed text-[var(--color-text-muted)]">{detail.reportIntro}</p>
@@ -86,18 +86,20 @@ const SanitizedReport: React.FC<{ detail: ProjectDetail }> = ({ detail }) => (
           <span className={`rounded-md px-2 py-0.5 text-[9px] font-bold tracking-[0.18em] ${row.status === 'PASS'
             ? 'bg-emerald-500/10 text-emerald-400'
             : row.status === 'REVIEW' ? 'bg-amber-500/10 text-amber-400' : 'bg-sky-500/10 text-sky-400'}`}>
-            {row.status}
+            {row.status === 'PASS' ? 'IMPLEMENTED' : row.status === 'INFO' ? 'DOCUMENTED' : row.status}
           </span>
         </div>
       ))}
     </div>
     <pre className="mt-5 overflow-x-auto rounded-lg border border-[var(--border)] bg-[#071016] p-4 font-mono text-[11px] leading-relaxed text-emerald-300/90"><code>{detail.reportExcerpt}</code></pre>
+    <p className="mt-4 text-xs leading-relaxed text-[var(--color-text-muted)]">{detail.evidenceNote}</p>
   </div>
 );
 
 const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
   const study = CASE_STUDIES.find((entry) => entry.id === slug);
   const detail = study ? PROJECT_DETAILS[study.id] : undefined;
+  const timelineEntry = study ? timelineEntryForProject(study.id) : undefined;
 
   if (!study || !detail) {
     return (
@@ -122,14 +124,15 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
           <div className="mb-5 flex flex-wrap gap-2">
             <MetaPill accent>{study.type}</MetaPill>
             <MetaPill>{study.status}</MetaPill>
-            <MetaPill>{study.year}</MetaPill>
+            <MetaPill>{timelineEntry?.period ?? study.year}</MetaPill>
           </div>
           <h1 className="mb-4 text-3xl font-bold tracking-tight sm:text-5xl">{study.title}</h1>
           <p className="mb-6 max-w-3xl text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg">{study.subtitle}</p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-[var(--color-text-muted)]">
             <span className="inline-flex items-center gap-2"><Icon name="briefcase" size={14} className="text-[var(--accent)]" /> {study.role}</span>
-            <span className="inline-flex items-center gap-2"><Icon name="shield-check" size={14} className="text-[var(--accent)]" /> Evidence-led build notes</span>
+            <span className="inline-flex items-center gap-2"><Icon name="calendar-days" size={14} className="text-[var(--accent)]" /> Timeline: {timelineEntry?.period ?? study.year}</span>
           </div>
+          {timelineEntry && <p className="mt-4 max-w-3xl border-l-2 border-[var(--accent)]/50 pl-4 text-sm leading-relaxed text-[var(--color-text-muted)]">{timelineEntry.description}</p>}
         </div>
       </header>
 
@@ -144,33 +147,33 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
       </section>
 
       <section>
-        <SectionHeading eyebrow="01 / Visual evidence" title="Screenshots and workflow" />
+        <SectionHeading eyebrow="01 / Project evidence" title="Project visual and links" />
         <div className="grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
           <figure className="surface-card overflow-hidden">
             <div className="aspect-[16/9] overflow-hidden bg-[var(--surface-soft)]">
               <img src={study.imageUrl} alt={study.imageAlt} className="h-full w-full object-cover" loading="eager" />
             </div>
             <figcaption className="p-5">
-              <p className="mb-1 text-sm font-bold">{detail.screenshots[0].title}</p>
-              <p className="text-xs leading-relaxed text-[var(--color-text-muted)]">{detail.screenshots[0].description}</p>
+              <p className="mb-2 text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--accent)]">{detail.projectVisuals[0].kind ?? 'Project visual'}</p>
+              <p className="mb-1 text-sm font-bold">{detail.projectVisuals[0].title}</p>
+              <p className="text-xs leading-relaxed text-[var(--color-text-muted)]">{detail.projectVisuals[0].description}</p>
             </figcaption>
           </figure>
-          <figure className="surface-card overflow-hidden">
-            <div className="relative aspect-[16/9] overflow-hidden bg-[#09151b] p-4 sm:p-6">
-              <div className="mb-5 flex gap-1.5"><span className="h-2 w-2 rounded-full bg-rose-400/70" /><span className="h-2 w-2 rounded-full bg-amber-300/70" /><span className="h-2 w-2 rounded-full bg-emerald-300/70" /></div>
-              <div className="space-y-3 font-mono text-[10px] text-emerald-300/80">
-                <div className="h-2 w-2/3 rounded bg-emerald-300/30" />
-                <div className="h-2 w-full rounded bg-slate-400/15" />
-                <div className="h-2 w-5/6 rounded bg-slate-400/15" />
-                <div className="grid grid-cols-3 gap-2 pt-2"><span className="h-12 rounded border border-emerald-300/20 bg-emerald-300/5" /><span className="h-12 rounded border border-white/10 bg-white/5" /><span className="h-12 rounded border border-emerald-300/20 bg-emerald-300/5" /></div>
-              </div>
-              <span className="absolute bottom-4 right-4 rounded-md border border-emerald-300/20 px-2 py-1 text-[9px] uppercase tracking-[0.18em] text-emerald-300/70">sanitized view</span>
+          <aside className="surface-card flex flex-col p-6 sm:p-8" aria-label="Project context and evidence links">
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Project context</p>
+            <h3 className="text-xl font-bold">{detail.projectVisuals[1].title}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]">{detail.projectVisuals[1].description}</p>
+            <dl className="mt-6 space-y-3 border-t border-[var(--border)] pt-5 text-sm">
+              <div className="flex flex-col gap-1"><dt className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-muted)]">My role</dt><dd className="font-semibold">{study.role}</dd></div>
+              <div className="flex flex-col gap-1"><dt className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-muted)]">Collaboration</dt><dd className="font-semibold">{study.collaboration}</dd></div>
+              <div className="flex flex-col gap-1"><dt className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-muted)]">Project period</dt><dd className="font-semibold">{timelineEntry?.period ?? study.year}</dd></div>
+              <div className="flex flex-col gap-1"><dt className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-muted)]">Project status</dt><dd className="font-semibold">{study.status}</dd></div>
+            </dl>
+            <div className="mt-auto flex flex-wrap gap-2 pt-6">
+              {study.liveUrl && <a href={study.liveUrl} target="_blank" rel="noopener noreferrer" className="landing-button landing-button-primary">Open live project <Icon name="arrow-up-right" size={14} /></a>}
+              {study.githubUrl && <a href={study.githubUrl} target="_blank" rel="noopener noreferrer" className="landing-button landing-button-secondary"><Icon name="github" size={14} /> View source</a>}
             </div>
-            <figcaption className="p-5">
-              <p className="mb-1 text-sm font-bold">{detail.screenshots[1].title}</p>
-              <p className="text-xs leading-relaxed text-[var(--color-text-muted)]">{detail.screenshots[1].description}</p>
-            </figcaption>
-          </figure>
+          </aside>
         </div>
       </section>
 
@@ -179,9 +182,23 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
         <ArchitectureDiagram detail={detail} />
       </section>
 
+      {detail.decisions.length > 0 ? <section>
+        <SectionHeading eyebrow="03 / Engineering decisions" title="Choices and trade-offs" />
+        <div className="grid gap-4 lg:grid-cols-2">
+          {detail.decisions.map((decision, index) => (
+            <article key={decision.title} className="surface-card p-6 sm:p-8">
+              <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--accent)]">Decision 0{index + 1}</p>
+              <h3 className="text-lg font-bold">{decision.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]"><strong className="text-[var(--color-text)]">Choice:</strong> {decision.decision}</p>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--color-text-muted)]"><strong className="text-[var(--color-text)]">Trade-off:</strong> {decision.tradeoff}</p>
+            </article>
+          ))}
+        </div>
+      </section> : null}
+
       {detail.caseStudySections && detail.caseStudySections.length > 0 && (
         <section className="space-y-5">
-          <SectionHeading eyebrow="03 / Implementation notes" title="Architecture, code, and techniques" />
+          <SectionHeading eyebrow="04 / Implementation notes" title="Architecture, code, and techniques" />
           <div className="grid gap-5 lg:grid-cols-2">
             {detail.caseStudySections.map((section) => (
               <article key={section.title} className="surface-card p-6 sm:p-8">
@@ -203,10 +220,10 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
         </section>
       )}
 
-      <section className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-        <SanitizedReport detail={detail} />
-        <div>
-          <SectionHeading eyebrow="04 / Verification" title="Testing methodology" />
+      <section className={`grid gap-8 ${detail.methodology.length ? 'lg:grid-cols-[0.9fr_1.1fr]' : ''}`}>
+        <ProjectEvidence detail={detail} />
+        {detail.methodology.length > 0 && <div>
+          <SectionHeading eyebrow="05 / Verification" title="Verification methodology" />
           <div className="space-y-3">
             {detail.methodology.map((step, index) => (
               <div key={step.title} className="surface-card flex gap-4 p-5">
@@ -215,15 +232,15 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
               </div>
             ))}
           </div>
-        </div>
+        </div>}
       </section>
 
       <section className="surface-card overflow-hidden p-6 sm:p-8 lg:p-10">
         <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
           <div>
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--accent)]">05 / Ownership</p>
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--accent)]">06 / Ownership</p>
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">What I personally contributed</h2>
-            <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)]">Clear ownership matters in security work. These are the decisions and deliverables I directly handled for this project.</p>
+            <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)]">This section separates my direct contribution from broader project outcomes.</p>
           </div>
           <ul className="grid gap-3 sm:grid-cols-2">
             {detail.contribution.map((item) => (

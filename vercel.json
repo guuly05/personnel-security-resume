@@ -32,6 +32,10 @@
   ],
   "rewrites": [
     {
+      "source": "/portfolio/:slug/og.png",
+      "destination": "/api/project-og-image?slug=:slug"
+    },
+    {
       "source": "/blog/:slug/og.png",
       "destination": "/api/og-image?slug=:slug"
     }

@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { ABOUT_LETTER, PERSONAL_INFO, SOFT_SKILLS } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
 import { useFocusTrap } from '../hooks/useFocusTrap.ts';
+import { PROJECT_TIMELINE } from '../data/projectTimeline.ts';
 
 type MediaItem = {
   title: string;
@@ -18,64 +19,6 @@ type HobbyCard = {
   icon: string;
   items: MediaItem[];
 };
-
-type ProjectMilestone = {
-  period: string;
-  title: string;
-  description: string;
-  tags: string[];
-  href?: string;
-  icon: string;
-};
-
-const projectTimeline: ProjectMilestone[] = [
-  {
-    period: '2023',
-    title: 'Started Computer Science',
-    description: 'Built the foundation through programming, systems thinking, and project-based learning.',
-    tags: ['B.Sc. Computer Science', 'University of Hargeisa'],
-    icon: 'graduation-cap',
-  },
-  {
-    period: 'Project milestone',
-    title: 'Gabay Keeper',
-    description: 'Created a private digital archive for Somali oral poetry with OCR and visual export tools.',
-    tags: ['React', 'Firebase', 'OCR'],
-    href: '/portfolio/gabay-keeper',
-    icon: 'book-marked',
-  },
-  {
-    period: 'Security focus',
-    title: 'Cyber Attack Monitoring Dashboard',
-    description: 'Designed a threat-intelligence and investigation workspace for security analysts.',
-    tags: ['Next.js', 'Threat intelligence', 'Security'],
-    href: '/portfolio/cyber-dashboard',
-    icon: 'shield-check',
-  },
-  {
-    period: 'Commercial build',
-    title: 'Samaale General Trading',
-    description: 'Built a bilingual commerce and logistics platform for a regional distributor.',
-    tags: ['React', 'Somali / English', 'Edge delivery'],
-    href: '/portfolio/samaale-general-trading',
-    icon: 'briefcase',
-  },
-  {
-    period: 'Current build',
-    title: 'Portfolio Platform',
-    description: 'Turned this portfolio into a working product with case studies, publishing, contact, and booking workflows.',
-    tags: ['React', 'TypeScript', 'Production systems'],
-    href: '/portfolio/portfolio-platform',
-    icon: 'layout',
-  },
-  {
-    period: '2027',
-    title: 'Expected graduation',
-    description: 'Completing the B.Sc. Computer Science degree while continuing to build useful, secure products.',
-    tags: ['Next chapter'],
-    icon: 'trophy',
-  },
-];
 
 const personalPrinciples = [
   { title: 'Build useful systems', description: 'I care about products that solve a real problem and feel dependable to use.', icon: 'layers' },
@@ -474,7 +417,7 @@ const AboutPage: React.FC = () => {
           </div>
 
           <div className="about-timeline">
-            {projectTimeline.map((milestone, index) => (
+            {PROJECT_TIMELINE.map((milestone, index) => (
               <motion.article
                 key={milestone.title}
                 className="about-timeline-item"

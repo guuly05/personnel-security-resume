@@ -77,7 +77,7 @@ export default async function handler(req: any) {
                   Guuleed Maxamuud
                 </span>
                 <span style={{ fontSize: '12px', color: '#22d3ee', letterSpacing: '1px', textTransform: 'uppercase', marginTop: '2px' }}>
-                  Vulnerability Assessment &amp; Penetration Tester
+                  Full-Stack Developer · Cybersecurity · DevOps
                 </span>
               </div>
             </div>

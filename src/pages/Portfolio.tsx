@@ -20,6 +20,7 @@ export interface CaseStudy {
   year: string;
   status: 'Live' | 'Open Source' | 'In Development';
   role: string;
+  collaboration: string;
   imageUrl: string;
   imageAlt: string;
   challenge: string;
@@ -44,8 +45,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: '2026',
     status: 'Live',
     role: 'Sole Developer & Technical Architect',
+    collaboration: 'Solo implementation, with requirements shaped around Samaale’s business needs.',
     imageUrl: '/assets/samaale-case-study.svg',
-    imageAlt: 'Samaale General Trading Co. digital headquarters case study preview',
+    imageAlt: 'Custom illustration of Samaale General Trading Co.’s commerce and logistics website, not a browser screenshot.',
     challenge:
       'Samaale needed more than a brochure site. The business spans essential commodities, electronics and appliances, tyres, spare parts, lubricants, procurement, warehousing, freight, and customs clearing across the Horn of Africa. The website therefore had to explain a complex business clearly, help buyers find the right product or service quickly, support English and Somali audiences, and provide a trustworthy path from discovery to inquiry without sacrificing performance or accessibility.',
     approach:
@@ -80,8 +82,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: '2026',
     status: 'Live',
     role: 'Sole Developer & Designer',
+    collaboration: 'Solo design and implementation.',
     imageUrl: '/assets/og-preview.png',
-    imageAlt: 'Guuleed Maxmuud Aw Abdi portfolio platform preview',
+    imageAlt: 'Custom social-preview illustration for Guuleed Maxmuud Aw Abdi’s portfolio platform, not a browser screenshot.',
     challenge:
       'A resume alone could not show the engineering behind the work. The site needed to communicate product thinking while also supporting searchable writing, protected contact, real calendar booking, and strong direct-route SEO.',
     approach:
@@ -114,6 +117,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: '2025',
     status: 'Live',
     role: 'Full-Stack Developer & Security Researcher',
+    collaboration: 'Owned product direction, threat model, and end-to-end implementation.',
     imageUrl: 'https://github.com/user-attachments/assets/a8f31de3-ee5b-4b89-8224-951b399291a7',
     imageAlt: 'Cyber Attack Monitoring Dashboard showing threat feed and risk scores',
     challenge:
@@ -147,8 +151,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: '2025',
     status: 'Open Source',
     role: 'Sole Developer & Designer',
-    imageUrl: 'https://images.unsplash.com/photo-1519452575417-564c1401ecc0?w=800&h=450&fit=crop',
-    imageAlt: 'Gabay Keeper digital poetry archive interface',
+    collaboration: 'Solo design and implementation.',
+    imageUrl: '/assets/gabay-keeper-workflow.svg',
+    imageAlt: 'Original architecture illustration showing a Somali poem moving from OCR review into a private archive and export.',
     challenge:
       'Somali oral poetry lives in scattered notes, recordings, and community memory — vulnerable to loss and misattribution. No dedicated digital archive existed that captures poems with proper metadata while keeping data private and user-owned.',
     approach:
@@ -179,6 +184,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: '2025',
     status: 'Open Source',
     role: 'Sole Developer',
+    collaboration: 'Solo product and Android implementation.',
     imageUrl: 'https://github.com/user-attachments/assets/9e8811f5-5e10-497f-82c1-2a144533e6d8',
     imageAlt: 'PurplePrint Markdown editor showing split preview',
     challenge:
@@ -210,8 +216,9 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: '2026',
     status: 'Open Source',
     role: 'Curriculum Author & Maintainer',
-    imageUrl: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=900&h=500&fit=crop&q=80',
-    imageAlt: 'Digital lock and circuit board representing information security fundamentals',
+    collaboration: 'Authored and maintained the curriculum repository.',
+    imageUrl: '/assets/infosec-curriculum-map.svg',
+    imageAlt: 'Original curriculum map illustration connecting security foundations, guided labs, case studies, and frameworks.',
     challenge:
       'Most cybersecurity learning resources are either too scattered across platforms or too shallow to be used as a standalone university-level course. Students and self-directed learners needed a single, structured repository that covers theory, labs, case studies, and real certification alignment — all in one place.',
     approach:
@@ -554,15 +561,15 @@ const ProjectCard: React.FC<{ study: CaseStudy; index: number }> = ({ study, ind
               <Icon name="file-text" size={15} />
               Full Case Study
             </a>
-            <a
+            {study.githubUrl && <a
               href={study.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-bg)] transition-colors hover:opacity-90 active:translate-y-px"
+              className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-bg)] transition-colors hover:opacity-90 active:translate-y-px"
             >
               <Github size={15} aria-hidden="true" className="shrink-0" />
               View Source
-            </a>
+            </a>}
             {study.liveUrl && (
               <a
                 href={study.liveUrl}
@@ -587,6 +594,8 @@ const ProjectCard: React.FC<{ study: CaseStudy; index: number }> = ({ study, ind
 
 const PortfolioPage: React.FC = () => {
   const [featured, ...rest] = CASE_STUDIES;
+  const projectsWithSource = CASE_STUDIES.filter((study) => Boolean(study.githubUrl)).length;
+  const openSourceProjects = CASE_STUDIES.filter((study) => study.status === 'Open Source').length;
 
   return (
     <div className="editorial-page portfolio-page w-full space-y-10 lg:space-y-14">
@@ -606,10 +615,9 @@ const PortfolioPage: React.FC = () => {
           </h1>
 
           <p className="text-sm sm:text-[15px] leading-relaxed text-[var(--color-text-muted)] max-w-2xl">
-            Each project below is a complete case study — from identifying a real problem, through
-            interface and architecture decisions, to a working product. I care about useful UX,
-            maintainable code, dependable delivery, and security that supports the experience instead
-            of getting in its way.
+            Each project below documents the problem, my role, the architecture, and the evidence
+            behind the work. The collection includes live products, open-source software, and learning
+            resources built with useful UX, dependable delivery, and secure engineering in mind.
           </p>
 
           {/* Quick stats */}
@@ -619,12 +627,12 @@ const PortfolioPage: React.FC = () => {
               <p className="text-[9px] uppercase tracking-[0.25em] text-[var(--color-text-muted)] font-semibold">Projects</p>
             </div>
             <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] px-3.5 py-2 text-center">
-              <p className="text-lg font-bold text-[var(--accent)]">3</p>
-              <p className="text-[9px] uppercase tracking-[0.25em] text-[var(--color-text-muted)] font-semibold">Platforms</p>
+              <p className="text-lg font-bold text-[var(--accent)]">{projectsWithSource}</p>
+              <p className="text-[9px] uppercase tracking-[0.25em] text-[var(--color-text-muted)] font-semibold">Public repositories</p>
             </div>
             <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] px-3.5 py-2 text-center">
-              <p className="text-lg font-bold text-[var(--accent)]">100%</p>
-              <p className="text-[9px] uppercase tracking-[0.25em] text-[var(--color-text-muted)] font-semibold">Open Source</p>
+              <p className="text-lg font-bold text-[var(--accent)]">{openSourceProjects}</p>
+              <p className="text-[9px] uppercase tracking-[0.25em] text-[var(--color-text-muted)] font-semibold">Open-source projects</p>
             </div>
           </div>
         </div>
