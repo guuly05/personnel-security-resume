@@ -62,8 +62,25 @@ export function StaticRoute({ pathname }: { pathname: string }) {
         </nav>
       </header>
       <main className="max-w-7xl mx-auto relative">{pageForPath(pathname)}</main>
-      <footer className="max-w-7xl mx-auto mt-20 border-t border-brand-border pt-8 pb-12 text-center text-[10px] text-slate-500 font-mono uppercase tracking-widest">
-        © 2026 {PERSONAL_INFO.name} — <a href="/contact">Contact</a> · <a href="/blog">Blog</a>
+      <footer className="max-w-7xl mx-auto mt-20 px-1 pb-8">
+        <div className="flex flex-col gap-6 border-t border-[var(--border)] py-8 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-base font-semibold text-[var(--color-text)]">{PERSONAL_INFO.name}</p>
+            <p className="mt-1 text-sm text-[var(--color-text-muted)]">{PERSONAL_INFO.title}</p>
+          </div>
+          <div role="group" aria-label="Social and contact links" className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
+            <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noreferrer" className="text-[var(--color-text-muted)] transition-colors hover:text-[var(--accent)]">LinkedIn</a>
+            <a href={PERSONAL_INFO.github} target="_blank" rel="noreferrer" className="text-[var(--color-text-muted)] transition-colors hover:text-[var(--accent)]">GitHub</a>
+            <a href="/contact" className="text-[var(--color-text-muted)] transition-colors hover:text-[var(--accent)]">Contact</a>
+          </div>
+        </div>
+        <div className="flex flex-col gap-3 border-t border-[var(--border)] py-5 text-sm text-[var(--color-text-muted)] sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} {PERSONAL_INFO.name}</p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <a href="/privacy-policy" className="transition-colors hover:text-[var(--accent)]">Privacy Policy</a>
+            <a href="/terms-of-service" className="transition-colors hover:text-[var(--accent)]">Terms of Service</a>
+          </div>
+        </div>
       </footer>
     </div>
   );
