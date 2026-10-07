@@ -398,7 +398,7 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
           </div>
         </div>
         <div className="flex flex-col gap-3 border-t border-[var(--border)] py-5 text-sm text-[var(--color-text-muted)] sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} {PERSONAL_INFO.name}</p>
+          <p>© {new Date().getFullYear()} · All rights reserved.</p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <a href="/privacy-policy" onClick={() => setActiveSection('privacy-policy')} className="transition-colors hover:text-[var(--accent)]">
               Privacy Policy
