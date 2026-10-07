@@ -1,11 +1,27 @@
-export interface ProjectScreenshot {
+export interface ProjectVisual {
+  kind?: 'Product screenshot' | 'Original illustration' | 'Conceptual architecture diagram';
   title: string;
   description: string;
 }
 
-export interface ArchitectureLayer {
-  label: string;
-  items: string[];
+export interface ArchitectureStep {
+  name: string;
+  technology: string;
+  detail: string;
+  boundary?: string;
+}
+
+export interface ArchitectureFlow {
+  title: string;
+  description: string;
+  connections: string[];
+  steps: ArchitectureStep[];
+}
+
+export interface ArchitectureDecision {
+  title: string;
+  decision: string;
+  tradeoff: string;
 }
 
 export interface ReportRow {
@@ -26,9 +42,11 @@ export interface CaseStudySection {
 }
 
 export interface ProjectDetail {
-  screenshots: ProjectScreenshot[];
+  projectVisuals: ProjectVisual[];
   architectureSummary: string;
-  architecture: ArchitectureLayer[];
+  architecture: ArchitectureFlow[];
+  decisions: ArchitectureDecision[];
+  evidenceNote: string;
   reportIntro: string;
   reportRows: ReportRow[];
   reportExcerpt: string;
@@ -44,16 +62,53 @@ export interface ProjectDetail {
  */
 export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
   'samaale-general-trading': {
-    screenshots: [
-      { title: 'Commercial homepage', description: 'A high-signal landing experience introduces the company, its product categories, regional reach, and next actions without making visitors decode the business model.' },
+    projectVisuals: [
+      { kind: 'Original illustration', title: 'Samaale website concept illustration', description: 'A custom visual representation of the site’s commerce and logistics experience; this is not a browser screenshot.' },
       { title: 'Catalogue and logistics workflow', description: 'Structured product discovery and an interactive route map turn a broad wholesale operation into navigable, evidence-backed information.' },
     ],
     architectureSummary: 'The platform separates the customer-facing React application from the contact trust boundary: static assets and prerendered routes are delivered at the edge, while the only server-side workflow validates and protects inquiry submissions before sending them through Resend.',
     architecture: [
-      { label: 'Experience layer', items: ['React 19 + TypeScript', 'React Router 7 SPA routes', 'Tailwind CSS + Motion', 'English / Somali context'] },
-      { label: 'Interaction layer', items: ['Product and news portals', 'Leaflet logistics map', 'Search, filters, and WhatsApp CTAs', 'LazyRender + ErrorBoundary'] },
-      { label: 'Delivery layer', items: ['Vite manual chunks', 'Vercel edge hosting', 'Cloudflare Worker /api/contact', 'Resend + Turnstile + KV'] },
+      {
+        title: 'Product discovery → buyer inquiry',
+        description: 'The public catalogue stays in the customer-facing app; the final inquiry can hand off to WhatsApp.',
+        connections: ['HTTPS route', 'Search / filter state', 'Product detail', 'User handoff'],
+        steps: [
+          { name: 'Buyer', technology: 'Browser', detail: 'Arrives at a prerendered company or product route.' },
+          { name: 'Company site', technology: 'React 19 · React Router 7', detail: 'Renders the English/Somali experience and route-level content.' },
+          { name: 'Catalogue', technology: 'Typed product data', detail: 'Search and category filters narrow the 27+ product entries.' },
+          { name: 'Product view', technology: 'Portal modal', detail: 'Shows the selected product details without leaving the catalogue.' },
+          { name: 'Inquiry handoff', technology: 'WhatsApp link', detail: 'Carries the buyer to the company’s inquiry channel.' },
+        ],
+      },
+      {
+        title: 'Protected contact submission',
+        description: 'The browser collects the request, but email delivery and abuse controls stay behind the Cloudflare Worker boundary.',
+        connections: ['HTTPS + token', 'Validated payload', 'Rate-limit check', 'Email API'],
+        steps: [
+          { name: 'Contact form', technology: 'React client', detail: 'Collects the message and obtains a Turnstile response.' },
+          { name: 'Bot verification', technology: 'Cloudflare Turnstile', detail: 'The Worker verifies the challenge token server-side.', boundary: 'Browser → server trust boundary' },
+          { name: 'Request checks', technology: 'Cloudflare Worker', detail: 'Checks body size, JSON shape, required fields, types, and limits.' },
+          { name: 'Abuse limit', technology: 'SHA-256 identity + KV', detail: 'Applies a short-lived request limit before an email is sent.' },
+          { name: 'Delivery', technology: 'Resend', detail: 'Sends the validated inquiry using server-side credentials.', boundary: 'External email provider' },
+        ],
+      },
+      {
+        title: 'Build and deployment path',
+        description: 'Static routes and the contact API have separate deployment responsibilities.',
+        connections: ['TypeScript build', 'Prerendered output', 'Edge delivery'],
+        steps: [
+          { name: 'Source app', technology: 'React + TypeScript + Vite', detail: 'Builds route chunks and shared vendor bundles.' },
+          { name: 'Public pages', technology: 'Prerender + Vercel', detail: 'Serves static route output and browser assets through the edge.' },
+          { name: 'Contact API', technology: 'Cloudflare Worker', detail: 'Handles the protected inquiry path independently of the static app.', boundary: 'Separate server-side boundary' },
+          { name: 'Supporting services', technology: 'KV + Turnstile + Resend', detail: 'Provide rate limiting, challenge verification, and email delivery.' },
+        ],
+      },
     ],
+    decisions: [
+      { title: 'Keep catalogue data in the public app', decision: 'Use typed product content and client-side filtering for a mostly read-oriented catalogue.', tradeoff: 'Fast, simple browsing avoids a product API, while catalogue updates still require a content/build release.' },
+      { title: 'Isolate the contact trust boundary', decision: 'Send inquiries through a Cloudflare Worker instead of exposing email provider credentials in the browser.', tradeoff: 'The request path gains bot checks and rate limiting, but delivery depends on Worker, KV, Turnstile, and email provider availability.' },
+    ],
+    evidenceNote: 'Counts describe the published catalogue and implementation structure. No conversion-rate or performance improvement is claimed without analytics or a measured before/after baseline.',
     reportIntro: 'Public technical case-study snapshot based on the implementation documentation. Credentials, private customer data, and provider secrets are intentionally excluded.',
     reportRows: [
       { label: 'Source footprint', value: '30+ TS / TSX files', status: 'INFO' },
@@ -123,16 +178,52 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
     ],
   },
   'portfolio-platform': {
-    screenshots: [
-      { title: 'Product surface', description: 'A content-first portfolio connects identity, capabilities, case studies, writing, and contact in one navigable experience.' },
+    projectVisuals: [
+      { kind: 'Original illustration', title: 'Portfolio platform identity visual', description: 'A custom social-preview graphic for the site, not a browser screenshot.' },
       { title: 'Booking workflow', description: 'Availability, protected booking, Google Meet creation, and self-service management form a complete public workflow.' },
     ],
     architectureSummary: 'A prerendered React frontend shares route and content models with the build pipeline, while Vercel functions connect validated browser actions to external services and durable storage.',
     architecture: [
-      { label: 'Experience', items: ['React 19 pages', 'History-based routing', 'Lazy-loaded modules'] },
-      { label: 'Server workflows', items: ['Input validation', 'Turnstile checks', 'Google Calendar API'] },
-      { label: 'Delivery', items: ['Prerendered HTML', 'Sitemap / RSS / Atom', 'Vercel security headers'] },
+      {
+        title: 'Route content and page delivery',
+        description: 'The same route and content models feed prerendering and the browser application.',
+        connections: ['Build-time render', 'Static route files', 'Browser hydration'],
+        steps: [
+          { name: 'Site source', technology: 'React 19 + TypeScript', detail: 'Page modules, project data, Markdown posts, and route metadata.' },
+          { name: 'Build pipeline', technology: 'Vite + prerender scripts', detail: 'Generates route HTML, feeds, sitemap, and metadata.' },
+          { name: 'Static hosting', technology: 'Vercel', detail: 'Delivers prerendered pages and client assets with security headers.' },
+          { name: 'Visitor browser', technology: 'History routing + lazy pages', detail: 'Hydrates the selected route and loads page modules as needed.' },
+        ],
+      },
+      {
+        title: 'Calendar booking workflow',
+        description: 'Availability and booking actions pass through server functions before changing calendar or stored booking state.',
+        connections: ['Month / date query', 'Validated request + idempotency key', 'Calendar operation', 'Confirmation links'],
+        steps: [
+          { name: 'Booking UI', technology: 'React calendar', detail: 'Shows available dates, time slots, and the visitor’s timezone.' },
+          { name: 'API boundary', technology: 'Vercel functions', detail: 'Validates payloads, Turnstile tokens, rate limits, and duplicate requests.', boundary: 'Browser → server trust boundary' },
+          { name: 'Calendar', technology: 'Google Calendar API', detail: 'Checks availability and creates or updates the event.', boundary: 'External calendar provider' },
+          { name: 'Booking record', technology: 'Durable store', detail: 'Persists status and a protected self-service management token.' },
+          { name: 'Visitor confirmation', technology: 'Email + Meet / calendar links', detail: 'Returns the meeting and calendar details to the visitor.' },
+        ],
+      },
+      {
+        title: 'Contact form workflow',
+        description: 'The contact endpoint validates and protects submissions before triggering email delivery.',
+        connections: ['HTTPS + Turnstile', 'Shared validation', 'Rate-limit check', 'Email delivery'],
+        steps: [
+          { name: 'Contact form', technology: 'React client', detail: 'Collects name, email, and message.' },
+          { name: 'API validation', technology: 'Vercel function', detail: 'Checks origin, input shape, and field limits.', boundary: 'Browser → server trust boundary' },
+          { name: 'Abuse controls', technology: 'Turnstile + rate limit', detail: 'Rejects automated or excessive submissions.' },
+          { name: 'Notification', technology: 'Resend', detail: 'Sends the validated message using server-only credentials.', boundary: 'External email provider' },
+        ],
+      },
     ],
+    decisions: [
+      { title: 'Prerender public content', decision: 'Generate HTML for public routes while keeping interactive booking and contact workflows in server functions.', tradeoff: 'Direct links and page metadata are available immediately, while interactive state still requires the browser bundle.' },
+      { title: 'Use separate workflow APIs', decision: 'Keep availability, booking, management, and contact as distinct server-side operations.', tradeoff: 'The boundaries make validation and permissions clearer, but external calendar and email services remain dependencies.' },
+    ],
+    evidenceNote: 'Route, workflow, and control counts describe the current application and source. No booking-conversion or visitor-growth metric is claimed.',
     reportIntro: 'Public platform review snapshot. Credentials, booking tokens, provider responses, and personal submissions are excluded.',
     reportRows: [
       { label: 'Public experiences', value: '9+ routes and workflows', status: 'INFO' },
@@ -159,16 +250,39 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
     ],
   },
   'cyber-dashboard': {
-    screenshots: [
-      { title: 'Threat feed workspace', description: 'Live indicators, risk scores, and investigation shortcuts in one analyst view.' },
+    projectVisuals: [
+      { kind: 'Product screenshot', title: 'Threat feed workspace', description: 'Product screenshot showing live indicators, risk scores, and investigation shortcuts in one analyst view.' },
       { title: 'Investigation surface', description: 'The same workflow keeps IP, domain, and CVE context close to the analyst.' },
     ],
     architectureSummary: 'A server-mediated lookup flow keeps third-party credentials away from the browser while the client focuses on investigation and visualization.',
     architecture: [
-      { label: 'Analyst', items: ['Next.js UI', 'TanStack Query cache', 'Recharts visualizations'] },
-      { label: 'Application', items: ['Server-side API routes', 'Input validation', 'Security headers'] },
-      { label: 'Intelligence', items: ['AbuseIPDB', 'CIRCL CVE', 'VirusTotal / OTX / Shodan links'] },
+      {
+        title: 'Threat lookup request path',
+        description: 'The dashboard sends lookups through server routes so provider credentials are not shipped to the analyst’s browser.',
+        connections: ['Analyst query', 'Validated API request', 'Provider lookup', 'Cached response'],
+        steps: [
+          { name: 'Analyst', technology: 'Dashboard UI', detail: 'Enters an IP address, domain, or CVE identifier.' },
+          { name: 'Client data layer', technology: 'TanStack Query', detail: 'Tracks loading/error state and reuses cached results.' },
+          { name: 'Server route', technology: 'Next.js API route', detail: 'Validates the lookup and selects the relevant provider.', boundary: 'Browser → server trust boundary' },
+          { name: 'Threat data', technology: 'AbuseIPDB / CIRCL CVE', detail: 'Returns the supported reputation or vulnerability information.', boundary: 'External intelligence providers' },
+          { name: 'Investigation view', technology: 'Risk panels + Recharts', detail: 'Presents lookup results and context to the analyst.' },
+        ],
+      },
+      {
+        title: 'Analyst follow-up links',
+        description: 'External investigation tools are opened as user-initiated links rather than silently queried from the app.',
+        connections: ['Selected indicator', 'Safe outbound link'],
+        steps: [
+          { name: 'Result context', technology: 'IP / domain / CVE', detail: 'The analyst chooses a result to investigate further.' },
+          { name: 'External reference', technology: 'VirusTotal / OTX / Shodan', detail: 'Opens the selected provider’s public investigation page.', boundary: 'Navigation leaves this application' },
+        ],
+      },
     ],
+    decisions: [
+      { title: 'Proxy provider requests on the server', decision: 'Keep API credentials in server-side routes and return only the response needed by the UI.', tradeoff: 'This reduces browser exposure of credentials, while adding a server hop and dependence on provider quotas and availability.' },
+      { title: 'Separate lookup state from presentation', decision: 'Use TanStack Query for request/cache state and Recharts for visual summaries.', tradeoff: 'The interface can reuse results and show data clearly, but provider response quality still limits the investigation.' },
+    ],
+    evidenceNote: 'The listed lookup types, providers, and client/server boundaries describe the implemented dashboard. No claim of analyst time saved or detection accuracy is made.',
     reportIntro: 'Public verification snapshot from the production review. Values describe controls and scope, not private targets.',
     reportRows: [
       { label: 'Client-side secrets', value: 'No API keys shipped', status: 'PASS' },
@@ -195,16 +309,50 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
     ],
   },
   'gabay-keeper': {
-    screenshots: [
-      { title: 'Archive workspace', description: 'Structured poetry records with genre, alphabet, notes, and ownership context.' },
+    projectVisuals: [
+      { kind: 'Original illustration', title: 'Gabay Keeper workflow illustration', description: 'An original architecture illustration of local OCR, reader review, private archive storage, and export; it is not a product screenshot.' },
       { title: 'Preservation workflow', description: 'OCR and visual export support a private path from printed page to shareable artifact.' },
     ],
     architectureSummary: 'A client-led archive uses Firebase as the identity and document layer while OCR and card generation stay inside the user’s browser.',
     architecture: [
-      { label: 'Reader', items: ['React interface', 'Search and filters', 'Dark-mode reading'] },
-      { label: 'User-owned data', items: ['Firebase Auth', 'Firestore rules', 'Per-user documents'] },
-      { label: 'On-device tools', items: ['Tesseract.js OCR', 'html-to-image', 'Visual poem cards'] },
+      {
+        title: 'Sign-in and private archive',
+        description: 'Firebase Authentication establishes identity, and Firestore rules scope archive records to that identity.',
+        connections: ['Sign-in request', 'Authenticated session', 'Owner-scoped read/write'],
+        steps: [
+          { name: 'Reader', technology: 'React archive UI', detail: 'Uses search, genre filters, footnotes, and reading views.' },
+          { name: 'Identity', technology: 'Firebase Authentication', detail: 'Provides the signed-in user identity.' },
+          { name: 'Authorization', technology: 'Firestore Security Rules', detail: 'Checks ownership before a document read or write.', boundary: 'User identity → data authorization' },
+          { name: 'Archive records', technology: 'Cloud Firestore', detail: 'Stores structured poem metadata and user-owned documents.' },
+        ],
+      },
+      {
+        title: 'Printed page → local OCR → archive entry',
+        description: 'OCR runs in the browser; the visitor can review the extracted text before choosing what to save.',
+        connections: ['Local file selection', 'In-browser OCR', 'Reader review', 'Optional authenticated save'],
+        steps: [
+          { name: 'Printed page', technology: 'User-selected image', detail: 'The visitor chooses a page image in the browser.' },
+          { name: 'Text recognition', technology: 'Tesseract.js', detail: 'Processes the image locally in the browser.' , boundary: 'Local processing; no OCR upload' },
+          { name: 'Review', technology: 'Archive form', detail: 'The reader checks and edits the recognized text and metadata.' },
+          { name: 'Save', technology: 'Firestore + ownership rules', detail: 'Stores the entry only after an authenticated user action.' },
+        ],
+      },
+      {
+        title: 'Archive record → shareable card',
+        description: 'Card rendering is performed in the client and exported as a local image.',
+        connections: ['Selected poem', 'DOM-to-image render', 'Local export'],
+        steps: [
+          { name: 'Selected record', technology: 'Archive UI', detail: 'The reader chooses a poem card to prepare.' },
+          { name: 'Card rendering', technology: 'html-to-image', detail: 'Converts the card markup into an image in the browser.' },
+          { name: 'Export', technology: 'PNG download/share', detail: 'Creates a shareable image without a separate image server.' },
+        ],
+      },
     ],
+    decisions: [
+      { title: 'Run OCR on the device', decision: 'Use Tesseract.js in the browser so source page images are not sent to an OCR service.', tradeoff: 'The privacy boundary is smaller, while OCR speed and accuracy depend on the visitor’s device and source image.' },
+      { title: 'Enforce ownership in Firestore rules', decision: 'Apply per-user document checks at the data layer rather than relying only on hidden UI controls.', tradeoff: 'Each data path must keep the rules aligned with the document model and sign-in state.' },
+    ],
+    evidenceNote: 'The diagram separates local OCR from authenticated Firestore storage. “Local processing” applies to OCR and card rendering; saved archive records are stored in Firestore.',
     reportIntro: 'Sanitized privacy review for the archive workflow. Personal poems, account identifiers, and OCR output are excluded.',
     reportRows: [
       { label: 'Document ownership', value: 'Per-user rule enforced', status: 'PASS' },
@@ -231,16 +379,40 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
     ],
   },
   purpleprint: {
-    screenshots: [
-      { title: 'Split editor and preview', description: 'Markdown source and rendered document stay visible together on larger screens.' },
+    projectVisuals: [
+      { kind: 'Product screenshot', title: 'Split editor and preview', description: 'Product screenshot showing Markdown source and its rendered document side by side.' },
       { title: 'Print-ready workflow', description: 'The document moves from local parsing to Android’s native PDF and print surfaces.' },
     ],
     architectureSummary: 'PurplePrint has no network dependency: Markdown is parsed into an AST and laid out into a PDF entirely on the Android device.',
     architecture: [
-      { label: 'Editor', items: ['Jetpack Compose', 'Material 3', 'Adaptive phone/tablet UI'] },
-      { label: 'Document engine', items: ['Block parser', 'Inline parser', 'AST renderer'] },
-      { label: 'Device output', items: ['PdfDocument', 'PrintManager', 'Android print dialog'] },
+      {
+        title: 'Markdown source → PDF document',
+        description: 'The full document pipeline is local to the Android device and does not require a network service.',
+        connections: ['Editor state', 'Parsed structure', 'Page layout', 'Native document'],
+        steps: [
+          { name: 'Editor', technology: 'Jetpack Compose + Material 3', detail: 'Captures Markdown and shows adaptive phone/tablet editing UI.' },
+          { name: 'Parser', technology: 'Custom block + inline parser', detail: 'Converts Markdown syntax into a structured document model.' },
+          { name: 'Document tree', technology: 'AST', detail: 'Represents headings, paragraphs, lists, code, and inline spans.' },
+          { name: 'Layout engine', technology: 'Android canvas / page layout', detail: 'Measures content and places blocks across PDF pages.' },
+          { name: 'PDF output', technology: 'Android PdfDocument', detail: 'Writes the pages to a device-local PDF.', boundary: 'On-device; no network permission' },
+        ],
+      },
+      {
+        title: 'Preview and print handoff',
+        description: 'The editor preview and the native Android print flow consume the same parsed document model.',
+        connections: ['AST render', 'Preview layout', 'Print request'],
+        steps: [
+          { name: 'Parsed Markdown', technology: 'Shared AST', detail: 'Supplies content to both preview and export paths.' },
+          { name: 'Live preview', technology: 'Compose UI', detail: 'Shows the rendered document while the source is edited.' },
+          { name: 'Print / share', technology: 'PrintManager', detail: 'Hands the generated document to Android’s native print surface.' },
+        ],
+      },
     ],
+    decisions: [
+      { title: 'Keep the document engine on-device', decision: 'Use a custom parser and Android PDF APIs instead of uploading Markdown to a conversion service.', tradeoff: 'Documents stay local and the app works offline, while parser and pagination edge cases remain the app’s responsibility.' },
+      { title: 'Adapt editing to screen size', decision: 'Use a split editor/preview on larger layouts and a focused tab workflow on phones.', tradeoff: 'The same content model supports both layouts, with different navigation affordances by device size.' },
+    ],
+    evidenceNote: 'Offline behavior is supported by the declared permission posture and the local parser/PDF workflow. It does not imply a measured user-adoption or performance result.',
     reportIntro: 'Offline and privacy controls from the Android build review. Document content and device identifiers are intentionally absent.',
     reportRows: [
       { label: 'Internet permission', value: 'Not declared', status: 'PASS' },
@@ -267,16 +439,39 @@ export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
     ],
   },
   'infosec-course': {
-    screenshots: [
-      { title: 'Curriculum map', description: 'A chapter-based learning path connects fundamentals, labs, frameworks, and case studies.' },
+    projectVisuals: [
+      { kind: 'Original illustration', title: 'Curriculum structure illustration', description: 'An original map of the repository’s learning structure, from foundations through labs and reference material; it is not a screenshot.' },
       { title: 'Lab evidence format', description: 'Exercises and quizzes turn each security concept into a repeatable practice loop.' },
     ],
     architectureSummary: 'The course repository is structured as a learning system: concepts establish context, labs create evidence, and frameworks connect practice to industry language.',
     architecture: [
-      { label: 'Foundations', items: ['CIA triad', 'Risk and governance', 'Identity and access'] },
-      { label: 'Practice', items: ['Kali Linux labs', 'Nmap / Wireshark', 'Metasploit exercises'] },
-      { label: 'Evidence', items: ['Case studies', 'Policy templates', 'Chapter quizzes'] },
+      {
+        title: 'Learner path through the curriculum',
+        description: 'The repository moves from concepts to guided practice and then to evidence of understanding.',
+        connections: ['Read concepts', 'Apply in a lab', 'Check understanding'],
+        steps: [
+          { name: 'Learner', technology: 'GitHub repository', detail: 'Opens the versioned course material and follows the chapter order.' },
+          { name: 'Foundations', technology: 'Markdown chapters', detail: 'Introduces security concepts, terminology, and frameworks.' },
+          { name: 'Practice', technology: 'Guided Kali Linux labs', detail: 'Uses scoped exercises with tools such as Nmap, Wireshark, and Metasploit.' },
+          { name: 'Learning evidence', technology: 'Quizzes + case studies', detail: 'Connects lab activity to analysis and review.' },
+        ],
+      },
+      {
+        title: 'Practice → professional reference material',
+        description: 'Framework guides and templates give learners a bridge from exercises to common security work products.',
+        connections: ['Lab / incident context', 'Framework mapping', 'Reusable reference'],
+        steps: [
+          { name: 'Scenario', technology: 'Lab or case study', detail: 'Starts with a defined learning task or public incident.' },
+          { name: 'Reference mapping', technology: 'NIST / MITRE / OWASP / ISO / PCI DSS', detail: 'Connects the topic to recognized control or threat language.' },
+          { name: 'Work product', technology: 'Policy templates', detail: 'Provides a starting point for structured documentation.' },
+        ],
+      },
     ],
+    decisions: [
+      { title: 'Publish as a versioned repository', decision: 'Keep chapters, labs, quizzes, and templates together in an open repository rather than making the material depend on a hosted course platform.', tradeoff: 'The content is easy to inspect and fork, while learners need to manage their own sequence and lab environment.' },
+      { title: 'Pair each concept with practice', decision: 'Connect written foundations to guided labs, cases, and policy examples.', tradeoff: 'The wider curriculum is more useful as a learning path, but its 45–65 hour estimate is a scope estimate, not a measured completion time.' },
+    ],
+    evidenceNote: 'Chapter, case-study, framework, and template totals are counts of repository content. The estimated study duration is not a measured learner outcome.',
     reportIntro: 'Public curriculum audit snapshot. No student submissions, private notes, or machine-specific details are included.',
     reportRows: [
       { label: 'Chapters', value: '9 structured chapters', status: 'INFO' },

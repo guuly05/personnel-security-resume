@@ -163,6 +163,8 @@ export default function App() {
 
   const navItems = [
     { id: 'portfolio', label: 'Work', icon: 'layout' },
+    { id: 'experience', label: 'Experience', icon: 'briefcase' },
+    { id: 'skills', label: 'Skills', icon: 'sparkles' },
     { id: 'about', label: 'About', icon: 'user' },
     { id: 'blog', label: 'Notes', icon: 'book-open' },
     { id: 'book', label: 'Book a Call', icon: 'calendar-days' },
@@ -244,10 +246,11 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
           </button>
           <a
             href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf"
-            download="Guuleed-Maxamuud-Awabdi-CV.pdf"
+            target="_blank"
+            rel="noreferrer"
             className="rounded-md bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-[var(--color-bg)] transition hover:opacity-85 active:translate-y-px"
           >
-            Download CV
+            View my CV
           </a>
         </div>
 
@@ -305,10 +308,11 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
 
             <a
               href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf"
-              download="Guuleed-Maxamuud-Awabdi-CV.pdf"
+              target="_blank"
+              rel="noreferrer"
               className="mt-5 flex items-center justify-center gap-2 rounded-md bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-[var(--color-bg)] transition hover:opacity-85"
             >
-              <Icon name="download" size={16} /> Download CV
+              <Icon name="file-text" size={16} /> View my CV
             </a>
             <div className="mt-4 flex items-center justify-between border-t border-[var(--border)] pt-3">
               <button

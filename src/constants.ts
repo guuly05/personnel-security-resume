@@ -2,7 +2,7 @@ import { Achievement, Certificate, Course, Experience, Project, Skill } from './
 
 export const PERSONAL_INFO = {
   name: "Guuleed Maxmuud Aw Abdi",
-  title: "Full-Stack Developer & DevOps-minded Engineer",
+  title: "Full-Stack Developer | Cybersecurity & DevOps",
   location: "Hargeisa, Somaliland",
   phone: "+252 634406157",
   email: "guuleedmaxamuud40@gmail.com",

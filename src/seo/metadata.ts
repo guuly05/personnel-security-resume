@@ -39,34 +39,51 @@ export type PageMetadata = {
   };
 };
 
-const TITLE_SUFFIX = `${FULL_NAME} — Full-Stack Developer Portfolio`;
+const TITLE_SUFFIX = `${FULL_NAME} — Full-Stack Developer · Cybersecurity · DevOps`;
 
-const PROJECT_SEO: Record<string, { title: string; description: string }> = {
+const PROJECT_SEO: Record<string, { title: string; description: string; type: string; accent: string }> = {
   'samaale-general-trading': {
     title: 'Samaale General Trading Co. Website Case Study',
     description: 'A detailed case study of a bilingual React commerce and logistics platform covering catalogue architecture, interactive mapping, Cloudflare Workers security, performance, SEO, accessibility, and deployment.',
+    type: 'Bilingual commerce & logistics',
+    accent: '#168044',
   },
   'portfolio-platform': {
     title: 'Full-Stack Portfolio Platform Case Study',
     description: 'A production-oriented React portfolio platform case study covering typed architecture, protected APIs, Google Calendar booking, prerendered SEO, and measurable delivery results.',
+    type: 'Full-stack web platform',
+    accent: '#087e8b',
   },
   'cyber-dashboard': {
     title: 'Cyber Attack Monitoring Dashboard Case Study',
     description: 'Architecture, security controls, testing methodology, and measurable results from Guuleed Maxmuud Aw Abdi’s threat intelligence dashboard.',
+    type: 'Security engineering',
+    accent: '#287a55',
   },
   'gabay-keeper': {
     title: 'Gabay Keeper Case Study',
     description: 'A privacy-first Somali poetry archive case study covering ownership rules, local OCR, architecture, testing, and results.',
+    type: 'Private cultural archive',
+    accent: '#a26b31',
   },
   purpleprint: {
     title: 'PurplePrint Case Study',
     description: 'An offline Android Markdown editor case study covering the AST parser, native PDF engine, privacy posture, and testing approach.',
+    type: 'Offline Android application',
+    accent: '#7252a5',
   },
   'infosec-course': {
     title: 'Information Systems Security Course Case Study',
     description: 'An open cybersecurity curriculum case study covering learning architecture, practical labs, framework alignment, and outcomes.',
+    type: 'Open learning curriculum',
+    accent: '#386f8f',
   },
 };
+
+export function projectOgCardForSlug(slug: string) {
+  const project = PROJECT_SEO[slug];
+  return project ? { ...project, title: project.title.replace(/ Case Study$/, '') } : null;
+}
 
 const PERSON_SCHEMA = {
   '@type': 'Person',
@@ -75,9 +92,9 @@ const PERSON_SCHEMA = {
   alternateName: 'Guuleed Maxamuud',
   url: `${SITE_URL}/about`,
   email: 'guuleedmaxamuud40@gmail.com',
-  jobTitle: 'Full-Stack Developer & DevOps-minded Engineer',
+  jobTitle: 'Full-Stack Developer',
   description:
-    'Full-stack developer building interfaces, APIs, delivery workflows, automation, and secure software systems.',
+    'Full-stack developer building interfaces, APIs, delivery workflows, automation, and secure software systems, with strong cybersecurity and DevOps skills.',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Hargeisa',
@@ -104,16 +121,16 @@ const WEBSITE_SCHEMA = {
   '@id': `${SITE_URL}/#website`,
   url: `${SITE_URL}/`,
   name: `${FULL_NAME} Portfolio`,
-  description: 'Full-stack developer portfolio covering product builds, backend systems, DevOps workflows, automation, and secure engineering.',
+  description: 'Full-stack developer portfolio covering product builds, backend systems, cybersecurity, DevOps workflows, automation, and secure engineering.',
   inLanguage: 'en-US',
   publisher: { '@id': `${SITE_URL}/#person` },
 };
 
 const pageMeta: Record<Exclude<RouteKey, 'reflection' | 'surprise' | 'vault' | 'not-found'>, { title: string; description: string; path: string }> = {
   home: {
-    title: `${FULL_NAME} | Full-Stack Developer & DevOps Portfolio`,
+    title: `${FULL_NAME} | Full-Stack Developer — Cybersecurity & DevOps`,
     description:
-      `${FULL_NAME} — Full-stack developer based in Hargeisa, Somaliland. Explore frontend and backend builds, DevOps workflows, automation, secure engineering, and technical case studies.`,
+      `${FULL_NAME} — Full-stack developer based in Hargeisa, Somaliland, with strong cybersecurity and DevOps skills. Explore product builds, secure engineering, delivery workflows, and technical case studies.`,
     path: '/',
   },
   about: {
@@ -243,7 +260,7 @@ export function metadataForRoute(pathname: string, post?: BlogPost): PageMetadat
         canonicalPath: meta.path,
         robots: DEFAULT_ROBOTS,
         ogType: 'website',
-        ogImage: OG_IMAGE,
+        ogImage: `${SITE_URL}/portfolio/${slug}/og.png`,
         jsonLd: webPageSchema(meta),
       };
     }

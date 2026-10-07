@@ -1,5 +1,5 @@
 import React from 'react';
-import { ACHIEVEMENTS, CORE_SKILLS, PERSONAL_INFO } from '../constants.ts';
+import { ACHIEVEMENTS, PERSONAL_INFO } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
 import { BLOG_POSTS, formatBlogDate } from '../blog/posts.ts';
 import { CASE_STUDIES } from './Portfolio.tsx';
@@ -7,10 +7,24 @@ import { CASE_STUDIES } from './Portfolio.tsx';
 const featuredStudy = CASE_STUDIES[0];
 const supportingStudies = CASE_STUDIES.slice(1, 4);
 const latestPost = BLOG_POSTS[0];
+const heroSkills = ['Full-stack engineering', 'Cybersecurity', 'DevOps', 'React / TypeScript', 'Cloud deployment'];
+
+const clientQuoteDrafts = [
+  {
+    quote: 'I liked that Guuleed took time to understand our business. The website brings our products and services together in one place and gives customers a clear way to reach us.',
+    name: 'Esse Haji Ismail Mohamed',
+    role: 'General Manager · Samaale General Trading Co.',
+  },
+  {
+    quote: 'Guuleed built an agent to help me keep on top of online bookings for MGH. Running a cake business keeps me busy, so having support with booking requests is a real help.',
+    name: 'Hoodo Ahmad Abdi',
+    role: 'Owner · MGH online cake business',
+  },
+];
 
 const proofPoints = [
-  { value: '06', label: 'documented case studies', detail: 'Products, systems, security work, and learning.' },
-  { value: '03', label: 'engineering lanes', detail: 'Product software, delivery systems, and security.' },
+  { value: String(CASE_STUDIES.length).padStart(2, '0'), label: 'documented case studies', detail: 'Products, systems, security work, and learning.' },
+  { value: '03', label: 'engineering strengths', detail: 'Full-stack development, cybersecurity, and DevOps.' },
   { value: '02', label: 'languages shipped', detail: 'English and Somali experiences in production work.' },
   { value: '05+', label: 'security controls', detail: 'Validation, rate limits, headers, and abuse protection.' },
 ];
@@ -37,28 +51,21 @@ const HomePage: React.FC = () => (
         </h1>
 
         <p className="landing-lede">
-          I’m {PERSONAL_INFO.name.split(' ')[0]} — a developer working across React, backend systems,
-          automation, Linux, and security. I like turning complicated requirements into products people
-          can actually use.
+          I’m {PERSONAL_INFO.name.split(' ')[0]} — a full-stack developer who brings cybersecurity and
+          DevOps into how I design, build, secure, and ship useful software.
         </p>
 
         <div className="landing-actions">
-          <a href="/book" className="landing-button landing-button-primary">
-            Book a call with me <Icon name="calendar-days" size={16} />
+          <a href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf" target="_blank" rel="noreferrer" className="landing-button landing-button-primary">
+            View my CV <Icon name="file-text" size={16} />
           </a>
           <a href="/portfolio" className="landing-button landing-button-secondary">
-            View selected work <Icon name="arrow-up-right" size={16} />
-          </a>
-          <a href="/contact" className="landing-button landing-button-secondary">
-            Start a conversation <Icon name="arrow-right" size={16} />
-          </a>
-          <a href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf" download="Guuleed-Maxamuud-Awabdi-CV.pdf" className="landing-button landing-button-secondary">
-            Download CV <Icon name="download" size={16} />
+            See selected work <Icon name="arrow-up-right" size={16} />
           </a>
         </div>
 
         <div className="landing-skill-line" aria-label="Core skills">
-          {CORE_SKILLS.slice(0, 5).map((skill, index) => (
+          {heroSkills.map((skill, index) => (
             <React.Fragment key={skill}>
               {index > 0 && <span className="landing-skill-separator">·</span>}
               <span>{skill}</span>
@@ -69,7 +76,7 @@ const HomePage: React.FC = () => (
 
       <div className="landing-hero-aside">
         <div className="landing-aside-topline">
-          <span>Currently building</span>
+          <span>Current focus</span>
           <span className="landing-aside-index">/ 01</span>
         </div>
         <div className="landing-aside-visual">
@@ -78,13 +85,13 @@ const HomePage: React.FC = () => (
           <div className="landing-aside-crosshair landing-aside-crosshair-one" />
           <div className="landing-aside-crosshair landing-aside-crosshair-two" />
           <div className="landing-aside-center">
-            <span className="landing-aside-center-label">system / view</span>
-            <strong>build</strong>
-            <span>→ ship → learn</span>
+            <span className="landing-aside-center-label">open to roles</span>
+            <strong>full-stack</strong>
+            <span>→ cybersecurity → DevOps</span>
           </div>
         </div>
         <div className="landing-aside-caption">
-          <p>Software that feels considered on the surface and dependable underneath.</p>
+          <p>Looking for full-stack developer opportunities where secure engineering and reliable delivery matter.</p>
           <span>Scroll to explore ↓</span>
         </div>
       </div>
@@ -102,22 +109,22 @@ const HomePage: React.FC = () => (
       </div>
     </section>
 
-    <section className="landing-booking" aria-label="Book a call with Guuleed">
+    <section className="landing-booking" aria-label="Current job search focus">
       <div className="landing-booking-label">
-        <span className="landing-section-index">/ make a plan</span>
-        <span className="landing-booking-status"><span className="landing-booking-status-dot" /> Google Meet available</span>
+        <span className="landing-section-index">/ current focus</span>
+        <span className="landing-booking-status"><span className="landing-booking-status-dot" /> Open to opportunities</span>
       </div>
       <div className="landing-booking-copy">
-        <h2>Have a problem worth a focused conversation?</h2>
-        <p>Book a 30-minute call to talk through what you are building, fixing, or trying to secure. Pick a time that works and I’ll send the invite.</p>
+        <h2>Looking for my next full-stack developer role.</h2>
+        <p>I’m interested in teams building useful products with secure engineering and dependable delivery built into the work.</p>
       </div>
       <div className="landing-booking-meta">
-        <div><span>Availability</span><strong>Thursday + Friday</strong></div>
-        <div><span>Timezone</span><strong>Africa/Nairobi · EAT</strong></div>
-        <div><span>Format</span><strong>30-minute Google Meet</strong></div>
+        <div><span>Role</span><strong>Full-stack developer</strong></div>
+        <div><span>Strengths</span><strong>Cybersecurity · DevOps</strong></div>
+        <div><span>Location</span><strong>Hargeisa · Remote ready</strong></div>
       </div>
-      <a href="/book" className="landing-button landing-button-primary">
-        Choose a time <Icon name="arrow-up-right" size={16} />
+      <a href="/contact" className="landing-button landing-button-primary">
+        Contact me <Icon name="arrow-up-right" size={16} />
       </a>
     </section>
 
@@ -190,6 +197,28 @@ const HomePage: React.FC = () => (
       </div>
     </section>
 
+    <section className="landing-client-quotes" aria-labelledby="client-quotes-title">
+      <div className="landing-section-heading">
+        <div>
+          <span className="landing-section-index">/ client quote drafts</span>
+          <h2 id="client-quotes-title">The work, in their words.</h2>
+        </div>
+        <p>Draft wording for each client to review. These are not verbatim or approved statements.</p>
+      </div>
+      <div className="landing-client-quote-grid">
+        {clientQuoteDrafts.map((item) => (
+          <figure className="landing-client-quote-card" key={item.name}>
+            <span className="landing-client-quote-status">Draft · client approval pending</span>
+            <blockquote>“{item.quote}”</blockquote>
+            <figcaption>
+              <strong>{item.name}</strong>
+              <span>{item.role}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
     <section className="landing-notes-grid">
       <div className="landing-notes-intro">
         <span className="landing-section-index">03 / the person behind it</span>
@@ -249,12 +278,12 @@ const HomePage: React.FC = () => (
     <section className="landing-closing">
       <div>
         <span className="landing-section-index">05 / next move</span>
-        <h2>Have a real problem worth working through?</h2>
+        <h2>Let’s build useful software.</h2>
       </div>
       <div className="landing-closing-action">
-        <p>Tell me what you are building, fixing, or trying to understand.</p>
-        <a href="/book" className="landing-button landing-button-primary">Book a call <Icon name="calendar-days" size={16} /></a>
-        <a href="/contact" className="landing-button landing-button-secondary">Send a message <Icon name="arrow-right" size={16} /></a>
+        <p>See how I work, or get in touch about a full-stack opportunity.</p>
+        <a href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf" target="_blank" rel="noreferrer" className="landing-button landing-button-primary">View my CV <Icon name="file-text" size={16} /></a>
+        <a href="/contact" className="landing-button landing-button-secondary">Contact me <Icon name="arrow-right" size={16} /></a>
       </div>
     </section>
 
