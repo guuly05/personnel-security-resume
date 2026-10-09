@@ -60,6 +60,7 @@ The application combines several public experiences behind one consistent visual
 | Experience | Work history and measurable engineering/security outcomes | `src/pages/Experience.tsx`, `src/constants.ts` |
 | Learning | Certificates and external verification links | `src/pages/Certificates.tsx`, `src/constants.ts` |
 | Selected work | Project overview and detailed case studies | `src/pages/Portfolio.tsx`, `src/pages/ProjectDetail.tsx` |
+| Systems atlas | Cross-project view of engineering practices, evidence, and trade-offs | `src/pages/SystemsAtlas.tsx`, `src/data/systemsAtlas.ts` |
 | Book a call | Calendar availability, Google Meet booking, management, cancellation, and rescheduling | `src/pages/BookCall.tsx`, `api/*.ts` |
 | Blog | Searchable technical article catalog and Markdown reader | `src/pages/Blog.tsx`, `src/blog/` |
 | Contact | Protected contact form and direct contact alternatives | `src/pages/Contact.tsx`, `api/contact.ts` |
@@ -252,6 +253,7 @@ The page modules are intentionally focused on their public experience:
 | `Certificates.tsx` | Certificate cards and verification links |
 | `Portfolio.tsx` | Case-study catalog and project selection |
 | `ProjectDetail.tsx` | Slug-based project case study detail and not-found handling |
+| `SystemsAtlas.tsx` | Cross-project engineering practice explorer with project evidence and trade-offs |
 | `BookCall.tsx` | Availability calendar, slot selection, protected booking form, and management UI |
 | `Blog.tsx` | Catalog search/tag filtering, article reader, focus mode, progress, lightbox, related posts |
 | `Contact.tsx` | Contact form, Turnstile integration, status feedback, and fallback mail link |
@@ -301,6 +303,7 @@ The application has a small route model in `src/routing.ts`, while `src/ssr/Stat
 | `/certificates` | Credentials | Indexable |
 | `/portfolio` | Portfolio catalog | Indexable |
 | `/portfolio/:slug` | Project case study | Generated from `CASE_STUDIES` |
+| `/systems` | Cross-project engineering systems atlas | Indexable |
 | `/book` | Book a call | Public application flow |
 | `/blog` | Blog catalog | Indexable |
 | `/blog/:slug` | Individual Markdown article | Indexable if slug exists |
