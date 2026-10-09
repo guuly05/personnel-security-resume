@@ -161,7 +161,7 @@ const pageMeta: Record<Exclude<RouteKey, 'reflection' | 'surprise' | 'vault' | '
   },
   systems: {
     title: `Engineering Systems Atlas | ${TITLE_SUFFIX}`,
-    description: `Trace how ${FULL_NAME} applies security boundaries, local data processing, accessible interaction, and delivery decisions across documented projects.`,
+    description: `Explore and compare ${FULL_NAME}'s project architectures, including security boundaries, local data processing, accessible interaction, deployment paths, and engineering trade-offs.`,
     path: '/systems',
   },
   book: {
