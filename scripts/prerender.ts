@@ -12,7 +12,7 @@ const distRoot = join(projectRoot, 'dist');
 const template = readFileSync(join(distRoot, 'index.html'), 'utf8');
 
 const routes = [
-  '/', '/about', '/skills', '/experience', '/certificates', '/portfolio', '/book', '/blog', '/contact', '/recap',
+  '/', '/about', '/skills', '/experience', '/certificates', '/portfolio', '/systems', '/book', '/blog', '/contact', '/recap',
   ...CASE_STUDIES.map((study) => `/portfolio/${study.id}`),
   ...BLOG_POSTS.map((post) => `/blog/${post.slug}`),
 ];
