@@ -3,8 +3,12 @@ import { motion, useReducedMotion } from 'motion/react';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { CASE_STUDIES } from './Portfolio.tsx';
 import { SYSTEMS_PRACTICES, type SystemsEvidence, type SystemsPractice } from '../data/systemsAtlas.ts';
+import SystemComparison, { type ProjectPair } from './SystemComparison.tsx';
 
 const firstPractice = SYSTEMS_PRACTICES[0];
+const DEFAULT_COMPARISON: ProjectPair = ['purpleprint', 'gabay-keeper'];
+
+type AtlasView = 'practice' | 'compare';
 
 function practiceFromLocation(): string {
   if (typeof window === 'undefined') return firstPractice.id;
@@ -12,6 +16,15 @@ function practiceFromLocation(): string {
   return SYSTEMS_PRACTICES.some((practice) => practice.id === requestedId)
     ? requestedId
     : firstPractice.id;
+}
+
+function comparisonFromLocation(): ProjectPair | null {
+  if (typeof window === 'undefined') return null;
+  const ids = new URLSearchParams(window.location.search).get('compare')?.split(',');
+  if (!ids || ids.length !== 2 || ids[0] === ids[1]) return null;
+  return ids.every((id) => CASE_STUDIES.some((study) => study.id === id))
+    ? [ids[0], ids[1]]
+    : null;
 }
 
 function EvidenceCard({
@@ -70,6 +83,8 @@ function EvidenceField({ label, value, accent = false }: { label: string; value:
 
 export default function SystemsAtlasPage() {
   const [activePracticeId, setActivePracticeId] = useState(firstPractice.id);
+  const [atlasView, setAtlasView] = useState<AtlasView>('practice');
+  const [projectPair, setProjectPair] = useState<ProjectPair>(DEFAULT_COMPARISON);
   const shouldReduceMotion = useReducedMotion();
   const activePractice = useMemo(
     () => SYSTEMS_PRACTICES.find((practice) => practice.id === activePracticeId) ?? firstPractice,
@@ -80,21 +95,49 @@ export default function SystemsAtlasPage() {
     .filter((study) => study !== undefined);
 
   useEffect(() => {
-    const syncPracticeFromLocation = () => setActivePracticeId(practiceFromLocation());
-    syncPracticeFromLocation();
-    window.addEventListener('hashchange', syncPracticeFromLocation);
-    window.addEventListener('popstate', syncPracticeFromLocation);
+    const syncAtlasFromLocation = () => {
+      setActivePracticeId(practiceFromLocation());
+      const comparison = comparisonFromLocation();
+      if (comparison) {
+        setProjectPair(comparison);
+        setAtlasView('compare');
+      } else {
+        setAtlasView('practice');
+      }
+    };
+    syncAtlasFromLocation();
+    window.addEventListener('hashchange', syncAtlasFromLocation);
+    window.addEventListener('popstate', syncAtlasFromLocation);
     return () => {
-      window.removeEventListener('hashchange', syncPracticeFromLocation);
-      window.removeEventListener('popstate', syncPracticeFromLocation);
+      window.removeEventListener('hashchange', syncAtlasFromLocation);
+      window.removeEventListener('popstate', syncAtlasFromLocation);
     };
   }, []);
 
-  const selectPractice = (id: string) => {
+  const updateLocation = (view: AtlasView, pair = projectPair, practiceId = activePracticeId) => {
     const url = new URL(window.location.href);
-    url.hash = id;
-    window.history.pushState({ ...window.history.state, systemsPractice: id }, '', `${url.pathname}${url.search}${url.hash}`);
+    if (view === 'compare') url.searchParams.set('compare', pair.join(','));
+    else url.searchParams.delete('compare');
+    url.hash = practiceId;
+    window.history.pushState({ ...window.history.state, systemsView: view }, '', `${url.pathname}${url.search}${url.hash}`);
+  };
+
+  const selectPractice = (id: string) => {
+    updateLocation('practice', projectPair, id);
     setActivePracticeId(id);
+  };
+
+  const selectView = (view: AtlasView) => {
+    updateLocation(view);
+    setAtlasView(view);
+  };
+
+  const selectProject = (side: 0 | 1, projectId: string) => {
+    const nextPair: ProjectPair = [...projectPair];
+    nextPair[side] = projectId;
+    updateLocation('compare', nextPair);
+    setProjectPair(nextPair);
+    setAtlasView('compare');
   };
 
   return (
@@ -110,7 +153,7 @@ export default function SystemsAtlasPage() {
               The decisions behind <span className="text-accent">the systems.</span>
             </h1>
             <p className="mt-5 max-w-3xl text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg">
-              Follow a single engineering practice across different products. Each connection is grounded in a documented project decision, its context, and the trade-off it introduced.
+              Trace one engineering practice across projects, or compare two system architectures side by side. Each view is grounded in documented decisions, boundaries, and trade-offs.
             </p>
           </div>
 
@@ -128,6 +171,32 @@ export default function SystemsAtlasPage() {
         <div className="pointer-events-none absolute -bottom-24 right-[-4rem] h-64 w-64 rounded-full border border-[var(--accent)]/10 sm:h-80 sm:w-80" aria-hidden="true" />
       </header>
 
+      <section className="flex flex-col gap-4 border-b border-[var(--border)] pb-5 sm:flex-row sm:items-end sm:justify-between" aria-label="Choose atlas view">
+        <div>
+          <p className="landing-section-index mb-1 font-mono text-[10px] uppercase tracking-[0.28em]">Explore the work</p>
+          <h2 className="text-xl font-bold tracking-tight sm:text-2xl">Trace a practice or compare two systems.</h2>
+        </div>
+        <div role="group" aria-label="Atlas view" className="inline-flex w-fit border border-[var(--border)] bg-[var(--surface)] p-1">
+          <button
+            type="button"
+            aria-pressed={atlasView === 'practice'}
+            onClick={() => selectView('practice')}
+            className={`min-h-10 px-3 py-2 text-xs font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--accent)] sm:px-4 ${atlasView === 'practice' ? 'bg-[var(--accent-soft)] text-[var(--accent)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+          >
+            By practice
+          </button>
+          <button
+            type="button"
+            aria-pressed={atlasView === 'compare'}
+            onClick={() => selectView('compare')}
+            className={`min-h-10 px-3 py-2 text-xs font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--accent)] sm:px-4 ${atlasView === 'compare' ? 'bg-[var(--accent-soft)] text-[var(--accent)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}
+          >
+            Compare projects
+          </button>
+        </div>
+      </section>
+
+      {atlasView === 'practice' ? <>
       <section aria-labelledby="systems-lens-heading" className="space-y-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -209,6 +278,13 @@ export default function SystemsAtlasPage() {
           </div>
         </motion.div>
       </section>
+      </> : (
+        <SystemComparison
+          key={projectPair.join(':')}
+          projectIds={projectPair}
+          onProjectChange={selectProject}
+        />
+      )}
 
       <footer className="flex flex-col gap-5 border-t border-[var(--border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-2xl text-xs leading-relaxed text-[var(--color-text-muted)]">
