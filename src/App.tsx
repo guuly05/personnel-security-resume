@@ -23,6 +23,7 @@ const ExperiencePage = lazy(() => import('./pages/Experience.tsx'));
 const CertificatesPage = lazy(() => import('./pages/Certificates.tsx'));
 const PortfolioPage = lazy(() => import('./pages/Portfolio.tsx'));
 const ProjectDetailPage = lazy(() => import('./pages/ProjectDetail.tsx'));
+const SystemsAtlasPage = lazy(() => import('./pages/SystemsAtlas.tsx'));
 const BlogPage = lazy(() => import('./pages/Blog.tsx'));
 const ContactPage = lazy(() => import('./pages/Contact.tsx'));
 const BookCallPage = lazy(() => import('./pages/BookCall.tsx'));
@@ -357,6 +358,7 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
               {activeSection === 'certificates' && <CertificatesPage />}
               {activeSection === 'portfolio' && <PortfolioPage />}
               {activeSection === 'portfolio-project' && <ProjectDetailPage slug={activeProjectSlug ?? ''} />}
+              {activeSection === 'systems' && <SystemsAtlasPage />}
               {activeSection === 'book' && <BookCallPage />}
               {activeSection === 'blog' && (
                 <BlogPage

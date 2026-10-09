@@ -4,7 +4,7 @@ import { BLOG_POSTS } from '../src/blog/posts.ts';
 import { SITE_URL } from '../src/seo/metadata.ts';
 
 const root = join(process.cwd(), 'dist');
-const routes = ['/', '/about', '/skills', '/experience', '/certificates', '/portfolio', '/book', '/blog', '/contact', ...BLOG_POSTS.map((post) => `/blog/${post.slug}`)];
+const routes = ['/', '/about', '/skills', '/experience', '/certificates', '/portfolio', '/systems', '/book', '/blog', '/contact', ...BLOG_POSTS.map((post) => `/blog/${post.slug}`)];
 const failures: string[] = [];
 
 function fileForRoute(route: string) {

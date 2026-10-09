@@ -8,6 +8,7 @@ export type Section =
   | 'certificates'
   | 'portfolio'
   | 'portfolio-project'
+  | 'systems'
   | 'book'
   | 'blog'
   | 'contact'
@@ -25,6 +26,7 @@ export const NAVIGABLE_SECTIONS: readonly NavigableSection[] = [
   'experience',
   'certificates',
   'portfolio',
+  'systems',
   'book',
   'blog',
   'contact',

@@ -32,6 +32,7 @@ const proofPoints = [
 const exploreLinks = [
   { href: '/skills', label: 'Capabilities', detail: 'The tools behind the work' },
   { href: '/experience', label: 'Experience', detail: 'Where I have put them to use' },
+  { href: '/systems', label: 'Systems atlas', detail: 'How engineering decisions connect across projects' },
   { href: '/certificates', label: 'Learning', detail: 'What I am sharpening next' },
   { href: '/blog', label: 'Notes', detail: 'Ideas, systems, and things I am learning' },
 ];

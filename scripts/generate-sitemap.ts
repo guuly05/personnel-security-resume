@@ -6,7 +6,7 @@ import { CASE_STUDIES } from '../src/pages/Portfolio.tsx';
 
 const projectRoot = process.cwd();
 const today = new Date().toISOString().slice(0, 10);
-const staticRoutes = ['/', '/about', '/skills', '/experience', '/certificates', '/portfolio', '/book', '/blog', '/contact'];
+const staticRoutes = ['/', '/about', '/skills', '/experience', '/certificates', '/portfolio', '/systems', '/book', '/blog', '/contact'];
 
 function xml(value: string) {
   return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');

@@ -635,6 +635,12 @@ const PortfolioPage: React.FC = () => {
               <p className="text-[9px] uppercase tracking-[0.25em] text-[var(--color-text-muted)] font-semibold">Open-source projects</p>
             </div>
           </div>
+
+          <div className="border-t border-[var(--border)] pt-4">
+            <a href="/systems" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[var(--accent)] transition-colors hover:text-[var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]">
+              Trace engineering decisions across projects <Icon name="arrow-up-right" size={15} />
+            </a>
+          </div>
         </div>
       </section>
 
