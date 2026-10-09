@@ -14,6 +14,7 @@ export type RouteKey =
   | 'experience'
   | 'certificates'
   | 'portfolio'
+  | 'systems'
   | 'book'
   | 'blog'
   | 'contact'
@@ -157,6 +158,11 @@ const pageMeta: Record<Exclude<RouteKey, 'reflection' | 'surprise' | 'vault' | '
     title: `Selected Work & Case Studies | ${TITLE_SUFFIX}`,
     description: `Explore ${FULL_NAME}'s product builds, full-stack projects, privacy-first tools, security engineering work, and documented case studies.`,
     path: '/portfolio',
+  },
+  systems: {
+    title: `Engineering Systems Atlas | ${TITLE_SUFFIX}`,
+    description: `Trace how ${FULL_NAME} applies security boundaries, local data processing, accessible interaction, and delivery decisions across documented projects.`,
+    path: '/systems',
   },
   book: {
     title: `Book a Project Call | ${FULL_NAME}`,
