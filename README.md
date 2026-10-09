@@ -60,7 +60,7 @@ The application combines several public experiences behind one consistent visual
 | Experience | Work history and measurable engineering/security outcomes | `src/pages/Experience.tsx`, `src/constants.ts` |
 | Learning | Certificates and external verification links | `src/pages/Certificates.tsx`, `src/constants.ts` |
 | Selected work | Project overview and detailed case studies | `src/pages/Portfolio.tsx`, `src/pages/ProjectDetail.tsx` |
-| Systems atlas | Cross-project view of engineering practices, evidence, and trade-offs | `src/pages/SystemsAtlas.tsx`, `src/data/systemsAtlas.ts` |
+| Systems atlas | Cross-project practice explorer and side-by-side architecture comparison | `src/pages/SystemsAtlas.tsx`, `src/pages/SystemComparison.tsx`, `src/data/systemsAtlas.ts`, `src/data/projectDetails.ts` |
 | Book a call | Calendar availability, Google Meet booking, management, cancellation, and rescheduling | `src/pages/BookCall.tsx`, `api/*.ts` |
 | Blog | Searchable technical article catalog and Markdown reader | `src/pages/Blog.tsx`, `src/blog/` |
 | Contact | Protected contact form and direct contact alternatives | `src/pages/Contact.tsx`, `api/contact.ts` |
@@ -253,7 +253,8 @@ The page modules are intentionally focused on their public experience:
 | `Certificates.tsx` | Certificate cards and verification links |
 | `Portfolio.tsx` | Case-study catalog and project selection |
 | `ProjectDetail.tsx` | Slug-based project case study detail and not-found handling |
-| `SystemsAtlas.tsx` | Cross-project engineering practice explorer with project evidence and trade-offs |
+| `SystemsAtlas.tsx` | Cross-project practice explorer, shareable lens and comparison state |
+| `SystemComparison.tsx` | Responsive project architecture, trust-boundary, and trade-off comparison |
 | `BookCall.tsx` | Availability calendar, slot selection, protected booking form, and management UI |
 | `Blog.tsx` | Catalog search/tag filtering, article reader, focus mode, progress, lightbox, related posts |
 | `Contact.tsx` | Contact form, Turnstile integration, status feedback, and fallback mail link |
@@ -312,6 +313,8 @@ The application has a small route model in `src/routing.ts`, while `src/ssr/Stat
 | `/terms-of-service` | Terms of service | Public legal page |
 | `/recap` | Annual reflection | `noindex, follow` |
 | `/404` | Not-found document | `noindex, follow` |
+
+The systems atlas accepts a shareable `compare` query parameter containing two project IDs, for example `/systems?compare=purpleprint%2Cgabay-keeper`. Architecture flows and documented decisions are drawn from `PROJECT_DETAILS`.
 
 ### Legacy aliases
 
