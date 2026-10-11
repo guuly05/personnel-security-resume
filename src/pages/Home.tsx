@@ -3,7 +3,6 @@ import { PERSONAL_INFO } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
 import { BLOG_POSTS, formatBlogDate } from '../blog/posts.ts';
 import { CASE_STUDIES } from './Portfolio.tsx';
-import './Home.css';
 
 const featuredStudy = CASE_STUDIES[0];
 const supportingStudies = CASE_STUDIES.slice(1, 3);
