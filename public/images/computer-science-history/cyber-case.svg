@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" role="img" aria-labelledby="title desc">
+  <title id="title">The 1986 to 1988 Cuckoo's Egg investigation</title><desc id="desc">A defensive timeline showing an accounting discrepancy, a monitored intrusion crossing networks, and the public investigation report.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101622"/><stop offset="1" stop-color="#24253a"/></linearGradient><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#b5bdde" stroke-opacity=".07"/></pattern></defs>
+  <rect width="1200" height="600" rx="20" fill="url(#bg)"/><rect width="1200" height="600" rx="20" fill="url(#grid)"/>
+  <text x="72" y="74" fill="#efb47e" font-family="Arial,sans-serif" font-size="16" letter-spacing="3">INCIDENT RESPONSE · 1986–1988</text>
+  <text x="72" y="125" fill="#f3f1ed" font-family="Georgia,serif" font-size="37">A 75-cent discrepancy became a network investigation</text>
+  <path d="M167 278H1033" fill="none" stroke="#8a98d1" stroke-width="5" stroke-linecap="round"/>
+  <g fill="#151e30" stroke="#efb47e" stroke-width="4"><circle cx="196" cy="278" r="17"/><circle cx="590" cy="278" r="17"/><circle cx="984" cy="278" r="17"/></g>
+  <g fill="#efb47e" font-family="monospace" font-size="20"><text x="166" y="235">1986</text><text x="560" y="235">1987</text><text x="954" y="235">1988</text></g>
+  <g fill="#e8edf1" font-family="Arial,sans-serif" font-size="18" font-weight="700"><text x="117" y="334">ANOMALY</text><text x="512" y="334">TRACE</text><text x="882" y="334">DISCLOSURE</text></g>
+  <g fill="#b6c1d0" font-family="Arial,sans-serif" font-size="16"><text x="117" y="373"><tspan x="117" dy="0">Cliff Stoll spots a small</tspan><tspan x="117" dy="24">accounting mismatch at</tspan><tspan x="117" dy="24">Lawrence Berkeley Lab.</tspan></text><text x="512" y="373"><tspan x="512" dy="0">Careful logging follows the</tspan><tspan x="512" dy="24">intruder across gateways,</tspan><tspan x="512" dy="24">systems, and an ocean link.</tspan></text><text x="882" y="373"><tspan x="882" dy="0">The case enters the public</tspan><tspan x="882" dy="24">record through Stoll's paper;</tspan><tspan x="882" dy="24">a book follows in 1989.</tspan></text></g>
+  <g fill="none" stroke="#7f8bbd" stroke-width="2" opacity=".75"><path d="M197 278v-40h86v-32h78"/><path d="M590 278v-48h84v-33h79"/><path d="M984 278v-47h95v-38"/></g>
+  <text x="72" y="530" fill="#8998ad" font-family="Arial,sans-serif" font-size="15">A historical case study in detection and investigation — not a “first hack” claim.</text>
+</svg>

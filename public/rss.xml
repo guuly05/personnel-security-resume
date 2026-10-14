@@ -5,8 +5,23 @@
     <link>https://www.guuleedmaxamuud.dev/blog</link>
     <description>Security research, vulnerability analysis, and technical writing by Guuleed Maxmuud Aw Abdi.</description>
     <language>en-us</language>
-    <lastBuildDate>2026-10-06T12:00:00.000Z</lastBuildDate>
+    <lastBuildDate>2026-10-14T12:00:00.000Z</lastBuildDate>
     <atom:link href="https://www.guuleedmaxamuud.dev/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Long History of Computer Science: From Turing’s Machine to the Age of AI</title>
+      <link>https://www.guuleedmaxamuud.dev/blog/a-long-history-of-computer-science-from-turing-to-ai</link>
+      <guid isPermaLink="true">https://www.guuleedmaxamuud.dev/blog/a-long-history-of-computer-science-from-turing-to-ai</guid>
+      <pubDate>2026-10-14T12:00:00.000Z</pubDate>
+      <description><![CDATA[A richly illustrated journey through the people, ideas, machines, networks, and arguments that made computing possible—and keep changing what it means.
+
+Tags: Computer science · Technology history · Internet · Artificial intelligence · Cybersecurity
+Last updated: October 14, 2026]]></description>
+      <category>Computer science</category>
+      <category>Technology history</category>
+      <category>Internet</category>
+      <category>Artificial intelligence</category>
+      <category>Cybersecurity</category>
+    </item>
     <item>
       <title>The AI-Era Developer: Faster Code, Stronger Fundamentals</title>
       <link>https://www.guuleedmaxamuud.dev/blog/ai-era-developer-fundamentals</link>

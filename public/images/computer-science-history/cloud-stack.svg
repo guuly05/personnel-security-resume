@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">How cloud computing fits together</title><desc id="desc">Users and applications connect over networks and APIs to shared compute, storage, and databases running in distributed data centers.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#081622"/><stop offset="1" stop-color="#102c36"/></linearGradient><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#b2d6d4" stroke-opacity=".06"/></pattern></defs>
+  <rect width="1200" height="650" rx="20" fill="url(#bg)"/><rect width="1200" height="650" rx="20" fill="url(#grid)"/>
+  <text x="72" y="73" fill="#78d4c4" font-family="Arial,sans-serif" font-size="16" letter-spacing="3">FROM OWNED HARDWARE TO ON-DEMAND SERVICE</text>
+  <text x="72" y="125" fill="#f3f1ed" font-family="Georgia,serif" font-size="38">The cloud is a networked system of real machines</text>
+  <g font-family="Arial,sans-serif" text-anchor="middle">
+    <g transform="translate(120 230)"><rect width="210" height="118" rx="16" fill="#172f3c" stroke="#78909c" stroke-width="2"/><text x="105" y="47" fill="#eaf2ee" font-size="23" font-weight="700">People &amp; apps</text><text x="105" y="81" fill="#aabec2" font-size="15">browser · phone · service</text></g>
+    <g transform="translate(495 230)"><rect width="210" height="118" rx="16" fill="#17363c" stroke="#72c8bc" stroke-width="2"/><text x="105" y="47" fill="#eaf2ee" font-size="23" font-weight="700">API &amp; network</text><text x="105" y="81" fill="#aabec2" font-size="15">identity · routing · control</text></g>
+    <g transform="translate(870 230)"><rect width="210" height="118" rx="16" fill="#1c3047" stroke="#94a9f2" stroke-width="2"/><text x="105" y="47" fill="#eaf2ee" font-size="23" font-weight="700">Cloud services</text><text x="105" y="81" fill="#aabec2" font-size="15">compute · storage · data</text></g>
+    <g stroke="#7acfc0" stroke-width="3" fill="none"><path d="M340 289h135"/><path d="M713 289h135"/><path d="M465 279l10 10-10 10"/><path d="M838 279l10 10-10 10"/></g>
+    <g transform="translate(180 435)"><rect width="840" height="110" rx="16" fill="#101e2a" stroke="#526a79" stroke-width="2"/><text x="420" y="43" fill="#eaf2ee" font-size="21" font-weight="700">Distributed data centers</text><text x="420" y="76" fill="#aabec2" font-size="15">physical servers · networks · electricity · cooling · people who operate them</text></g>
+    <path d="M975 349v44q0 18-18 18H244q-18 0-18 18" fill="none" stroke="#8c9be0" stroke-width="2" stroke-dasharray="7 8"/>
+  </g>
+  <text x="72" y="600" fill="#8fa9ae" font-family="Arial,sans-serif" font-size="15">Elastic access and pooled infrastructure are the abstraction; the hardware remains somewhere on Earth.</text>
+</svg>

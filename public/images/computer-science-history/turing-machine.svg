@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 570" role="img" aria-labelledby="title desc">
+  <title id="title">A simplified Turing machine</title><desc id="desc">A tape of cells passes beneath a read and write head. The machine changes state, writes a symbol, and moves left or right.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0a1720"/><stop offset="1" stop-color="#132c37"/></linearGradient><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#9bb8b6" stroke-opacity=".07"/></pattern></defs>
+  <rect width="1200" height="570" rx="20" fill="url(#bg)"/><rect width="1200" height="570" rx="20" fill="url(#grid)"/>
+  <text x="72" y="74" fill="#79d4c6" font-family="Arial,sans-serif" font-size="16" letter-spacing="3">THE ABSTRACT MACHINE · 1936</text>
+  <text x="72" y="126" fill="#f4f2ec" font-family="Georgia,serif" font-size="38">A small set of rules can describe a general computation</text>
+  <g transform="translate(132 270)">
+    <path d="M0 0H936" stroke="#78cfc1" stroke-width="3"/>
+    <g fill="#142c37" stroke="#668a91" stroke-width="2">
+      <rect x="0" y="-60" width="116" height="120" rx="10"/><rect x="116" y="-60" width="116" height="120" rx="10"/><rect x="232" y="-60" width="116" height="120" rx="10"/><rect x="348" y="-60" width="116" height="120" rx="10"/><rect x="464" y="-60" width="116" height="120" rx="10"/><rect x="580" y="-60" width="116" height="120" rx="10"/><rect x="696" y="-60" width="116" height="120" rx="10"/><rect x="812" y="-60" width="116" height="120" rx="10"/>
+    </g>
+    <g fill="#e4eee9" font-family="monospace" font-size="40" text-anchor="middle"><text x="58" y="14">0</text><text x="174" y="14">1</text><text x="290" y="14">1</text><text x="406" y="14">0</text><text x="522" y="14">□</text><text x="638" y="14">□</text><text x="754" y="14">□</text><text x="870" y="14">□</text></g>
+    <path d="M465 -91h112l-56 28z" fill="#e7b976"/><rect x="483" y="-151" width="76" height="60" rx="14" fill="#e7b976"/><text x="521" y="-113" fill="#1b2830" font-family="Arial,sans-serif" font-size="19" font-weight="700" text-anchor="middle">q₁</text>
+    <path d="M521 66v68m0 0-22-24m22 24 22-24" stroke="#e7b976" stroke-width="4" fill="none"/>
+  </g>
+  <g fill="#c1d0d0" font-family="Arial,sans-serif" font-size="18"><text x="130" y="463">READ symbol</text><text x="370" y="463">WRITE symbol</text><text x="624" y="463">CHANGE state</text><text x="892" y="463">MOVE head</text></g>
+  <text x="132" y="520" fill="#8fa9ae" font-family="Arial,sans-serif" font-size="16">The tape can be as long as needed; the finite instruction table controls each next step.</text>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">Simplified transformer language model</title><desc id="desc">A language sequence is split into tokens, contextualized with attention, transformed by stacked layers, and used to produce a probability distribution over the next token.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101622"/><stop offset="1" stop-color="#1c203b"/></linearGradient><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#b7c4e8" stroke-opacity=".06"/></pattern></defs>
+  <rect width="1200" height="650" rx="20" fill="url(#bg)"/><rect width="1200" height="650" rx="20" fill="url(#grid)"/>
+  <text x="72" y="73" fill="#afbcff" font-family="Arial,sans-serif" font-size="16" letter-spacing="3">A HIGH-LEVEL PICTURE · NOT THE WHOLE STORY</text>
+  <text x="72" y="125" fill="#f3f1ed" font-family="Georgia,serif" font-size="38">Attention helps each token use its context</text>
+  <g font-family="monospace" font-size="17" text-anchor="middle">
+    <g><rect x="87" y="230" width="180" height="70" rx="12" fill="#183039" stroke="#5fc7b9" stroke-width="2"/><text x="177" y="273" fill="#eaf2ee">“history of code”</text></g>
+    <g><rect x="343" y="230" width="190" height="70" rx="12" fill="#1c2e49" stroke="#90a7f1" stroke-width="2"/><text x="438" y="273" fill="#eaf2ee">token embeddings</text></g>
+    <g><rect x="607" y="210" width="222" height="110" rx="16" fill="#292643" stroke="#b19be8" stroke-width="2"/><text x="718" y="255" fill="#eaf2ee">attention +</text><text x="718" y="283" fill="#eaf2ee">feed-forward layers</text></g>
+    <g><rect x="904" y="230" width="206" height="70" rx="12" fill="#183039" stroke="#5fc7b9" stroke-width="2"/><text x="1007" y="273" fill="#eaf2ee">next token scores</text></g>
+    <g stroke="#b19be8" stroke-width="3" fill="none"><path d="M272 265h60"/><path d="M538 265h56"/><path d="M836 265h60"/><path d="M321 255l11 10-11 10"/><path d="M583 255l11 10-11 10"/><path d="M885 255l11 10-11 10"/></g>
+  </g>
+  <g stroke="#7d86c5" stroke-width="2" fill="none" opacity=".8"><path d="M638 354Q715 315 796 354"/><path d="M638 375Q715 328 796 375"/><path d="M638 396Q715 340 796 396"/></g>
+  <g fill="#c7d0ee" font-family="Arial,sans-serif" font-size="16"><text x="607" y="440">Tokens can attend to one another in parallel; training adjusts the model’s weights.</text></g>
+  <g fill="#aab7cd" font-family="Arial,sans-serif" font-size="15"><text x="87" y="530">Prompt</text><text x="343" y="530">Numbers</text><text x="607" y="530">Contextual computation</text><text x="904" y="530">A distribution, then a choice</text></g>
+  <text x="72" y="603" fill="#8291aa" font-family="Arial,sans-serif" font-size="15">Today’s systems also depend on training data, optimization, accelerators, serving infrastructure, and evaluation.</text>
+</svg>

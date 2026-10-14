@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">A history of computer science</title>
+  <desc id="desc">An illustrated timeline from punched cards and mechanical calculation to networks, cloud computing, and artificial intelligence.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#07121d"/><stop offset="1" stop-color="#102934"/></linearGradient>
+    <linearGradient id="line" x2="1"><stop stop-color="#e8ba7a"/><stop offset=".48" stop-color="#69c8bc"/><stop offset="1" stop-color="#93aaff"/></linearGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#b2d6d4" stroke-opacity=".08"/></pattern>
+  </defs>
+  <rect width="1200" height="630" rx="28" fill="url(#bg)"/><rect width="1200" height="630" rx="28" fill="url(#grid)"/>
+  <g fill="none" stroke="#b7d3d2" stroke-opacity=".42" stroke-width="2">
+    <path d="M78 448h1040"/><path d="M146 422v52m180-52v52m180-52v52m180-52v52m180-52v52m180-52v52"/>
+  </g>
+  <path d="M146 448H326L506 448 686 448 866 448 1046 448" fill="none" stroke="url(#line)" stroke-width="7" stroke-linecap="round"/>
+  <g fill="#0b1c25" stroke="url(#line)" stroke-width="5">
+    <circle cx="146" cy="448" r="15"/><circle cx="326" cy="448" r="15"/><circle cx="506" cy="448" r="15"/><circle cx="686" cy="448" r="15"/><circle cx="866" cy="448" r="15"/><circle cx="1046" cy="448" r="15"/>
+  </g>
+  <g fill="#e8f0ed" font-family="Arial, sans-serif" font-size="17" letter-spacing="2">
+    <text x="111" y="500">ENGINES</text><text x="287" y="500">LOGIC</text><text x="453" y="500">COMPUTERS</text><text x="626" y="500">NETWORKS</text><text x="808" y="500">THE WEB</text><text x="988" y="500">AI</text>
+  </g>
+  <g fill="#7bd4c5" font-family="Arial, sans-serif" font-size="14" letter-spacing="3"><text x="82" y="78">A FIELD GUIDE THROUGH 200 YEARS OF IDEAS</text></g>
+  <g fill="#f5f4ee" font-family="Georgia, 'Times New Roman', serif" font-size="60" font-weight="700"><text x="78" y="191">The Long Invention</text><text x="78" y="261">of Computing</text></g>
+  <g fill="#c1d0d0" font-family="Arial, sans-serif" font-size="22"><text x="82" y="319">People, mathematics, machines, networks and learning</text></g>
+  <g opacity=".88" fill="none" stroke="#8ad5ca" stroke-width="2">
+    <rect x="83" y="359" width="100" height="47" rx="5"/><path d="M96 371h10v10H96zm18 0h10v10h-10zm18 0h10v10h-10zm18 0h10v10h-10zm18 0h10v10h-10zM96 387h10v10H96zm18 0h10v10h-10zm18 0h10v10h-10zm18 0h10v10h-10zm18 0h10v10h-10z"/>
+    <path d="M1043 335h75v57h-75zM1055 348h9v9h-9zm17 0h9v9h-9zm17 0h9v9h-9zm17 0h9v9h-9zm-34 17h9v9h-9zm17 0h9v9h-9zm17 0h9v9h-9zm-17 16h9v9h-9z"/>
+  </g>
+  <g fill="#aec3ca" font-family="Arial, sans-serif" font-size="14" letter-spacing="2"><text x="82" y="566">FROM THE ANALYTICAL ENGINE TO THE TRANSFORMER</text></g>
+</svg>
