@@ -54,7 +54,7 @@ The application combines several public experiences behind one consistent visual
 
 | Area | Purpose | Primary implementation |
 | --- | --- | --- |
-| Home | First impression, positioning, metrics, calls to action, and navigation into the rest of the portfolio | `src/pages/Home.tsx` |
+| Home | Recruiter-oriented landing page with a featured Samaale project, outcome proof points, selected work, client feedback, the latest article, and contact calls to action | `src/pages/Home.tsx`, `src/pages/Home.css` |
 | About | Personal introduction, working style, soft skills, languages, and background | `src/pages/About.tsx`, `src/constants.ts` |
 | Capabilities | Technical skills, tools, courses, and security-oriented competencies | `src/pages/Skills.tsx`, `src/constants.ts` |
 | Experience | Work history and measurable engineering/security outcomes | `src/pages/Experience.tsx`, `src/constants.ts` |
@@ -72,6 +72,7 @@ The application combines several public experiences behind one consistent visual
 - React pages are lazy-loaded from the root application to reduce the initial JavaScript payload.
 - The browser uses a lightweight history-based router implemented in `src/routing.ts` rather than a full routing dependency.
 - The same page components are used by the browser application and the Node prerenderer through `src/ssr/StaticRoute.tsx`.
+- The homepage brings together a live project preview, measurable product details, case studies, client feedback, and the newest blog post; its responsive styles are in `src/pages/Home.css` and imported by the global stylesheet for prerendered pages.
 - Every public route receives route-specific title, description, canonical URL, robots policy, Open Graph data, Twitter card data, and JSON-LD.
 - Blog posts are portable Markdown files with validated frontmatter and are imported in the browser with Vite's `import.meta.glob` and in Node scripts with a filesystem fallback.
 - The booking flow treats Google Calendar as the source of truth for busy times and uses a durable Redis-compatible store for booking records, idempotency keys, and rate-limit counters.
@@ -202,7 +203,7 @@ flowchart TD
 │   ├── config/                  # Feature data/configuration
 │   ├── data/                    # Project detail data
 │   ├── hooks/                   # Reusable client hooks
-│   ├── pages/                   # Route-level page components
+│   ├── pages/                   # Route-level page components and Home.css landing-page styles
 │   ├── seo/                     # Metadata and JSON-LD factories
 │   ├── server/                  # Shared server-side validation/storage/services
 │   ├── ssr/                     # Static route renderer
@@ -246,7 +247,7 @@ The page modules are intentionally focused on their public experience:
 
 | File | Responsibility |
 | --- | --- |
-| `Home.tsx` | Hero, identity, primary calls to action, quick proof points |
+| `Home.tsx` | Role-focused hero, featured Samaale case study, product proof points, selected work, client feedback, latest article, and contact CTA |
 | `About.tsx` | Personal letter, languages, soft skills, and professional context |
 | `Skills.tsx` | Core skills, tools, learning cards, and technical capability presentation |
 | `Experience.tsx` | Experience timeline and achievement metrics |
@@ -260,6 +261,12 @@ The page modules are intentionally focused on their public experience:
 | `Legal.tsx` | Privacy and terms documents based on the current route |
 | `AnnualRecap.tsx` | Annual reflection content and seasonal presentation |
 | `NotFound.tsx` | Unknown-route response |
+
+The landing page's responsive styles are maintained in `src/pages/Home.css`. `src/index.css` imports that stylesheet globally so the home page also has its layout and visual styles in prerendered HTML output.
+
+### Home landing page
+
+The home page leads with the full-stack role and value proposition, links to the CV and featured Samaale case study, and shows four project proof points: catalog size, business locations, English/Somali support, and the secure inquiry workflow. It follows with two supporting case studies, a short working-style introduction and client quote, the newest blog post, and a contact prompt. Project and article content comes from `CASE_STUDIES` and `BLOG_POSTS`, so the featured project and latest note follow the existing portfolio and publication data.
 
 ### Shared components and hooks
 
@@ -619,6 +626,8 @@ The parser requires non-empty string values for `title`, `subtitle`, `date`, `la
 
 The filename without `.md` becomes the URL slug. Posts are sorted newest-first by `date`.
 
+The current long-form feature is **A Long History of Computer Science: From Turing’s Machine to the Age of AI** (`a-long-history-of-computer-science-from-turing-to-ai`), a 28-minute illustrated article published on 2026-10-14. It follows computing from algorithms and mechanical machines through Turing, electronic computers, networks, the Web, cybersecurity, cloud systems, and modern AI. The article includes original diagrams, archival images, and a source citation list; its media is stored in `public/images/computer-science-history/`.
+
 ### Reader capabilities
 
 - Search across title, subtitle, tags, and related topics.
@@ -670,6 +679,8 @@ Files under `public/` are served from the site root. Important assets include:
 - Favicon files and `site.webmanifest`.
 - `robots.txt`, `sitemap.xml`, `rss.xml`, and `atom.xml`.
 - CV/downloadable assets and the homepage Open Graph preview in `public/assets/`.
+- The Samaale project preview used by the redesigned homepage: `public/assets/samaale-live-preview.webp`.
+- Illustrated history-of-computing article media in `public/images/computer-science-history/` (original SVG diagrams and supporting historical images).
 - Optional themed media under `public/images/anime`, `books`, `games`, `manhwa`, and `SVG`.
 
 The image mapping and exact expected filenames are documented in `public/images/README.md`. Blog and media components display an intentional fallback when a referenced image is missing.
@@ -875,7 +886,7 @@ Update the typed arrays and objects in `src/constants.ts`. Keep the shape compat
 
 ### Visual changes
 
-Use existing CSS variables and component conventions in `src/index.css`. Keep interactive controls keyboard accessible, preserve visible focus states, and respect reduced-motion behavior. Test both themes and narrow layouts.
+Use existing CSS variables and component conventions in `src/index.css`; keep homepage-specific rules in `src/pages/Home.css`, which is imported globally for prerendered output. Keep interactive controls keyboard accessible, preserve visible focus states, and respect reduced-motion behavior. Check both themes and narrow layouts.
 
 ### Blog changes
 
