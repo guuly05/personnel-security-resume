@@ -5,8 +5,23 @@
     <link>https://www.guuleedmaxamuud.dev/blog</link>
     <description>Security research, vulnerability analysis, and technical writing by Guuleed Maxmuud Aw Abdi.</description>
     <language>en-us</language>
-    <lastBuildDate>2026-10-14T12:00:00.000Z</lastBuildDate>
+    <lastBuildDate>2026-10-17T12:00:00.000Z</lastBuildDate>
     <atom:link href="https://www.guuleedmaxamuud.dev/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Slow, Sad Decline of Gemini’s Promise</title>
+      <link>https://www.guuleedmaxamuud.dev/blog/geminis-slow-sad-decline</link>
+      <guid isPermaLink="true">https://www.guuleedmaxamuud.dev/blog/geminis-slow-sad-decline</guid>
+      <pubDate>2026-10-17T12:00:00.000Z</pubDate>
+      <description><![CDATA[Gemini’s models still compete at the frontier. The frustration is the product around them: narrower model choice, metered agent work, and rules that make developers think twice before connecting their own tools.
+
+Tags: Google Gemini · Agentic AI · Developer tools · AI access · Artificial intelligence
+Last updated: October 17, 2026]]></description>
+      <category>Google Gemini</category>
+      <category>Agentic AI</category>
+      <category>Developer tools</category>
+      <category>AI access</category>
+      <category>Artificial intelligence</category>
+    </item>
     <item>
       <title>A Long History of Computer Science: From Turing’s Machine to the Age of AI</title>
       <link>https://www.guuleedmaxamuud.dev/blog/a-long-history-of-computer-science-from-turing-to-ai</link>
