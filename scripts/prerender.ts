@@ -64,7 +64,7 @@ function renderRoute(pathname: string) {
     .replace(/<link\s+rel="canonical"[^>]*>/gi, '')
     .replace(/<meta\s+property="og:[^"]+"[^>]*>/gi, '')
     .replace(/<meta\s+name="twitter:[^"]+"[^>]*>/gi, '')
-    .replace(/<script\s+type="application\/ld\+json">[\s\S]*?<\/script>/gi, '');
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
   const head = preservedHead.replace(/<head>/i, `<head>${headForRoute(pathname)}`);
   const body = renderToStaticMarkup(React.createElement(StaticRoute, { pathname }));
   return template.replace(currentHead, head).replace(/<div id="root"><\/div>/, `<div id="root">${body}</div>`);
