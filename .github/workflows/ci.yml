@@ -37,3 +37,9 @@ jobs:
 
       - name: Verify prerendered SEO output
         run: npm run verify:seo
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run browser smoke tests
+        run: npm run test:e2e

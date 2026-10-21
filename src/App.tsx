@@ -9,6 +9,7 @@ import { Icon } from './components/Icon.tsx';
 import { SeoHead } from './components/SeoHead.tsx';
 import { useTerminal } from './hooks/useTerminal.ts';
 import { pathToSection, hashToSection, sectionToPath, type Section } from './routing.ts';
+import { BLOG_POST_SLUGS } from './blog/postSlugs.ts';
 
 // Code-split pages for faster initial bundle loading
 const BirthdayConfetti = lazy(() =>
@@ -54,7 +55,7 @@ const moreNavItems: NavigationItem[] = [
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<Section>(() =>
-    typeof window === 'undefined' ? 'home' : pathToSection(window.location.pathname),
+    typeof window === 'undefined' ? 'home' : pathToSection(window.location.pathname, BLOG_POST_SLUGS),
   );
   const [activeProjectSlug, setActiveProjectSlug] = useState<string | null>(() => {
     if (typeof window === 'undefined') return null;
@@ -137,7 +138,7 @@ export default function App() {
         return;
       }
 
-      setActiveSection(pathToSection(window.location.pathname));
+      setActiveSection(pathToSection(window.location.pathname, BLOG_POST_SLUGS));
       const segments = window.location.pathname.replace(/^\/+/, '').split('/');
       setActiveProjectSlug(segments[0] === 'portfolio' && segments[1] ? segments[1] : null);
     };
@@ -155,7 +156,7 @@ export default function App() {
       const url = new URL(anchor.href);
       if (url.origin !== window.location.origin) return;
 
-      const nextSection = pathToSection(url.pathname);
+      const nextSection = pathToSection(url.pathname, BLOG_POST_SLUGS);
       const isKnownRoute = nextSection !== 'not-found' || url.pathname === '/404';
       if (!isKnownRoute) return;
 

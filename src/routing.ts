@@ -40,12 +40,12 @@ export function sectionToPath(section: Section): string {
   return section === 'home' ? '/' : `/${section}`;
 }
 
-export function pathToSection(pathname: string): Section {
+export function pathToSection(pathname: string, blogPostSlugs: readonly string[] = []): Section {
   const segments = pathname.replace(/^\/+/, '').split('/');
   const segment = segments[0];
   if (!segment) return 'home';
   if (segment === 'portfolio' && segments[1]) return 'portfolio-project';
-  if (segment === 'blog' && segments[1]) return 'blog';
+  if (segment === 'blog' && segments[1]) return blogPostSlugs.includes(segments[1]) ? 'blog' : 'not-found';
   if (segment === 'privacy-policy') return 'privacy-policy';
   if (segment === 'terms-of-service') return 'terms-of-service';
   if (RECAP_ALIASES.includes(segment)) return 'recap';

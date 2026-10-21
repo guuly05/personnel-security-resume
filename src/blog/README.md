@@ -17,4 +17,6 @@ citations: [{"title":"Source name","url":"https://example.com","publisher":"Publ
 ---
 ```
 
-The build indexes the files, validates the required fields, updates the sitemap, and generates `/rss.xml` and `/atom.xml`.
+The build indexes the files, validates the required fields, updates the sitemap, and generates `/rss.xml` and `/atom.xml`. CI checks post metadata, slug uniqueness, homepage featured-note consistency, prerendered article headings, and coverage in all three publishing outputs.
+
+Run `npm test` for metadata and routing checks. Run `npm run test:e2e` after `npm run build` for browser checks of archive search, article navigation, direct article URLs, and the mobile menu. Install the local browser first with `npx playwright install chromium`.
