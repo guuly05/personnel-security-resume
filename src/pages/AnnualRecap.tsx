@@ -99,6 +99,7 @@ export const AnnualRecapPage: React.FC = () => {
                   <video
                     ref={videoRef}
                     src={currentVideo.videoUrl}
+                    preload="none"
                     muted={isMuted}
                     playsInline
                     onEnded={handleVideoEnded}
