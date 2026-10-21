@@ -13,7 +13,7 @@ test('renders Markdown inline formatting and sanitizes raw HTML', () => {
   const unsafeHtml = renderMarkdown('<script>alert(1)</script>');
 
   assert.equal(unsafeHtml, '');
-  assert.doesNotMatch(html, /<script>|alert\(1\)/);
+  assert.doesNotMatch(html, /<script\b|alert\(1\)/i);
   assert.match(html, /<strong>bold<\/strong>/);
   assert.match(html, /<em>italic<\/em>/);
   assert.match(html, /<code[^>]*>code<\/code>/);
