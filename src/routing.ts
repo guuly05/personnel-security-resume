@@ -1,5 +1,3 @@
-import { BLOG_POSTS } from './blog/posts.ts';
-
 export type Section =
   | 'home'
   | 'about'
@@ -47,7 +45,7 @@ export function pathToSection(pathname: string): Section {
   const segment = segments[0];
   if (!segment) return 'home';
   if (segment === 'portfolio' && segments[1]) return 'portfolio-project';
-  if (segment === 'blog' && segments[1] && !BLOG_POSTS.some((post) => post.slug === segments[1])) return 'not-found';
+  if (segment === 'blog' && segments[1]) return 'blog';
   if (segment === 'privacy-policy') return 'privacy-policy';
   if (segment === 'terms-of-service') return 'terms-of-service';
   if (RECAP_ALIASES.includes(segment)) return 'recap';
