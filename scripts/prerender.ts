@@ -21,12 +21,15 @@ function escapeHtml(value: string) {
   return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
-function stripScriptTags(input: string) {
+function stripInlineScriptTags(input: string) {
   let previous: string;
   let sanitized = input;
   do {
     previous = sanitized;
-    sanitized = sanitized.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
+    sanitized = sanitized.replace(
+      /<script\b([^>]*)>[\s\S]*?<\/script\s*>/gi,
+      (scriptTag, attributes: string) => /(?:^|\s)src(?:\s|=)/i.test(attributes) ? scriptTag : '',
+    );
   } while (sanitized !== previous);
   return sanitized;
 }
@@ -65,7 +68,7 @@ function headForRoute(pathname: string) {
 
 function renderRoute(pathname: string) {
   const currentHead = template.match(/<head>[\s\S]*?<\/head>/i)?.[0] ?? '<head></head>';
-  const preservedHead = stripScriptTags(
+  const preservedHead = stripInlineScriptTags(
     currentHead
       .replace(/<title>[\s\S]*?<\/title>/gi, '')
       .replace(/<meta\s+name="description"[^>]*>/gi, '')
