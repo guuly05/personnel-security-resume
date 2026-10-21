@@ -1,7 +1,7 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { MotionConfig, motion } from 'motion/react';
 import { Icon } from '../components/Icon.tsx';
-import { CASE_STUDIES } from './Portfolio.tsx';
+import { CASE_STUDIES } from '../data/caseStudies.ts';
 import { PROJECT_DETAILS, type ProjectDetail } from '../data/projectDetails.ts';
 import { timelineEntryForProject } from '../data/projectTimeline.ts';
 
@@ -114,6 +114,7 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
   }
 
   return (
+    <MotionConfig reducedMotion="user">
     <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="editorial-page project-detail-page w-full space-y-10 lg:space-y-14">
       <a href="/portfolio" className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] text-[var(--accent)] transition hover:gap-3">
         <Icon name="arrow-left" size={14} /> Back to all case studies
@@ -151,7 +152,7 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
         <div className="grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
           <figure className="surface-card overflow-hidden">
             <div className="aspect-[16/9] overflow-hidden bg-[var(--surface-soft)]">
-              <img src={study.imageUrl} alt={study.imageAlt} className="h-full w-full object-cover" loading="eager" />
+              <img src={study.imageUrl} alt={study.imageAlt} className="h-full w-full object-cover" loading="lazy" decoding="async" />
             </div>
             <figcaption className="p-5">
               <p className="mb-2 text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--accent)]">{detail.projectVisuals[0].kind ?? 'Project visual'}</p>
@@ -258,6 +259,7 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
         <a href="/portfolio" className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-sm font-semibold transition-colors hover:border-[var(--accent)]/50"><Icon name="layout" size={15} /> More projects</a>
       </div>
     </motion.div>
+    </MotionConfig>
   );
 };
 
