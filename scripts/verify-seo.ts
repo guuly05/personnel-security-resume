@@ -23,14 +23,28 @@ function visibleText(value: string) {
     .replace(/&quot;/g, '"')
     .replace(/&apos;|&#0*39;|&#x0*27;/gi, "'")
     .replace(/&amp;/g, '&');
+  const stripTags = (text: string) => {
+    let output = '';
+    let insideTag = false;
+    for (const char of text) {
+      if (char === '<') {
+        insideTag = true;
+        continue;
+      }
+      if (char === '>') {
+        insideTag = false;
+        continue;
+      }
+      if (!insideTag) output += char;
+    }
+    return output;
+  };
 
   let text = value;
   let previous: string;
   do {
     previous = text;
-    text = decode(text)
-      .replace(/<[^>]+>/g, '')
-      .replace(/[<>]/g, '');
+    text = stripTags(decode(text));
   } while (text !== previous);
 
   return text;
