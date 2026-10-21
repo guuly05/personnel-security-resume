@@ -17,13 +17,20 @@ function value(html: string, pattern: RegExp) {
 }
 
 function visibleText(value: string) {
-  return value
-    .replace(/<[^>]+>/g, '')
+  let text = value
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
     .replace(/&apos;|&#0*39;|&#x0*27;/gi, "'");
+
+  let previous: string;
+  do {
+    previous = text;
+    text = text.replace(/<[^>]+>/g, '');
+  } while (text !== previous);
+
+  return text;
 }
 
 for (const route of routes) {
