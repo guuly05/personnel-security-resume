@@ -254,7 +254,18 @@ export function metadataForArticle(post: BlogPost): PageMetadata {
 }
 
 export function metadataForRoute(pathname: string, post?: BlogPost): PageMetadata {
-  if (pathname.startsWith('/blog/') && post) return metadataForArticle(post);
+  if (pathname.startsWith('/blog/')) {
+    if (post) return metadataForArticle(post);
+    return {
+      title: `Note Not Found | ${TITLE_SUFFIX}`,
+      description: 'The requested blog note could not be found.',
+      canonicalPath: '/404',
+      robots: NOINDEX_ROBOTS,
+      ogType: 'website',
+      ogImage: OG_IMAGE,
+      jsonLd: webPageSchema({ title: 'Note Not Found', description: 'The requested blog note could not be found.', path: '/404' }),
+    };
+  }
   if (pathname.startsWith('/portfolio/')) {
     const slug = pathname.split('/')[2];
     const project = PROJECT_SEO[slug];
