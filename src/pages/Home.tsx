@@ -1,12 +1,13 @@
 import React from 'react';
 import { PERSONAL_INFO } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
-import { BLOG_POSTS, formatBlogDate } from '../blog/posts.ts';
-import { CASE_STUDIES } from './Portfolio.tsx';
+import { LATEST_POST } from '../blog/latestPost.ts';
+import { formatBlogDate } from '../blog/formatBlogDate.ts';
+import { CASE_STUDIES } from '../data/caseStudies.ts';
 
 const featuredStudy = CASE_STUDIES[0];
 const supportingStudies = CASE_STUDIES.slice(1, 3);
-const latestPost = BLOG_POSTS[0];
+const latestPost = LATEST_POST;
 
 const clientQuote = {
   quote: 'I liked that Guuleed took time to understand our business. The website brings our products and services together in one place and gives customers a clear way to reach us.',
@@ -70,6 +71,7 @@ const HomePage: React.FC = () => (
             width="1500"
             height="1000"
             fetchPriority="high"
+            decoding="async"
           />
           <span className="landing-image-label">Open case study <Icon name="arrow-up-right" size={15} /></span>
         </a>
