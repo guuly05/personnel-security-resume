@@ -61,6 +61,8 @@ for (const route of routes) {
   const ogUrl = value(html, /<meta property="og:url" content="([^"]+)"/i);
   const h1Count = (html.match(/<h1\b/gi) ?? []).length;
   const jsonLdCount = (html.match(/application\/ld\+json/gi) ?? []).length;
+  const appScriptCount = (html.match(/<script\b[^>]*\bsrc=["'][^"']+\.js(?:\?[^"']*)?["'][^>]*>/gi) ?? []).length;
+  if (appScriptCount === 0) failures.push(route + ': missing JavaScript app entrypoint');
   if (!title || !description || !canonical || !robots || !ogUrl || h1Count !== 1 || jsonLdCount !== 1) {
     failures.push(`${route}: incomplete metadata/content (title=${Boolean(title)}, description=${Boolean(description)}, canonical=${Boolean(canonical)}, robots=${Boolean(robots)}, og=${Boolean(ogUrl)}, h1=${h1Count}, jsonld=${jsonLdCount})`);
   }

@@ -21,6 +21,28 @@ function escapeHtml(value: string) {
   return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
+function removeTemplateJsonLdScripts(input: string) {
+  // Vite moves the app entrypoint into <head>. Remove only the template's
+  // original JSON-LD node because each prerendered route gets route-specific data.
+  const openingTag = '<script type="application/ld+json">';
+  let result = input;
+  let openingIndex = result.indexOf(openingTag);
+
+  while (openingIndex !== -1) {
+    const contentStart = openingIndex + openingTag.length;
+    const closingTagStart = result.toLowerCase().indexOf('</script', contentStart);
+    if (closingTagStart === -1) break;
+
+    const closingTagEnd = result.indexOf('>', closingTagStart);
+    if (closingTagEnd === -1) break;
+
+    result = result.slice(0, openingIndex) + result.slice(closingTagEnd + 1);
+    openingIndex = result.indexOf(openingTag, openingIndex);
+  }
+
+  return result;
+}
+
 function headForRoute(pathname: string) {
   const post = BLOG_POSTS.find((entry) => pathname === `/blog/${entry.slug}`);
   const meta = metadataForRoute(pathname, post);
@@ -55,16 +77,17 @@ function headForRoute(pathname: string) {
 
 function renderRoute(pathname: string) {
   const currentHead = template.match(/<head>[\s\S]*?<\/head>/i)?.[0] ?? '<head></head>';
-  const preservedHead = currentHead
-    .replace(/<title>[\s\S]*?<\/title>/gi, '')
-    .replace(/<meta\s+name="description"[^>]*>/gi, '')
-    .replace(/<meta\s+name="keywords"[^>]*>/gi, '')
-    .replace(/<meta\s+name="author"[^>]*>/gi, '')
-    .replace(/<meta\s+name="robots"[^>]*>/gi, '')
-    .replace(/<link\s+rel="canonical"[^>]*>/gi, '')
-    .replace(/<meta\s+property="og:[^"]+"[^>]*>/gi, '')
-    .replace(/<meta\s+name="twitter:[^"]+"[^>]*>/gi, '')
-    .replace(/<script\s+type="application\/ld\+json">[\s\S]*?<\/script>/gi, '');
+  const preservedHead = removeTemplateJsonLdScripts(
+    currentHead
+      .replace(/<title>[\s\S]*?<\/title>/gi, '')
+      .replace(/<meta\s+name="description"[^>]*>/gi, '')
+      .replace(/<meta\s+name="keywords"[^>]*>/gi, '')
+      .replace(/<meta\s+name="author"[^>]*>/gi, '')
+      .replace(/<meta\s+name="robots"[^>]*>/gi, '')
+      .replace(/<link\s+rel="canonical"[^>]*>/gi, '')
+      .replace(/<meta\s+property="og:[^"]+"[^>]*>/gi, '')
+      .replace(/<meta\s+name="twitter:[^"]+"[^>]*>/gi, '')
+  );
   const head = preservedHead.replace(/<head>/i, `<head>${headForRoute(pathname)}`);
   const body = renderToStaticMarkup(React.createElement(StaticRoute, { pathname }));
   return template.replace(currentHead, head).replace(/<div id="root"><\/div>/, `<div id="root">${body}</div>`);
