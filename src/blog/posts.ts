@@ -139,13 +139,4 @@ export const BLOG_POSTS: BlogPost[] = Object.entries(sources)
   .map(([path, source]) => postFromSource(path, source))
   .sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
 
-export function formatBlogDate(value: string): string {
-  const date = new Date(`${value}T12:00:00Z`);
-  if (Number.isNaN(date.getTime())) return value;
-  return new Intl.DateTimeFormat('en-US', {
-    day: 'numeric',
-    month: 'long',
-    timeZone: 'UTC',
-    year: 'numeric',
-  }).format(date);
-}
+export { formatBlogDate } from './formatBlogDate.ts';
