@@ -5,7 +5,7 @@
  */
 
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { executeCommand, TerminalLine } from '../commands/commandEngine.ts';
+import type { TerminalLine } from '../commands/commandEngine.ts';
 
 export interface UseTerminalReturn {
   isOpen: boolean;
@@ -23,7 +23,7 @@ export interface UseTerminalReturn {
       onNavigate: (section: string) => void;
       onTheme: (t: 'dark' | 'light') => void;
     }
-  ) => void;
+  ) => Promise<void>;
 
   handleKeyDown: (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -109,7 +109,7 @@ export function useTerminal(): UseTerminalReturn {
   }, []);
 
   const handleSubmit = useCallback(
-    (
+    async (
       input: string,
       { onNavigate, onTheme }: { onNavigate: (s: string) => void; onTheme: (t: 'dark' | 'light') => void }
     ) => {
@@ -123,6 +123,8 @@ export function useTerminal(): UseTerminalReturn {
         setHistoryIndex(-1);
       }
 
+      setInputValue('');
+      const { executeCommand } = await import('../commands/commandEngine.ts');
       const result = executeCommand(trimmed);
 
       if (result.clear) {
@@ -140,8 +142,6 @@ export function useTerminal(): UseTerminalReturn {
       if (result.exit) {
         setTimeout(() => setIsOpen(false), 600);
       }
-
-      setInputValue('');
     },
     [appendLines]
   );
