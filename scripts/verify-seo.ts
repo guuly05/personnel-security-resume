@@ -17,13 +17,37 @@ function value(html: string, pattern: RegExp) {
 }
 
 function visibleText(value: string) {
-  return value
-    .replace(/<[^>]+>/g, '')
-    .replace(/&amp;/g, '&')
+  const decode = (text: string) => text
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
-    .replace(/&apos;|&#0*39;|&#x0*27;/gi, "'");
+    .replace(/&apos;|&#0*39;|&#x0*27;/gi, "'")
+    .replace(/&amp;/g, '&');
+  const stripTags = (text: string) => {
+    let output = '';
+    let insideTag = false;
+    for (const char of text) {
+      if (char === '<') {
+        insideTag = true;
+        continue;
+      }
+      if (char === '>') {
+        insideTag = false;
+        continue;
+      }
+      if (!insideTag) output += char;
+    }
+    return output;
+  };
+
+  let text = value;
+  let previous: string;
+  do {
+    previous = text;
+    text = stripTags(decode(text));
+  } while (text !== previous);
+
+  return text;
 }
 
 for (const route of routes) {
@@ -80,4 +104,3 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`SEO and blog publishing audit passed for ${routes.length} indexable routes, all feeds, and 404.html.`);
-
