@@ -17,17 +17,18 @@ function value(html: string, pattern: RegExp) {
 }
 
 function visibleText(value: string) {
-  let text = value
+  const decode = (text: string) => text
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
     .replace(/&apos;|&#0*39;|&#x0*27;/gi, "'");
 
+  let text = value;
   let previous: string;
   do {
     previous = text;
-    text = text.replace(/<[^>]+>/g, '');
+    text = decode(text).replace(/<[^>]+>/g, '');
   } while (text !== previous);
 
   return text;
@@ -87,4 +88,3 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`SEO and blog publishing audit passed for ${routes.length} indexable routes, all feeds, and 404.html.`);
-
