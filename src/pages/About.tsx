@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'motion/react';
 import { ABOUT_LETTER, PERSONAL_INFO, SOFT_SKILLS } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
 import { useFocusTrap } from '../hooks/useFocusTrap.ts';
@@ -214,6 +214,7 @@ const AboutPage: React.FC = () => {
   ];
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="editorial-page about-page">
       <motion.section
         className="about-hero"
@@ -344,18 +345,18 @@ const AboutPage: React.FC = () => {
       {/* Fullscreen CV Viewer Modal */}
       {isModalCvOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget) closeCvModal(); }}>
-          <div ref={cvModalRef} role="dialog" aria-modal="true" aria-labelledby="cv-dialog-title" tabIndex={-1} className="flex h-[92vh] w-full max-w-5xl flex-col rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-2xl">
-            <div className="flex items-center justify-between pb-4 border-b border-[var(--border)]">
-              <div className="flex items-center gap-3">
+          <div ref={cvModalRef} role="dialog" aria-modal="true" aria-labelledby="cv-dialog-title" tabIndex={-1} className="flex h-[92dvh] max-h-[92dvh] w-full max-w-5xl flex-col rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-2xl sm:p-5">
+            <div className="flex flex-col gap-3 border-b border-[var(--border)] pb-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex min-w-0 items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)] accent-text">
                   <Icon name="file-text" size={20} />
                 </div>
                 <div>
-                  <h3 id="cv-dialog-title" className="text-lg font-bold text-[var(--color-text)]">Guuleed Maxamuud Aw Abdi — CV</h3>
+                  <h3 id="cv-dialog-title" className="break-words text-base font-bold text-[var(--color-text)] sm:text-lg">Guuleed Maxamuud Aw Abdi — CV</h3>
                   <p className="text-xs text-[var(--color-text-muted)]">Official Full-Stack Developer Resume PDF</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
                 <a
                   href={pdfUrl}
                   download="Guuleed-Maxamuud-Awabdi-CV.pdf"
@@ -552,6 +553,7 @@ const AboutPage: React.FC = () => {
         </AnimatePresence>
       </motion.section>
     </div>
+    </MotionConfig>
   );
 };
 
