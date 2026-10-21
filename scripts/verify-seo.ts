@@ -18,17 +18,19 @@ function value(html: string, pattern: RegExp) {
 
 function visibleText(value: string) {
   const decode = (text: string) => text
-    .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
-    .replace(/&apos;|&#0*39;|&#x0*27;/gi, "'");
+    .replace(/&apos;|&#0*39;|&#x0*27;/gi, "'")
+    .replace(/&amp;/g, '&');
 
   let text = value;
   let previous: string;
   do {
     previous = text;
-    text = decode(text).replace(/<[^>]+>/g, '');
+    text = decode(text)
+      .replace(/<[^>]+>/g, '')
+      .replace(/[<>]/g, '');
   } while (text !== previous);
 
   return text;
