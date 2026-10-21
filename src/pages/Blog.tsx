@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Children, isValidElement, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, Maximize2, Minimize2, Search, X } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -32,6 +32,59 @@ const ALLOWED_PROTOCOLS = new Set(['http:', 'https:']);
 
 function moodPalette(mood: string): MoodPalette {
   return MOOD_PALETTES[mood] ?? MOOD_PALETTES.Contemplative;
+}
+
+const OPENAI_PHP_TWEET_URL = 'https://x.com/OpenAI/status/2112907856018309586';
+const X_WIDGETS_URL = 'https://platform.twitter.com/widgets.js';
+
+function findOpenAiTweetLink(node: ReactNode): string | undefined {
+  let tweetUrl: string | undefined;
+  Children.forEach(node, (child) => {
+    if (!isValidElement(child) || tweetUrl) return;
+    const props = child.props as { href?: unknown; children?: ReactNode };
+    if (typeof props.href === 'string' && /^https:\/\/(?:www\.)?(?:x|twitter)\.com\/OpenAI\/status\/2112907856018309586(?:[/?#]|$)/i.test(props.href)) {
+      tweetUrl = OPENAI_PHP_TWEET_URL;
+      return;
+    }
+    tweetUrl = findOpenAiTweetLink(props.children);
+  });
+  return tweetUrl;
+}
+
+function OpenAiTweetEmbed({ url }: { url: string }) {
+  const embedRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const embed = embedRef.current;
+    if (!embed) return;
+
+    const xWindow = window as Window & { twttr?: { widgets?: { load: (target?: HTMLElement | null) => void } } };
+    const renderTweet = () => xWindow.twttr?.widgets?.load(embed);
+    if (xWindow.twttr?.widgets) {
+      renderTweet();
+      return;
+    }
+
+    let script = document.querySelector<HTMLScriptElement>(`script[src="${X_WIDGETS_URL}"]`);
+    if (!script) {
+      script = document.createElement('script');
+      script.src = X_WIDGETS_URL;
+      script.async = true;
+      script.charset = 'utf-8';
+    }
+    script.addEventListener('load', renderTweet, { once: true });
+    if (!script.isConnected) document.body.appendChild(script);
+    return () => script?.removeEventListener('load', renderTweet);
+  }, [url]);
+
+  return (
+    <div className="blog-x-embed" ref={embedRef}>
+      <p className="blog-x-embed-caption">OpenAI’s public announcement on X</p>
+      <blockquote className="twitter-tweet" data-dnt="true">
+        <a href={url}>View OpenAI’s original post on X</a>
+      </blockquote>
+    </div>
+  );
 }
 
 /** Allow local links/assets and network URLs, while rejecting javascript:, data:, and protocol-relative URLs. */
@@ -93,7 +146,10 @@ export function MarkdownRenderer({ content }: { content: string }) {
         h3: ({ children }) => <h3 className="blog-heading">{children}</h3>,
         h4: ({ children }) => <h4 className="blog-heading">{children}</h4>,
         p: ({ children }) => <p className="blog-paragraph">{children}</p>,
-        blockquote: ({ children }) => <blockquote className="blog-quote">{children}</blockquote>,
+        blockquote: ({ children }) => {
+          const tweetUrl = findOpenAiTweetLink(children);
+          return tweetUrl ? <OpenAiTweetEmbed url={tweetUrl} /> : <blockquote className="blog-quote">{children}</blockquote>;
+        },
         hr: () => <hr className="blog-divider" />,
         ul: ({ children }) => <ul className="blog-list">{children}</ul>,
         ol: ({ children }) => <ol className="blog-list blog-list-ordered">{children}</ol>,

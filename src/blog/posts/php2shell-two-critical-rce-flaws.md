@@ -2,18 +2,32 @@
 title: "PHP2Shell: How Two Critical PHP RCE Bugs Crossed the Request Boundary"
 subtitle: "A deep technical report on CVE-2026-109618 and CVE-2026-109619: how out-of-memory bailout corruption and stale worker state became remote code execution, how PHP maintainers responded, and what defenders should do now."
 date: "2026-10-21"
-lastUpdated: "2026-10-21"
-readTime: "18 min read"
+lastUpdated: "2026-10-22"
+readTime: "20 min read"
 mood: "Deep-Dive"
 image: "/images/placeholder.svg"
 tags: ["PHP security", "Vulnerability research", "Remote code execution", "Incident response"]
 relatedTopics: ["Memory safety", "Use-after-free", "Coordinated disclosure", "Runtime security"]
-citations: [{"title":"PHP security advisory: critical remote code execution vulnerabilities","url":"https://www.php.net/archive/2026.php#2026-10-21-5","publisher":"PHP.net"},{"title":"RCE via OOM corruption (GHSA-w8hw-w9fx-j79w)","url":"https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w","publisher":"PHP / GitHub Security Advisories"},{"title":"RCE via stale global state (GHSA-6wmf-4rv5-p3rp)","url":"https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp","publisher":"PHP / GitHub Security Advisories"},{"title":"Today's PHP security release, and how we're strengthening PHP security","url":"https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/","publisher":"The PHP Foundation"},{"title":"PHP Remote Code Execution (PHP2Shell)","url":"https://watchtowr.com/intelligence/php-remote-code-execution-php2shell/","publisher":"watchTowr"}]
+citations: [{"title":"PHP security advisory: critical remote code execution vulnerabilities","url":"https://www.php.net/archive/2026.php#2026-10-21-5","publisher":"PHP.net"},{"title":"RCE via OOM corruption (GHSA-w8hw-w9fx-j79w)","url":"https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w","publisher":"PHP / GitHub Security Advisories"},{"title":"RCE via stale global state (GHSA-6wmf-4rv5-p3rp)","url":"https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp","publisher":"PHP / GitHub Security Advisories"},{"title":"Today's PHP security release, and how we're strengthening PHP security","url":"https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/","publisher":"The PHP Foundation"},{"title":"OpenAI: Patch the Planet and coordinated vulnerability response","url":"https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities/","publisher":"OpenAI"},{"title":"OpenAI's PHP vulnerability announcement on X","url":"https://x.com/OpenAI/status/2112907856018309586","publisher":"OpenAI"},{"title":"Cloudflare deploys protections against PHP2Shell","url":"https://blog.cloudflare.com/php-vulnerabilities-waf-protection","publisher":"Cloudflare"},{"title":"PHP Remote Code Execution (PHP2Shell)","url":"https://watchtowr.com/intelligence/php-remote-code-execution-php2shell/","publisher":"watchTowr"}]
 ---
 
 # PHP2Shell: How Two Critical PHP RCE Bugs Crossed the Request Boundary
 
-> **Status as of October 21, 2026:** PHP has released fixes. “Unpatched” describes the brief window before the coordinated release, not the current state. The fixed upstream releases are PHP 8.5.12, 8.4.27, 8.3.36, and 8.2.35. Check your operating-system or hosting vendor for the corresponding package if it backports PHP security fixes.
+> **Status as of October 22, 2026:** PHP has released fixes. “Unpatched” describes the brief window before the coordinated release, not the current state. The fixed upstream releases are PHP 8.5.12, 8.4.27, 8.3.36, and 8.2.35. Check your operating-system or hosting vendor for the corresponding package if it backports PHP security fixes.
+
+## Update — October 22, 2026: who found what, and how AI changes the response
+
+It is too simple to say “OpenAI found both vulnerabilities.” OpenAI’s account credits security firm Calif with identifying a critical flaw using GPT-5.6 Sol through OpenAI’s Patch the Planet initiative; it says Wiz independently discovered and reported both vulnerabilities. The PHP Foundation adds that OpenAI separately reported the same out-of-memory root cause on August 11, 2026, and later supplied additional attack paths. Calif researcher Ryan A reported a concrete remote-code-execution path that day, while Wiz reported further findings on August 24. These reports helped turn a difficult, long-known engine concern into a confirmed, high-priority security issue.
+
+PHP maintainers led the technical fixes and release. OpenAI contributed researchers, model access, technical support, patch testing, and coordination with infrastructure and government partners. Cloudflare says it prepared WAF protections in advance and enabled them for customers before public disclosure. This was a coordinated effort: researchers and AI tools helped find and validate exploitable paths; PHP engineers owned the runtime changes, compatibility tradeoffs, and release.
+
+The timeline shows how quickly the defender’s window can narrow. PHP had seen early signs of the out-of-memory problem in 2024, but the concrete exploit paths made the impact clear in August 2026. Once vulnerability details leaked in October, PHP moved its release forward, a proof-of-concept video circulated, and other proof-of-concept work accelerated. Cloudflare also reported attack traffic and later mutated requests. That demonstrates how quickly exploit development and operational pressure can follow a disclosure; the cited reports do not attribute that traffic to AI or establish a successful compromise of a particular system.
+
+AI is changing both sides of security work. Strong models can help researchers reason across large codebases and test paths that are difficult to find manually, while the same capabilities can lower the effort required to analyze patches and develop offensive tooling. This case is evidence of AI-assisted vulnerability discovery and an accelerated coordinated response, not evidence that an AI autonomously found, exploited, or patched PHP. The PHP Foundation says its team still assessed reports, chose the fix, and reviewed the changes; it also reported handling more than 100 AI-assisted submissions that were invalid, duplicated, or not reproducible. The practical pressure is clear: finding issues faster only improves security when maintainers have the people, tests, and release process to verify and fix them just as quickly.
+
+OpenAI’s announcement is embedded below. If X blocks the embed or you prefer not to load third-party content, the post remains available directly on [X](https://x.com/OpenAI/status/2112907856018309586).
+
+> [OpenAI’s original post on X](https://x.com/OpenAI/status/2112907856018309586)
 
 On October 20, PHP maintainers announced an upcoming emergency release for two critical bugs rated **9.2 under CVSS v4.0**. Before the details were public, the CVE identifiers leaked and a proof-of-concept video was mistakenly exposed. PHP moved the planned release forward by one day. The October 21 advisory then confirmed that both issues could permit unauthenticated remote code execution in PHP installations serving web requests.
 
@@ -171,4 +185,7 @@ PHP’s emergency release closes two concrete routes to RCE, while its disclosur
 - [PHP advisory for CVE-2026-109618: OOM corruption](https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w)
 - [PHP advisory for CVE-2026-109619: stale global state](https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp)
 - [The PHP Foundation: discovery, fix, disclosure timeline, and security-process changes](https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/)
+- [OpenAI: Patch the Planet and coordinated vulnerability response](https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities/)
+- [OpenAI’s original PHP vulnerability announcement on X](https://x.com/OpenAI/status/2112907856018309586)
+- [Cloudflare: protections against PHP2Shell and pre-disclosure attack traffic](https://blog.cloudflare.com/php-vulnerabilities-waf-protection)
 - [watchTowr: PHP2Shell telemetry and release timeline](https://watchtowr.com/intelligence/php-remote-code-execution-php2shell/)

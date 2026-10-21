@@ -889,6 +889,24 @@ main > * { min-width: 0; }
     margin-inline: auto;
   }
 
+  .blog-x-embed {
+    width: min(100%, 550px);
+    margin: 1.75rem auto;
+    overflow: hidden;
+  }
+
+  .blog-x-embed-caption {
+    margin: 0 0 0.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .blog-x-embed .twitter-tweet {
+    margin: 0 !important;
+  }
+
   .blog-citation-panel {
     margin: 3rem auto 0;
     max-width: 68ch;
