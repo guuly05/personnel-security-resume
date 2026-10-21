@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useRef } from 'react';
 import { COURSES } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { useFocusTrap } from '../hooks/useFocusTrap.ts';
 
 interface DetailedTool {
@@ -99,6 +99,7 @@ const SkillsPage: React.FC = () => {
     : TOOLS.filter((tool) => tool.category === activeFilter);
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="skills-page">
       <header className="skills-hero">
         <div className="skills-hero-copy">
@@ -212,6 +213,7 @@ const SkillsPage: React.FC = () => {
         )}
       </AnimatePresence>
     </div>
+    </MotionConfig>
   );
 };
 
