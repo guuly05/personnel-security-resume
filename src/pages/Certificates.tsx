@@ -1,88 +1,36 @@
 import React, { useState } from 'react';
 import { CERTIFICATES } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
-import { AnimatePresence, motion } from 'motion/react';
+import { MotionConfig, motion } from 'motion/react';
 
-type CertificateInsight = {
-  summary: string;
-  skills: string[];
-};
-
-const certificateInsights: Record<string, CertificateInsight> = {
-  'Cyber Threat Management': {
-    summary:
-      'Covered the practical flow of threat detection, incident handling, risk prioritization, and defensive monitoring. The certificate helped connect network activity, attacker behavior, and response decisions into one investigation mindset.',
-    skills: ['Threat analysis', 'Incident response', 'Network monitoring', 'Risk prioritization'],
-  },
-  'Penetration Testing Professional': {
-    summary:
-      'Focused on the offensive security lifecycle, from scoping and reconnaissance through exploitation, post-exploitation, documentation, and responsible reporting. It strengthened the way I approach tests as structured engagements instead of isolated tool usage.',
-    skills: ['Reconnaissance', 'Vulnerability validation', 'Exploitation workflow', 'Technical reporting'],
-  },
-  'Microsoft Security Essentials': {
-    summary:
-      'Introduced core security, compliance, identity, and cloud protection concepts inside the Microsoft ecosystem. The content reinforced zero-trust thinking, access control, and the importance of protecting users, devices, and data together.',
-    skills: ['Identity security', 'Zero trust basics', 'Cloud posture', 'Compliance awareness'],
-  },
-  'Career Essentials in GitHub': {
-    summary:
-      'Built a stronger foundation in GitHub workflows, repository collaboration, code review, automation, and secure development practices. It gave me a clearer sense of how version control fits into real software delivery.',
-    skills: ['Git workflows', 'Code collaboration', 'Repository security', 'CI/CD fundamentals'],
-  },
-  'Career Essentials in Cybersecurity': {
-    summary:
-      'Provided a broad cybersecurity foundation across common threats, defensive controls, investigations, and professional security roles. It helped sharpen the baseline knowledge I use when moving between networking, systems, and application security.',
-    skills: ['Security fundamentals', 'Threat intelligence', 'Digital forensics', 'Defense strategy'],
-  },
-  'Cloud Tech Associate Advanced Security + EDR': {
-    summary:
-      'Focused on practical cloud-era protection with endpoint detection and response concepts, emphasizing stronger defensive visibility and faster incident reaction.',
-    skills: ['Endpoint detection and response', 'Cloud security basics', 'Threat monitoring', 'Incident triage'],
-  },
-  'Access Governance & Risk Management': {
-    summary:
-      'Covered identity governance and risk-centered access decisions, with emphasis on least privilege, access lifecycle control, and governance-aligned security planning.',
-    skills: ['Access governance', 'Risk management', 'Least privilege strategy', 'Identity control'],
-  },
-  'Claude Code 101': {
-    summary:
-      'Introduced practical AI-assisted engineering workflows, including prompt design, iterative refinement, and faster implementation with clear technical direction.',
-    skills: ['Prompt engineering', 'AI-assisted development', 'Iterative coding workflows', 'Developer productivity'],
-  },
-  'Web Application Security for the Everyday Software Engineer': {
-    summary:
-      'Strengthened day-to-day secure development practices by focusing on common web vulnerabilities, defensive coding choices, and risk-aware implementation habits.',
-    skills: ['Secure coding', 'Web vulnerability mitigation', 'Application threat modeling', 'Defensive engineering'],
-  },
-  'Securing MongoDB Self-Managed Networking': {
-    summary:
-      'Focused on hardening self-managed MongoDB network exposure through secure connectivity patterns, segmentation, and safer infrastructure-level database access.',
-    skills: ['MongoDB network hardening', 'Secure connectivity', 'Attack surface reduction', 'Infrastructure security'],
-  },
+const certificateSkills: Record<string, string[]> = {
+  'Cyber Threat Management': ['Threat analysis', 'Incident response', 'Network monitoring', 'Risk prioritization'],
+  'Penetration Testing Professional': ['Reconnaissance', 'Vulnerability validation', 'Exploitation workflow', 'Technical reporting'],
+  'Microsoft Security Essentials': ['Identity security', 'Zero trust basics', 'Cloud posture', 'Compliance awareness'],
+  'Career Essentials in GitHub': ['Git workflows', 'Code collaboration', 'Repository security', 'CI/CD fundamentals'],
+  'Career Essentials in Cybersecurity': ['Security fundamentals', 'Threat intelligence', 'Digital forensics', 'Defense strategy'],
+  'Cloud Tech Associate Advanced Security + EDR': ['Endpoint detection and response', 'Cloud security basics', 'Threat monitoring', 'Incident triage'],
+  'Access Governance & Risk Management': ['Access governance', 'Risk management', 'Least privilege strategy', 'Identity control'],
+  'Claude Code 101': ['Prompt engineering', 'AI-assisted development', 'Iterative coding workflows', 'Developer productivity'],
+  'Web Application Security for the Everyday Software Engineer': ['Secure coding', 'Web vulnerability mitigation', 'Application threat modeling', 'Defensive engineering'],
+  'Securing MongoDB Self-Managed Networking': ['MongoDB network hardening', 'Secure connectivity', 'Attack surface reduction', 'Infrastructure security'],
 };
 
 const educationHighlights = [
-  'Pursuing a B.Sc. in Computer Science with a strong focus on software engineering, security, programming, and practical systems thinking.',
-  'Founded a successful student group focused on self-study, peer accountability, and JavaScript mastery, helping classmates learn consistently outside formal lectures.',
-  'Built a wider academic and technical network by collaborating with motivated students, exchanging resources, and learning how to communicate technical ideas clearly.',
-  'Strengthened leadership, mentoring, documentation, and problem-solving skills through group learning, coursework, and independent technical projects.',
+  'Building a foundation across software engineering, cybersecurity, programming, and systems thinking.',
+  'Founded a peer self-study group focused on accountability and JavaScript mastery.',
+  'Developing leadership, mentoring, documentation, and technical communication through collaboration.',
 ];
 
-const universityImageUrl =
-  'https://images.unsplash.com/photo-1519452575417-564c1401ecc0?w=600&h=400&fit=crop';
-
-const certificateTracks = {
-  'Cyber Threat Management': 'Offensive Security',
-  'Penetration Testing Professional': 'Offensive Security',
-  'Microsoft Security Essentials': 'Identity & Governance',
-  'Career Essentials in GitHub': 'Engineering',
-  'Career Essentials in Cybersecurity': 'Offensive Security',
-  'Cloud Tech Associate Advanced Security + EDR': 'Cloud & Infrastructure',
-  'Access Governance & Risk Management': 'Identity & Governance',
-  'Claude Code 101': 'Engineering',
-  'Web Application Security for the Everyday Software Engineer': 'Offensive Security',
-  'Securing MongoDB Self-Managed Networking': 'Cloud & Infrastructure',
-} as const;
+const educationFocus = [
+  'Network security',
+  'Cryptography',
+  'Operating systems',
+  'Web security',
+  'Secure SDLC',
+  'Identity',
+  'Threat response',
+];
 
 const certificateTrackOptions = [
   'All',
@@ -93,308 +41,244 @@ const certificateTrackOptions = [
 ] as const;
 
 type CertificateTrack = (typeof certificateTrackOptions)[number];
+type CertificateCategory = Exclude<CertificateTrack, 'All'>;
 
-const mappedSkillsCount = new Set(Object.values(certificateInsights).flatMap((entry) => entry.skills)).size;
+const certificateTracks: Record<string, CertificateCategory> = {
+  'Cyber Threat Management': 'Offensive Security',
+  'Penetration Testing Professional': 'Offensive Security',
+  'Microsoft Security Essentials': 'Identity & Governance',
+  'Career Essentials in GitHub': 'Engineering',
+  'Career Essentials in Cybersecurity': 'Offensive Security',
+  'Cloud Tech Associate Advanced Security + EDR': 'Cloud & Infrastructure',
+  'Access Governance & Risk Management': 'Identity & Governance',
+  'Claude Code 101': 'Engineering',
+  'Web Application Security for the Everyday Software Engineer': 'Offensive Security',
+  'Securing MongoDB Self-Managed Networking': 'Cloud & Infrastructure',
+};
 
 const CertificatesPage: React.FC = () => {
-  const [isEducationOpen, setIsEducationOpen] = useState(false);
   const [activeTrack, setActiveTrack] = useState<CertificateTrack>('All');
-  const [expandedCertificates, setExpandedCertificates] = useState<Record<string, boolean>>({});
 
-  const visibleCertificates = CERTIFICATES.filter((cert) => {
-    if (activeTrack === 'All') {
-      return true;
-    }
-
-    return certificateTracks[cert.title as keyof typeof certificateTracks] === activeTrack;
-  });
-
-  const toggleCertificateExpanded = (title: string) => {
-    setExpandedCertificates((current) => ({
-      ...current,
-      [title]: !current[title],
-    }));
-  };
+  const visibleCertificates = CERTIFICATES.filter(
+    (certificate) =>
+      activeTrack === 'All' || certificateTracks[certificate.title] === activeTrack,
+  );
+  const verificationCount = CERTIFICATES.filter((certificate) => certificate.verifyLink).length;
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="editorial-page credentials-page">
-      <section className="credentials-hero">
-        <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
-          <div className="flex flex-col justify-between gap-8">
-            <div>
-              <span className="landing-section-index">/ credentials</span>
-            <h1 className="editorial-hero-title">
-                Security learning with <span className="text-accent">practical outcomes.</span>
-            </h1>
-              <p className="editorial-hero-copy">
-                These certifications support the way I work: understand the risk, validate it carefully, document it clearly, and keep improving through structured learning.
-              </p>
-            </div>
+      <section className="credentials-hero" aria-labelledby="credentials-title">
+        <div className="credentials-hero-main">
+          <span className="landing-section-index">/ learning record</span>
+          <h1 id="credentials-title" className="editorial-hero-title">
+            Learning that strengthens <span className="text-accent">real security work.</span>
+          </h1>
+          <p className="editorial-hero-copy credentials-hero-copy">
+            A collection of verifiable certificates across security, cloud infrastructure,
+            identity, and secure engineering—backed by focused computer science study.
+          </p>
+          <nav className="credentials-jump-links" aria-label="On this page">
+            <a href="#certificates">
+              Browse certificates <span aria-hidden="true">↓</span>
+            </a>
+            <a href="#education">
+              Education <span aria-hidden="true">↓</span>
+            </a>
+          </nav>
+        </div>
 
-            <div className="credentials-counts"><strong>{CERTIFICATES.length}</strong><span>certifications and focused learning paths</span><strong>{mappedSkillsCount}</strong><span>topics represented across the collection</span></div>
+        <aside className="credentials-overview" aria-label="Collection overview">
+          <p className="credentials-overview-label">Collection overview</p>
+          <div className="credentials-stat">
+            <strong>{CERTIFICATES.length}</strong>
+            <span>certificates and learning paths</span>
           </div>
+          <div className="credentials-stat">
+            <strong>{verificationCount}</strong>
+            <span>direct verification links</span>
+          </div>
+          <div className="credentials-stat">
+            <strong>{certificateTrackOptions.length - 1}</strong>
+            <span>learning tracks</span>
+          </div>
+        </aside>
+      </section>
 
-          <div className="space-y-5">
-            <div className="credentials-toolbar">
-              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-[0.25em] text-[var(--color-text-muted)]">
-                  Browse by track
-                </p>
-                <p className="text-[10px] font-mono font-bold uppercase tracking-widest accent-text">
-                  Showing {visibleCertificates.length} of {CERTIFICATES.length}
-                </p>
-              </div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {certificateTrackOptions.map((track) => (
-                  <button
-                    key={track}
-                    type="button"
-                    onClick={() => setActiveTrack(track)}
-                    aria-pressed={activeTrack === track}
-                    className="credentials-filter"
-                  >
-                    {track}
-                  </button>
-                ))}
-              </div>
-            </div>
+      <section
+        id="certificates"
+        className="credentials-section"
+        aria-labelledby="certificates-heading"
+      >
+        <div className="credentials-section-heading">
+          <div>
+            <span className="editorial-overline">01 / Credentials</span>
+            <h2 id="certificates-heading">Certificates</h2>
+          </div>
+          <p>Browse by focus area, then follow a verification link to the issuing platform.</p>
+        </div>
 
-            <motion.div
-              layout
-              className="credentials-list"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25 }}
-            >
-              {visibleCertificates.map((cert, index) => {
-              const insight = certificateInsights[cert.title];
-              const track = certificateTracks[cert.title as keyof typeof certificateTracks] ?? 'General';
-              const isExpanded = Boolean(expandedCertificates[cert.title]);
+        <div className="credentials-filter-block">
+          <div className="credentials-filter-heading">
+            <span>Filter by track</span>
+            <span aria-live="polite">
+              {visibleCertificates.length} of {CERTIFICATES.length} credentials
+            </span>
+          </div>
+          <div className="credentials-filters" role="group" aria-label="Filter certificates by track">
+            {certificateTrackOptions.map((track) => {
+              const count =
+                track === 'All'
+                  ? CERTIFICATES.length
+                  : CERTIFICATES.filter(
+                      (certificate) => certificateTracks[certificate.title] === track,
+                    ).length;
 
               return (
-                <motion.article
-                  layout
-                  key={cert.title}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.22, delay: index * 0.03 }}
-                  className="credential-row"
+                <button
+                  key={track}
+                  type="button"
+                  onClick={() => setActiveTrack(track)}
+                  aria-pressed={activeTrack === track}
+                  className="credentials-filter"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-start gap-4">
-                      <div className="credential-logo">
-                        <Icon name={cert.icon} size={28} />
-                      </div>
-
-                      <div className="min-w-0">
-                        {cert.verifyLink ? (
-                          <a
-                            href={cert.verifyLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="credential-title-link"
-                          >
-                            <h3 className="credential-title">
-                              {cert.title}
-                            </h3>
-                          </a>
-                        ) : (
-                          <h3 className="credential-title">{cert.title}</h3>
-                        )}
-                        <p className="credential-issuer">
-                          {cert.issuer}
-                        </p>
-                        <p className="credential-track">
-                          {track}
-                        </p>
-                      </div>
-                    </div>
-
-                    <span className="credential-date">
-                      {cert.date}
-                    </span>
-                  </div>
-
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {(insight?.skills ?? []).slice(0, 4).map((skill) => (
-                      <span
-                        key={skill}
-                        className="credential-skill"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 flex items-center justify-between gap-3 border-t border-[var(--border)] pt-4">
-                    <button
-                      type="button"
-                      onClick={() => toggleCertificateExpanded(cert.title)}
-                      className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] transition-colors hover:accent-text"
-                    >
-                      {isExpanded ? 'Hide details' : 'View details'}
-                      <Icon
-                        name="chevron-right"
-                        size={12}
-                        className={`transition-transform ${isExpanded ? 'rotate-90 text-[var(--accent)]' : ''}`}
-                      />
-                    </button>
-
-                    {cert.verifyLink && (
-                      <a
-                        href={cert.verifyLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-[var(--accent)] transition-colors hover:accent-text"
-                      >
-                        <Icon name="external-link" size={10} />
-                        Verify Authenticity
-                      </a>
-                    )}
-                  </div>
-
-                  <AnimatePresence initial={false}>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="mt-4 space-y-4 border-t border-[var(--border)] pt-4">
-                          <div>
-                            <p className="mb-2 text-[10px] font-mono font-bold uppercase tracking-widest text-brand-cyan">
-                              Certificate Content
-                            </p>
-                            <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
-                              {insight?.summary ?? cert.description}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="mb-2 text-[10px] font-mono font-bold uppercase tracking-widest text-slate-500">
-                              Personal Takeaway
-                            </p>
-                            <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
-                              {cert.description}
-                            </p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.article>
+                  <span>{track}</span>
+                  <span className="credentials-filter-count">{count}</span>
+                </button>
               );
             })}
-            </motion.div>
           </div>
         </div>
-      </section>
 
-      <section className="credentials-education-grid">
-        <div className="credentials-education">
-          <button
-            type="button"
-            onClick={() => setIsEducationOpen((current) => !current)}
-            className="flex w-full flex-col gap-6 p-6 text-left md:flex-row md:items-center md:justify-between md:p-8"
-            aria-expanded={isEducationOpen}
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]">
-                <Icon name="graduation-cap" size={28} />
-              </div>
-              <div>
-                <p className="text-xs font-mono font-bold uppercase tracking-widest text-[var(--accent)]">
-                  Education
-                </p>
-                <h3 className="mt-2 text-2xl font-bold leading-tight text-[var(--color-text)]">B.Sc. Computer Science</h3>
-                <p className="mt-1 text-sm italic text-[var(--color-text-muted)]">University of Hargeisa</p>
-              </div>
-            </div>
+        <motion.div layout className="credentials-grid" initial={false}>
+          {visibleCertificates.map((certificate, index) => {
+            const track = certificateTracks[certificate.title] ?? 'Professional Development';
+            const skills = certificateSkills[certificate.title] ?? [];
 
-            <div className="flex items-center justify-between gap-4 md:flex-col md:items-end">
-              <div className="text-right">
-                <p className="font-mono text-xs font-bold text-[var(--accent)]">2023 - 2027</p>
-                <p className="text-[10px] text-[var(--color-text-muted)] mt-1">4 Years</p>
-              </div>
-              <span className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]">
-                {isEducationOpen ? 'Hide' : 'Expand'}
-                <Icon
-                  name="chevron-right"
-                  size={14}
-                  className={`transition-transform ${isEducationOpen ? 'rotate-90 text-[var(--accent)]' : ''}`}
-                />
-              </span>
-            </div>
-          </button>
-
-          <AnimatePresence initial={false}>
-            {isEducationOpen && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                className="overflow-hidden"
+            return (
+              <motion.article
+                layout
+                key={certificate.title}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2, delay: index * 0.025 }}
+                className="credential-card"
               >
-                <div className="grid gap-6 border-t border-[var(--border)] p-6 md:p-8 lg:grid-cols-[1fr_1.2fr]">
-                  <div className="rounded-lg overflow-hidden border border-[var(--border)]">
-                    <img
-                      src={universityImageUrl}
-                      alt="University of Hargeisa"
-                      className="w-full h-full object-cover aspect-video"
-                      loading="lazy"
-                    />
+                <div className="credential-card-top">
+                  <div className="credential-logo" aria-hidden="true">
+                    <Icon name={certificate.icon} size={25} />
                   </div>
-
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest font-semibold text-[var(--accent)] mb-3">University Experience</p>
-                    <p className="text-sm leading-relaxed text-[var(--color-text-muted)] mb-4">
-                      My time at the University of Hargeisa has shaped my technical foundation and professional mindset. I've built strong peer relationships, led learning initiatives, and consistently applied coursework to real security challenges.
-                    </p>
-                    <div className="space-y-2">
-                      {educationHighlights.map((highlight) => (
-                        <div key={highlight} className="flex gap-2 text-xs text-[var(--color-text-muted)]">
-                          <span className="text-[var(--accent)] flex-shrink-0 mt-0.5">•</span>
-                          <span>{highlight}</span>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="credential-meta">
+                    <span className="credential-issuer">{certificate.issuer}</span>
+                    <span className="credential-date">{certificate.date}</span>
                   </div>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+
+                <span className="credential-track">{track}</span>
+                <h3 className="credential-title">{certificate.title}</h3>
+                <p className="credential-description">{certificate.description}</p>
+
+                {skills.length > 0 && (
+                  <ul className="credential-skills" aria-label="Skills and topics">
+                    {skills.map((skill) => (
+                      <li key={skill}>{skill}</li>
+                    ))}
+                  </ul>
+                )}
+
+                <div className="credential-card-footer">
+                  <span className="credential-evidence-label">Credential evidence</span>
+                  {certificate.verifyLink ? (
+                    <a
+                      href={certificate.verifyLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Verify ${certificate.title} on the issuing platform (opens in a new tab)`}
+                      className="credential-verify-link"
+                    >
+                      Verify certificate
+                      <Icon name="external-link" size={13} />
+                    </a>
+                  ) : (
+                    <span className="credential-unavailable">Verification link unavailable</span>
+                  )}
+                </div>
+              </motion.article>
+            );
+          })}
+        </motion.div>
+      </section>
+
+      <section
+        id="education"
+        className="credentials-education-section"
+        aria-labelledby="education-heading"
+      >
+        <div className="credentials-section-heading">
+          <div>
+            <span className="editorial-overline">02 / Education</span>
+            <h2 id="education-heading">Academic foundation</h2>
+          </div>
+          <p>Computer science study that connects systems fundamentals with applied security.</p>
         </div>
 
-          <div className="credentials-learning">
-          <p className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-[var(--accent)]">
-            Learning Focus
-          </p>
-          <div className="mt-5 space-y-4">
-            <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
-              The university program is designed around real-world security and engineering challenges, giving me a solid foundation across systems thinking, secure development, and technology leadership.
+        <article className="credentials-campus-card">
+          <figure className="credentials-campus-figure">
+            <img
+              src="/images/uoh.webp"
+              alt="Aerial view of the University of Hargeisa campus and its landscaped walkways."
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>
+              <span>University of Hargeisa</span>
+              <span>Hargeisa, Somaliland</span>
+            </figcaption>
+          </figure>
+
+          <div className="credentials-education-copy">
+            <div className="credentials-degree-meta">
+              <span>Bachelor of Science</span>
+              <span>2023 — 2027</span>
+            </div>
+            <h3>B.Sc. Computer Science</h3>
+            <a
+              href="https://uoh.edu.so/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="credentials-university-link"
+            >
+              University of Hargeisa
+              <Icon name="external-link" size={13} />
+            </a>
+            <p className="credentials-education-intro">
+              Pursuing a computer science degree alongside practical learning in security,
+              software engineering, and the systems that support both.
             </p>
-          <div className="flex flex-wrap gap-3 mt-4">
-            {['Network Security', 'Cryptography', 'Operating Systems', 'Web Security', 'Secure SDLC', 'Identity', 'Threat Response'].map((course) => (
-              <span
-                key={course}
-                className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]"
-              >
-                {course}
-              </span>
-            ))}
+
+            <div className="credentials-education-highlights">
+              <p className="credentials-detail-label">Learning and community</p>
+              <ul>
+                {educationHighlights.map((highlight) => (
+                  <li key={highlight}>{highlight}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="credentials-education-focus">
+              <p className="credentials-detail-label">Areas of focus</p>
+              <ul>
+                {educationFocus.map((area) => (
+                  <li key={area}>{area}</li>
+                ))}
+              </ul>
+            </div>
+
           </div>
-          </div>
-          <div className="mt-6 border-t border-[var(--border)] pt-6">
-            <p className="text-[10px] font-mono font-bold uppercase tracking-[0.35em] text-[var(--accent)] mb-2">Next Steps</p>
-            <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
-              The certificates and degree work support the same direction: stronger fundamentals, better documentation, more confident collaboration, and practical security judgment.
-            </p>
-          </div>
-        </div>
+        </article>
       </section>
     </div>
+    </MotionConfig>
   );
 };
 

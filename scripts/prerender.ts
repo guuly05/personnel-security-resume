@@ -5,7 +5,7 @@ import React from 'react';
 import { BLOG_POSTS } from '../src/blog/posts.ts';
 import { metadataForRoute, SITE_URL, FULL_NAME } from '../src/seo/metadata.ts';
 import { StaticRoute } from '../src/ssr/StaticRoute.tsx';
-import { CASE_STUDIES } from '../src/pages/Portfolio.tsx';
+import { CASE_STUDIES } from '../src/data/caseStudies.ts';
 
 const projectRoot = process.cwd();
 const distRoot = join(projectRoot, 'dist');

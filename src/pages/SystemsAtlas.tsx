@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { MotionConfig, motion, useReducedMotion } from 'motion/react';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
-import { CASE_STUDIES } from './Portfolio.tsx';
+import { CASE_STUDIES } from '../data/caseStudies.ts';
 import { SYSTEMS_PRACTICES, type SystemsEvidence, type SystemsPractice } from '../data/systemsAtlas.ts';
 
 const firstPractice = SYSTEMS_PRACTICES[0];
@@ -98,6 +98,7 @@ export default function SystemsAtlasPage() {
   };
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="editorial-page systems-atlas-page w-full">
       <header className="systems-atlas-hero surface-card relative overflow-hidden p-6 sm:p-8 lg:p-12">
         <div className="relative z-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_15rem] lg:items-end">
@@ -219,5 +220,6 @@ export default function SystemsAtlasPage() {
         </a>
       </footer>
     </div>
+    </MotionConfig>
   );
 }

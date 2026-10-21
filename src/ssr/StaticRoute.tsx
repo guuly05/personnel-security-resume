@@ -58,8 +58,19 @@ export function StaticRoute({ pathname }: { pathname: string }) {
             <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--accent)] bg-[var(--surface-soft)] font-bold text-[var(--accent)]">GM</span>
             <span className="hidden sm:block"><strong className="block text-sm">{PERSONAL_INFO.name}</strong><small className="text-[10px] text-brand-cyan">{PERSONAL_INFO.title}</small></span>
           </a>
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap items-center gap-1">
             {navItems.map(([href, label]) => <a key={href} href={href} className="rounded-xl px-3 py-2 text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-text)]">{label}</a>)}
+            <details className="group relative">
+              <summary className="flex cursor-pointer list-none items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
+                More
+                <span aria-hidden="true" className="transition-transform group-open:rotate-90">›</span>
+              </summary>
+              <div className="absolute right-0 top-full z-50 mt-2 flex w-52 flex-col rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-xl">
+                <a href="/systems" className="rounded-lg px-3 py-2.5 text-sm text-[var(--color-text-muted)] hover:bg-[var(--surface-soft)] hover:text-[var(--color-text)]">Systems Atlas</a>
+                <a href="/privacy-policy" className="rounded-lg px-3 py-2.5 text-sm text-[var(--color-text-muted)] hover:bg-[var(--surface-soft)] hover:text-[var(--color-text)]">Privacy Policy</a>
+                <a href="/terms-of-service" className="rounded-lg px-3 py-2.5 text-sm text-[var(--color-text-muted)] hover:bg-[var(--surface-soft)] hover:text-[var(--color-text)]">Terms of Service</a>
+              </div>
+            </details>
           </div>
         </nav>
       </header>

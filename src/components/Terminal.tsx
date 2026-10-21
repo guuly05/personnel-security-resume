@@ -5,7 +5,7 @@
  */
 
 import React, { useRef, useCallback, useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { MotionConfig, motion, AnimatePresence } from 'motion/react';
 import { UseTerminalReturn } from '../hooks/useTerminal.ts';
 import { useFocusTrap } from '../hooks/useFocusTrap.ts';
 import { LineType } from '../commands/commandEngine.ts';
@@ -190,6 +190,7 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
   }, [isOpen, closeTerminal]);
 
   return (
+    <MotionConfig reducedMotion="user">
     <AnimatePresence>
       {isOpen && (
         /* Backdrop */
@@ -350,5 +351,6 @@ export const Terminal: React.FC<TerminalProps> = ({ terminal, onNavigate, onThem
         </motion.div>
       )}
     </AnimatePresence>
+    </MotionConfig>
   );
 };

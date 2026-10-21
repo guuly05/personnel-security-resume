@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { CASE_STUDIES } from '../src/pages/Portfolio.tsx';
+import { CASE_STUDIES } from '../src/data/caseStudies.ts';
 import { PROJECT_DETAILS } from '../src/data/projectDetails.ts';
 
 test('every public case study has a matching detailed case study', () => {

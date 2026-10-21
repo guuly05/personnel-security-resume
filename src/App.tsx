@@ -3,19 +3,20 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { lazy, Suspense, useState, useEffect, useRef } from 'react';
 import { PERSONAL_INFO } from './constants.ts';
 import { Icon } from './components/Icon.tsx';
 import { SeoHead } from './components/SeoHead.tsx';
-import { BirthdayConfetti } from './components/BirthdayConfetti.tsx';
-import { Terminal } from './components/Terminal.tsx';
 import { useTerminal } from './hooks/useTerminal.ts';
 import { pathToSection, hashToSection, sectionToPath, type Section } from './routing.ts';
 
-import { lazy, Suspense } from 'react';
-
 // Code-split pages for faster initial bundle loading
+const BirthdayConfetti = lazy(() =>
+  import('./components/BirthdayConfetti.tsx').then((module) => ({ default: module.BirthdayConfetti })),
+);
+const Terminal = lazy(() =>
+  import('./components/Terminal.tsx').then((module) => ({ default: module.Terminal })),
+);
 const HomePage = lazy(() => import('./pages/Home.tsx'));
 const AboutPage = lazy(() => import('./pages/About.tsx'));
 const SkillsPage = lazy(() => import('./pages/Skills.tsx'));
@@ -37,6 +38,20 @@ function checkIsJuly27Today(): boolean {
   return today.getMonth() === 6 && today.getDate() === 27;
 }
 
+type NavigationItem = {
+  id: Section;
+  label: string;
+  icon: string;
+};
+
+const moreNavItems: NavigationItem[] = [
+  { id: 'home', label: 'Home', icon: 'home' },
+  { id: 'certificates', label: 'Credentials', icon: 'graduation-cap' },
+  { id: 'systems', label: 'Systems Atlas', icon: 'layers' },
+  { id: 'privacy-policy', label: 'Privacy Policy', icon: 'file-text' },
+  { id: 'terms-of-service', label: 'Terms of Service', icon: 'file-text' },
+];
+
 export default function App() {
   const [activeSection, setActiveSection] = useState<Section>(() =>
     typeof window === 'undefined' ? 'home' : pathToSection(window.location.pathname),
@@ -47,11 +62,18 @@ export default function App() {
     return segments[0] === 'portfolio' && segments[1] ? segments[1] : null;
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+  const [hasOpenedTerminal, setHasOpenedTerminal] = useState(false);
   const [isBlogFocusMode, setIsBlogFocusMode] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('light');
-  const shouldReduceMotion = useReducedMotion();
+  const moreMenuRef = useRef<HTMLDivElement>(null);
+  const moreMenuButtonRef = useRef<HTMLButtonElement>(null);
 
   const terminal = useTerminal();
+
+  useEffect(() => {
+    if (terminal.isOpen) setHasOpenedTerminal(true);
+  }, [terminal.isOpen]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -59,6 +81,29 @@ export default function App() {
   }, [theme]);
 
   const isJuly27 = checkIsJuly27Today();
+
+  useEffect(() => {
+    if (!isMoreMenuOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (event.target instanceof Node && !moreMenuRef.current?.contains(event.target)) {
+        setIsMoreMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMoreMenuOpen(false);
+        moreMenuButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMoreMenuOpen]);
 
   // Global keyboard shortcut: Ctrl+Alt+G toggles the terminal
   useEffect(() => {
@@ -70,7 +115,7 @@ export default function App() {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [terminal]);
+  }, [terminal.toggleTerminal]);
 
   useEffect(() => {
     // Let the app own scroll restoration so client-side route changes behave
@@ -122,20 +167,21 @@ export default function App() {
       const segments = url.pathname.replace(/^\/+/, '').split('/');
       setActiveProjectSlug(segments[0] === 'portfolio' && segments[1] ? segments[1] : null);
       setIsMenuOpen(false);
+      setIsMoreMenuOpen(false);
     };
 
     window.addEventListener('popstate', applyCurrentRoute);
     let pendingScrollSave: number | null = null;
     const handleScroll = () => {
       if (pendingScrollSave !== null) return;
-      pendingScrollSave = window.requestAnimationFrame(() => {
+      pendingScrollSave = window.setTimeout(() => {
         pendingScrollSave = null;
         saveScrollPosition();
-      });
+      }, 80);
     };
     const handlePopScroll = (event: PopStateEvent) => {
       if (pendingScrollSave !== null) {
-        window.cancelAnimationFrame(pendingScrollSave);
+        window.clearTimeout(pendingScrollSave);
         pendingScrollSave = null;
       }
       const scrollY = typeof event.state?.scrollY === 'number' ? event.state.scrollY : 0;
@@ -151,7 +197,7 @@ export default function App() {
       window.removeEventListener('popstate', applyCurrentRoute);
       window.removeEventListener('popstate', handlePopScroll);
       window.removeEventListener('scroll', handleScroll);
-      if (pendingScrollSave !== null) window.cancelAnimationFrame(pendingScrollSave);
+      if (pendingScrollSave !== null) window.clearTimeout(pendingScrollSave);
       document.removeEventListener('click', handleDocumentClick);
     };
   }, []);
@@ -162,7 +208,7 @@ export default function App() {
     }
   }, [activeSection]);
 
-  const navItems = [
+  const navItems: NavigationItem[] = [
     { id: 'portfolio', label: 'Work', icon: 'layout' },
     { id: 'experience', label: 'Experience', icon: 'briefcase' },
     { id: 'skills', label: 'Skills', icon: 'sparkles' },
@@ -181,9 +227,13 @@ export default function App() {
     isBlogSection && isBlogFocusMode ? 'opacity-0 pointer-events-none max-h-0 overflow-hidden' : '';
 
   return (
-    <div className="min-h-screen p-4 md:p-8 lg:p-12 selection:bg-[var(--accent)]/20 bg-[var(--color-bg)] text-[var(--color-text)] transition-colors duration-300">
+    <div className="min-h-screen p-3 sm:p-4 md:p-8 lg:p-12 selection:bg-[var(--accent)]/20 bg-[var(--color-bg)] text-[var(--color-text)] transition-colors duration-300">
       {/* Particle confetti only activates on July 27th */}
-      <BirthdayConfetti isActive={isJuly27 || activeSection === 'recap'} />
+      {(isJuly27 || activeSection === 'recap') && (
+        <Suspense fallback={null}>
+          <BirthdayConfetti isActive />
+        </Suspense>
+      )}
 
       {/* Dynamic SEO head tags */}
       <SeoHead section={activeSection} />
@@ -216,12 +266,12 @@ export default function App() {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="hidden xl:flex items-center gap-3 xl:gap-5">
           {navItems.map((item) => (
             <a
               key={item.id}
-              href={sectionToPath(item.id as Section)}
-              onClick={() => setActiveSection(item.id as Section)}
+              href={sectionToPath(item.id)}
+              onClick={() => setActiveSection(item.id)}
               aria-current={activeSection === item.id || (item.id === 'portfolio' && activeSection === 'portfolio-project') ? 'page' : undefined}
               className={`border-b-2 py-2 text-sm transition-colors duration-200 ${
                 (activeSection === item.id || (item.id === 'portfolio' && activeSection === 'portfolio-project'))
@@ -232,9 +282,58 @@ export default function App() {
               {item.label}
             </a>
           ))}
+          <div className="relative" ref={moreMenuRef}>
+            <button
+              ref={moreMenuButtonRef}
+              type="button"
+              aria-expanded={isMoreMenuOpen}
+              aria-label="More pages"
+              onClick={() => setIsMoreMenuOpen((open) => !open)}
+              className={`inline-flex items-center gap-1 py-2 text-sm transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
+                moreNavItems.some((item) => item.id === activeSection)
+                  ? 'font-semibold text-[var(--accent)]'
+                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+              }`}
+            >
+              More
+              <Icon
+                name="chevron-right"
+                size={14}
+                className={`transition-transform ${isMoreMenuOpen ? 'rotate-90' : ''}`}
+              />
+            </button>
+            {isMoreMenuOpen && (
+                <div className="app-menu-enter absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-xl">
+                  <p className="px-3 pb-2 pt-1 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+                    More pages
+                  </p>
+                  <nav aria-label="More pages" className="flex flex-col gap-1">
+                    {moreNavItems.map((item) => (
+                      <a
+                        key={item.id}
+                        href={sectionToPath(item.id)}
+                        onClick={() => {
+                          setActiveSection(item.id);
+                          setIsMoreMenuOpen(false);
+                        }}
+                        aria-current={activeSection === item.id ? 'page' : undefined}
+                        className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
+                          activeSection === item.id
+                            ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
+                            : 'text-[var(--color-text-muted)] hover:bg-[var(--surface-soft)] hover:text-[var(--color-text)]'
+                        }`}
+                      >
+                        <Icon name={item.icon} size={17} />
+                        <span>{item.label}</span>
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+            )}
+          </div>
         </div>
 
-        <div className="hidden lg:flex items-center gap-2">
+        <div className="hidden xl:flex items-center gap-2">
           <button
             type="button"
             onClick={terminal.toggleTerminal}
@@ -255,13 +354,13 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
           </a>
         </div>
 
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className="flex items-center gap-2 xl:hidden">
           <button
             type="button"
             onClick={() => setIsMenuOpen((value) => !value)}
             aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isMenuOpen}
-            className="rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
+            className="min-h-11 min-w-11 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
           >
             <Icon name={isMenuOpen ? 'x' : 'menu'} size={20} />
           </button>
@@ -269,14 +368,8 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="lg:hidden fixed inset-x-4 top-24 z-40 surface-card p-6 overflow-hidden"
-          >
+      {isMenuOpen && (
+          <div className="app-menu-enter xl:hidden fixed inset-x-4 top-24 z-40 surface-card max-h-[calc(100dvh_-_7rem)] overflow-y-auto overscroll-contain p-4 sm:p-6">
             <div className="mb-4 flex items-center gap-3">
               <div className="w-8 h-8 rounded-md border border-[var(--accent)] bg-[var(--surface-soft)] flex items-center justify-center font-bold text-[var(--accent)]">
                 GM
@@ -287,9 +380,9 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
               {navItems.map((item) => (
                 <a
                   key={item.id}
-                  href={sectionToPath(item.id as Section)}
+                  href={sectionToPath(item.id)}
                   onClick={() => {
-                    setActiveSection(item.id as Section);
+                    setActiveSection(item.id);
                     setIsMenuOpen(false);
                   }}
                   className={`
@@ -306,6 +399,38 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
                 </a>
               ))}
             </div>
+
+            <details className="group mt-3 border-t border-[var(--border)] pt-3">
+              <summary className="flex cursor-pointer list-none items-center justify-between rounded-md px-4 py-3 text-sm font-semibold text-[var(--color-text)] transition-colors hover:bg-[var(--surface-soft)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]">
+                <span>More pages</span>
+                <Icon
+                  name="chevron-right"
+                  size={16}
+                  className="transition-transform group-open:rotate-90"
+                />
+              </summary>
+              <div className="mt-1 flex flex-col gap-1 pl-3">
+                {moreNavItems.map((item) => (
+                  <a
+                    key={item.id}
+                    href={sectionToPath(item.id)}
+                    onClick={() => {
+                      setActiveSection(item.id);
+                      setIsMenuOpen(false);
+                    }}
+                    aria-current={activeSection === item.id ? 'page' : undefined}
+                    className={`flex items-center gap-4 rounded-md px-4 py-3 transition-colors ${
+                      activeSection === item.id
+                        ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
+                        : 'text-[var(--color-text-muted)] hover:bg-[var(--surface-soft)] hover:text-[var(--color-text)]'
+                    }`}
+                  >
+                    <Icon name={item.icon} size={19} />
+                    <span className="text-sm font-medium">{item.label}</span>
+                  </a>
+                ))}
+              </div>
+            </details>
 
             <a
               href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf"
@@ -327,9 +452,8 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
               </button>
               <span className="text-xs text-[var(--color-text-muted)]">Ctrl + Alt + G</span>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+      )}
 
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto relative">
@@ -343,14 +467,7 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
             </div>
           }
         >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${activeSection}:${activeProjectSlug ?? ''}`}
-              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -4 }}
-              transition={{ duration: shouldReduceMotion ? 0.01 : 0.24, ease: 'easeOut' }}
-            >
+            <div key={`${activeSection}:${activeProjectSlug ?? ''}`} className="app-route-enter">
               {activeSection === 'home' && <HomePage />}
               {activeSection === 'about' && <AboutPage />}
               {activeSection === 'skills' && <SkillsPage />}
@@ -371,8 +488,7 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
               {activeSection === 'terms-of-service' && <LegalPage kind="terms" />}
               {activeSection === 'recap' && <AnnualRecapPage />}
               {activeSection === 'not-found' && <NotFoundPage />}
-            </motion.div>
-          </AnimatePresence>
+            </div>
         </Suspense>
       </main>
 
@@ -417,18 +533,22 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
       </footer>
 
       {/* Terminal overlay — rendered at root so it floats above everything */}
-      <Terminal
-        terminal={terminal}
-        onNavigate={(destination) => {
-          const path = destination.startsWith('/') ? destination : sectionToPath(destination as Section);
-          const state = window.history.state && typeof window.history.state === 'object' ? window.history.state : {};
-          window.history.replaceState({ ...state, scrollY: window.scrollY }, '', window.location.href);
-          window.history.pushState({ scrollY: 0 }, '', path);
-          window.dispatchEvent(new PopStateEvent('popstate'));
-          window.scrollTo(0, 0);
-        }}
-        onTheme={(t) => setTheme(t)}
-      />
+      {hasOpenedTerminal && (
+        <Suspense fallback={null}>
+          <Terminal
+            terminal={terminal}
+            onNavigate={(destination) => {
+              const path = destination.startsWith('/') ? destination : sectionToPath(destination as Section);
+              const state = window.history.state && typeof window.history.state === 'object' ? window.history.state : {};
+              window.history.replaceState({ ...state, scrollY: window.scrollY }, '', window.location.href);
+              window.history.pushState({ scrollY: 0 }, '', path);
+              window.dispatchEvent(new PopStateEvent('popstate'));
+              window.scrollTo(0, 0);
+            }}
+            onTheme={(t) => setTheme(t)}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { BLOG_POSTS } from '../blog/posts.ts';
+import type { BlogPost } from '../blog/posts.ts';
 import { metadataForSection, metadataForRoute, SITE_URL } from '../seo/metadata.ts';
 
 interface SeoHeadProps {
@@ -7,8 +8,38 @@ interface SeoHeadProps {
 }
 
 export function SeoHead({ section = 'home' }: SeoHeadProps) {
-  const pathname = typeof window === 'undefined' ? undefined : window.location.pathname;
-  const post = pathname?.startsWith('/blog/') ? BLOG_POSTS.find((entry) => pathname === `/blog/${entry.slug}`) : undefined;
+  const [pathname, setPathname] = useState(() =>
+    typeof window === 'undefined' ? undefined : window.location.pathname,
+  );
+  const [post, setPost] = useState<BlogPost>();
+  const blogSlug = pathname?.match(/^\/blog\/([^/]+)\/?$/)?.[1];
+
+  useEffect(() => {
+    const syncPathname = () => setPathname(window.location.pathname);
+    window.addEventListener('popstate', syncPathname);
+    return () => window.removeEventListener('popstate', syncPathname);
+  }, []);
+
+  useEffect(() => {
+    if (!blogSlug) {
+      setPost(undefined);
+      return;
+    }
+
+    let isCurrentRoute = true;
+    void import('../blog/posts.ts')
+      .then(({ BLOG_POSTS }) => {
+        if (isCurrentRoute) setPost(BLOG_POSTS.find((entry) => entry.slug === blogSlug));
+      })
+      .catch(() => {
+        if (isCurrentRoute) setPost(undefined);
+      });
+
+    return () => {
+      isCurrentRoute = false;
+    };
+  }, [blogSlug]);
+
   const meta = pathname ? metadataForRoute(pathname, post) : metadataForSection(section);
   const canonicalUrl = `${SITE_URL}${meta.canonicalPath}`;
 

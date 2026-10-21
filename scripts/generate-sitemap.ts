@@ -2,7 +2,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { BLOG_POSTS } from '../src/blog/posts.ts';
 import { SITE_URL } from '../src/seo/metadata.ts';
-import { CASE_STUDIES } from '../src/pages/Portfolio.tsx';
+import { CASE_STUDIES } from '../src/data/caseStudies.ts';
 
 const projectRoot = process.cwd();
 const today = new Date().toISOString().slice(0, 10);
