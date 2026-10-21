@@ -5,8 +5,22 @@
     <link>https://www.guuleedmaxamuud.dev/blog</link>
     <description>Security research, vulnerability analysis, and technical writing by Guuleed Maxmuud Aw Abdi.</description>
     <language>en-us</language>
-    <lastBuildDate>2026-10-19T12:00:00.000Z</lastBuildDate>
+    <lastBuildDate>2026-10-21T12:00:00.000Z</lastBuildDate>
     <atom:link href="https://www.guuleedmaxamuud.dev/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PHP2Shell: How Two Critical PHP RCE Bugs Crossed the Request Boundary</title>
+      <link>https://www.guuleedmaxamuud.dev/blog/php2shell-two-critical-rce-flaws</link>
+      <guid isPermaLink="true">https://www.guuleedmaxamuud.dev/blog/php2shell-two-critical-rce-flaws</guid>
+      <pubDate>2026-10-21T12:00:00.000Z</pubDate>
+      <description><![CDATA[A deep technical report on CVE-2026-109618 and CVE-2026-109619: how out-of-memory bailout corruption and stale worker state became remote code execution, how PHP maintainers responded, and what defenders should do now.
+
+Tags: PHP security · Vulnerability research · Remote code execution · Incident response
+Last updated: October 21, 2026]]></description>
+      <category>PHP security</category>
+      <category>Vulnerability research</category>
+      <category>Remote code execution</category>
+      <category>Incident response</category>
+    </item>
     <item>
       <title>Starting Computer Science in the Age of AI: Advice for New Students</title>
       <link>https://www.guuleedmaxamuud.dev/blog/starting-computer-science-in-the-age-of-ai</link>
