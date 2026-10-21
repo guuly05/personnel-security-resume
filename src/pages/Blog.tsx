@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { ArrowLeft, ArrowRight, Maximize2, Minimize2, Search, X } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import rehypeSanitize from 'rehype-sanitize';
@@ -212,16 +212,59 @@ export default function BlogPage({ isFocusMode, onFocusModeChange, initialSlug }
   const [progress, setProgress] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTag, setActiveTag] = useState('');
-  const activePost = BLOG_POSTS.find((entry) => entry.slug === activeSlug) ?? BLOG_POSTS[0];
+  const activePost = BLOG_POSTS.find((entry) => entry.slug === activeSlug);
   const palette = moodPalette(activePost?.mood ?? 'Contemplative');
   const filteredPosts = useMemo(() => { const query = searchQuery.trim().toLowerCase(); return BLOG_POSTS.filter((post) => (!activeTag || post.tags.includes(activeTag)) && (!query || [post.title, post.subtitle, ...post.tags, ...post.relatedTopics].join(' ').toLowerCase().includes(query))); }, [activeTag, searchQuery]);
 
   useEffect(() => { const handlePopState = () => setActiveSlug(getSlugFromPath()); window.addEventListener('popstate', handlePopState); return () => window.removeEventListener('popstate', handlePopState); }, []);
-  const handleOpen = (slug: string) => { setActiveSlug(slug); window.history.pushState(null, '', `/blog/${slug}`); };
-  const handleBack = () => { setActiveSlug(null); window.history.pushState(null, '', '/blog'); };
+  const handleOpen = (slug: string) => {
+    setActiveSlug(slug);
+    window.history.pushState({ scrollY: 0 }, '', `/blog/${slug}`);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  };
+  const handleBack = () => {
+    setActiveSlug(null);
+    window.history.pushState({ scrollY: 0 }, '', '/blog');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  };
   useEffect(() => { if (!activeSlug) { setProgress(0); return; } const updateProgress = () => { const documentHeight = document.documentElement.scrollHeight - window.innerHeight; const current = window.scrollY || document.documentElement.scrollTop || 0; setProgress(documentHeight <= 0 ? 0 : Math.max(0, Math.min(1, current / documentHeight))); }; updateProgress(); window.addEventListener('scroll', updateProgress, { passive: true }); return () => window.removeEventListener('scroll', updateProgress); }, [activeSlug]);
   useEffect(() => { if (activeSlug) { window.scrollTo({ top: 0, behavior: 'auto' }); onFocusModeChange(false); } }, [activeSlug, onFocusModeChange]);
   useEffect(() => { const root = document.documentElement; root.style.setProperty('--blog-ambient-a', palette.ambientA); root.style.setProperty('--blog-ambient-b', palette.ambientB); root.style.setProperty('--blog-accent', palette.accent); root.style.setProperty('--blog-soft', palette.soft); root.style.setProperty('--blog-border', palette.border); }, [palette]);
 
-  return <div className="blog-page relative overflow-hidden"><div className="blog-page-ambient" aria-hidden="true" /><AnimatePresence mode="wait">{activeSlug && activePost ? <BlogReader key={activeSlug} post={activePost} onBack={handleBack} isFocusMode={isFocusMode} onFocusModeChange={onFocusModeChange} progress={progress} /> : <BlogCatalog key="catalog" posts={filteredPosts} allPosts={BLOG_POSTS} onOpen={handleOpen} searchQuery={searchQuery} onSearchChange={setSearchQuery} activeTag={activeTag} onTagChange={setActiveTag} />}</AnimatePresence></div>;
+  return (
+    <MotionConfig reducedMotion="user">
+    <div className="blog-page relative overflow-hidden">
+      <div className="blog-page-ambient" aria-hidden="true" />
+      <AnimatePresence mode="wait">
+        {activeSlug && activePost ? (
+          <BlogReader
+            key={activeSlug}
+            post={activePost}
+            onBack={handleBack}
+            isFocusMode={isFocusMode}
+            onFocusModeChange={onFocusModeChange}
+            progress={progress}
+          />
+        ) : activeSlug ? (
+          <section key="missing-note" className="blog-empty-state surface-card">
+            <p className="blog-eyebrow">404 / note unavailable</p>
+            <h1>This note could not be found.</h1>
+            <a href="/blog" onClick={handleBack} className="blog-read-link">Back to the journal <ArrowRight size={15} /></a>
+          </section>
+        ) : (
+          <BlogCatalog
+            key="catalog"
+            posts={filteredPosts}
+            allPosts={BLOG_POSTS}
+            onOpen={handleOpen}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            activeTag={activeTag}
+            onTagChange={setActiveTag}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+    </MotionConfig>
+  );
 }
