@@ -4,6 +4,7 @@
  */
 
 import { lazy, Suspense, useState, useEffect, useRef } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { PERSONAL_INFO } from './constants.ts';
 import { Icon } from './components/Icon.tsx';
 import { SeoHead } from './components/SeoHead.tsx';
@@ -550,7 +551,7 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
           />
         </Suspense>
       )}
+      <Analytics />
     </div>
   );
 }
-
