@@ -33,6 +33,44 @@ export interface CaseStudy {
 
 export const CASE_STUDIES: CaseStudy[] = [
   {
+    id: 'daryeelpass',
+    title: 'DaryeelPass — Clinic Discovery & Request Prototype',
+    subtitle: 'A Somali and English clinic directory and role-based appointment-request prototype for Hargeisa, designed to make clinic information easier to explore while keeping the limits of a demo clear.',
+    type: 'Healthcare Access · Full-Stack PWA',
+    year: '2026',
+    status: 'Open Source',
+    role: 'Sole Product Engineer',
+    collaboration: 'Independent product design and implementation, informed by a documented product requirements brief.',
+    imageUrl: '/assets/daryeelpass-clinic-directory.png',
+    imageAlt: 'DaryeelPass clinic directory with bilingual controls, clinic search, service lists, and a clear notice that requests are not real appointments.',
+    challenge:
+      'Finding clinic contact details, services, and provider information can mean checking several sources and switching between disconnected pages. DaryeelPass explores a clearer starting point for people in Hargeisa: one bilingual directory where they can search clinic-published information, understand the source and freshness of that information, and follow a guided request workflow. The product also needs to support clinic staff and administrators without implying that a prototype can reserve real care.',
+    approach:
+      'Built an installable React 19 and Vite progressive web app in JavaScript, paired with an Express 5 JSON API and PostgreSQL 17 through Prisma. Designed four explicit account roles, server-side session authentication, clinic-scoped authorization, transaction-aware row-level security, validated workflows, and responsive Somali/English interfaces. Added a seeded public clinic directory, request lifecycle, availability suggestions, invitation-based staff onboarding, and system administration views.',
+    outcome:
+      'A runnable, documented end-to-end prototype that demonstrates how public clinic discovery, patient requests, staff queues, and system administration can fit together in one product. The repository includes the frontend, API, database schema and migrations, seed data, role and access controls, PWA setup, operational instructions, and tests. It is deliberately a portfolio demo: it does not connect to clinic scheduling systems, transmit requests to clinics, or confirm real appointments.',
+    highlights: [
+      'Somali and English clinic directory with search across clinic, service, and provider names, plus source and last-checked context',
+      'Four role boundaries: PATIENT, STAFF, CLINIC_ADMIN, and SYSTEM_ADMIN, with role assignment controlled by signup or invitation flows',
+      'Patient request lifecycle with generated suggestions clearly labeled as unconfirmed, patient-owned request history, and pending cancellation',
+      'Clinic workspaces for request queues, staff-entered availability, and clinic-scoped staff invitations',
+      'PostgreSQL row-level security plus API authorization, one-time first-admin setup, hashed passwords, and digest-only invitation tokens',
+      'Responsive installable PWA with static asset precaching and no runtime caching for API responses',
+    ],
+    techStack: [
+      { name: 'React 19', group: 'frontend' },
+      { name: 'JavaScript ES modules', group: 'frontend' },
+      { name: 'Vite 8', group: 'tooling' },
+      { name: 'CSS design tokens', group: 'frontend' },
+      { name: 'Express 5', group: 'backend' },
+      { name: 'PostgreSQL 17', group: 'backend' },
+      { name: 'Prisma 6', group: 'backend' },
+      { name: 'Zod 4', group: 'backend' },
+      { name: 'Workbox · PWA', group: 'platform' },
+    ],
+    githubUrl: 'https://github.com/guuly05/daryeelpass',
+  },
+  {
     id: 'samaale-general-trading',
     title: 'Samaale General Trading Co. Digital Headquarters',
     subtitle: 'A production-grade bilingual commerce and logistics website that turns a regional distributor\'s catalogue, branch network, and procurement services into a fast, discoverable, and conversion-focused digital experience.',

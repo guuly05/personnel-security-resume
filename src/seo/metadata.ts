@@ -43,6 +43,12 @@ export type PageMetadata = {
 const TITLE_SUFFIX = `${FULL_NAME} — Full-Stack Developer · Cybersecurity · DevOps`;
 
 const PROJECT_SEO: Record<string, { title: string; description: string; type: string; accent: string }> = {
+  daryeelpass: {
+    title: 'DaryeelPass Bilingual Clinic Directory Case Study',
+    description: 'A detailed case study of a Somali and English clinic discovery and appointment-request prototype, covering role-based access, PostgreSQL row-level security, PWA architecture, and clear demo boundaries.',
+    type: 'Bilingual healthcare access prototype',
+    accent: '#07804f',
+  },
   'samaale-general-trading': {
     title: 'Samaale General Trading Co. Website Case Study',
     description: 'A detailed case study of a bilingual React commerce and logistics platform covering catalogue architecture, interactive mapping, Cloudflare Workers security, performance, SEO, accessibility, and deployment.',

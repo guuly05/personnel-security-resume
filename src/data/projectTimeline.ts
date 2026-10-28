@@ -60,6 +60,16 @@ export const PROJECT_TIMELINE: ProjectMilestone[] = [
     icon: 'shield-check',
   },
   {
+    id: 'daryeelpass',
+    projectId: 'daryeelpass',
+    period: '2026',
+    title: 'DaryeelPass',
+    description: 'Built a bilingual clinic discovery and appointment-request prototype with patient, clinic, and system administration workflows.',
+    tags: ['React', 'Express', 'PostgreSQL', 'Somali / English'],
+    href: '/portfolio/daryeelpass',
+    icon: 'briefcase',
+  },
+  {
     id: 'samaale-general-trading',
     projectId: 'samaale-general-trading',
     period: 'June–August 2026',
