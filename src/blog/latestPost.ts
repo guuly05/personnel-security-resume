@@ -1,8 +1,8 @@
 /** Lightweight home page summary; the complete Markdown body stays in the blog route chunk. */
 export const LATEST_POST = {
-  slug: 'ai-is-reshaping-the-cybersecurity-vulnerability-race',
-  title: 'AI Is Reshaping the Cybersecurity Vulnerability Race',
+  slug: 'anthropic-ipo-sec-s1-financials',
+  title: 'Anthropic’s IPO Ambitions: A Technical Reading of the SEC Filing',
   subtitle:
-    'From PHP2Shell and Node2Shell to the eMudhra certificate incident and the Hugging Face intrusion, AI is changing how quickly weaknesses are found, exploited, and fixed.',
-  date: '2026-10-23',
+    'A filing-level analysis of Anthropic’s proposed Nasdaq listing, revenue mix, fair-value losses, compute obligations, customer concentration, and public-benefit governance.',
+  date: '2026-10-27',
 };
