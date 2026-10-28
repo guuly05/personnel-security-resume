@@ -48,6 +48,12 @@ export const SYSTEMS_PRACTICES: SystemsPractice[] = [
         decision: 'Server routes validate lookup requests and proxy only the needed provider response to the dashboard.',
         tradeoff: 'Credentials stay behind the server boundary, with an additional server hop and provider quota dependency.',
       },
+      {
+        projectId: 'daryeelpass',
+        constraint: 'Patient, staff, clinic-admin, and system-admin workflows need distinct authority, with clinic staff limited to their assigned clinic.',
+        decision: 'Server-side sessions and route role checks are paired with clinic scoping and PostgreSQL row-level security; invitations establish privileged roles and assignments.',
+        tradeoff: 'Authorization is checked across the API and data layers, while every database operation must preserve the transaction identity context and the demo remains separate from real clinic systems.',
+      },
     ],
   },
   {
@@ -113,6 +119,26 @@ export const SYSTEMS_PRACTICES: SystemsPractice[] = [
         constraint: 'Direct links and search metadata must work alongside live booking and contact actions.',
         decision: 'The build prerenders public routes, feeds, and metadata; server functions own booking and contact workflows.',
         tradeoff: 'Public pages are available immediately, while interactive actions still need browser code and external services.',
+      },
+      {
+        projectId: 'daryeelpass',
+        constraint: 'The public directory should be easy to install and browse, while patient and staff data needs an authenticated persistent API.',
+        decision: 'A Vite and Workbox PWA precaches static assets, while an Express API handles session-aware workflows and PostgreSQL stores application state; API responses are excluded from runtime caching.',
+        tradeoff: 'The app shell can be installed and its static resources cached, while account and request workflows still require the API and database to be available.',
+      },
+    ],
+  },
+  {
+    id: 'relational-data',
+    title: 'Evolve relational data deliberately',
+    summary: 'Persistent product workflows need a schema that can be created, updated, and populated consistently across development and deployment.',
+    pattern: 'Model relationships explicitly, version schema changes as migrations, seed repeatable reference data, and run the application with a restricted database role.',
+    evidence: [
+      {
+        projectId: 'daryeelpass',
+        constraint: 'Accounts, clinic assignments, services, availability, invitations, and requests are related records with different access scopes.',
+        decision: 'Prisma models and PostgreSQL migrations define the relational structure; a seed script upserts public directory records, and the API uses a restricted runtime role with row-level policies.',
+        tradeoff: 'The schema and setup are reproducible and auditable, while local setup requires PostgreSQL, generated Prisma client code, migrations, and role configuration.',
       },
     ],
   },
