@@ -5,8 +5,32 @@
   <link href="https://www.guuleedmaxamuud.dev/blog" />
   <link rel="self" href="https://www.guuleedmaxamuud.dev/atom.xml" type="application/atom+xml" />
   <id>https://www.guuleedmaxamuud.dev/blog</id>
-  <updated>2026-10-22T12:00:00.000Z</updated>
+  <updated>2026-10-27T12:00:00.000Z</updated>
   <author><name>Guuleed Maxmuud Aw Abdi</name></author>
+  <entry>
+    <title>Anthropic’s IPO Ambitions: A Technical Reading of the SEC Filing</title>
+    <link href="https://www.guuleedmaxamuud.dev/blog/anthropic-ipo-sec-s1-financials" />
+    <id>https://www.guuleedmaxamuud.dev/blog/anthropic-ipo-sec-s1-financials</id>
+    <published>2026-10-27T12:00:00.000Z</published>
+    <updated>2026-10-27T12:00:00.000Z</updated>
+    <summary type="html"><![CDATA[A filing-level analysis of Anthropic’s proposed Nasdaq listing, revenue mix, fair-value losses, compute obligations, customer concentration, and public-benefit governance.
+
+Tags: Anthropic · IPO · SEC filings · AI economics · Financial analysis
+Last updated: October 27, 2026]]></summary>
+    <category term="Anthropic" />
+  </entry>
+  <entry>
+    <title>AI Is Reshaping the Cybersecurity Vulnerability Race</title>
+    <link href="https://www.guuleedmaxamuud.dev/blog/ai-is-reshaping-the-cybersecurity-vulnerability-race" />
+    <id>https://www.guuleedmaxamuud.dev/blog/ai-is-reshaping-the-cybersecurity-vulnerability-race</id>
+    <published>2026-10-23T12:00:00.000Z</published>
+    <updated>2026-10-23T12:00:00.000Z</updated>
+    <summary type="html"><![CDATA[From PHP2Shell and Node2Shell to the eMudhra certificate incident and the Hugging Face intrusion, AI is changing how quickly weaknesses are found, exploited, and fixed.
+
+Tags: AI security · Vulnerability research · Incident response · Threat intelligence
+Last updated: October 23, 2026]]></summary>
+    <category term="AI security" />
+  </entry>
   <entry>
     <title>PHP2Shell: How Two Critical PHP RCE Bugs Crossed the Request Boundary</title>
     <link href="https://www.guuleedmaxamuud.dev/blog/php2shell-two-critical-rce-flaws" />
