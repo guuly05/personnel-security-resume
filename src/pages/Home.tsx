@@ -10,16 +10,16 @@ const supportingStudies = CASE_STUDIES.slice(1, 3);
 const latestPost = LATEST_POST;
 
 const clientQuote = {
-  quote: 'I liked that Guuleed took time to understand our business. The website brings our products and services together in one place and gives customers a clear way to reach us.',
-  name: 'Esse Haji Ismail Mohamed',
-  role: 'General Manager · Samaale General Trading Co.',
+  quote: 'DaryeelPass is a portfolio prototype. It does not connect to clinic scheduling systems, send requests to clinics, or confirm real appointments.',
+  name: 'Product boundary',
+  role: 'Synthetic demo data only · Never enter real patient information',
 };
 
 const proofPoints = [
-  { value: '27+', label: 'products in the catalog' },
-  { value: '07', label: 'business locations' },
-  { value: 'EN / SO', label: 'English and Somali' },
-  { value: 'Secure', label: 'inquiry workflow' },
+  { value: 'SO / EN', label: 'Somali and English' },
+  { value: '4 roles', label: 'patient and clinic workflows' },
+  { value: 'PWA', label: 'responsive installable app' },
+  { value: 'RLS', label: 'clinic scoped data access' },
 ];
 
 const HomePage: React.FC = () => (
@@ -61,13 +61,13 @@ const HomePage: React.FC = () => (
       <aside className="landing-hero-aside" aria-label="Featured project preview">
         <div className="landing-aside-topline">
           <span>Featured project</span>
-          <span className="landing-aside-index">01 / 03</span>
+          <span className="landing-aside-index">01 / {String(CASE_STUDIES.length).padStart(2, '0')}</span>
         </div>
         <a href={`/portfolio/${featuredStudy.id}`} className="landing-hero-art-link">
           <img
             className="landing-hero-art"
-            src="/assets/samaale-live-preview.webp"
-            alt="Samaale General Trading Co. website homepage, showing its bilingual navigation and product platform."
+            src={featuredStudy.imageUrl}
+            alt={featuredStudy.imageAlt}
             width="1500"
             height="1000"
             fetchPriority="high"
@@ -76,13 +76,13 @@ const HomePage: React.FC = () => (
           <span className="landing-image-label">Open case study <Icon name="arrow-up-right" size={15} /></span>
         </a>
         <div className="landing-hero-project-caption">
-          <span>Live platform · 2026</span>
-          <strong>Samaale General Trading Co.</strong>
+          <span>{featuredStudy.type} · {featuredStudy.year}</span>
+          <strong>{featuredStudy.title}</strong>
         </div>
       </aside>
     </section>
 
-    <section className="landing-proof" aria-label="Samaale platform results">
+    <section className="landing-proof" aria-label="DaryeelPass project at a glance">
       <span className="landing-proof-intro">Project at a glance</span>
       {proofPoints.map((point) => (
         <div className="landing-proof-item" key={point.value}>
@@ -117,7 +117,7 @@ const HomePage: React.FC = () => (
       </div>
     </section>
 
-    <section className="landing-about-grid" aria-label="About Guuleed and client feedback">
+    <section className="landing-about-grid" aria-label="About Guuleed and DaryeelPass product scope">
       <div className="landing-notes-intro">
         <span className="landing-section-index">How I work</span>
         <h2>Curious about the whole system.</h2>
@@ -129,7 +129,7 @@ const HomePage: React.FC = () => (
       </div>
 
       <figure className="landing-client-quote-card">
-        <span className="landing-section-index">Client feedback</span>
+        <span className="landing-section-index">Scope, clearly stated</span>
         <blockquote>“{clientQuote.quote}”</blockquote>
         <figcaption>
           <strong>{clientQuote.name}</strong>
