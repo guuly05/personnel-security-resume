@@ -176,6 +176,21 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
             </div>
           </aside>
         </div>
+        {detail.screenshotGallery && detail.screenshotGallery.length > 0 && (
+          <div className="mt-5 grid gap-5 md:grid-cols-2">
+            {detail.screenshotGallery.map((visual) => (
+              <figure key={visual.src} className="surface-card overflow-hidden">
+                <div className="flex min-h-64 items-center justify-center overflow-hidden bg-[var(--surface-soft)] p-3 sm:min-h-80">
+                  <img src={visual.src} alt={visual.alt} className="max-h-[36rem] w-full object-contain object-top" loading="lazy" decoding="async" />
+                </div>
+                <figcaption className="p-5">
+                  <p className="mb-1 text-sm font-bold">{visual.title}</p>
+                  <p className="text-xs leading-relaxed text-[var(--color-text-muted)]">{visual.description}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
       </section>
 
       <section>
