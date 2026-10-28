@@ -43,6 +43,7 @@ export interface CaseStudySection {
 
 export interface ProjectDetail {
   projectVisuals: ProjectVisual[];
+  screenshotGallery?: { src: string; alt: string; title: string; description: string }[];
   architectureSummary: string;
   architecture: ArchitectureFlow[];
   decisions: ArchitectureDecision[];
@@ -61,6 +62,140 @@ export interface ProjectDetail {
  * client data, or exploitable findings are included in the public case studies.
  */
 export const PROJECT_DETAILS: Record<string, ProjectDetail> = {
+  daryeelpass: {
+    projectVisuals: [
+      { kind: 'Product screenshot', title: 'Clinic directory', description: 'The public discovery surface combines service information, listed providers, source context, and a prominent explanation of what a request means.' },
+      { kind: 'Product screenshot', title: 'System administration workspace', description: 'A separate system-level view summarizes demo records and exposes clinic administration controls to the system administrator.' },
+    ],
+    screenshotGallery: [
+      { src: '/assets/daryeelpass-system-admin-desktop.png', alt: 'Desktop crop of the DaryeelPass system overview with clinic totals and clinic administrator controls.', title: 'System overview · desktop', description: 'A focused desktop view of clinic status, account and request counts, and the clinic-admin invitation form.' },
+      { src: '/assets/daryeelpass-system-admin-mobile.png', alt: 'Mobile DaryeelPass system overview demonstrating the responsive summary and clinic list.', title: 'System overview · mobile', description: 'The same administrative information reflows into a narrow screen with readable totals and stacked clinic rows.' },
+      { src: '/assets/daryeelpass-system-admin.png', alt: 'Full-page screenshot showing the DaryeelPass system admin workspace and public clinic directory.', title: 'Role-based workflow · full page', description: 'A full-page view connects system administration, request status, availability entry, and the public directory in one prototype.' },
+    ],
+    architectureSummary: 'DaryeelPass separates the browser experience from the API and database. The React PWA sends credentialed JSON requests to an Express API; the API authenticates the session, enforces the role and clinic scope, validates input, and accesses PostgreSQL through Prisma. Database transactions set request context for row-level security, adding a second scope boundary beneath application checks.',
+    architecture: [
+      {
+        title: 'Clinic discovery and appointment request',
+        description: 'The public directory leads to an in-app request record. The final state remains a demo record and does not leave DaryeelPass.',
+        connections: ['Search and filter', 'Clinic and service', 'Availability options', 'Authenticated request', 'Patient request history'],
+        steps: [
+          { name: 'Visitor', technology: 'Browser · PWA', detail: 'Uses the bilingual, responsive interface to find a clinic, service, and clinic-published details.' },
+          { name: 'Directory', technology: 'React 19 · Vite', detail: 'Searches clinic, service, and provider names and displays source and last-checked context.' },
+          { name: 'Availability', technology: 'Express JSON API', detail: 'Returns generated suggestions and staff-entered times as distinct options; suggestions are not clinic schedules.', boundary: 'Browser → API' },
+          { name: 'Request record', technology: 'Patient session + validation', detail: 'Accepts an offset-aware future time within the allowed window and a phone number, then records a pending request.' },
+          { name: 'Request history', technology: 'Patient-scoped query', detail: 'Shows the signed-in patient their own requests and permits cancellation while a request is pending.' },
+        ],
+      },
+      {
+        title: 'Role-aware clinic operations',
+        description: 'Clinic staff and administrators work through explicit role checks and clinic assignments rather than selecting their own access level.',
+        connections: ['Session cookie', 'Role gate', 'Clinic scope', 'RLS transaction'],
+        steps: [
+          { name: 'Staff member', technology: 'Invitation acceptance', detail: 'Accepts a single-use invitation; role and clinic are taken from the invitation record.' },
+          { name: 'Authentication', technology: 'Express middleware', detail: 'Looks up the server-side session and checks the user role for the requested operation.' },
+          { name: 'Clinic workspace', technology: 'Authorized API route', detail: 'Provides the assigned clinic queue, pending status actions, and staff-entered availability.' },
+          { name: 'Database access', technology: 'Prisma transaction + RLS', detail: 'Sets transaction-local user context so PostgreSQL row-level policies can enforce data scope.', boundary: 'API → database trust boundary' },
+        ],
+      },
+      {
+        title: 'First-run system administration',
+        description: 'Initial privilege creation is guarded separately from public signup and becomes permanently unavailable after successful setup.',
+        connections: ['Setup key', 'Advisory lock', 'Singleton marker', 'System admin session'],
+        steps: [
+          { name: 'First-run check', technology: 'Setup status endpoint', detail: 'Reports setup availability only while a setup key is configured and the persistent marker is absent.' },
+          { name: 'Setup request', technology: 'Dedicated validation + rate limit', detail: 'Checks the setup key and administrator fields before attempting creation.' },
+          { name: 'Concurrency guard', technology: 'PostgreSQL advisory transaction lock', detail: 'Serializes competing first-run requests and creates the system administrator only once.' },
+          { name: 'Persistent closure', technology: 'Database setup marker', detail: 'Records completion so the first-run flow stays closed even if the initial account later changes state.' },
+        ],
+      },
+    ],
+    decisions: [
+      { title: 'Make the appointment boundary visible in the interface', decision: 'Label generated times unconfirmed, distinguish them from clinic-entered availability, and state that requests stay inside the app.', tradeoff: 'The flow is less like one-click booking, but users are less likely to mistake prototype state for a confirmed clinic appointment.' },
+      { title: 'Use invitations to establish privileged roles', decision: 'Public signup always creates a patient. Clinic and staff roles come from one-time invitations, and clinic assignments are read from the invite.', tradeoff: 'Onboarding requires an administrator to create and manually share an invite, while users cannot self-select a privileged role or clinic.' },
+      { title: 'Enforce clinic scope at both API and database layers', decision: 'Combine route authorization and clinic scoping with PostgreSQL RLS policies supplied with transaction-local identity context.', tradeoff: 'The data boundary is stronger and can be checked independently, while every query path must preserve the transaction context and role setup.' },
+      { title: 'Use PWA precaching only for static assets', decision: 'Cache the application shell and static resources with Workbox, without configuring runtime caching for API responses.', tradeoff: 'The interface can install and load its static shell more reliably, while account and request data remain dependent on the live API.' },
+    ],
+    evidenceNote: 'Counts shown in the supplied admin screenshots are seeded or synthetic demo records and illustrate interface states only. Facility and provider details are transcribed from public sources, may become outdated, are not independently credential-verified, and do not indicate partnership. No real appointment outcomes, patient volume, or clinical impact are claimed.',
+    reportIntro: 'Portfolio case-study snapshot based on the public repository guide, product requirements, source structure, and supplied interface screenshots. The app is explicitly documented as a local and portfolio prototype.',
+    reportRows: [
+      { label: 'Language coverage', value: 'Somali + English', status: 'PASS' },
+      { label: 'Account roles', value: '4 explicit roles', status: 'PASS' },
+      { label: 'Persistence layer', value: 'PostgreSQL 17 + Prisma 6', status: 'INFO' },
+      { label: 'Clinic-level boundary', value: 'API checks + PostgreSQL RLS', status: 'PASS' },
+      { label: 'Appointment integration', value: 'No external clinic system', status: 'INFO' },
+      { label: 'User data in screenshots', value: 'Synthetic demo data only', status: 'INFO' },
+    ],
+    reportExcerpt: 'CLIENT: React 19 + Vite PWA · Somali / English\nAPI: Express 5 · session auth · Zod validation\nDATA: PostgreSQL 17 · Prisma 6 · row-level security\nSCOPE: clinic discovery + demo request lifecycle\nBOUNDARY: no clinic scheduling integration or real booking',
+    methodology: [
+      { title: 'Model the actors and their authority', detail: 'Define patient, staff, clinic-admin, and system-admin capabilities, then map account creation and invitations to those boundaries.' },
+      { title: 'Follow the request lifecycle end to end', detail: 'Trace clinic discovery, availability retrieval, patient request validation, patient-owned history, staff queue visibility, and permitted state transitions.' },
+      { title: 'Inspect data isolation and privileged setup', detail: 'Review session middleware, route role checks, invitation token storage, one-time setup marker, database transaction context, and PostgreSQL policies.' },
+      { title: 'Check product claims against visible boundaries', detail: 'Compare interface notices and repository documentation to ensure suggested times, staff-entered availability, request statuses, directory sourcing, and demo records are not presented as real care workflows.' },
+    ],
+    results: [
+      { value: '2', label: 'interface languages', detail: 'The patient-facing directory and navigation support Somali and English presentation.' },
+      { value: '4', label: 'access roles', detail: 'Patient, staff, clinic admin, and system admin capabilities are modeled separately.' },
+      { value: '3', label: 'application layers', detail: 'The implementation separates the React PWA, Express API, and PostgreSQL persistence.' },
+    ],
+    contribution: [
+      'Defined the product boundary and workflows for clinic discovery, demo appointment requests, clinic operations, invitations, and system administration.',
+      'Implemented the React and Vite client with bilingual copy, responsive directory and dashboard views, account flows, and PWA behavior.',
+      'Built the Express API workflows for authentication, clinic discovery, availability, request management, invitations, and administration.',
+      'Designed the PostgreSQL and Prisma model, migration path, clinic seed data, restricted runtime access model, and row-level security policies.',
+      'Added input validation, session handling, scrypt password hashing, digest-only invitation tokens, rate-limited first-admin setup, and clinic-scoped access checks.',
+      'Documented local setup, roles, API routes, database behavior, product caveats, test status, and prerequisites before any real-world deployment.',
+    ],
+    caseStudySections: [
+      {
+        title: 'Product framing and user journeys',
+        body: 'The product is organized around four connected jobs: help a person find clinic information; let a patient keep track of a request; give clinic staff a queue and availability controls; and let a system administrator oversee clinic access. The directory is public, while requests and operational tools sit behind account and role boundaries. The interface keeps explanation close to the action: clinic details show their source and check date, and the request flow describes suggestions as unconfirmed and requests as internal demo records.',
+        bullets: [
+          'The directory searches clinic, service, and provider names and links to clinic websites, directions, phone numbers, or appointment pages when those details exist.',
+          'The request flow excludes emergency services and asks for a phone number alongside the selected time.',
+          'Patients can inspect their own requests and cancel only while a request is pending.',
+          'Staff can update pending request state and enter availability for their assigned clinic; clinic admins can invite staff for that clinic.',
+        ],
+      },
+      {
+        title: 'Identity, authorization, and database isolation',
+        body: 'The API owns authorization. Public registration creates only PATIENT accounts; privileged roles are established through guarded setup or invitations whose stored digest is single-use and expires. Auth middleware loads the session, route-level checks decide which operation is available, and clinic assignment constrains staff access. Prisma-backed database transactions establish the user context consumed by PostgreSQL row-level security, so database policies provide an additional boundary if an application query is accidentally too broad.',
+        bullets: [
+          'Passwords are hashed and verified with Node’s scrypt; sessions are stored server-side and represented by an HTTP-only cookie.',
+          'Invitation tokens are random, single-use, time-limited values; only their SHA-256 digest is persisted.',
+          'The first system administrator is created behind a separate setup key, rate limit, PostgreSQL advisory lock, and persistent singleton setup marker.',
+          'The API runtime is documented to use a restricted PostgreSQL role, separate from the owner connection used for migrations.',
+        ],
+      },
+      {
+        title: 'Request lifecycle and concurrency expectations',
+        body: 'A suggested time is generated by the application, while a staff-entered time is supplied by a clinic workspace. Both remain choices for a request, not a synchronized scheduling slot. The API validates that the requested time is offset-aware, in the future, within the supported fourteen-day window, and either generated or staff-entered. A saved request records its source and begins as PENDING. Staff can change that app state to CONFIRMED or DECLINED, but the product documentation explicitly says those labels do not notify a clinic or represent a real-world confirmation.',
+        bullets: [
+          'The flow separates generated suggestions from staff-entered availability in both data and presentation.',
+          'A request does not reserve slot capacity or send notifications to a clinic.',
+          'The UI and documentation caution users to contact the facility directly and not enter real patient, identity, or medical information.',
+        ],
+      },
+      {
+        title: 'Bilingual responsive PWA',
+        body: 'The client is a React 19 application built with Vite and CSS design tokens. Language controls expose Somali and English throughout the experience. The supplied screenshots show the public clinic directory as well as a wide administrative dashboard and a mobile admin layout. Workbox precaches static application resources so the shell can be installed, while API responses are intentionally excluded from runtime caching to avoid treating account or request data as offline content.',
+        bullets: [
+          'Responsive directory cards carry clinic services, listed providers, contact links, source references, and check dates.',
+          'Admin summaries, clinic rows, and controls adapt to a narrow mobile viewport rather than requiring a desktop-only workspace.',
+          'The PWA setup is documented as static asset precaching; authenticated API behavior still requires a reachable API and database.',
+        ],
+      },
+      {
+        title: 'Verification, evidence, and deployment limits',
+        body: 'The repository includes client and API tests, schema migrations, setup instructions, and explicit deployment prerequisites. The README describes local startup with Docker PostgreSQL and separate frontend and backend package installs, and it calls for a restricted runtime database role. The current public repository is a source artifact rather than evidence of a live clinical service. The screenshots are used here to show the interface and sample administrative states; their counts are demo data.',
+        bullets: [
+          'The documented test and build workflows cover frontend and backend behavior, with PostgreSQL required for database-backed integration paths.',
+          'Facility details are transcribed from public clinic sources and can become outdated; the directory is not a partnership or independent provider-credential directory.',
+          'Email verification, account recovery, automated invitation delivery, clinic-system integration, and real appointment reservation are outside the current prototype.',
+          'A real deployment would require operational, privacy, security, data-governance, accessibility, and clinic coordination work beyond this portfolio build.',
+        ],
+      },
+    ],
+  },
   'samaale-general-trading': {
     projectVisuals: [
       { kind: 'Original illustration', title: 'Samaale website concept illustration', description: 'A custom visual representation of the site’s commerce and logistics experience; this is not a browser screenshot.' },
