@@ -10,9 +10,9 @@ const supportingStudies = CASE_STUDIES.slice(1, 3);
 const latestPost = LATEST_POST;
 
 const clientQuote = {
-  quote: 'DaryeelPass is a portfolio prototype. It does not connect to clinic scheduling systems, send requests to clinics, or confirm real appointments.',
-  name: 'Product boundary',
-  role: 'Synthetic demo data only · Never enter real patient information',
+  quote: 'I liked that Guuleed took time to understand our business. The website brings our products and services together in one place and gives customers a clear way to reach us.',
+  name: 'Esse Haji Ismail Mohamed',
+  role: 'General Manager · Samaale General Trading Co.',
 };
 
 const proofPoints = [
@@ -117,7 +117,7 @@ const HomePage: React.FC = () => (
       </div>
     </section>
 
-    <section className="landing-about-grid" aria-label="About Guuleed and DaryeelPass product scope">
+    <section className="landing-about-grid" aria-label="About Guuleed and client feedback">
       <div className="landing-notes-intro">
         <span className="landing-section-index">How I work</span>
         <h2>Curious about the whole system.</h2>
@@ -129,7 +129,7 @@ const HomePage: React.FC = () => (
       </div>
 
       <figure className="landing-client-quote-card">
-        <span className="landing-section-index">Scope, clearly stated</span>
+        <span className="landing-section-index">Client feedback</span>
         <blockquote>“{clientQuote.quote}”</blockquote>
         <figcaption>
           <strong>{clientQuote.name}</strong>
