@@ -5,8 +5,37 @@
     <link>https://www.guuleedmaxamuud.dev/blog</link>
     <description>Security research, vulnerability analysis, and technical writing by Guuleed Maxmuud Aw Abdi.</description>
     <language>en-us</language>
-    <lastBuildDate>2026-10-22T12:00:00.000Z</lastBuildDate>
+    <lastBuildDate>2026-10-27T12:00:00.000Z</lastBuildDate>
     <atom:link href="https://www.guuleedmaxamuud.dev/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Anthropic’s IPO Ambitions: A Technical Reading of the SEC Filing</title>
+      <link>https://www.guuleedmaxamuud.dev/blog/anthropic-ipo-sec-s1-financials</link>
+      <guid isPermaLink="true">https://www.guuleedmaxamuud.dev/blog/anthropic-ipo-sec-s1-financials</guid>
+      <pubDate>2026-10-27T12:00:00.000Z</pubDate>
+      <description><![CDATA[A filing-level analysis of Anthropic’s proposed Nasdaq listing, revenue mix, fair-value losses, compute obligations, customer concentration, and public-benefit governance.
+
+Tags: Anthropic · IPO · SEC filings · AI economics · Financial analysis
+Last updated: October 27, 2026]]></description>
+      <category>Anthropic</category>
+      <category>IPO</category>
+      <category>SEC filings</category>
+      <category>AI economics</category>
+      <category>Financial analysis</category>
+    </item>
+    <item>
+      <title>AI Is Reshaping the Cybersecurity Vulnerability Race</title>
+      <link>https://www.guuleedmaxamuud.dev/blog/ai-is-reshaping-the-cybersecurity-vulnerability-race</link>
+      <guid isPermaLink="true">https://www.guuleedmaxamuud.dev/blog/ai-is-reshaping-the-cybersecurity-vulnerability-race</guid>
+      <pubDate>2026-10-23T12:00:00.000Z</pubDate>
+      <description><![CDATA[From PHP2Shell and Node2Shell to the eMudhra certificate incident and the Hugging Face intrusion, AI is changing how quickly weaknesses are found, exploited, and fixed.
+
+Tags: AI security · Vulnerability research · Incident response · Threat intelligence
+Last updated: October 23, 2026]]></description>
+      <category>AI security</category>
+      <category>Vulnerability research</category>
+      <category>Incident response</category>
+      <category>Threat intelligence</category>
+    </item>
     <item>
       <title>PHP2Shell: How Two Critical PHP RCE Bugs Crossed the Request Boundary</title>
       <link>https://www.guuleedmaxamuud.dev/blog/php2shell-two-critical-rce-flaws</link>
