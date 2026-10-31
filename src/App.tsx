@@ -47,9 +47,10 @@ type NavigationItem = {
 };
 
 const moreNavItems: NavigationItem[] = [
-  { id: 'home', label: 'Home', icon: 'home' },
   { id: 'certificates', label: 'Credentials', icon: 'graduation-cap' },
   { id: 'systems', label: 'Systems Atlas', icon: 'layers' },
+  { id: 'blog', label: 'Writing', icon: 'book-open' },
+  { id: 'book', label: 'Book a Call', icon: 'calendar-days' },
   { id: 'privacy-policy', label: 'Privacy Policy', icon: 'file-text' },
   { id: 'terms-of-service', label: 'Terms of Service', icon: 'file-text' },
 ];
@@ -215,21 +216,14 @@ export default function App() {
     { id: 'experience', label: 'Experience', icon: 'briefcase' },
     { id: 'skills', label: 'Skills', icon: 'sparkles' },
     { id: 'about', label: 'About', icon: 'user' },
-    { id: 'blog', label: 'Notes', icon: 'book-open' },
-    { id: 'book', label: 'Book a Call', icon: 'calendar-days' },
-    { id: 'contact', label: 'Contact', icon: 'mail' },
   ];
-
-  if (isJuly27 || activeSection === 'recap') {
-    navItems.push({ id: 'recap', label: 'Annual Reflection', icon: 'film' });
-  }
 
   const isBlogSection = activeSection === 'blog';
   const chromeClassName =
     isBlogSection && isBlogFocusMode ? 'opacity-0 pointer-events-none max-h-0 overflow-hidden' : '';
 
   return (
-    <div className="min-h-screen p-3 sm:p-4 md:p-8 lg:p-12 selection:bg-[var(--accent)]/20 bg-[var(--color-bg)] text-[var(--color-text)] transition-colors duration-300">
+    <div className="site-shell min-h-screen p-3 sm:p-4 md:p-8 lg:p-12 selection:bg-[var(--accent)]/20 bg-[var(--color-bg)] text-[var(--color-text)] transition-colors duration-300">
       {/* Particle confetti only activates on July 27th */}
       {(isJuly27 || activeSection === 'recap') && (
         <Suspense fallback={null}>
@@ -243,9 +237,9 @@ export default function App() {
       {/* Top Navbar */}
       <nav
         aria-label="Primary navigation"
-        className={`max-w-7xl mx-auto mb-10 border-b border-[var(--border)] px-1 py-4 transition-colors duration-300 flex flex-wrap items-center justify-between gap-4 ${chromeClassName}`}
+        className={`site-nav max-w-7xl mx-auto mb-10 border-b border-[var(--border)] px-1 py-4 transition-colors duration-300 flex flex-wrap items-center justify-between gap-4 ${chromeClassName}`}
       >
-        <div className="flex items-center gap-3 pl-2">
+        <div className="site-brand flex items-center gap-3 pl-2">
           <a
             href="/"
             onClick={() => {
@@ -268,7 +262,7 @@ export default function App() {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden xl:flex items-center gap-3 xl:gap-5">
+        <div className="site-primary-nav hidden xl:flex items-center gap-3 xl:gap-5">
           {navItems.map((item) => (
             <a
               key={item.id}
@@ -284,14 +278,14 @@ export default function App() {
               {item.label}
             </a>
           ))}
-          <div className="relative" ref={moreMenuRef}>
+          <div className="site-more relative" ref={moreMenuRef}>
             <button
               ref={moreMenuButtonRef}
               type="button"
               aria-expanded={isMoreMenuOpen}
               aria-label="More pages"
               onClick={() => setIsMoreMenuOpen((open) => !open)}
-              className={`inline-flex items-center gap-1 py-2 text-sm transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
+              className={`site-more-trigger inline-flex items-center gap-1 py-2 text-sm transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
                 moreNavItems.some((item) => item.id === activeSection)
                   ? 'font-semibold text-[var(--accent)]'
                   : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
@@ -305,7 +299,7 @@ export default function App() {
               />
             </button>
             {isMoreMenuOpen && (
-                <div className="app-menu-enter absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-xl">
+                <div className="site-more-menu app-menu-enter absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-xl">
                   <p className="px-3 pb-2 pt-1 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
                     More pages
                   </p>
@@ -335,7 +329,8 @@ export default function App() {
           </div>
         </div>
 
-        <div className="hidden xl:flex items-center gap-2">
+        <div className="site-rail-actions hidden xl:flex items-center gap-2">
+          <a href="/contact" onClick={() => setActiveSection('contact')} className="site-contact-link">Contact</a>
           <button
             type="button"
             onClick={terminal.toggleTerminal}
@@ -356,7 +351,7 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
           </a>
         </div>
 
-        <div className="flex items-center gap-2 xl:hidden">
+        <div className="site-mobile-actions flex items-center gap-2 xl:hidden">
           <button
             type="button"
             onClick={() => setIsMenuOpen((value) => !value)}
@@ -400,6 +395,9 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
                   <span className="text-sm font-medium">{item.label}</span>
                 </a>
               ))}
+              <a href="/contact" onClick={() => { setActiveSection('contact'); setIsMenuOpen(false); }} className="flex items-center gap-4 rounded-lg px-4 py-3 text-sm font-semibold text-[var(--accent)] hover:bg-[var(--accent-soft)]">
+                <Icon name="mail" size={20} /><span>Contact</span>
+              </a>
             </div>
 
             <details className="group mt-3 border-t border-[var(--border)] pt-3">
@@ -458,7 +456,7 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
       )}
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto relative">
+      <main className="site-main max-w-7xl mx-auto relative">
         <Suspense
           fallback={
             <div className="flex h-64 w-full items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-8">
@@ -494,43 +492,55 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
         </Suspense>
       </main>
 
-      <footer className={`max-w-7xl mx-auto mt-20 px-1 pb-8 ${chromeClassName}`}>
-        <div className="flex flex-col gap-6 border-t border-[var(--border)] py-8 sm:flex-row sm:items-end sm:justify-between">
+      <footer className={`site-footer max-w-7xl mx-auto mt-20 px-1 pb-8 ${chromeClassName}`}>
+        <section className="footer-contact" aria-labelledby="footer-contact-title">
           <div>
-            <p className="text-base font-semibold text-[var(--color-text)]">{PERSONAL_INFO.name}</p>
-            <p className="mt-1 text-sm text-[var(--color-text-muted)]">{PERSONAL_INFO.title}</p>
+            <p className="footer-kicker">Get in touch</p>
+            <h2 id="footer-contact-title">Let’s build something useful.</h2>
+            <p>Have a full-stack role or project in mind? I’d be glad to talk.</p>
           </div>
-          <div role="group" aria-label="Social and contact links" className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
-            <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noreferrer" className="text-[var(--color-text-muted)] transition-colors hover:text-[var(--accent)]">
-              LinkedIn
-            </a>
-            <a href={PERSONAL_INFO.github} target="_blank" rel="noreferrer" className="text-[var(--color-text-muted)] transition-colors hover:text-[var(--accent)]">
-              GitHub
-            </a>
-            <a href="/contact" onClick={() => setActiveSection('contact')} className="text-[var(--color-text-muted)] transition-colors hover:text-[var(--accent)]">
-              Contact
-            </a>
-            {(isJuly27 || activeSection === 'recap') && (
-              <a
-                href="/recap"
-                onClick={() => setActiveSection('recap')}
-                className="text-[var(--color-text-muted)] transition-colors hover:text-[var(--accent)]"
-              >
-                Annual Reflection
-              </a>
-            )}
+          <a href="/contact" onClick={() => setActiveSection('contact')} className="footer-contact-action">
+            Contact me <Icon name="arrow-up-right" size={17} />
+          </a>
+        </section>
+
+        <div className="footer-directory">
+          <div className="footer-identity">
+            <p>{PERSONAL_INFO.name}</p>
+            <span>{PERSONAL_INFO.title}</span>
           </div>
+          <nav aria-label="Footer directory" className="footer-link-groups">
+            <div className="footer-link-group">
+              <h3>Explore</h3>
+              <a href="/portfolio" onClick={() => setActiveSection('portfolio')}>Work</a>
+              <a href="/experience" onClick={() => setActiveSection('experience')}>Experience</a>
+              <a href="/skills" onClick={() => setActiveSection('skills')}>Skills</a>
+              <a href="/about" onClick={() => setActiveSection('about')}>About</a>
+            </div>
+            <div className="footer-link-group">
+              <h3>More</h3>
+              <a href="/certificates" onClick={() => setActiveSection('certificates')}>Credentials</a>
+              <a href="/systems" onClick={() => setActiveSection('systems')}>Systems Atlas</a>
+              <a href="/blog" onClick={() => setActiveSection('blog')}>Writing</a>
+              <a href="/book" onClick={() => setActiveSection('book')}>Book a call</a>
+            </div>
+            <div className="footer-link-group">
+              <h3>Connect</h3>
+              <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+              <a href={PERSONAL_INFO.github} target="_blank" rel="noreferrer">GitHub</a>
+              <a href="/assets/Guuleed-Maxamuud-Awabdi-CV.pdf" target="_blank" rel="noreferrer">View CV</a>
+              <a href="/contact" onClick={() => setActiveSection('contact')}>Contact</a>
+            </div>
+            <div className="footer-link-group">
+              <h3>Legal</h3>
+              <a href="/privacy-policy" onClick={() => setActiveSection('privacy-policy')}>Privacy policy</a>
+              <a href="/terms-of-service" onClick={() => setActiveSection('terms-of-service')}>Terms of service</a>
+            </div>
+          </nav>
         </div>
-        <div className="flex flex-col gap-3 border-t border-[var(--border)] py-5 text-sm text-[var(--color-text-muted)] sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} · All rights reserved.</p>
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <a href="/privacy-policy" onClick={() => setActiveSection('privacy-policy')} className="transition-colors hover:text-[var(--accent)]">
-              Privacy Policy
-            </a>
-            <a href="/terms-of-service" onClick={() => setActiveSection('terms-of-service')} className="transition-colors hover:text-[var(--accent)]">
-              Terms of Service
-            </a>
-          </div>
+        <div className="footer-copyright">
+          <span>© {new Date().getFullYear()} {PERSONAL_INFO.name}</span>
+          <span>All rights reserved.</span>
         </div>
       </footer>
 

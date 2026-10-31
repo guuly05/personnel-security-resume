@@ -149,16 +149,6 @@ const HomePage: React.FC = () => (
       </section>
     )}
 
-    <section className="landing-closing" aria-labelledby="landing-contact-title">
-      <div>
-        <span className="landing-section-index">Next step</span>
-        <h2 id="landing-contact-title">Let’s build something useful.</h2>
-      </div>
-      <div className="landing-closing-action">
-        <p>Have a full-stack role or project in mind? I’d be glad to talk.</p>
-        <a href="/contact" className="landing-button landing-button-primary">Get in touch <Icon name="arrow-up-right" size={16} /></a>
-      </div>
-    </section>
   </div>
 );
 
