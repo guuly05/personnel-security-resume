@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowDown, ArrowUpRight, Copy } from 'lucide-react';
-import { CASE_STUDIES } from './Portfolio.tsx';
+import { CASE_STUDIES } from '../data/caseStudies.ts';
 import { PROJECT_DETAILS, type ArchitectureFlow } from '../data/projectDetails.ts';
 
 export type ProjectPair = [string, string];
