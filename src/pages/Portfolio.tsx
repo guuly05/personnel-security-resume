@@ -6,7 +6,7 @@ import { CASE_STUDIES, type CaseStudy } from '../data/caseStudies.ts';
 const featuredStudy = CASE_STUDIES.find((study) => study.id === 'samaale-general-trading') ?? CASE_STUDIES[0];
 const otherStudies = CASE_STUDIES.filter((study) => study.id !== featuredStudy?.id);
 
-function ProjectLinks({ study, featured = false }: { study: CaseStudy; featured?: boolean }) {
+function ProjectLinks({ study }: { study: CaseStudy }) {
   return (
     <div className="work-card-links">
       <a className="work-case-link" href={`/portfolio/${study.id}`}>
@@ -14,7 +14,7 @@ function ProjectLinks({ study, featured = false }: { study: CaseStudy; featured?
       </a>
       {study.liveUrl && (
         <a className="work-external-link" href={study.liveUrl} target="_blank" rel="noreferrer noopener">
-          <Globe2 size={14} aria-hidden="true" /> <span>{featured ? 'Visit live site' : 'Live site'}</span>
+          <Globe2 size={14} aria-hidden="true" /> <span>Visit live site</span>
         </a>
       )}
       {study.githubUrl && (
@@ -26,13 +26,12 @@ function ProjectLinks({ study, featured = false }: { study: CaseStudy; featured?
   );
 }
 
-function ProjectCard({ study, index, featured = false }: { study: CaseStudy; index: number; featured?: boolean }) {
-  const selectedResults = study.highlights.slice(0, featured ? 2 : 1);
-  const visibleTech = study.techStack.slice(0, featured ? 5 : 4);
+function ProjectCard({ study, featured = false, reversed = false }: { study: CaseStudy; featured?: boolean; reversed?: boolean }) {
+  const visibleTech = study.techStack.slice(0, 4).map((item) => item.name);
 
   return (
     <motion.article
-      className={`work-card${featured ? ' work-card-featured' : ''}`}
+      className={`work-card${featured ? ' work-card-featured' : ''}${reversed ? ' work-card-reversed' : ''}`}
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
@@ -47,9 +46,6 @@ function ProjectCard({ study, index, featured = false }: { study: CaseStudy; ind
             loading={featured ? 'eager' : 'lazy'}
             decoding="async"
           />
-          <span className="work-card-number">{String(index).padStart(2, '0')}</span>
-          <span className="work-card-status">{study.status}</span>
-          <span className="work-card-image-arrow" aria-hidden="true"><ArrowUpRight size={18} /></span>
         </div>
       </a>
 
@@ -59,17 +55,10 @@ function ProjectCard({ study, index, featured = false }: { study: CaseStudy; ind
         </div>
         <h2><a href={`/portfolio/${study.id}`}>{study.title}</a></h2>
         <p className="work-card-summary">{study.subtitle}</p>
-
-        <div className="work-card-proof" aria-label="Selected results">
-          {selectedResults.map((result) => <p key={result}>{result}</p>)}
-        </div>
-
-        <div className="work-card-tech" aria-label="Technologies used">
-          {visibleTech.map((item) => <span key={item.name}>{item.name}</span>)}
-          {study.techStack.length > visibleTech.length && <span className="work-tech-more">+{study.techStack.length - visibleTech.length}</span>}
-        </div>
-
-        <ProjectLinks study={study} featured={featured} />
+        <p className="work-card-role">{study.role}</p>
+        <p className="work-card-result">{study.highlights[0]}</p>
+        <p className="work-card-tech">{visibleTech.join(' · ')}</p>
+        <ProjectLinks study={study} />
       </div>
     </motion.article>
   );
@@ -102,9 +91,9 @@ const PortfolioPage: React.FC = () => (
           <p>{String(CASE_STUDIES.length).padStart(2, '0')} projects <span aria-hidden="true">·</span> product, web, and security</p>
         </div>
 
-        {featuredStudy && <ProjectCard study={featuredStudy} index={1} featured />}
-        <div className="work-project-grid">
-          {otherStudies.map((study, index) => <ProjectCard key={study.id} study={study} index={index + 2} />)}
+        <div className="work-project-list">
+          {featuredStudy && <ProjectCard study={featuredStudy} featured />}
+          {otherStudies.map((study, index) => <ProjectCard key={study.id} study={study} reversed={index % 2 === 0} />)}
         </div>
       </section>
 
