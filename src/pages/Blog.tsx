@@ -178,7 +178,7 @@ export function MarkdownRenderer({ content }: { content: string }) {
 
 function Tag({ children, onClick, active = false }: { children: string; onClick?: () => void; active?: boolean }) {
   const className = `blog-tag ${active ? 'is-active' : ''}`;
-  return onClick ? <button type="button" className={className} onClick={onClick}>{children}</button> : <span className={className}>{children}</span>;
+  return onClick ? <button type="button" className={className} onClick={onClick} aria-pressed={active}>{children}</button> : <span className={className}>{children}</span>;
 }
 
 function PostVisual({ post, featured = false }: { post: BlogPost; featured?: boolean }) {
@@ -220,7 +220,7 @@ function BlogCatalog({ posts, allPosts, onOpen, searchQuery, onSearchChange, act
 
       <div className="blog-catalog-toolbar">
         <label className="blog-search"><Search size={17} /><span className="sr-only">Search posts</span><input value={searchQuery} onChange={(event) => onSearchChange(event.target.value)} placeholder="Search the journal" type="search" /></label>
-        <div className="blog-filter-row" aria-label="Filter by topic"><Tag active={!activeTag} onClick={() => onTagChange('')}>All topics</Tag>{allTags.map((tag) => <Tag key={tag} active={activeTag === tag} onClick={() => onTagChange(tag)}>{tag}</Tag>)}</div>
+        <div className="blog-filter-row" role="group" aria-label="Filter by topic"><Tag active={!activeTag} onClick={() => onTagChange('')}>All topics</Tag>{allTags.map((tag) => <Tag key={tag} active={activeTag === tag} onClick={() => onTagChange(tag)}>{tag}</Tag>)}</div>
       </div>
 
       {!post ? <div className="blog-empty-state surface-card"><p className="blog-eyebrow">No matches</p><p>Try another search term or clear the topic filter.</p></div> : <>
@@ -231,7 +231,7 @@ function BlogCatalog({ posts, allPosts, onOpen, searchQuery, onSearchChange, act
           </a>
         </article>
 
-        <div className="blog-section-heading"><div><p className="blog-section-label">The archive</p><h2>Latest notes</h2></div><span>{posts.length} {posts.length === 1 ? 'result' : 'results'}</span></div>
+        <div className="blog-section-heading"><div><p className="blog-section-label">The archive</p><h2>Latest notes</h2></div><span aria-live="polite" aria-atomic="true">{posts.length} {posts.length === 1 ? 'result' : 'results'}</span></div>
         <div className="blog-post-grid">{posts.slice(1).map((entry) => <article key={entry.slug} className="blog-post-card surface-card"><a href={`/blog/${entry.slug}`} onClick={() => onOpen(entry.slug)}><PostVisual post={entry} /><div className="blog-post-card-copy"><PostMeta post={entry} /><h3>{entry.title}</h3><p>{entry.subtitle}</p><div className="blog-card-footer"><div className="blog-card-tags">{entry.tags.slice(0, 2).map((tag) => <Tag key={tag}>{tag}</Tag>)}</div><span className="blog-read-link" aria-hidden="true"><ArrowRight size={15} /></span></div></div></a></article>)}</div>
       </>}
     </section>
