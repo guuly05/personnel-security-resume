@@ -71,6 +71,8 @@ export default function App() {
   const [theme, setTheme] = useState<'dark' | 'light'>('light');
   const moreMenuRef = useRef<HTMLDivElement>(null);
   const moreMenuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLElement>(null);
 
   const terminal = useTerminal();
 
@@ -107,6 +109,21 @@ export default function App() {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [isMoreMenuOpen]);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const firstLink = mobileMenuRef.current?.querySelector<HTMLElement>('a[href]');
+    firstLink?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false);
+        mobileMenuButtonRef.current?.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isMenuOpen]);
 
   // Global keyboard shortcut: Ctrl+Alt+G toggles the terminal
   useEffect(() => {
@@ -235,6 +252,7 @@ export default function App() {
       <SeoHead section={activeSection} />
 
       {/* Top Navbar */}
+      <a className="skip-to-content" href="#main-content">Skip to content</a>
       <nav
         aria-label="Primary navigation"
         className={`site-nav max-w-7xl mx-auto mb-10 border-b border-[var(--border)] px-1 py-4 transition-colors duration-300 flex flex-wrap items-center justify-between gap-4 ${chromeClassName}`}
@@ -353,10 +371,12 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
 
         <div className="site-mobile-actions flex items-center gap-2 xl:hidden">
           <button
+            ref={mobileMenuButtonRef}
             type="button"
             onClick={() => setIsMenuOpen((value) => !value)}
             aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isMenuOpen}
+            aria-controls={isMenuOpen ? 'mobile-navigation-menu' : undefined}
             className="min-h-11 min-w-11 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]"
           >
             <Icon name={isMenuOpen ? 'x' : 'menu'} size={20} />
@@ -366,7 +386,7 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-          <div className="app-menu-enter xl:hidden fixed inset-x-4 top-24 z-40 surface-card max-h-[calc(100dvh_-_7rem)] overflow-y-auto overscroll-contain p-4 sm:p-6">
+          <nav id="mobile-navigation-menu" ref={mobileMenuRef} aria-label="Mobile navigation" className="app-menu-enter xl:hidden fixed inset-x-4 top-24 z-40 surface-card max-h-[calc(100dvh_-_7rem)] overflow-y-auto overscroll-contain p-4 sm:p-6">
             <div className="mb-4 flex items-center gap-3">
               <div className="w-8 h-8 rounded-md border border-[var(--accent)] bg-[var(--surface-soft)] flex items-center justify-center font-bold text-[var(--accent)]">
                 GM
@@ -382,6 +402,7 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
                     setActiveSection(item.id);
                     setIsMenuOpen(false);
                   }}
+                  aria-current={activeSection === item.id || (item.id === 'portfolio' && activeSection === 'portfolio-project') ? 'page' : undefined}
                   className={`
                     flex items-center gap-4 px-4 py-3 rounded-md transition-colors
                     ${
@@ -452,11 +473,11 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
               </button>
               <span className="text-xs text-[var(--color-text-muted)]">Ctrl + Alt + G</span>
             </div>
-          </div>
+          </nav>
       )}
 
       {/* Main Content Area */}
-      <main className="site-main max-w-7xl mx-auto relative">
+      <main id="main-content" tabIndex={-1} className="site-main max-w-7xl mx-auto relative">
         <Suspense
           fallback={
             <div className="flex h-64 w-full items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] p-8">
