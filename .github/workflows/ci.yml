@@ -10,6 +10,19 @@ permissions:
   contents: read
 
 jobs:
+  lean:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Lean security model
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: lean
+          build: true
+
   test:
     runs-on: ubuntu-latest
 

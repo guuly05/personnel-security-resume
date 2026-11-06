@@ -50,7 +50,7 @@ The site represents Guuleed Maxmuud Aw Abdi, a full-stack developer and DevOps-m
 
 ### Product surface
 
-The application combines several public experiences behind one consistent visual system:
+The application combines several public experiences behind one consistent visual system, alongside a separate Lean 4 security-policy model:
 
 | Area | Purpose | Primary implementation |
 | --- | --- | --- |
@@ -66,6 +66,7 @@ The application combines several public experiences behind one consistent visual
 | Contact | Protected contact form and direct contact alternatives | `src/pages/Contact.tsx`, `api/contact.ts` |
 | Legal | Privacy policy and terms of service | `src/pages/Legal.tsx` |
 | Annual reflection | Seasonal/annual reflection view, normally exposed on July 27 or through its aliases | `src/pages/AnnualRecap.tsx` |
+| Formal security model | Machine-checked policy properties for contact, booking, idempotency, and authorization | `lean/GuuleedSecurity/`, surfaced in the Systems Atlas |
 
 ### What makes the application technically interesting
 
@@ -76,6 +77,7 @@ The application combines several public experiences behind one consistent visual
 - Every public route receives route-specific title, description, canonical URL, robots policy, Open Graph data, Twitter card data, and JSON-LD.
 - Blog posts are portable Markdown files with validated frontmatter and are imported in the browser with Vite's `import.meta.glob` and in Node scripts with a filesystem fallback.
 - The booking flow treats Google Calendar as the source of truth for busy times and uses a durable Redis-compatible store for booking records, idempotency keys, and rate-limit counters.
+- The standalone Lean project specifies selected contact, booking, idempotency, and role-scope rules and builds in a dedicated GitHub Actions job. Its proofs cover the model definitions, not the production TypeScript implementation.
 - Contact and booking forms use server-side validation and Cloudflare Turnstile verification; the browser widget alone is never treated as sufficient protection.
 - Vercel headers provide a restrictive baseline for framing, MIME sniffing, referrers, transport security, permissions, and content sources.
 
@@ -159,6 +161,7 @@ flowchart TD
 | `@vercel/og` | Generates article Open Graph images |
 | Redis protocol or REST store | Durable booking records, idempotency, and rate limiting |
 | Cloudflare Turnstile | Human/bot verification for contact and booking submissions |
+| Lean 4 + Lake | Standalone, machine-checked specification of selected security policies |
 
 ### Development and verification
 
@@ -215,6 +218,10 @@ flowchart TD
 │   └── types.ts                 # Shared TypeScript content interfaces
 ├── tests/                       # Unit tests for routing, booking, Markdown, terminal, APIs
 ├── index.html                   # HTML shell and baseline homepage metadata
+├── lean/                        # Lean 4 security-policy model and checked theorems
+│   ├── GuuleedSecurity/         # Domain, contact, booking, authorization, idempotency proofs
+│   ├── lean-toolchain           # Pinned Lean compiler version
+│   └── README.md                # Scope, theorem summary, and build instructions
 ├── metadata.json                # Project metadata
 ├── package.json                 # Dependencies and scripts
 ├── postcss.config.mjs           # PostCSS setup
@@ -748,6 +755,7 @@ The browser booking configuration reads `VITE_BOOKING_TIMEZONE`. The current `.e
 - Node.js compatible with the installed Vite and TypeScript versions.
 - npm.
 - Git.
+- Lean 4 via Elan or the official Lean 4 VS Code extension to build the formal model.
 - Optional integrations for the full workflow: Resend, Cloudflare Turnstile, Google Calendar OAuth, and Redis-compatible durable storage.
 
 ### Install and run
@@ -766,6 +774,7 @@ The public content and most UI features work without server secrets. Contact and
 ### Production-like local check
 
 ```bash
+npm run lean:check
 npm run lint
 npm test
 npm run build
@@ -784,13 +793,14 @@ Preview the built frontend with the URL printed by Vite.
 | `npm run preview` | Serves the production `dist/` output locally |
 | `npm test` | Runs every `tests/*.test.ts` file through `tsx --test` |
 | `npm run lint` | Runs TypeScript with `--noEmit` |
+| `npm run lean:check` | Builds the standalone Lean 4 security model |
 | `npm run clean` | Removes `dist/`; the current command uses `rm -rf`, so use a compatible shell on Windows |
 | `npm run verify:seo` | Audits generated route HTML and sitemap/OG assets |
 | `npm run oauth:google` | Runs the Google OAuth helper script |
 
 ## Testing and verification
 
-The test suite uses Node's built-in test runner and `tsx`:
+The TypeScript test suite uses Node's built-in test runner and `tsx`. The Lean policy model is checked separately with `npm run lean:check` (or `cd lean && lake build`); GitHub Actions runs it as its own job.
 
 | Test | Coverage |
 | --- | --- |
