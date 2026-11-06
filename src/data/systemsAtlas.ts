@@ -142,4 +142,18 @@ export const SYSTEMS_PRACTICES: SystemsPractice[] = [
       },
     ],
   },
+  {
+    id: 'formal-policy-models',
+    title: 'Make security policy properties provable',
+    summary: 'Selected contact, booking, idempotency, and authorization rules are expressed as a separate Lean specification with checked theorems.',
+    pattern: 'State the policy in a small typed model, then prove the safety properties directly from its definitions. Keep the model boundary explicit so proofs are not mistaken for verification of the production application.',
+    evidence: [
+      {
+        projectId: 'portfolio-platform',
+        constraint: 'Security claims about validation, booking intervals, duplicate submissions, and clinic scope are easier to review when the rule and its assumptions are precise.',
+        decision: 'A standalone Lean 4 project models the relevant gates and proves acceptance, interval, idempotency, and least-privilege properties; a dedicated CI job builds every module.',
+        tradeoff: 'The proof artifacts are reproducible and reviewable on GitHub, while the model does not establish that the live TypeScript and provider integrations implement the specification.',
+      },
+    ],
+  },
 ];
