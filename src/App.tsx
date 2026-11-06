@@ -255,9 +255,7 @@ export default function App() {
             className="inline-flex items-center gap-3"
             aria-label="Home"
           >
-            <div className="w-10 h-10 rounded-lg border border-[var(--accent)] bg-[var(--surface-soft)] flex items-center justify-center font-bold text-[var(--accent)]">
-              GM
-            </div>
+            <img src="/favicon.svg" alt="" className="h-10 w-10 rounded-lg" />
           </a>
           <div className="hidden sm:block">
             <span className="block text-sm font-bold leading-tight">{PERSONAL_INFO.name}</span>
@@ -373,9 +371,7 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
       {isMenuOpen && (
           <div className="app-menu-enter xl:hidden fixed inset-x-4 top-24 z-40 surface-card max-h-[calc(100dvh_-_7rem)] overflow-y-auto overscroll-contain p-4 sm:p-6">
             <div className="mb-4 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-md border border-[var(--accent)] bg-[var(--surface-soft)] flex items-center justify-center font-bold text-[var(--accent)]">
-                GM
-              </div>
+              <img src="/favicon.svg" alt="" className="h-8 w-8 rounded-md" />
               <div className="text-sm font-bold">{PERSONAL_INFO.name}</div>
             </div>
             <div className="flex flex-col gap-1">
