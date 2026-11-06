@@ -55,7 +55,7 @@ export function StaticRoute({ pathname }: { pathname: string }) {
       <header className="max-w-7xl mx-auto mb-10 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3">
         <nav aria-label="Primary navigation" className="flex flex-wrap items-center justify-between gap-4">
           <a href="/" className="inline-flex items-center gap-3" aria-label={`${PERSONAL_INFO.name} home`}>
-            <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--accent)] bg-[var(--surface-soft)] font-bold text-[var(--accent)]">GM</span>
+            <img src="/favicon.svg" alt="" className="h-10 w-10 rounded-lg" />
             <span className="hidden sm:block"><strong className="block text-sm">{PERSONAL_INFO.name}</strong><small className="text-[10px] text-brand-cyan">{PERSONAL_INFO.title}</small></span>
           </a>
           <div className="flex flex-wrap items-center gap-1">
