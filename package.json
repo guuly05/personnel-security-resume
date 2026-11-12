@@ -11,6 +11,8 @@
     "test": "tsx --test tests/*.test.ts",
     "test:e2e": "playwright test",
     "lean:check": "cd lean && lake build",
+    "search:wasm": "wasm-pack build search-rust --target bundler --out-dir pkg --release",
+    "search:test": "cargo test --manifest-path search-rust/Cargo.toml",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
     "verify:seo": "tsx scripts/verify-seo.ts",
