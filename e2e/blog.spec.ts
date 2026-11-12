@@ -58,7 +58,7 @@ test('mobile navigation exposes and follows the blog link', async ({ page }) => 
   await menuButton.click();
   await expect(page.getByRole('button', { name: 'Close navigation menu' })).toHaveAttribute('aria-expanded', 'true');
 
-  await page.getByRole('link', { name: 'Notes' }).click();
+  await page.getByRole('link', { name: 'Writing' }).click();
   await expect(page).toHaveURL(/\/blog$/);
   await expect(page.getByRole('heading', { name: 'Latest notes' })).toBeVisible();
 });

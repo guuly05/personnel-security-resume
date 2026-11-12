@@ -1,8 +1,8 @@
 /** Lightweight home page summary; the complete Markdown body stays in the blog route chunk. */
 export const LATEST_POST = {
-  slug: 'ci-cd-pipeline-attack-surface',
-  title: 'Your CI/CD Pipeline Is Part of Your Attack Surface',
+  slug: 'ai-dual-use-cybersecurity',
+  title: 'AI in Cybersecurity: Finding the Flaws and Fueling the Threats',
   subtitle:
-    'Build workflows hold code, credentials, and deployment access. Here is how to reduce the risk without making delivery painfully slow.',
-  date: '2026-10-30',
+    'AI is helping researchers uncover serious bugs while giving malicious actors new ways to scale influence, surveillance, cyber operations, and weapons work.',
+  date: '2026-11-09',
 };

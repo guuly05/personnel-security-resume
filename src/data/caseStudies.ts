@@ -13,7 +13,7 @@ export interface CaseStudy {
   subtitle: string;
   type: string;
   year: string;
-  status: 'Live' | 'Open Source' | 'In Development';
+  status: 'Live' | 'Open Source' | 'In Development' | 'Prototype';
   role: string;
   collaboration: string;
   imageUrl: string;
@@ -38,7 +38,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     subtitle: 'A Somali and English clinic directory and role-based appointment-request prototype for Hargeisa, designed to make clinic information easier to explore while keeping the limits of a demo clear.',
     type: 'Healthcare Access · Full-Stack PWA',
     year: '2026',
-    status: 'Open Source',
+    status: 'Prototype',
     role: 'Sole Product Engineer',
     collaboration: 'Independent product design and implementation, informed by a documented product requirements brief.',
     imageUrl: '/assets/daryeelpass-clinic-directory.png',
@@ -68,7 +68,6 @@ export const CASE_STUDIES: CaseStudy[] = [
       { name: 'Zod 4', group: 'backend' },
       { name: 'Workbox · PWA', group: 'platform' },
     ],
-    githubUrl: 'https://github.com/guuly05/daryeelpass',
   },
   {
     id: 'samaale-general-trading',
