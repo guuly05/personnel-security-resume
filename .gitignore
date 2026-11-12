@@ -5,6 +5,7 @@ lean/.lake/
 .pnpm-store/
 build/
 dist/
+search-rust/pkg/
 coverage/
 playwright-report/
 test-results/
