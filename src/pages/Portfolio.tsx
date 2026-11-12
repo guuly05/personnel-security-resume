@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDown, ArrowUpRight, Github, Globe2 } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Globe2 } from 'lucide-react';
 import { MotionConfig, motion } from 'motion/react';
 import { CASE_STUDIES, type CaseStudy } from '../data/caseStudies.ts';
 
@@ -15,11 +15,6 @@ function ProjectLinks({ study }: { study: CaseStudy }) {
       {study.liveUrl && (
         <a className="work-external-link" href={study.liveUrl} target="_blank" rel="noreferrer noopener">
           <Globe2 size={14} aria-hidden="true" /> <span>Visit live site</span>
-        </a>
-      )}
-      {study.githubUrl && (
-        <a className="work-external-link" href={study.githubUrl} target="_blank" rel="noreferrer noopener">
-          <Github size={14} aria-hidden="true" /> <span>Source</span>
         </a>
       )}
     </div>
