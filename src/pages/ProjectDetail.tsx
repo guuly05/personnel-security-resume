@@ -172,7 +172,6 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
             </dl>
             <div className="mt-auto flex flex-wrap gap-2 pt-6">
               {study.liveUrl && <a href={study.liveUrl} target="_blank" rel="noopener noreferrer" className="landing-button landing-button-primary">Open live project <Icon name="arrow-up-right" size={14} /></a>}
-              {study.githubUrl && <a href={study.githubUrl} target="_blank" rel="noopener noreferrer" className="landing-button landing-button-secondary"><Icon name="github" size={14} /> View source</a>}
             </div>
           </aside>
         </div>
@@ -270,7 +269,6 @@ const ProjectDetailPage: React.FC<{ slug: string }> = ({ slug }) => {
 
       <div className="flex flex-wrap gap-3 border-t border-[var(--border)] pt-6">
         {study.liveUrl && <a href={study.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-bg)] transition-colors hover:opacity-90"><Icon name="arrow-up-right" size={15} /> See live deployment</a>}
-        {study.githubUrl && <a href={study.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-sm font-semibold transition-colors hover:border-[var(--accent)]/50"><Icon name="github" size={15} /> View source</a>}
         <a href="/portfolio" className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-sm font-semibold transition-colors hover:border-[var(--accent)]/50"><Icon name="layout" size={15} /> More projects</a>
       </div>
     </motion.div>
