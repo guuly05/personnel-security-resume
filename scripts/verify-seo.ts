@@ -99,7 +99,7 @@ const newestPost = BLOG_POSTS[0];
 if (!newestPost || LATEST_POST.slug !== newestPost.slug || LATEST_POST.title !== newestPost.title || LATEST_POST.date !== newestPost.date) {
   failures.push('featured note: homepage summary does not match the newest blog post');
 }
-if (!existsSync(join(root, 'assets', 'og-preview.png'))) failures.push('OG image: missing homepage preview asset');
+if (!existsSync(join(root, 'assets', 'og-preview.jpg'))) failures.push('OG image: missing homepage preview asset');
 
 if (failures.length) {
   console.error(failures.join('\n'));

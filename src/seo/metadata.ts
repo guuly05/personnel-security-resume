@@ -2,7 +2,8 @@ import type { BlogPost } from '../blog/posts.ts';
 
 export const SITE_URL = 'https://www.guuleedmaxamuud.dev';
 export const FULL_NAME = 'Guuleed Maxmuud Aw Abdi';
-export const OG_IMAGE = `${SITE_URL}/assets/og-preview.png`;
+export const OG_IMAGE = `${SITE_URL}/assets/og-preview.jpg`;
+export const OG_IMAGE_ALT = 'Guuleed Maxmuud Aw Abdi — Full-Stack Software Engineer in Hargeisa, Somaliland';
 export const PUBLISHER_LOGO = `${SITE_URL}/favicon.svg`;
 export const DEFAULT_ROBOTS = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
 export const NOINDEX_ROBOTS = 'noindex, follow';
@@ -99,9 +100,9 @@ const PERSON_SCHEMA = {
   alternateName: 'Guuleed Maxamuud',
   url: `${SITE_URL}/about`,
   email: 'guuleedmaxamuud40@gmail.com',
-  jobTitle: 'Full-Stack Developer',
+  jobTitle: 'Full-Stack Software Engineer',
   description:
-    'Full-stack developer building interfaces, APIs, delivery workflows, automation, and secure software systems, with strong cybersecurity and DevOps skills.',
+    'Full-stack software engineer building interfaces, APIs, delivery workflows, automation, and secure software systems, with cybersecurity and DevOps experience.',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Hargeisa',
@@ -135,9 +136,9 @@ const WEBSITE_SCHEMA = {
 
 const pageMeta: Record<Exclude<RouteKey, 'reflection' | 'surprise' | 'vault' | 'not-found'>, { title: string; description: string; path: string }> = {
   home: {
-    title: `${FULL_NAME} | Full-Stack Developer — Cybersecurity & DevOps`,
+    title: `${FULL_NAME} | Full-Stack Software Engineer`,
     description:
-      `${FULL_NAME} — Full-stack developer based in Hargeisa, Somaliland, with strong cybersecurity and DevOps skills. Explore product builds, secure engineering, delivery workflows, and technical case studies.`,
+      `${FULL_NAME} is a full-stack software engineer in Hargeisa, Somaliland, building web products, APIs, and dependable systems with cybersecurity and DevOps experience.`,
     path: '/',
   },
   about: {
@@ -241,14 +242,14 @@ export function metadataForArticle(post: BlogPost): PageMetadata {
     canonicalPath,
     robots: DEFAULT_ROBOTS,
     ogType: 'article',
-    ogImage: `${SITE_URL}${canonicalPath}/og.png`,
+    ogImage: OG_IMAGE,
     article: { publishedTime, modifiedTime },
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
       headline: post.title,
       description: post.subtitle,
-      image: `${SITE_URL}${canonicalPath}/og.png`,
+      image: OG_IMAGE,
       author: { '@type': 'Person', name: FULL_NAME, url: `${SITE_URL}/about` },
       publisher: { '@type': 'Organization', name: FULL_NAME, logo: { '@type': 'ImageObject', url: PUBLISHER_LOGO } },
       datePublished: publishedTime,
@@ -283,7 +284,7 @@ export function metadataForRoute(pathname: string, post?: BlogPost): PageMetadat
         canonicalPath: meta.path,
         robots: DEFAULT_ROBOTS,
         ogType: 'website',
-        ogImage: `${SITE_URL}/portfolio/${slug}/og.png`,
+        ogImage: OG_IMAGE,
         jsonLd: webPageSchema(meta),
       };
     }

@@ -115,7 +115,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     status: 'Live',
     role: 'Sole Developer & Designer',
     collaboration: 'Solo design and implementation.',
-    imageUrl: '/assets/og-preview.png',
+    imageUrl: '/assets/og-preview.jpg',
     imageAlt: 'Custom social-preview illustration for Guuleed Maxmuud Aw Abdi’s portfolio platform, not a browser screenshot.',
     challenge:
       'A resume alone could not show the engineering behind the work. The site needed to communicate product thinking while also supporting searchable writing, protected contact, real calendar booking, and strong direct-route SEO.',

@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import { BLOG_POSTS } from '../src/blog/posts.js';
-import { SITE_URL, FULL_NAME, PUBLISHER_LOGO } from '../src/seo/metadata.js';
+import { SITE_URL, FULL_NAME, PUBLISHER_LOGO, OG_IMAGE } from '../src/seo/metadata.js';
 
 function escapeHtml(str: string): string {
   return str
@@ -16,7 +16,7 @@ function replaceMeta(html: string, post: any, slug: string): string {
   const postTitle = `${post.title} | ${FULL_NAME}`;
   const postDesc = post.subtitle;
   const postUrl = `${SITE_URL}/blog/${slug}`;
-  const postOgImage = `${SITE_URL}/blog/${slug}/og.png`;
+  const postOgImage = OG_IMAGE;
   const postDateIso = new Date(post.date).toISOString();
   const postModifiedIso = new Date(post.lastUpdated).toISOString();
 

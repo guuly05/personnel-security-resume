@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import type { BlogPost } from '../blog/posts.ts';
-import { metadataForSection, metadataForRoute, SITE_URL } from '../seo/metadata.ts';
+import { metadataForSection, metadataForRoute, SITE_URL, OG_IMAGE_ALT } from '../seo/metadata.ts';
 
 interface SeoHeadProps {
   section?: string;
@@ -57,8 +57,8 @@ export function SeoHead({ section = 'home' }: SeoHeadProps) {
       <meta property="og:image" content={meta.ogImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:image:type" content="image/png" />
-      <meta property="og:image:alt" content={meta.title} />
+      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:image:alt" content={OG_IMAGE_ALT} />
       <meta property="og:site_name" content="Guuleed Maxmuud Aw Abdi Portfolio" />
       <meta property="og:locale" content="en_US" />
       {meta.article && <meta property="article:author" content="Guuleed Maxmuud Aw Abdi" />}
@@ -68,7 +68,7 @@ export function SeoHead({ section = 'home' }: SeoHeadProps) {
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
       <meta name="twitter:image" content={meta.ogImage} />
-      <meta name="twitter:image:alt" content={meta.title} />
+      <meta name="twitter:image:alt" content={OG_IMAGE_ALT} />
       <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
       <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
