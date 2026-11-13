@@ -4,10 +4,17 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const cargoHome = process.env.CARGO_HOME || path.join(os.homedir(), '.cargo');
+const rustupHome = process.env.RUSTUP_HOME || path.join(os.homedir(), '.rustup');
 const cargoBin = path.join(cargoHome, 'bin');
 const rustupName = process.platform === 'win32' ? 'rustup.exe' : 'rustup';
-const rustupCandidates = [path.join(cargoBin, rustupName), ...(process.platform === 'linux' ? ['/rust/bin/rustup'] : [])];
-const env = { ...process.env, PATH: [cargoBin, ...(process.platform === 'linux' ? ['/rust/bin'] : []), process.env.PATH ?? ''].join(path.delimiter) };
+const rustupPath = path.join(cargoBin, rustupName);
+const env = {
+  ...process.env,
+  CARGO_HOME: cargoHome,
+  RUSTUP_HOME: rustupHome,
+  RUSTUP_TOOLCHAIN: 'stable',
+  PATH: [cargoBin, ...(process.platform === 'linux' ? ['/rust/bin'] : []), process.env.PATH ?? ''].join(path.delimiter),
+};
 
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, {
@@ -36,11 +43,8 @@ async function installRustup() {
 }
 
 function findRustup() {
-  for (const candidate of [...rustupCandidates, rustupName]) {
-    const result = spawnSync(candidate, ['--version'], { env, stdio: 'ignore', shell: process.platform === 'win32' });
-    if (result.status === 0) return candidate;
-  }
-  return null;
+  const result = spawnSync(rustupPath, ['--version'], { env, stdio: 'ignore', shell: process.platform === 'win32' });
+  return result.status === 0 ? rustupPath : null;
 }
 
 let rustup = findRustup();
@@ -48,8 +52,9 @@ if (!rustup) {
   await installRustup();
   rustup = findRustup();
 }
-if (!rustup) throw new Error('rustup installed but was not found under CARGO_HOME/bin or /rust/bin.');
-run(rustup, ['toolchain', 'install', 'stable', '--profile', 'minimal', '--component', 'cargo', '--component', 'rustc', '--target', 'wasm32-unknown-unknown']);
+if (!rustup) throw new Error('rustup not found after install');
+run(rustup, ['default', 'stable']);
+run(rustup, ['target', 'add', 'wasm32-unknown-unknown', '--toolchain', 'stable']);
 const wasmPack = spawnSync('wasm-pack', ['--version'], { env, stdio: 'ignore', shell: process.platform === 'win32' });
 if (wasmPack.status !== 0) run(process.execPath, [path.resolve('node_modules/wasm-pack/install.js')]);
 run('wasm-pack', ['build', 'search-rust', '--target', 'bundler', '--out-dir', 'pkg', '--release']);
