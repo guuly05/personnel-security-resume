@@ -79,6 +79,8 @@ export default function App() {
   const terminal = useTerminal();
   const closeSearch = useCallback(() => setIsSearchOpen(false), []);
   const navigateSearchResult = useCallback((path: string) => {
+    const state = window.history.state && typeof window.history.state === 'object' ? window.history.state : {};
+    window.history.replaceState({ ...state, scrollY: window.scrollY }, '', window.location.href);
     window.history.pushState({ scrollY: 0 }, '', path);
     window.dispatchEvent(new PopStateEvent('popstate'));
     window.scrollTo(0, 0);
