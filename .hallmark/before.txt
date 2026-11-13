@@ -1,0 +1,305 @@
+FAIL 4 src\pages\BookCall.tsx:398 card nested in card: class="booking-date-card min-h-28 border p-4 t…" | fix: Keep one containment layer
+FAIL 10a src\index.css:487 transitioning width on .hp-bar-fill | fix: Animate transform or opacity instead
+FAIL 10a src\index.css:1169 transitioning width on .blog-progress-line span | fix: Animate transform or opacity instead
+FAIL 19 src\components\Terminal.tsx:272 dash "—" in copy | fix: A comma, a colon, a full stop or parentheses; never a dash
+FAIL 19 src\pages\About.tsx:285 dash "–" in copy | fix: A comma, a colon, a full stop or parentheses; never a dash
+FAIL 19 src\pages\Certificates.tsx:79 dash "—" in copy | fix: A comma, a colon, a full stop or parentheses; never a dash
+FAIL 19 src\pages\Skills.tsx:121 dash "—" in copy | fix: A comma, a colon, a full stop or parentheses; never a dash
+FAIL 30a src\pages\AnnualRecap.tsx:127 emoji passed as an icon: ▶ | fix: One icon library, a custom SVG, or the word alone
+FAIL 30a src\pages\AnnualRecap.tsx:137 emoji passed as an icon: ♪ | fix: One icon library, a custom SVG, or the word alone
+FAIL 30a src\pages\AnnualRecap.tsx:228 emoji passed as an icon: ↗ | fix: One icon library, a custom SVG, or the word alone
+FAIL 33 src\components\BirthdayConfetti.tsx:130 <canvas> without aria-hidden or aria-label | fix: Add aria-hidden or an aria-label
+FAIL 34 src\index.css:1461 width: calc(100vw - 1rem) on .terminal-window (scrollbar overflow) | fix: width: 100% with container padding
+FAIL 39a src\index.css:387 focus state via border on .booking-confirmation:has(input:focus, textarea:focus) | fix: Focus ring via outline, not border
+FAIL 47a src\components\Terminal.tsx:230 re-drawn chrome class "titlebar" (class="terminal-titlebar") | fix: Use a real screenshot in a figure
+FAIL 47a src\index.css:1261 re-drawn chrome selector .terminal-titlebar | fix: Use a real screenshot in a figure
+FAIL 48 src\index.css:94 colour literal #061109 outside tokens (color on ::selection) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1125 colour literal rgba(3, 10, 18, 0.72) outside tokens (background on .blog-lightbox) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1136 colour literal rgba(0, 0, 0, 0.38) outside tokens (box-shadow on .blog-lightbox-image) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1149 colour literal rgba(255, 255, 255, 0.14) outside tokens (border on .blog-lightbox-close) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1150 colour literal rgba(255, 255, 255, 0.08) outside tokens (background on .blog-lightbox-close) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1151 colour literal #fff outside tokens (color on .blog-lightbox-close) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1161 colour literal rgba(255, 255, 255, 0.05) outside tokens (background on .blog-progress-line) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1225 colour literal rgba(148, 163, 184, 0.42) outside tokens (background on ::-webkit-scrollbar-thumb) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1229 colour literal rgba(148, 163, 184, 0.62) outside tokens (background on ::-webkit-scrollbar-thumb:hov…) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1293 colour literal #ff5f57 outside tokens (background on .terminal-dot-red) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1293 colour literal rgba(255, 95, 87, 0.5) outside tokens (box-shadow on .terminal-dot-red) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1294 colour literal #febc2e outside tokens (background on .terminal-dot-yellow) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1294 colour literal rgba(254, 188, 46, 0.4) outside tokens (box-shadow on .terminal-dot-yellow) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1295 colour literal #28c840 outside tokens (background on .terminal-dot-green) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1295 colour literal rgba(40, 200, 64, 0.4) outside tokens (box-shadow on .terminal-dot-green) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1298 colour literal #fff outside tokens (outline on .terminal-dot:focus-visible) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1305 colour literal rgba(0, 0, 0, 0.6) outside tokens (color on .terminal-dot-icon) | fix: Lift the value into the token block
+FAIL 48 src\index.css:1336 colour literal rgba(45, 212, 191, 0.25) outside tokens (scrollbar-color on .terminal-output) | fix: Lift the value into the token block
+FAIL 48 src\index.css:2011 colour literal #000 outside tokens (background on .skills-dialog-backdrop) | fix: Lift the value into the token block
+FAIL 48 src\index.css:2012 colour literal #0007 outside tokens (box-shadow on .skills-dialog) | fix: Lift the value into the token block
+FAIL 48 src\index.css:2230 colour literal rgb(0 0 0 / 68%) outside tokens (background on .credentials-campus-figure::a…) | fix: Lift the value into the token block
+FAIL 48 src\index.css:2234 colour literal rgb(255 255 255 / 78%) outside tokens (color on .credentials-campus-figure fi…) | fix: Lift the value into the token block
+FAIL 48 src\index.css:2344 colour literal #0007 outside tokens (background on .recap-player-controls) | fix: Lift the value into the token block
+FAIL 48 src\index.css:2344 colour literal #0009 outside tokens (background on .recap-player-controls) | fix: Lift the value into the token block
+FAIL 48 src\index.css:2345 colour literal #ffffff30 outside tokens (border on .recap-play-state) | fix: Lift the value into the token block
+FAIL 48 src\index.css:2345 colour literal #0009 outside tokens (background on .recap-play-state) | fix: Lift the value into the token block
+FAIL 48 src\pages\Home.css:46 colour literal #269b65 outside tokens (background on .landing-availability span) | fix: Lift the value into the token block
+FAIL 48 src\pages\Home.css:46 colour literal #269b65 outside tokens (box-shadow on .landing-availability span) | fix: Lift the value into the token block
+FAIL 48 src\pages\Home.css:53 colour literal #b4f3c1 outside tokens (background on .landing-button-primary:hover) | fix: Lift the value into the token block
+FAIL 48 src\pages\Home.css:62 colour literal #063d32 outside tokens (background on .landing-hero-art-link) | fix: Lift the value into the token block
+FAIL 48 src\pages\Home.css:65 colour literal rgb(0 0 0 / 72%) outside tokens (background on .landing-hero-art-link::after) | fix: Lift the value into the token block
+FAIL 48 src\pages\ProjectDetail.tsx:94 colour literal bg-[#071016] in a class on <pre class="mt-5 overflow-x-auto rounded-lg…"> | fix: Lift the value into the token block (@theme or :root) and use its utility name
+FAIL 50 src\pages\Home.css:118 bare 1fr track holds images (.landing-hero) | fix: Use minmax(0, 1fr) for image tracks
+FAIL 54 src\pages\About.tsx:227 eyebrow "/ about" before <h1> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\About.tsx:280 eyebrow "A little context" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\About.tsx:398 eyebrow "01 / build journey" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\About.tsx:459 eyebrow "02 / outside the build" before <div> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\AnnualRecap.tsx:59 eyebrow "/ annual reflection ·" before <h1> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\AnnualRecap.tsx:84 eyebrow "02 / personal archive" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\AnnualRecap.tsx:168 eyebrow "/ /" before <h3> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\AnnualRecap.tsx:242 eyebrow "01 / milestones" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Blog.tsx:214 eyebrow "Blog / Research journal" before <h1> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Blog.tsx:230 eyebrow "Featured note" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Blog.tsx:234 eyebrow "The archive" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Blog.tsx:254 eyebrow "Keep exploring" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Blog.tsx:306 eyebrow "404 / note unavailable" before <h1> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\BookCall.tsx:299 eyebrow "03" before <div> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\BookCall.tsx:302 eyebrow "Live scheduling terminal" before <h1> (uppercase, tracked 0.35em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\BookCall.tsx:336 eyebrow "Booking management" before <h2> (uppercase, tracked 0.35em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\BookCall.tsx:376 eyebrow "01 / Date selection" before <h2> (uppercase, tracked 0.35em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\BookCall.tsx:466 eyebrow "03 / Finalize" before <h2> (uppercase, tracked 0.35em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\Certificates.tsx:73 eyebrow "/ learning record" before <h1> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Certificates.tsx:115 eyebrow "01 / Credentials" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Certificates.tsx:219 eyebrow "02 / Education" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Contact.tsx:141 eyebrow "/ contact" before <h1> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Experience.tsx:8 eyebrow "/ experience" before <h1> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Experience.tsx:15 eyebrow "01 / selected roles" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Experience.tsx:21 eyebrow "0" before <div> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Home.tsx:98 eyebrow "Selected work" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Home.tsx:107 eyebrow "0" before <div> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Home.tsx:122 eyebrow "How I work" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Home.tsx:144 eyebrow "From the notebook ·" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Home.tsx:154 eyebrow "Next step" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Legal.tsx:112 eyebrow "/" before <h1> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\NotFound.tsx:7 eyebrow "/ route not found" before <h1> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Portfolio.tsx:366 eyebrow "Case Studies" before <h1> (uppercase, tracked 0.25em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\ProjectDetail.tsx:19 eyebrow before <h2> (uppercase, tracked 0.3em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\ProjectDetail.tsx:37 eyebrow "0" before <div> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\ProjectDetail.tsx:73 eyebrow "Evidence" before <h2> (uppercase, tracked 0.3em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\ProjectDetail.tsx:107 eyebrow "Project not found" before <h1> (uppercase, tracked 0.3em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\ProjectDetail.tsx:164 eyebrow "Project context" before <h3> (uppercase, tracked 0.3em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\ProjectDetail.tsx:206 eyebrow "Decision 0" before <h3> (uppercase, tracked 0.28em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\ProjectDetail.tsx:246 eyebrow "0" before <div> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\ProjectDetail.tsx:257 eyebrow "06 / Ownership" before <h2> (uppercase, tracked 0.3em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\Skills.tsx:119 eyebrow "/ capabilities" before <h1> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Skills.tsx:142 eyebrow "01 / how I work" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Skills.tsx:174 eyebrow "02 / toolkit" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\Skills.tsx:199 eyebrow "03 / foundations" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\SystemsAtlas.tsx:31 eyebrow "Project / ·" before <h3> (uppercase, tracked 0.24em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\SystemsAtlas.tsx:106 eyebrow "Engineering systems / f…" before <h1> (uppercase, tracked 0.3em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 54 src\pages\SystemsAtlas.tsx:135 eyebrow "01 / Select a practice" before <h2> | fix: Cut it; the heading already says this (craft.md § 7 has twelve other openings)
+FAIL 54 src\pages\SystemsAtlas.tsx:179 eyebrow "02 / Current lens ·" before <h2> (uppercase, tracked 0.28em at 10px) | fix: Cut it; open the section another way (craft.md, Opening a section)
+FAIL 63 src\components\Terminal.tsx:335 middle-dot meta string "● CONNECTED portfolio-shell v2.0 drag title · res…" | fix: Line breaks, columns or hairlines; one dot in a byline at most
+FAIL 63 src\components\Terminal.tsx:338 middle-dot meta string "drag title · resize corner · ↑↓ history · Tab aut…" | fix: Line breaks, columns or hairlines; one dot in a byline at most
+FAIL 63 src\pages\Skills.tsx:122 middle-dot meta string "Product engineering · Systems & delivery · Secure…" | fix: Line breaks, columns or hairlines; one dot in a byline at most
+FAIL 67 src\App.tsx:309 "More pages" uppercase at 10px tracked 0.18em on <p class="px-3 pb-2 pt-1 text-[10px] font…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\index.css:292 .eyebrow: uppercase tracked 0.28em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:577 .timeline-tag: letter-spaced tracked 0.06em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:661 .blog-eyebrow: uppercase tracked 0.35em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:690 .blog-enter-button, .blog-back-button, .blog-focus-button: uppercase control on a page whose display is not uppercase | fix: Controls follow the display voice: sentence case here, or tracking 0.04em at most where the display itself is uppercase
+FAIL 67 src\index.css:772 .blog-tag: letter-spaced tracked 0.08em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:814 .blog-kicker: uppercase tracked 0.35em at 11px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:898 .blog-x-embed-caption: uppercase tracked 0.08em at 12px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:1028 .blog-table th: uppercase tracked 0.12em at 12px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:1098 .blog-code-label: uppercase tracked 0.32em at 11px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:1407 .terminal-statusbar: letter-spaced tracked 0.06em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:1549 .blog-catalog-count: uppercase tracked 0.12em at 12px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:1583 .blog-section-label: uppercase tracked 0.24em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:1671 .blog-visual-index, .blog-visual-mood: uppercase tracked 0.22em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:1718 .blog-post-meta: uppercase tracked 0.12em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:1752 .blog-read-link: uppercase tracked 0.08em at 12px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:1873 .blog-reader-progress: uppercase tracked 0.12em at 11px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:1951 .skills-hero-index: uppercase tracked 0.055em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:1954 .skills-aside-label, .skills-mini-label: uppercase tracked 0.15em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:1969 .skills-capability-number, .skills-tool-number, .skills-course-number: letter-spaced tracked 0.08em at 11px in a label … | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:2126 .editorial-overline, .editorial-index, .editorial-section-count: uppercase tracked 0.15em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:2145 .about-profile-facts span: uppercase tracked 0.1em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:2193 .credentials-overview-label, .credentials-detail-label: uppercase tracked 0.14em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:2203 .credentials-filter-heading: uppercase tracked 0.1em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:2217 .credential-track: uppercase tracked 0.08em at 9px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:2223 .credential-evidence-label: uppercase tracked 0.08em at 9px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:2236 .credentials-degree-meta: uppercase tracked 0.08em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:2273 .project-detail-page .case-study-section-heading p: uppercase tracked 0.14em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:2282 .architecture-flow-node-index: letter-spaced tracked 0.13em at 9px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:2286 .architecture-boundary: uppercase tracked 0.07em at 9px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\index.css:2310 .contact-details > a > span, .contact-location > span: uppercase at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\pages\About.tsx:432 uppercase at 10px tracked 0.2em on <p class="text-[10px] font-mono font-bold…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\About.tsx:487 uppercase at 12px tracked 0.1em on <span class="mt-4 inline-flex items-center g…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\About.tsx:513 "Favourite media" uppercase at 10px tracked 0.25em on <p class="text-[10px] font-mono font-bold…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\About.tsx:545 "Why it stands out:" uppercase at 12px tracked 0.1em on <p class="mt-3 text-xs font-semibold uppe…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\AnnualRecap.tsx:184 "Birthday reel" uppercase at 10px tracked 0.1em on <span class="text-[10px] font-mono uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\AnnualRecap.tsx:191 "Playlist Queue ( Videos…" uppercase at 12px tracked 0.1em on <h3 class="text-xs font-mono font-bold upp…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Blog.tsx:116 "Image unavailable" uppercase at 10px tracked 0.34em on <span class="text-[10px] font-mono uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:311 "Call protocol Meet enab…" uppercase at 10px tracked 0.2em on <div class="col-span-full flex items-center…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:313 "Timezone" uppercase at 10px tracked 0.1em on <p class="text-[10px] font-mono font-bold…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:317 "Duration" uppercase at 10px tracked 0.1em on <p class="text-[10px] font-mono font-bold…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:321 "Buffer" uppercase at 10px tracked 0.1em on <p class="text-[10px] font-mono font-bold…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:325 "Notice" uppercase at 10px tracked 0.1em on <p class="text-[10px] font-mono font-bold…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:376 "01 / Date selection" uppercase at 10px tracked 0.35em on <p class="text-[10px] font-mono font-bold…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:409 uppercase at 10px tracked 0.22em on <span class="block font-mono text-[10px] fon…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:411 uppercase at 12px tracked 0.1em on <span class="mt-2 block text-xs uppercase tr…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:429 "open" uppercase at 10px tracked 0.1em on <span class="text-[10px] font-mono font-bold…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:451 "until / EAT" uppercase at 10px tracked 0.1em on <span class="mt-1 block text-[10px] uppercas…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:469 "Date" uppercase at 10px tracked 0.1em on <span class="block text-[10px] uppercase tra…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:470 "Time" uppercase at 10px tracked 0.1em on <span class="block text-[10px] uppercase tra…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\BookCall.tsx:471 "Channel" uppercase at 10px tracked 0.1em on <span class="block text-[10px] uppercase tra…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Contact.tsx:155 "Full Name" uppercase at 10px tracked 0.1em on <label class="pl-1 font-mono text-[10px] uppe…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Contact.tsx:172 "Email Address" uppercase at 10px tracked 0.1em on <label class="pl-1 font-mono text-[10px] uppe…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Contact.tsx:189 "Your Message" uppercase at 10px tracked 0.1em on <label class="pl-1 font-mono text-[10px] uppe…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Contact.tsx:254 "GitHub" uppercase at 10px tracked 0.1em on <span class="font-mono text-[10px] uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Contact.tsx:264 "LinkedIn" uppercase at 10px tracked 0.1em on <span class="font-mono text-[10px] uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Contact.tsx:271 "Direct fallback" uppercase at 10px tracked 0.35em on <p class="text-[10px] font-mono font-bold…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Home.css:36 .landing-kicker, .landing-section-index, .landing-aside-topline, .landing-project-row-meta, .landing-hero-project-capti… | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\pages\Home.css:66 .landing-image-label: uppercase tracked 0.04em at 10px in a label role | fix: Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked
+FAIL 67 src\pages\Portfolio.tsx:9 uppercase at 10px tracked 0.2em on <span class="inline-flex items-center rounde…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:31 uppercase at 10px tracked 0.15em on <span class="inline-block rounded-lg border …"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:49 uppercase at 10px tracked 0.3em on <h4 class="text-[10px] font-bold uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:116 "Key Results & Stack" uppercase at 11px tracked 0.25em on <button class="flex items-center gap-2 text-[1…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:129 "Key Results" uppercase at 10px tracked 0.3em on <h4 class="text-[10px] font-bold uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:141 "Tech Stack" uppercase at 10px tracked 0.3em on <h4 class="text-[10px] font-bold uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:258 uppercase at 11px tracked 0.25em on <button class="flex items-center gap-2 text-[1…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:291 "Key Results" uppercase at 10px tracked 0.3em on <h4 class="text-[10px] font-bold uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:303 "Built With" uppercase at 10px tracked 0.3em on <h4 class="text-[10px] font-bold uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:366 "Case Studies" uppercase at 10px tracked 0.25em on <div class="inline-flex items-center gap-2 …"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:386 "Projects" uppercase at 9px tracked 0.25em on <p class="text-[9px] uppercase tracking-[…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:390 "Public repositories" uppercase at 9px tracked 0.25em on <p class="text-[9px] uppercase tracking-[…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:394 "Open-source projects" uppercase at 9px tracked 0.25em on <p class="text-[9px] uppercase tracking-[…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:410 "Featured Project" uppercase at 10px tracked 0.35em on <span class="text-[10px] font-bold uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\Portfolio.tsx:423 "More Work" uppercase at 10px tracked 0.35em on <span class="text-[10px] font-bold uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:9 uppercase at 10px tracked 0.2em on <span class="inline-flex items-center rounde…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:19 uppercase at 10px tracked 0.3em on <p class="mb-1 text-[10px] font-bold uppe…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:27 uppercase at 10px tracked 0.28em on <h3 class="mb-2 text-[10px] font-bold uppe…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:73 "Evidence" uppercase at 10px tracked 0.3em on <p class="mb-1 text-[10px] font-bold uppe…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:86 letter-spaced at 9px tracked 0.18em on <span class="rounded-md px-2 py-0.5 text-[9p…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:107 "Project not found" uppercase at 10px tracked 0.3em on <p class="mb-2 text-[10px] font-bold uppe…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:119 "Back to all case studies" uppercase at 11px tracked 0.25em on <a class="inline-flex items-center gap-2 …"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:144 uppercase at 10px tracked 0.22em on <p class="mt-1 text-[10px] font-bold uppe…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:158 uppercase at 9px tracked 0.2em on <p class="mb-2 text-[9px] font-bold upper…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:164 "Project context" uppercase at 10px tracked 0.3em on <p class="mb-2 text-[10px] font-bold uppe…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:168 "My role" uppercase at 10px tracked 0.2em on <dt class="text-[10px] font-bold uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:169 "Collaboration" uppercase at 10px tracked 0.2em on <dt class="text-[10px] font-bold uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:170 "Project period" uppercase at 10px tracked 0.2em on <dt class="text-[10px] font-bold uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:171 "Project status" uppercase at 10px tracked 0.2em on <dt class="text-[10px] font-bold uppercase…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:206 "Decision 0" uppercase at 10px tracked 0.28em on <p class="mb-2 text-[10px] font-bold uppe…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\ProjectDetail.tsx:257 "06 / Ownership" uppercase at 10px tracked 0.3em on <p class="mb-1 text-[10px] font-bold uppe…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\SystemsAtlas.tsx:31 "Project / ·" uppercase at 10px tracked 0.24em on <p class="mb-2 font-mono text-[10px] font…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\SystemsAtlas.tsx:63 uppercase at 9px tracked 0.24em on <p class="mb-1 font-mono text-[9px] font-…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\SystemsAtlas.tsx:106 "Engineering systems / f…" uppercase at 10px tracked 0.3em on <p class="mb-4 inline-flex items-center g…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\SystemsAtlas.tsx:121 "Engineering lenses" uppercase at 9px tracked 0.2em on <p class="mt-1 text-[9px] font-bold upper…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\SystemsAtlas.tsx:125 "Documented projects" uppercase at 9px tracked 0.2em on <p class="mt-1 text-[9px] font-bold upper…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\SystemsAtlas.tsx:135 "01 / Select a practice" uppercase at 10px tracked 0.28em on <p class="landing-section-index mb-1 font…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\SystemsAtlas.tsx:156 "LENS /" letter-spaced at 10px tracked 0.22em on <span class="mb-5 block font-mono text-[10px…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\SystemsAtlas.tsx:179 "02 / Current lens ·" uppercase at 10px tracked 0.28em on <p class="mb-4 font-mono text-[10px] font…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\SystemsAtlas.tsx:188 "Pattern across projects" uppercase at 9px tracked 0.25em on <p class="mb-2 font-mono text-[9px] font-…"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\SystemsAtlas.tsx:201 "Practice" uppercase at 9px tracked 0.25em on <span class="font-mono text-[9px] font-bold …"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+FAIL 67 src\pages\SystemsAtlas.tsx:203 "Project evidence" uppercase at 9px tracked 0.25em on <span class="font-mono text-[9px] font-bold …"> | fix: Sentence case in the body face, a step smaller, untracked: drop uppercase and the tracking-* class
+REFLEX 24b src\index.css:1265 padding: 10px 14px (off the 4px scale) on .terminal-titlebar | fix: Use the 4px spacing scale
+REFLEX 24b src\index.css:1332 padding: 14px 18px 8px (off the 4px scale) on .terminal-output | fix: Use the 4px spacing scale
+REFLEX 24b src\index.css:1367 gap: 5px (off the 4px scale) on .terminal-input-row | fix: Use the 4px spacing scale
+REFLEX 24b src\index.css:1368 padding: 8px 18px 10px (off the 4px scale) on .terminal-input-row | fix: Use the 4px spacing scale
+REFLEX 24b src\index.css:1411 padding: 4px 18px 5px (off the 4px scale) on .terminal-statusbar | fix: Use the 4px spacing scale
+REFLEX 24b src\index.css:1476 padding: 9px 11px (off the 4px scale) on .terminal-titlebar | fix: Use the 4px spacing scale
+REFLEX 24b src\index.css:1497 gap: 3px (off the 4px scale) on .terminal-input-row | fix: Use the 4px spacing scale
+REFLEX 24b src\index.css:1498 padding: 9px 12px 10px (off the 4px scale) on .terminal-input-row | fix: Use the 4px spacing scale
+REFLEX 24b src\index.css:1505 padding: 6px 12px 8px (off the 4px scale) on .terminal-statusbar | fix: Use the 4px spacing scale
+REFLEX 28b src\pages\AnnualRecap.tsx:99 video without poster | fix: Add a poster frame; guard: below the fold and not the LCP
+REFLEX 64 src\App.tsx:309 font-mono on "More pages" at 10px (<p class="px-3 pb-2 pt-1 text-[10px] font…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\index.css:294 monospace label voice on .eyebrow | fix: Labels in the body face, a step smaller, sentence case; mono only for code and figures
+REFLEX 64 src\index.css:780 monospace label voice on .blog-tag | fix: Labels in the body face, a step smaller, sentence case; mono only for code and figures
+REFLEX 64 src\index.css:1954 monospace label voice on .skills-aside-label, .skills-mini-label | fix: Labels in the body face, a step smaller, sentence case; mono only for code and figures
+REFLEX 64 src\index.css:2126 monospace label voice on .editorial-overline, .editorial-index, .editorial-section-count | fix: Labels in the body face, a step smaller, sentence case; mono only for code and figures
+REFLEX 64 src\index.css:2223 monospace label voice on .credential-evidence-label | fix: Labels in the body face, a step smaller, sentence case; mono only for code and figures
+REFLEX 64 src\pages\About.tsx:513 font-mono on "Favourite media" at 10px (<p class="text-[10px] font-mono font-bold…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\AnnualRecap.tsx:87 font-mono on "/ · Select play to start" at 12px (<div class="text-xs font-mono text-[var(--c…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\AnnualRecap.tsx:184 font-mono on "Birthday reel" at 10px (<span class="text-[10px] font-mono uppercase…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\Blog.tsx:116 font-mono on "Image unavailable" at 10px (<span class="text-[10px] font-mono uppercase…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:302 font-mono on "Live scheduling terminal" at 10px (<p class="flex items-center gap-3 text-[1…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:311 font-mono on "Call protocol Meet enab…" at 10px (<div class="col-span-full flex items-center…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:313 font-mono on "Timezone" at 10px (<p class="text-[10px] font-mono font-bold…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:317 font-mono on "Duration" at 10px (<p class="text-[10px] font-mono font-bold…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:321 font-mono on "Buffer" at 10px (<p class="text-[10px] font-mono font-bold…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:325 font-mono on "Notice" at 10px (<p class="text-[10px] font-mono font-bold…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:336 font-mono on "Booking management" at 10px (<p class="text-[10px] font-mono font-bold…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:376 font-mono on "01 / Date selection" at 10px (<p class="text-[10px] font-mono font-bold…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:425 font-mono on "02 / Time selection" at 10px (<p class="text-[10px] font-mono font-bold…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:429 font-mono on "open" at 10px (<span class="text-[10px] font-mono font-bold…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:466 font-mono on "03 / Finalize" at 10px (<p class="text-[10px] font-mono font-bold…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:468 font-mono on "Date Time Channel Googl…" at 12px (<div class="mt-7 space-y-4 border-t border-…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:496 font-mono on "Email" at 10px (<span class="block pl-1 font-mono text-[10px…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\BookCall.tsx:509 font-mono on "Note /" at 10px (<span class="flex items-center justify-betwe…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\Contact.tsx:155 font-mono on "Full Name" at 10px (<label class="pl-1 font-mono text-[10px] uppe…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\Contact.tsx:172 font-mono on "Email Address" at 10px (<label class="pl-1 font-mono text-[10px] uppe…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\Contact.tsx:189 font-mono on "Your Message" at 10px (<label class="pl-1 font-mono text-[10px] uppe…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\Contact.tsx:254 font-mono on "GitHub" at 10px (<span class="font-mono text-[10px] uppercase…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\Contact.tsx:264 font-mono on "LinkedIn" at 10px (<span class="font-mono text-[10px] uppercase…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\Contact.tsx:271 font-mono on "Direct fallback" at 10px (<p class="text-[10px] font-mono font-bold…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\Home.css:66 monospace label voice on .landing-image-label | fix: Labels in the body face, a step smaller, sentence case; mono only for code and figures
+REFLEX 64 src\pages\SystemsAtlas.tsx:31 font-mono on "Project / ·" at 10px (<p class="mb-2 font-mono text-[10px] font…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\SystemsAtlas.tsx:106 font-mono on "Engineering systems / f…" at 10px (<p class="mb-4 inline-flex items-center g…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\SystemsAtlas.tsx:135 font-mono on "01 / Select a practice" at 10px (<p class="landing-section-index mb-1 font…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\SystemsAtlas.tsx:156 font-mono on "LENS /" at 10px (<span class="mb-5 block font-mono text-[10px…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\SystemsAtlas.tsx:179 font-mono on "02 / Current lens ·" at 10px (<p class="mb-4 font-mono text-[10px] font…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\SystemsAtlas.tsx:188 font-mono on "Pattern across projects" at 9px (<p class="mb-2 font-mono text-[9px] font-…">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\SystemsAtlas.tsx:201 font-mono on "Practice" at 9px (<span class="font-mono text-[9px] font-bold …">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+REFLEX 64 src\pages\SystemsAtlas.tsx:203 font-mono on "Project evidence" at 9px (<span class="font-mono text-[9px] font-bold …">) | fix: Labels in the body face at a smaller size and normal case; font-mono only for code and figures
+WARN 10b src\index.css:1986 transitioning padding on .skills-tool-row | fix: Animate transform or opacity instead
+WARN 10b src\pages\Home.css:89 transitioning padding on .landing-project-row | fix: Animate transform or opacity instead
+WARN 11 src\index.css:247 the hover lift (translateY plus shadow) on 14 selectors (.surface-card, .stat-badge, .blog-meta-chip) | fix: One signal per element; the same lift on every card is the template
+WARN 11 src\index.css:262 hover scale(1.025) on 2 selectors | fix: One hover signal per element
+WARN 11 src\index.css:262 image transforms on hover (.surface-card img:hover, .glass-card img:hover, .rpg-card img:hover) | fix: Imagery sits still; give the container the feedback
+WARN 19 src\App.tsx:525 template footer line: "All rights reserved" | fix: A stock line with no legal effect; cut it unless the owner wants it
+WARN 19 src\ssr\StaticRoute.tsx:91 template footer line: "All rights reserved" | fix: A stock line with no legal effect; cut it unless the owner wants it
+WARN 28a src\pages\About.tsx:528 lazy-loaded first image (likely LCP) | fix: fetchpriority=high on the LCP element
+WARN 28a src\pages\Blog.tsx:113 lazy-loaded first image (likely LCP) | fix: fetchpriority=high on the LCP element
+WARN 41 src\index.css:184 dark surface (L 21%) on .glass-card, .surface-card sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\index.css:447 dark surface (L 26%) on .explore-card sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\index.css:460 dark surface (L 21%) on .rpg-card sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\index.css:504 dark surface (L 26%) on .hobby-card sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\index.css:810 dark surface (L 26%) on .blog-hero-art sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\index.css:1094 dark surface (L 21%) on .blog-code-block sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\index.css:1933 dark surface (L 21%) on .skills-hero sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\index.css:2135 dark surface (L 21%) on .about-hero sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\index.css:2210 dark surface (L 21%) on .credential-card sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\index.css:2228 dark surface (L 21%) on .credentials-campus-card sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\index.css:2265 dark surface (L 21%) on .project-detail-page > header.surface-card sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\index.css:2275 dark surface (L 21%) on .architecture-flow-card sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\index.css:2324 dark surface (L 21%) on .booking-shell .booking-hero sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\pages\Home.css:15 dark surface (L 21%) on .landing-hero sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\pages\Home.css:62 dark surface (L 32%) on .landing-hero-art-link sets no text colour | fix: Swap text to paper in the same rule
+WARN 41 src\pages\Home.css:102 dark surface (L 26%) on .landing-client-quote-card sets no text colour | fix: Swap text to paper in the same rule
+WARN 49 src\pages\BookCall.tsx:343 long clickable label "Reschedule to selected time" without nowrap | fix: Shorten the label or set nowrap
+WARN 54 src\pages\Blog.tsx:254 section labelled by <p> with no heading element | fix: Promote it to <h2>; a label doing heading duty should be a heading
+WARN 58 src\pages\Blog.tsx:215 h1 runs 9 words ("Ideas on security, systems, and the fut…") | fix: Seven words or fewer, 50 characters or fewer
+WARN 58 src\pages\Blog.tsx:216 hero paragraph runs 15 words | fix: One sentence, twelve words or fewer
+WARN 58 src\pages\BookCall.tsx:303 h1 runs 13 words ("Pick a day, pick a slot, and I’ll meet …") | fix: Seven words or fewer, 50 characters or fewer
+WARN 58 src\pages\BookCall.tsx:306 hero paragraph runs 34 words | fix: One sentence, twelve words or fewer
+WARN 58 src\pages\Certificates.tsx:77 hero paragraph runs 18 words | fix: One sentence, twelve words or fewer
+WARN 58 src\pages\Contact.tsx:143 hero paragraph runs 20 words | fix: One sentence, twelve words or fewer
+WARN 58 src\pages\Experience.tsx:9 h1 runs 8 words ("Building across the stack, from idea to…") | fix: Seven words or fewer, 50 characters or fewer
+WARN 58 src\pages\Experience.tsx:10 hero paragraph runs 25 words | fix: One sentence, twelve words or fewer
+WARN 58 src\pages\Home.tsx:40 hero paragraph runs 19 words | fix: One sentence, twelve words or fewer
+WARN 58 src\pages\NotFound.tsx:9 hero paragraph runs 20 words | fix: One sentence, twelve words or fewer
+WARN 58 src\pages\Portfolio.tsx:371 h1 runs 10 words ("Products with a point of view, built en…") | fix: Seven words or fewer, 50 characters or fewer
+WARN 58 src\pages\Portfolio.tsx:376 hero paragraph runs 37 words | fix: One sentence, twelve words or fewer
+WARN 58 src\pages\Skills.tsx:121 hero paragraph runs 22 words | fix: One sentence, twelve words or fewer
+WARN 58 src\pages\SystemsAtlas.tsx:113 hero paragraph runs 24 words | fix: One sentence, twelve words or fewer
+WARN 74 src\pages\BookCall.tsx:527 default palette instead of theme tokens: 8 distinct palette classes (border-rose-400 text-rose-300 border-emerald-500 b… | fix: Extend the Tailwind theme with the Hallmark tokens and use those names
+WARN 74 src\pages\ProjectDetail.tsx:86 default palette instead of theme tokens: 7 distinct palette classes (bg-emerald-500 text-emerald-400 bg-amber-500 text-… | fix: Extend the Tailwind theme with the Hallmark tokens and use those names
+WARN F3 src\index.css:83 no text-wrap: balance on any display head (30 head rule(s), e.g. h1, h2, h3, h4, h5, h6, .font-d…) | fix: Add text-wrap: balance to h1/h2-level heads
+WARN F3 src\pages\Home.css:85 no text-wrap: balance on any display head (4 head rule(s), e.g. .landing-section-heading h2, .l…) | fix: Add text-wrap: balance to h1/h2-level heads
+WARN F6 src\index.css:1564 numeric selector .blog-catalog-count strong at display size without tabular figures | fix: Add font-variant-numeric: tabular-nums
+WARN F6 src\index.css:2196 numeric selector .credentials-stat strong at display size without tabular figures | fix: Add font-variant-numeric: tabular-nums
+WARN F7 src\index.css:442 same container recipe on 7 selectors (.explore-card, .stat-badge, .hobby-card, .about…...) | fix: Vary weight, radius, or fill by role; not every box is the same box
+WARN F7 src\index.css:550 the pill radius on 6 non-control selectors (.about-timeline-marker, .blog-lightbox-close, .…) | fix: Pills are for controls; boxes and media take the card radius
+WARN F7 src\index.css:2269 same container recipe on 6 selectors (.project-detail-page figure.surface-card, .proj…...) | fix: Vary weight, radius, or fill by role; not every box is the same box
+WARN F15 src\index.css:1 7 different column gaps across multi-column sections (2rem, 4rem), 3rem), 6rem), 3rem, 5rem), 1.5rem) | fix: One column gap for every multi-column section
+WARN F15 src\pages\Home.css:1 3 different column gaps across multi-column sections (5rem), 1.5rem, 2rem) | fix: One column gap for every multi-column section
+WARN F24 src\index.css:1136 a hairline border under a wide soft shadow on .blog-lightbox-image | fix: Commit to one: a defined edge, or elevation by shadow
+WARN F24 src\pages\About.tsx:348 a hairline border under a wide soft shadow (border with shadow-xl or shadow-2xl) | fix: Commit to one: a defined edge, or elevation by shadow
+WARN F24 src\ssr\StaticRoute.tsx:68 a hairline border under a wide soft shadow (border with shadow-xl or shadow-2xl) | fix: Commit to one: a defined edge, or elevation by shadow

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { lazy, Suspense, useState, useEffect, useRef } from 'react';
+import { lazy, Suspense, useState, useEffect, useRef, useCallback } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { PERSONAL_INFO } from './constants.ts';
 import { Icon } from './components/Icon.tsx';
@@ -19,6 +19,7 @@ const BirthdayConfetti = lazy(() =>
 const Terminal = lazy(() =>
   import('./components/Terminal.tsx').then((module) => ({ default: module.Terminal })),
 );
+const SearchDialog = lazy(() => import('./search/SearchDialog.tsx').then((module) => ({ default: module.SearchDialog })));
 const HomePage = lazy(() => import('./pages/Home.tsx'));
 const AboutPage = lazy(() => import('./pages/About.tsx'));
 const SkillsPage = lazy(() => import('./pages/Skills.tsx'));
@@ -68,6 +69,7 @@ export default function App() {
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const [hasOpenedTerminal, setHasOpenedTerminal] = useState(false);
   const [isBlogFocusMode, setIsBlogFocusMode] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('light');
   const moreMenuRef = useRef<HTMLDivElement>(null);
   const moreMenuButtonRef = useRef<HTMLButtonElement>(null);
@@ -75,6 +77,16 @@ export default function App() {
   const mobileMenuRef = useRef<HTMLElement>(null);
 
   const terminal = useTerminal();
+  const closeSearch = useCallback(() => setIsSearchOpen(false), []);
+  const navigateSearchResult = useCallback((path: string) => {
+    const state = window.history.state && typeof window.history.state === 'object' ? window.history.state : {};
+    window.history.replaceState({ ...state, scrollY: window.scrollY }, '', window.location.href);
+    window.history.pushState({ scrollY: 0 }, '', path);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.scrollTo(0, 0);
+    setIsMenuOpen(false);
+    setIsMoreMenuOpen(false);
+  }, []);
 
   useEffect(() => {
     if (terminal.isOpen) setHasOpenedTerminal(true);
@@ -128,6 +140,11 @@ export default function App() {
   // Global keyboard shortcut: Ctrl+Alt+G toggles the terminal
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchOpen((open) => !open);
+        return;
+      }
       if ((e.ctrlKey || e.metaKey) && e.altKey && e.key.toLowerCase() === 'g') {
         e.preventDefault();
         terminal.toggleTerminal();
@@ -347,6 +364,9 @@ export default function App() {
 
         <div className="site-rail-actions hidden xl:flex items-center gap-2">
           <a href="/contact" onClick={() => setActiveSection('contact')} className="site-contact-link">Contact</a>
+          <button type="button" onClick={() => setIsSearchOpen(true)} aria-label="Search portfolio" title="Search (Ctrl+K)" className="rounded-md border border-[var(--border)] p-2 text-[var(--color-text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]">
+            <Icon name="search" size={18} />
+          </button>
           <button
             type="button"
             onClick={terminal.toggleTerminal}
@@ -368,6 +388,9 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
         </div>
 
         <div className="site-mobile-actions flex items-center gap-2 xl:hidden">
+          <button type="button" onClick={() => { setIsSearchOpen(true); setIsMenuOpen(false); }} aria-label="Search portfolio" title="Search (Ctrl+K)" className="min-h-11 min-w-11 rounded-lg border border-[var(--border)] bg-[var(--surface-soft)] p-2 text-[var(--color-text)] transition hover:border-[var(--accent)]">
+            <Icon name="search" size={20} />
+          </button>
           <button
             ref={mobileMenuButtonRef}
             type="button"
@@ -560,6 +583,8 @@ aria-label={terminal.isOpen ? 'Close terminal' : 'Open terminal'}
           <span>All rights reserved.</span>
         </div>
       </footer>
+
+      {isSearchOpen && <Suspense fallback={null}><SearchDialog open onClose={closeSearch} onNavigate={navigateSearchResult} /></Suspense>}
 
       {/* Terminal overlay — rendered at root so it floats above everything */}
       {hasOpenedTerminal && (

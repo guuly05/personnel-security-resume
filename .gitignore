@@ -5,7 +5,6 @@ lean/.lake/
 .pnpm-store/
 build/
 dist/
-search-rust/pkg/
 coverage/
 playwright-report/
 test-results/
@@ -13,3 +12,5 @@ test-results/
 *.log
 .env*
 !.env.example
+search-rust/pkg/
+search-rust/target/

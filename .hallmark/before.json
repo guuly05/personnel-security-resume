@@ -1,0 +1,643 @@
+{
+ "v": 1,
+ "at": "2026-10-31T08:19:21.821Z",
+ "scope": "page",
+ "summary": {
+  "fails": 201,
+  "reflex": 49,
+  "warns": 55
+ },
+ "files": {
+  "src\\App.tsx": {
+   "handlers": [
+    "onClick={() => setActiveSection('contact')}",
+    "onClick={() => setActiveSection('privacy-policy')}",
+    "onClick={() => setActiveSection('recap')}",
+    "onClick={() => setActiveSection('terms-of-service')}",
+    "onClick={() => setActiveSection(item.id)}",
+    "onClick={() => setIsMenuOpen((value) => !value)}",
+    "onClick={() => setIsMoreMenuOpen((open) => !open)}",
+    "onClick={() => { setActiveSection('home'); setIsMenuOpen(false); }}",
+    "onClick={() => { setActiveSection(item.id); setIsMenuOpen(false); }}",
+    "onClick={() => { setActiveSection(item.id); setIsMoreMenuOpen(false); }}",
+    "onClick={() => { terminal.openTerminal(); setIsMenuOpen(false); }}",
+    "onClick={terminal.toggleTerminal}",
+    "onFocusModeChange={setIsBlogFocusMode}",
+    "onNavigate={(destination) => { const path = destination.startsWith('/') ? destination : sectionToPath(destination as Section); const state = window.history.state && typeof window.history.state === 'object' ? window.history.state : {}; window.history.replaceState({ ...state, scrollY: window.scrollY }, '', window.location.href); window.history.pushState({ scrollY: 0 }, '', path); window.dispatchEvent(new PopStateEvent('popstate')); window.scrollTo(0, 0); }}",
+    "onTheme={(t) => setTheme(t)}"
+   ],
+   "links": [
+    "/",
+    "/assets/Guuleed-Maxamuud-Awabdi-CV.pdf",
+    "/contact",
+    "/privacy-policy",
+    "/recap",
+    "/terms-of-service",
+    "{PERSONAL_INFO.github}",
+    "{PERSONAL_INFO.linkedin}",
+    "{sectionToPath(item.id)}"
+   ],
+   "fields": [
+    "chevron-right",
+    "file-text",
+    "terminal"
+   ],
+   "hooks": [],
+   "ids": [],
+   "scripts": []
+  },
+  "src\\main.tsx": {
+   "handlers": [],
+   "links": [],
+   "fields": [],
+   "hooks": [],
+   "ids": [],
+   "scripts": []
+  },
+  "src\\components\\BirthdayConfetti.tsx": {
+   "handlers": [],
+   "links": [],
+   "fields": [],
+   "hooks": [],
+   "ids": [],
+   "scripts": []
+  },
+  "src\\components\\Icon.tsx": {
+   "handlers": [],
+   "links": [],
+   "fields": [],
+   "hooks": [],
+   "ids": [],
+   "scripts": []
+  },
+  "src\\components\\SeoHead.tsx": {
+   "handlers": [],
+   "links": [],
+   "fields": [],
+   "hooks": [],
+   "ids": [],
+   "scripts": []
+  },
+  "src\\components\\Terminal.tsx": {
+   "handlers": [
+    "onChange={e => setInputValue(e.target.value)}",
+    "onClick={() => setIsMinimized(value => !value)}",
+    "onClick={closeTerminal}",
+    "onClick={e => e.stopPropagation()}",
+    "onClick={handleBackdropClick}",
+    "onClick={toggleMaximize}",
+    "onKeyDown={e => handleKeyDown(e, callbacks)}",
+    "onPointerDown={(e) => e.stopPropagation()}",
+    "onPointerDown={beginResize}",
+    "onPointerDown={e => e.stopPropagation()}",
+    "onPointerDown={e => { if (e.target instanceof HTMLButtonElement) return; beginDrag(e); }}"
+   ],
+   "links": [],
+   "fields": [],
+   "hooks": [],
+   "ids": [
+    "terminal-dialog-help",
+    "terminal-dialog-title",
+    "terminal-input"
+   ],
+   "scripts": []
+  },
+  "src\\pages\\About.tsx": {
+   "handlers": [
+    "onClick={() => setActiveCategory(isOpen ? null : category.id)}",
+    "onClick={() => setIsCvOpen(!isCvOpen)}",
+    "onClick={() => setIsCvOpen(false)}",
+    "onClick={() => setIsModalCvOpen(true)}",
+    "onClick={closeCvModal}",
+    "onError={(event) => { event.currentTarget.style.display = 'none'; const fallback = event.currentTarget.nextElementSibling as HTMLElement | null; if (fallback) fallback.style.display = 'flex'; }}",
+    "onMouseDown={(event) => { if (event.target === event.currentTarget) closeCvModal(); }}"
+   ],
+   "links": [
+    "{`/assets/${option.file}`}",
+    "{milestone.href}",
+    "{pdfUrl}"
+   ],
+   "fields": [
+    "arrow-up-right",
+    "chevron-right",
+    "download",
+    "file-text",
+    "maximize-2",
+    "x"
+   ],
+   "hooks": [],
+   "ids": [
+    "cv-dialog-title",
+    "cv-preview"
+   ],
+   "scripts": []
+  },
+  "src\\pages\\AnnualRecap.tsx": {
+   "handlers": [
+    "onClick={() => setCurrentVideoIndex( (prev) => (prev - 1 + videoList.length) % videoList.length ) }",
+    "onClick={() => setCurrentVideoIndex(index)}",
+    "onClick={() => setIsMuted(!isMuted)}",
+    "onClick={handlePlayToggle}",
+    "onClick={handleVideoEnded}",
+    "onEnded={handleVideoEnded}",
+    "onError={() => setVideoError(true)}",
+    "onPause={() => setIsPlaying(false)}",
+    "onPlay={() => setIsPlaying(true)}"
+   ],
+   "links": [],
+   "fields": [
+    "arrow-left",
+    "arrow-right"
+   ],
+   "hooks": [],
+   "ids": [],
+   "scripts": []
+  },
+  "src\\pages\\Blog.tsx": {
+   "handlers": [
+    "onBack={handleBack}",
+    "onChange={(event) => onSearchChange(event.target.value)}",
+    "onClick={() => !hasError && setIsOpen(true)}",
+    "onClick={() => onFocusModeChange(!isFocusMode)}",
+    "onClick={() => onOpen(entry.slug)}",
+    "onClick={() => onOpen(post.slug)}",
+    "onClick={() => onTagChange('')}",
+    "onClick={() => onTagChange(tag)}",
+    "onClick={() => setIsOpen(false)}",
+    "onClick={handleBack}",
+    "onClick={onBack}",
+    "onClick={onClick}",
+    "onError={() => setHasError(true)}",
+    "onFocusModeChange={onFocusModeChange}",
+    "onLoad={() => setIsLoaded(true)}",
+    "onOpen={handleOpen}",
+    "onSearchChange={setSearchQuery}",
+    "onTagChange={setActiveTag}"
+   ],
+   "links": [
+    "/about",
+    "/blog",
+    "{`/blog/${entry.slug}`}",
+    "{`/blog/${post.slug}`}",
+    "{safeCitationUrl}",
+    "{safeHref}",
+    "{url}"
+   ],
+   "fields": [],
+   "hooks": [],
+   "ids": [
+    "citations-heading"
+   ],
+   "scripts": []
+  },
+  "src\\pages\\BookCall.tsx": {
+   "handlers": [
+    "onChange={(e) => setHoneypot(e.target.value)}",
+    "onChange={(e) => setSelectedMonth(e.target.value)}",
+    "onChange={(e) => { resetIdempotencyKey(); setEmail(e.target.value); }}",
+    "onChange={(e) => { resetIdempotencyKey(); setNotes(e.target.value); }}",
+    "onClick={() => handleManageAction('cancel')}",
+    "onClick={() => handleManageAction('reschedule')}",
+    "onClick={() => { resetIdempotencyKey(); setSelectedDate(day); }}",
+    "onClick={() => { resetIdempotencyKey(); setSelectedTime(slot.start); }}",
+    "onSubmit={handleBooking}"
+   ],
+   "links": [
+    "{bookingLinks.calendarLink}",
+    "{bookingLinks.manageUrl}",
+    "{bookingLinks.meetLink}",
+    "{managedBooking.calendarLink}",
+    "{managedBooking.meetLink}"
+   ],
+   "fields": [
+    "honeypot",
+    "mail"
+   ],
+   "hooks": [],
+   "ids": [
+    "booking-turnstile",
+    "honeypot",
+    "manage-booking-title"
+   ],
+   "scripts": []
+  },
+  "src\\pages\\Certificates.tsx": {
+   "handlers": [
+    "onClick={() => setActiveTrack(track)}"
+   ],
+   "links": [
+    "#certificates",
+    "#education",
+    "https://uoh.edu.so/",
+    "{certificate.verifyLink}"
+   ],
+   "fields": [
+    "external-link"
+   ],
+   "hooks": [],
+   "ids": [
+    "certificates",
+    "certificates-heading",
+    "credentials-title",
+    "education",
+    "education-heading"
+   ],
+   "scripts": []
+  },
+  "src\\pages\\Contact.tsx": {
+   "handlers": [
+    "onChange={(event) => setFormData({ ...formData, email: event.target.value })}",
+    "onChange={(event) => setFormData({ ...formData, message: event.target.value })}",
+    "onChange={(event) => setFormData({ ...formData, name: event.target.value })}",
+    "onSubmit={handleSubmit}"
+   ],
+   "links": [
+    "{PERSONAL_INFO.github}",
+    "{PERSONAL_INFO.linkedin}",
+    "{`mailto:${PERSONAL_INFO.email}`}",
+    "{`tel:${PERSONAL_INFO.phone.replace(/\\s/g, '')}`}"
+   ],
+   "fields": [
+    "arrow-up-right",
+    "email",
+    "github",
+    "linkedin",
+    "mail",
+    "message",
+    "message-square",
+    "name",
+    "website"
+   ],
+   "hooks": [],
+   "ids": [
+    "contact-email",
+    "contact-message",
+    "contact-name",
+    "contact-turnstile",
+    "website"
+   ],
+   "scripts": []
+  },
+  "src\\pages\\Experience.tsx": {
+   "handlers": [],
+   "links": [
+    "/portfolio"
+   ],
+   "fields": [
+    "arrow-up-right"
+   ],
+   "hooks": [],
+   "ids": [
+    "experience-list-title"
+   ],
+   "scripts": []
+  },
+  "src\\pages\\Home.tsx": {
+   "handlers": [],
+   "links": [
+    "/about",
+    "/assets/Guuleed-Maxamuud-Awabdi-CV.pdf",
+    "/contact",
+    "/portfolio",
+    "{`/blog/${latestPost.slug}`}",
+    "{`/portfolio/${featuredStudy.id}`}",
+    "{`/portfolio/${study.id}`}"
+   ],
+   "fields": [
+    "arrow-right",
+    "arrow-up-right",
+    "file-text"
+   ],
+   "hooks": [],
+   "ids": [
+    "landing-contact-title",
+    "landing-note-title",
+    "landing-title",
+    "landing-work-title"
+   ],
+   "scripts": []
+  },
+  "src\\pages\\Legal.tsx": {
+   "handlers": [],
+   "links": [
+    "{`#legal-${section.heading.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}"
+   ],
+   "fields": [],
+   "hooks": [],
+   "ids": [],
+   "scripts": []
+  },
+  "src\\pages\\NotFound.tsx": {
+   "handlers": [],
+   "links": [
+    "/",
+    "{item.href}"
+   ],
+   "fields": [
+    "arrow-right",
+    "arrow-up-right"
+   ],
+   "hooks": [],
+   "ids": [
+    "not-found-title"
+   ],
+   "scripts": []
+  },
+  "src\\pages\\Portfolio.tsx": {
+   "handlers": [
+    "onClick={() => setExpanded(!expanded)}"
+   ],
+   "links": [
+    "/systems",
+    "{`/portfolio/${study.id}`}",
+    "{study.githubUrl}",
+    "{study.liveUrl}"
+   ],
+   "fields": [
+    "arrow-up-right",
+    "briefcase",
+    "chevron-right",
+    "external-link",
+    "file-text"
+   ],
+   "hooks": [],
+   "ids": [],
+   "scripts": []
+  },
+  "src\\pages\\ProjectDetail.tsx": {
+   "handlers": [],
+   "links": [
+    "/portfolio",
+    "{study.githubUrl}",
+    "{study.liveUrl}"
+   ],
+   "fields": [
+    "arrow-left",
+    "arrow-right",
+    "arrow-up-right",
+    "briefcase",
+    "calendar-days",
+    "check",
+    "github",
+    "info",
+    "layout"
+   ],
+   "hooks": [],
+   "ids": [],
+   "scripts": []
+  },
+  "src\\pages\\Skills.tsx": {
+   "handlers": [
+    "onClick={() => setActiveFilter(filter)}",
+    "onClick={() => setSelectedTool(TOOLS.find((tool) => tool.name === name) ?? null)}",
+    "onClick={() => setSelectedTool(tool)}",
+    "onClick={closeDialog}",
+    "onMouseDown={(event) => { if (event.target === event.currentTarget) closeDialog(); }}"
+   ],
+   "links": [
+    "{project.href}"
+   ],
+   "fields": [
+    "arrow-right",
+    "arrow-up-right",
+    "x"
+   ],
+   "hooks": [],
+   "ids": [
+    "coursework",
+    "skills-capabilities-title",
+    "skills-coursework-title",
+    "skills-dialog-title",
+    "skills-tools-title"
+   ],
+   "scripts": []
+  },
+  "src\\pages\\SystemsAtlas.tsx": {
+   "handlers": [
+    "onClick={() => selectPractice(practice.id)}"
+   ],
+   "links": [
+    "/portfolio",
+    "{`/portfolio/${study.id}`}"
+   ],
+   "fields": [],
+   "hooks": [],
+   "ids": [
+    "systems-lens-heading",
+    "systems-practice-title"
+   ],
+   "scripts": []
+  },
+  "src\\ssr\\StaticRoute.tsx": {
+   "handlers": [
+    "onFocusModeChange={() => undefined}"
+   ],
+   "links": [
+    "/",
+    "/contact",
+    "/privacy-policy",
+    "/systems",
+    "/terms-of-service",
+    "{PERSONAL_INFO.github}",
+    "{PERSONAL_INFO.linkedin}",
+    "{href}"
+   ],
+   "fields": [],
+   "hooks": [],
+   "ids": [],
+   "scripts": []
+  }
+ },
+ "wiring": {
+  "handlers": [
+   "onBack={handleBack}",
+   "onChange={(e) => setHoneypot(e.target.value)}",
+   "onChange={(e) => setSelectedMonth(e.target.value)}",
+   "onChange={(e) => { resetIdempotencyKey(); setEmail(e.target.value); }}",
+   "onChange={(e) => { resetIdempotencyKey(); setNotes(e.target.value); }}",
+   "onChange={(event) => onSearchChange(event.target.value)}",
+   "onChange={(event) => setFormData({ ...formData, email: event.target.value })}",
+   "onChange={(event) => setFormData({ ...formData, message: event.target.value })}",
+   "onChange={(event) => setFormData({ ...formData, name: event.target.value })}",
+   "onChange={e => setInputValue(e.target.value)}",
+   "onClick={() => !hasError && setIsOpen(true)}",
+   "onClick={() => handleManageAction('cancel')}",
+   "onClick={() => handleManageAction('reschedule')}",
+   "onClick={() => onFocusModeChange(!isFocusMode)}",
+   "onClick={() => onOpen(entry.slug)}",
+   "onClick={() => onOpen(post.slug)}",
+   "onClick={() => onTagChange('')}",
+   "onClick={() => onTagChange(tag)}",
+   "onClick={() => selectPractice(practice.id)}",
+   "onClick={() => setActiveCategory(isOpen ? null : category.id)}",
+   "onClick={() => setActiveFilter(filter)}",
+   "onClick={() => setActiveSection('contact')}",
+   "onClick={() => setActiveSection('privacy-policy')}",
+   "onClick={() => setActiveSection('recap')}",
+   "onClick={() => setActiveSection('terms-of-service')}",
+   "onClick={() => setActiveSection(item.id)}",
+   "onClick={() => setActiveTrack(track)}",
+   "onClick={() => setCurrentVideoIndex( (prev) => (prev - 1 + videoList.length) % videoList.length ) }",
+   "onClick={() => setCurrentVideoIndex(index)}",
+   "onClick={() => setExpanded(!expanded)}",
+   "onClick={() => setIsCvOpen(!isCvOpen)}",
+   "onClick={() => setIsCvOpen(false)}",
+   "onClick={() => setIsMenuOpen((value) => !value)}",
+   "onClick={() => setIsMinimized(value => !value)}",
+   "onClick={() => setIsModalCvOpen(true)}",
+   "onClick={() => setIsMoreMenuOpen((open) => !open)}",
+   "onClick={() => setIsMuted(!isMuted)}",
+   "onClick={() => setIsOpen(false)}",
+   "onClick={() => setSelectedTool(TOOLS.find((tool) => tool.name === name) ?? null)}",
+   "onClick={() => setSelectedTool(tool)}",
+   "onClick={() => { resetIdempotencyKey(); setSelectedDate(day); }}",
+   "onClick={() => { resetIdempotencyKey(); setSelectedTime(slot.start); }}",
+   "onClick={() => { setActiveSection('home'); setIsMenuOpen(false); }}",
+   "onClick={() => { setActiveSection(item.id); setIsMenuOpen(false); }}",
+   "onClick={() => { setActiveSection(item.id); setIsMoreMenuOpen(false); }}",
+   "onClick={() => { terminal.openTerminal(); setIsMenuOpen(false); }}",
+   "onClick={closeCvModal}",
+   "onClick={closeDialog}",
+   "onClick={closeTerminal}",
+   "onClick={e => e.stopPropagation()}",
+   "onClick={handleBackdropClick}",
+   "onClick={handleBack}",
+   "onClick={handlePlayToggle}",
+   "onClick={handleVideoEnded}",
+   "onClick={onBack}",
+   "onClick={onClick}",
+   "onClick={terminal.toggleTerminal}",
+   "onClick={toggleMaximize}",
+   "onEnded={handleVideoEnded}",
+   "onError={() => setHasError(true)}",
+   "onError={() => setVideoError(true)}",
+   "onError={(event) => { event.currentTarget.style.display = 'none'; const fallback = event.currentTarget.nextElementSibling as HTMLElement | null; if (fallback) fallback.style.display = 'flex'; }}",
+   "onFocusModeChange={() => undefined}",
+   "onFocusModeChange={onFocusModeChange}",
+   "onFocusModeChange={setIsBlogFocusMode}",
+   "onKeyDown={e => handleKeyDown(e, callbacks)}",
+   "onLoad={() => setIsLoaded(true)}",
+   "onMouseDown={(event) => { if (event.target === event.currentTarget) closeCvModal(); }}",
+   "onMouseDown={(event) => { if (event.target === event.currentTarget) closeDialog(); }}",
+   "onNavigate={(destination) => { const path = destination.startsWith('/') ? destination : sectionToPath(destination as Section); const state = window.history.state && typeof window.history.state === 'object' ? window.history.state : {}; window.history.replaceState({ ...state, scrollY: window.scrollY }, '', window.location.href); window.history.pushState({ scrollY: 0 }, '', path); window.dispatchEvent(new PopStateEvent('popstate')); window.scrollTo(0, 0); }}",
+   "onOpen={handleOpen}",
+   "onPause={() => setIsPlaying(false)}",
+   "onPlay={() => setIsPlaying(true)}",
+   "onPointerDown={(e) => e.stopPropagation()}",
+   "onPointerDown={beginResize}",
+   "onPointerDown={e => e.stopPropagation()}",
+   "onPointerDown={e => { if (e.target instanceof HTMLButtonElement) return; beginDrag(e); }}",
+   "onSearchChange={setSearchQuery}",
+   "onSubmit={handleBooking}",
+   "onSubmit={handleSubmit}",
+   "onTagChange={setActiveTag}",
+   "onTheme={(t) => setTheme(t)}"
+  ],
+  "links": [
+   "#certificates",
+   "#education",
+   "/",
+   "/about",
+   "/assets/Guuleed-Maxamuud-Awabdi-CV.pdf",
+   "/blog",
+   "/contact",
+   "/portfolio",
+   "/privacy-policy",
+   "/recap",
+   "/systems",
+   "/terms-of-service",
+   "https://uoh.edu.so/",
+   "{PERSONAL_INFO.github}",
+   "{PERSONAL_INFO.linkedin}",
+   "{`#legal-${section.heading.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}",
+   "{`/assets/${option.file}`}",
+   "{`/blog/${entry.slug}`}",
+   "{`/blog/${latestPost.slug}`}",
+   "{`/blog/${post.slug}`}",
+   "{`/portfolio/${featuredStudy.id}`}",
+   "{`/portfolio/${study.id}`}",
+   "{`mailto:${PERSONAL_INFO.email}`}",
+   "{`tel:${PERSONAL_INFO.phone.replace(/\\s/g, '')}`}",
+   "{bookingLinks.calendarLink}",
+   "{bookingLinks.manageUrl}",
+   "{bookingLinks.meetLink}",
+   "{certificate.verifyLink}",
+   "{href}",
+   "{item.href}",
+   "{managedBooking.calendarLink}",
+   "{managedBooking.meetLink}",
+   "{milestone.href}",
+   "{pdfUrl}",
+   "{project.href}",
+   "{safeCitationUrl}",
+   "{safeHref}",
+   "{sectionToPath(item.id)}",
+   "{study.githubUrl}",
+   "{study.liveUrl}",
+   "{url}"
+  ],
+  "fields": [
+   "arrow-left",
+   "arrow-right",
+   "arrow-up-right",
+   "briefcase",
+   "calendar-days",
+   "check",
+   "chevron-right",
+   "download",
+   "email",
+   "external-link",
+   "file-text",
+   "github",
+   "honeypot",
+   "info",
+   "layout",
+   "linkedin",
+   "mail",
+   "maximize-2",
+   "message",
+   "message-square",
+   "name",
+   "terminal",
+   "website",
+   "x"
+  ],
+  "hooks": [],
+  "ids": [
+   "booking-turnstile",
+   "certificates",
+   "certificates-heading",
+   "citations-heading",
+   "contact-email",
+   "contact-message",
+   "contact-name",
+   "contact-turnstile",
+   "coursework",
+   "credentials-title",
+   "cv-dialog-title",
+   "cv-preview",
+   "education",
+   "education-heading",
+   "experience-list-title",
+   "honeypot",
+   "landing-contact-title",
+   "landing-note-title",
+   "landing-title",
+   "landing-work-title",
+   "manage-booking-title",
+   "not-found-title",
+   "skills-capabilities-title",
+   "skills-coursework-title",
+   "skills-dialog-title",
+   "skills-tools-title",
+   "systems-lens-heading",
+   "systems-practice-title",
+   "terminal-dialog-help",
+   "terminal-dialog-title",
+   "terminal-input",
+   "website"
+  ]
+ },
+ "scripts": {},
+ "pages": {}
+}

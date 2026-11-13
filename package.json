@@ -5,13 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
+    "predev": "npm run search:wasm",
+    "prebuild": "npm run search:wasm",
     "build": "tsx scripts/generate-sitemap.ts && tsx scripts/generate-feeds.ts && vite build && tsx scripts/prerender.ts",
     "build:cv": "node scripts/build_cv_pdf.cjs",
     "preview": "vite preview",
     "test": "tsx --test tests/*.test.ts",
     "test:e2e": "playwright test",
     "lean:check": "cd lean && lake build",
-    "search:wasm": "wasm-pack build search-rust --target bundler --out-dir pkg --release",
+    "search:wasm": "node scripts/build-search-wasm.mjs",
     "search:test": "cargo test --manifest-path search-rust/Cargo.toml",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
@@ -39,7 +41,8 @@
     "rehype-sanitize": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "resend": "^6.18.1",
-    "vite": "^8.2.1"
+    "vite": "^8.2.1",
+    "wasm-pack": "^0.15.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",

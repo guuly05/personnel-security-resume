@@ -116,7 +116,6 @@ export default function BookCallPage() {
     };
 
     globalWindow.onloadBookingTurnstileCallback = renderWidget;
-
     if (!document.querySelector('script[data-turnstile-booking]')) {
       const script = document.createElement('script');
       script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onloadBookingTurnstileCallback';
@@ -142,7 +141,7 @@ export default function BookCallPage() {
       }
     };
   }, []);
-
+// handles all the booking
   useEffect(() => {
     let active = true;
     setStatus('loading');
