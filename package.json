@@ -41,7 +41,8 @@
     "rehype-sanitize": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "resend": "^6.18.1",
-    "vite": "^8.2.1"
+    "vite": "^8.2.1",
+    "wasm-pack": "^0.15.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
@@ -53,7 +54,6 @@
     "tailwindcss": "^4.1.14",
     "tsx": "^4.23.12",
     "typescript": "~5.8.2",
-    "vite": "^8.2.1",
-    "wasm-pack": "^0.15.1"
+    "vite": "^8.2.1"
   }
 }
