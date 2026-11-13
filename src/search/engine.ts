@@ -1,6 +1,6 @@
 import type { SearchDocument } from './catalog.ts';
 
-export type SearchResult = SearchDocument & { score: number; excerpt: string };
+export type SearchResult = Pick<SearchDocument, 'id' | 'title' | 'kind' | 'url'> & { score: number; excerpt: string };
 type WasmModule = { default: () => Promise<unknown>; WasmSearch: new (json: string) => { search(query: string, limit: number): string } };
 
 /** Loads Rust/Wasm on demand; the corpus and queries remain in this browser. */

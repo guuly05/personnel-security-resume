@@ -45,6 +45,20 @@ jobs:
       - name: Type-check
         run: npm run lint
 
+      - name: Set up Rust and wasm-pack
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          target: wasm32-unknown-unknown
+
+      - name: Run Rust search tests
+        run: cargo test --manifest-path search-rust/Cargo.toml
+
+      - name: Check Rust search WebAssembly target
+        run: cargo check --manifest-path search-rust/Cargo.toml --target wasm32-unknown-unknown
+
+      - name: Install wasm-pack
+        uses: taiki-e/install-action@wasm-pack
+
       - name: Build site
         run: npm run build
 

@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
+    "predev": "npm run search:wasm",
+    "prebuild": "npm run search:wasm",
     "build": "tsx scripts/generate-sitemap.ts && tsx scripts/generate-feeds.ts && vite build && tsx scripts/prerender.ts",
     "build:cv": "node scripts/build_cv_pdf.cjs",
     "preview": "vite preview",

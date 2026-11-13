@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Github } from 'lucide-react';
 import { Icon } from '../components/Icon.tsx';
 import { MotionConfig, motion, AnimatePresence } from 'motion/react';
 import { CASE_STUDIES, type CaseStudy, type TechItem } from '../data/caseStudies.ts';
@@ -159,15 +158,6 @@ const FeaturedCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
             <Icon name="file-text" size={15} />
             Full Case Study
           </a>
-          {study.githubUrl && <a
-            href={study.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-bg)] transition-colors hover:opacity-90 active:translate-y-px"
-          >
-            <Github size={15} aria-hidden="true" className="shrink-0" />
-            View Source
-          </a>}
           {study.liveUrl && (
             <a
               href={study.liveUrl}
@@ -176,7 +166,7 @@ const FeaturedCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
               className="inline-flex items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface-soft)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--accent)]/50"
             >
               <Icon name="external-link" size={14} />
-              {study.githubUrl ? 'Live Demo' : 'See live deployment'}
+              See live deployment
             </a>
           )}
         </div>
@@ -319,15 +309,6 @@ const ProjectCard: React.FC<{ study: CaseStudy; index: number }> = ({ study, ind
               <Icon name="file-text" size={15} />
               Full Case Study
             </a>
-            {study.githubUrl && <a
-              href={study.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md bg-[var(--accent)] px-5 py-2.5 text-[13px] font-semibold text-[var(--color-bg)] transition-colors hover:opacity-90 active:translate-y-px"
-            >
-              <Github size={15} aria-hidden="true" className="shrink-0" />
-              View Source
-            </a>}
             {study.liveUrl && (
               <a
                 href={study.liveUrl}
@@ -352,8 +333,6 @@ const ProjectCard: React.FC<{ study: CaseStudy; index: number }> = ({ study, ind
 
 const PortfolioPage: React.FC = () => {
   const [featured, ...rest] = CASE_STUDIES;
-  const projectsWithSource = CASE_STUDIES.filter((study) => Boolean(study.githubUrl)).length;
-  const openSourceProjects = CASE_STUDIES.filter((study) => study.status === 'Open Source').length;
 
   return (
     <MotionConfig reducedMotion="user">
@@ -375,7 +354,7 @@ const PortfolioPage: React.FC = () => {
 
           <p className="text-sm sm:text-[15px] leading-relaxed text-[var(--color-text-muted)] max-w-2xl">
             Each project below documents the problem, my role, the architecture, and the evidence
-            behind the work. The collection includes live products, open-source software, and learning
+            behind the work. The collection includes live products, software, and learning
             resources built with useful UX, dependable delivery, and secure engineering in mind.
           </p>
 
@@ -384,14 +363,6 @@ const PortfolioPage: React.FC = () => {
             <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] px-3.5 py-2 text-center">
               <p className="text-lg font-bold text-[var(--accent)]">{CASE_STUDIES.length}</p>
               <p className="text-[9px] uppercase tracking-[0.25em] text-[var(--color-text-muted)] font-semibold">Projects</p>
-            </div>
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] px-3.5 py-2 text-center">
-              <p className="text-lg font-bold text-[var(--accent)]">{projectsWithSource}</p>
-              <p className="text-[9px] uppercase tracking-[0.25em] text-[var(--color-text-muted)] font-semibold">Public repositories</p>
-            </div>
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-soft)] px-3.5 py-2 text-center">
-              <p className="text-lg font-bold text-[var(--accent)]">{openSourceProjects}</p>
-              <p className="text-[9px] uppercase tracking-[0.25em] text-[var(--color-text-muted)] font-semibold">Open-source projects</p>
             </div>
           </div>
 
