@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'motion/react';
-import { ABOUT_LETTER, PERSONAL_INFO, SOFT_SKILLS } from '../constants.ts';
+import { ABOUT_LETTER, PERSONAL_INFO } from '../constants.ts';
 import { Icon } from '../components/Icon.tsx';
 import { useFocusTrap } from '../hooks/useFocusTrap.ts';
 import { PROJECT_TIMELINE } from '../data/projectTimeline.ts';
@@ -224,9 +224,9 @@ const AboutPage: React.FC = () => {
       >
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
-            <p className="landing-section-index">/ about</p>
+            <p className="landing-section-index">A little about me</p>
             <h1 className="about-title">
-              Product-minded builder, <span>systems thinker, and lifelong learner.</span>
+              Curiosity shapes <span>how I build.</span>
             </h1>
             <div className="mt-5 space-y-4">
               {ABOUT_LETTER.map((paragraph) => (
@@ -236,7 +236,7 @@ const AboutPage: React.FC = () => {
               ))}
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div className="about-hero-actions mt-6 flex flex-wrap items-center gap-3">
               <button
                 type="button"
                 onClick={() => setIsCvOpen(!isCvOpen)}
@@ -277,12 +277,20 @@ const AboutPage: React.FC = () => {
           </div>
 
           <aside className="about-profile">
-            <span className="editorial-overline">A little context</span>
+            <span className="editorial-overline">Right now</span>
             <h2>{PERSONAL_INFO.name}</h2>
+            <p className="about-profile-role">{PERSONAL_INFO.title}</p>
             <div className="about-profile-facts">
-              <div><span>Focus</span><strong>{PERSONAL_INFO.title}</strong></div>
               <div><span>Based in</span><strong>{PERSONAL_INFO.location}</strong></div>
-              <div><span>Education</span><strong>B.Sc. Computer Science · 2023–2027</strong></div>
+              <div><span>Studying</span><strong>B.Sc. Computer Science · 2023–2027</strong></div>
+            </div>
+            <div className="about-languages">
+              <span>Languages</span>
+              <ul>
+                {PERSONAL_INFO.languages.map((language) => (
+                  <li key={language.name}><strong>{language.name}</strong><span>{language.level}</span></li>
+                ))}
+              </ul>
             </div>
           </aside>
         </div>
@@ -387,6 +395,33 @@ const AboutPage: React.FC = () => {
       )}
 
       <motion.section
+        className="editorial-section about-perspective"
+        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: shouldReduceMotion ? 0.01 : 0.45, ease: 'easeOut' }}
+        aria-labelledby="about-perspective-title"
+      >
+        <div className="about-section-heading">
+          <div>
+            <p className="landing-section-index">The way I think about the work</p>
+            <h2 className="editorial-section-title" id="about-perspective-title">What matters to me when I build.</h2>
+          </div>
+          <p>These are the ideas I return to, whether I’m shaping an interface or working through a system problem.</p>
+        </div>
+        <div className="about-perspective-grid">
+          {personalPrinciples.map((principle, index) => (
+            <article className="about-perspective-item" key={principle.title}>
+              <span className="about-perspective-index">0{index + 1}</span>
+              <span className="about-perspective-icon"><Icon name={principle.icon} size={19} /></span>
+              <h3>{principle.title}</h3>
+              <p>{principle.description}</p>
+            </article>
+          ))}
+        </div>
+      </motion.section>
+
+      <motion.section
         className="editorial-section about-journey"
         initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 18 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -395,26 +430,19 @@ const AboutPage: React.FC = () => {
       >
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-          <p className="landing-section-index">01 / build journey</p>
+          <p className="landing-section-index">My path so far</p>
           <h2 className="editorial-section-title">Learning by building.</h2>
           </div>
           <p className="max-w-xl text-sm leading-relaxed text-[var(--color-text-muted)]">
-            A timeline of the ideas, projects, and technical foundations that have shaped the way I work.
+            Computer Science gave me a foundation; projects have let me follow that learning into interfaces, systems, and security.
           </p>
         </div>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
-            <p className="text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
-              I am currently focused on building stronger products, deeper technical fundamentals, and consistent execution. My goal is to keep improving the quality of the code, systems, documentation, and collaboration behind every project.
+            <p className="about-journey-note">
+              I’m studying Computer Science at the University of Hargeisa while building projects that help me connect what I learn to real product questions. The timeline is a record of that curiosity in practice.
             </p>
-            <div className="about-principle-list">
-              {SOFT_SKILLS.map((skill) => (
-                <span key={skill}>
-                  {skill}
-                </span>
-              ))}
-            </div>
           </div>
 
           <div className="about-timeline">
@@ -456,11 +484,11 @@ const AboutPage: React.FC = () => {
         viewport={{ once: true, amount: 0.12 }}
         transition={{ duration: shouldReduceMotion ? 0.01 : 0.5, ease: 'easeOut' }}
       >
-        <p className="landing-section-index">02 / outside the build</p>
+        <p className="landing-section-index">Away from the screen</p>
         <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <h2 className="editorial-section-title">Stories, worlds, and ideas.</h2>
+          <h2 className="editorial-section-title">Stories I keep coming back to.</h2>
           <p className="max-w-2xl text-sm leading-relaxed text-[var(--color-text-muted)] md:text-base">
-            My favourite media is a small window into how I think, what inspires me, and what I enjoy when I am away from the keyboard.
+            I enjoy stories with layered worlds, difficult choices, and characters who have to keep learning. Here are a few favourites across books, anime, games, and manhwa.
           </p>
         </div>
 

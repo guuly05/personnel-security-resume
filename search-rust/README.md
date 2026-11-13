@@ -12,8 +12,8 @@ public portfolio corpus already bundled in the browser.
 
 ## Build the WebAssembly package
 
-Install Rust and `wasm-pack`. `npm run build` generates the WebAssembly package
-before building the site; to generate it separately, run `npm run search:wasm`
-from the repository root. The generated `pkg/` output is ignored by git and
-recreated for builds. Use `cargo test --manifest-path search-rust/Cargo.toml`
-for native unit tests.
+Run `npm run build`; the build script installs stable Rust on Linux when needed,
+adds the WebAssembly target, and generates the package before building the site.
+To generate it separately, run `npm run search:wasm` from the repository root.
+For local Windows development, install Rust and the Visual C++ build tools first.
+Use `cargo test --manifest-path search-rust/Cargo.toml` for native unit tests.

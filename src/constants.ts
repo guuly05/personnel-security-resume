@@ -26,11 +26,10 @@ export const HOBBIES = [
   "Online courses", "Reading documentation", "Tinkering with tech"
 ];
 
-// New About Me intro content inserted for the enhanced About page.
 export const ABOUT_LETTER = [
-  "Hello, I am Guuleed, a curious software builder who likes understanding the whole journey from a first interface to the systems that keep it running.",
-  "I work across frontend, backend, automation, deployment, and security. I enjoy turning a rough idea into a clear product, wiring the APIs behind it, and setting up a delivery path that is reliable enough for other people to build on.",
-  "Security is an important part of how I think, not the only thing I build. I bring that perspective to everyday engineering decisions while continuing to learn through books, documentation, online courses, and hands-on experiments."
+  "I’m Guuleed, a full-stack developer and Computer Science student based in Hargeisa, Somaliland. I like understanding both sides of a product: the experience a person sees, and the systems that make it work.",
+  "That curiosity pulls me across interfaces, APIs, deployment, and security. It has led me to explore projects around Somali oral poetry, bilingual clinic discovery, and commerce and logistics.",
+  "I’m completing a B.Sc. in Computer Science at the University of Hargeisa. Alongside coursework, I keep learning through personal projects, books, online courses, and technical writing."
 ];
 
 // New Experience content inserted for the Experience section.
