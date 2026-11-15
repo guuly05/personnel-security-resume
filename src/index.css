@@ -94,7 +94,7 @@
     color: #061109;
   }
 
-  :where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  :where(a, button, select, [tabindex]):not(input):not(textarea):focus-visible {
     outline: 3px solid var(--accent) !important;
     outline-offset: 3px;
   }
@@ -2542,7 +2542,7 @@ main > * { min-width: 0; }
 }
 html, body { overflow-x: clip; }
 body { background: var(--color-bg); color: var(--color-text); }
-:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+:where(a, button, select, summary, [tabindex]):not(input):not(textarea):focus-visible {
   outline: 3px solid var(--focus-ring) !important; outline-offset: 3px;
 }
 .site-nav {
