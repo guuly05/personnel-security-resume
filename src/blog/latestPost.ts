@@ -1,8 +1,8 @@
 /** Lightweight home page summary; the complete Markdown body stays in the blog route chunk. */
 export const LATEST_POST = {
-  slug: 'ai-dual-use-cybersecurity',
-  title: 'AI in Cybersecurity: Finding the Flaws and Fueling the Threats',
+  slug: 'visa-chase-claims-and-ai-cybercrime',
+  title: 'Visa, Chase, and the New Shape of Cybercrime',
   subtitle:
-    'AI is helping researchers uncover serious bugs while giving malicious actors new ways to scale influence, surveillance, cyber operations, and weapons work.',
-  date: '2026-11-09',
+    'What is known about the November 2026 extortion claims, what is not, and how AI is changing the scale and speed of cybercrime.',
+  date: '2026-11-17',
 };
