@@ -52,8 +52,9 @@ function makeExcerpt(body: string, terms: string[], fallback: string) {
 
 /** Prefer Rust/Wasm, with an in-browser fallback when a host CSP blocks Wasm. */
 export async function createSearchEngine(documents: SearchDocument[]) {
+  if (import.meta.env.DEV) return createBrowserSearch(documents);
   try {
-    const wasm = await import('../../search-rust/pkg/portfolio_search.js') as unknown as WasmModule;
+    const wasm = await import('./wasm-loader.ts') as unknown as WasmModule;
     await wasm.default();
     const engine = new wasm.WasmSearch(JSON.stringify(documents));
     return (query: string, limit = 10): SearchResult[] => JSON.parse(engine.search(query, limit)) as SearchResult[];
