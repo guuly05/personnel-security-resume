@@ -1,7 +1,7 @@
 import type { SearchDocument } from './catalog.ts';
 
 export type SearchResult = Pick<SearchDocument, 'id' | 'title' | 'kind' | 'url'> & { score: number; excerpt: string };
-type WasmModule = { default: () => Promise<unknown>; WasmSearch: new (json: string) => { search(query: string, limit: number): string } };
+type WasmModule = { WasmSearch: new (json: string) => { search(query: string, limit: number): string } };
 
 const normalize = (text: string) => text.toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 const tokenize = (text: string) => normalize(text).split(/\s+/).filter((term) => term.length > 1);
@@ -52,9 +52,9 @@ function makeExcerpt(body: string, terms: string[], fallback: string) {
 
 /** Prefer Rust/Wasm, with an in-browser fallback when a host CSP blocks Wasm. */
 export async function createSearchEngine(documents: SearchDocument[]) {
+  if (import.meta.env.DEV) return createBrowserSearch(documents);
   try {
-    const wasm = await import('../../search-rust/pkg/portfolio_search.js') as unknown as WasmModule;
-    await wasm.default();
+    const wasm = await import('./wasm-loader.ts') as unknown as WasmModule;
     const engine = new wasm.WasmSearch(JSON.stringify(documents));
     return (query: string, limit = 10): SearchResult[] => JSON.parse(engine.search(query, limit)) as SearchResult[];
   } catch {
