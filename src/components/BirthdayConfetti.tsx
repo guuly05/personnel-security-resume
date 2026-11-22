@@ -28,6 +28,7 @@ export const BirthdayConfetti: React.FC<{ isActive?: boolean }> = ({ isActive = 
 
   useEffect(() => {
     if (!isActive) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -35,6 +36,7 @@ export const BirthdayConfetti: React.FC<{ isActive?: boolean }> = ({ isActive = 
     if (!ctx) return;
 
     let animationFrameId: number;
+    let previousFrameTime = 0;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
@@ -47,7 +49,8 @@ export const BirthdayConfetti: React.FC<{ isActive?: boolean }> = ({ isActive = 
     window.addEventListener('resize', handleResize);
 
     const particles: Particle[] = [];
-    const particleCount = Math.min(Math.floor(width / 12), 120);
+    // Decorative animation should stay cheap on integrated graphics and older CPUs.
+    const particleCount = Math.min(Math.floor(width / 24), 60);
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
@@ -80,7 +83,16 @@ export const BirthdayConfetti: React.FC<{ isActive?: boolean }> = ({ isActive = 
       ctx.fill();
     };
 
-    const render = () => {
+    const render = (time: number) => {
+      if (document.hidden) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
+      if (time - previousFrameTime < 1000 / 30) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
+      previousFrameTime = time;
       ctx.clearRect(0, 0, width, height);
 
       particles.forEach((p) => {
@@ -115,7 +127,7 @@ export const BirthdayConfetti: React.FC<{ isActive?: boolean }> = ({ isActive = 
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    render(performance.now());
 
     return () => {
       window.removeEventListener('resize', handleResize);

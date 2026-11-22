@@ -35,6 +35,34 @@ const LegalPage = lazy(() => import('./pages/Legal.tsx'));
 const AnnualRecapPage = lazy(() => import('./pages/AnnualRecap.tsx'));
 const NotFoundPage = lazy(() => import('./pages/NotFound.tsx'));
 
+// Load a destination while the user is aiming at it, so navigation does not
+// wait for the browser to fetch and parse a page chunk after the click.
+const prefetchedRoutes = new Set<Section>();
+const prefetchRoute = (section: Section) => {
+  if (prefetchedRoutes.has(section)) return;
+  const loaders: Partial<Record<Section, () => Promise<unknown>>> = {
+    home: () => import('./pages/Home.tsx'),
+    about: () => import('./pages/About.tsx'),
+    skills: () => import('./pages/Skills.tsx'),
+    experience: () => import('./pages/Experience.tsx'),
+    certificates: () => import('./pages/Certificates.tsx'),
+    portfolio: () => import('./pages/Portfolio.tsx'),
+    'portfolio-project': () => import('./pages/ProjectDetail.tsx'),
+    systems: () => import('./pages/SystemsAtlas.tsx'),
+    blog: () => import('./pages/Blog.tsx'),
+    contact: () => import('./pages/Contact.tsx'),
+    book: () => import('./pages/BookCall.tsx'),
+    'privacy-policy': () => import('./pages/Legal.tsx'),
+    'terms-of-service': () => import('./pages/Legal.tsx'),
+    recap: () => import('./pages/AnnualRecap.tsx'),
+    'not-found': () => import('./pages/NotFound.tsx'),
+  };
+  const load = loaders[section];
+  if (!load) return;
+  prefetchedRoutes.add(section);
+  void load().catch(() => prefetchedRoutes.delete(section));
+};
+
 function checkIsJuly27Today(): boolean {
   const today = new Date();
   // July is month index 6 (0-indexed)
@@ -207,6 +235,15 @@ export default function App() {
       setIsMoreMenuOpen(false);
     };
 
+    const handleRouteIntent = (event: Event) => {
+      const anchor = (event.target as Element | null)?.closest('a[href]');
+      if (!(anchor instanceof HTMLAnchorElement) || anchor.target || anchor.hasAttribute('download')) return;
+      const url = new URL(anchor.href);
+      if (url.origin !== window.location.origin) return;
+      const section = pathToSection(url.pathname, BLOG_POST_SLUGS);
+      if (section !== 'not-found' || url.pathname === '/404') prefetchRoute(section);
+    };
+
     window.addEventListener('popstate', applyCurrentRoute);
     let pendingScrollSave: number | null = null;
     const handleScroll = () => {
@@ -228,6 +265,8 @@ export default function App() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     saveScrollPosition();
     document.addEventListener('click', handleDocumentClick);
+    document.addEventListener('pointerover', handleRouteIntent, { passive: true });
+    document.addEventListener('focusin', handleRouteIntent);
     applyCurrentRoute();
 
     return () => {
@@ -236,6 +275,8 @@ export default function App() {
       window.removeEventListener('scroll', handleScroll);
       if (pendingScrollSave !== null) window.clearTimeout(pendingScrollSave);
       document.removeEventListener('click', handleDocumentClick);
+      document.removeEventListener('pointerover', handleRouteIntent);
+      document.removeEventListener('focusin', handleRouteIntent);
     };
   }, []);
 
