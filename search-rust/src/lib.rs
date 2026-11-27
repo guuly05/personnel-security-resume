@@ -128,7 +128,8 @@ impl SearchIndex {
     }
 
     fn suggest(&self, query: &str, limit: usize) -> Vec<String> {
-        let prefix = normalize(query).split_whitespace().last().unwrap_or("");
+        let normalized_query = normalize(query);
+        let prefix = normalized_query.split_whitespace().last().unwrap_or("");
         if prefix.chars().count() < 2 { return Vec::new(); }
         let mut words: Vec<String> = self.postings.keys().filter(|word| word.starts_with(prefix) && word != &prefix).cloned().collect();
         words.sort_by(|a, b| a.len().cmp(&b.len()).then_with(|| a.cmp(b)));
