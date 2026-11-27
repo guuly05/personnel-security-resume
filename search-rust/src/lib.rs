@@ -252,5 +252,5 @@ mod tests {
     #[test] fn empty_search_has_no_results() { assert!(SearchIndex::new(docs()).search(" !!! ", 10).is_empty()); }
     #[test] fn result_count_is_bounded() { assert!(SearchIndex::new(docs()).search("secure", 500).len() <= MAX_RESULTS); }
     #[test] fn prefix_suggestions_complete_partial_words() { assert!(SearchIndex::new(docs()).respond("author", 10).suggestions.contains(&"authorization".into())); }
-    #[test] fn corrects_a_clear_typo_when_it_has_results() { assert_eq!(SearchIndex::new(docs()).respond("secur booking", 10).correction.as_deref(), Some("secure booking")); }
+    #[test] fn corrects_a_clear_typo_when_original_query_has_no_results() { assert_eq!(SearchIndex::new(docs()).respond("secuer booking", 10).correction.as_deref(), Some("secure booking")); }
 }
