@@ -41,6 +41,13 @@ pub struct SearchResult {
     pub score: f64,
 }
 
+#[derive(Clone, Debug, Serialize)]
+pub struct SearchResponse {
+    pub results: Vec<SearchResult>,
+    pub suggestions: Vec<String>,
+    pub correction: Option<String>,
+}
+
 #[derive(Default)]
 struct Posting {
     title: u16,
@@ -112,6 +119,41 @@ impl SearchIndex {
         }).collect()
     }
 
+    pub fn respond(&self, query: &str, limit: usize) -> SearchResponse {
+        let terms = tokenize(query);
+        let results = self.search(query, limit);
+        let suggestions = if terms.is_empty() { Vec::new() } else { self.suggest(query, 6) };
+        let correction = if !terms.is_empty() && results.is_empty() { self.correct(query) } else { None };
+        SearchResponse { results, suggestions, correction }
+    }
+
+    fn suggest(&self, query: &str, limit: usize) -> Vec<String> {
+        let normalized_query = normalize(query);
+        let prefix = normalized_query.split_whitespace().last().unwrap_or("");
+        if prefix.chars().count() < 2 { return Vec::new(); }
+        let mut words: Vec<String> = self.postings.keys().filter(|word| word.starts_with(prefix) && word != &prefix).cloned().collect();
+        words.sort_by(|a, b| a.len().cmp(&b.len()).then_with(|| a.cmp(b)));
+        words.truncate(limit);
+        words
+    }
+
+    fn correct(&self, query: &str) -> Option<String> {
+        let terms = tokenize(query);
+        if terms.is_empty() || terms.iter().all(|term| self.postings.contains_key(term)) { return None; }
+        let mut corrected = Vec::new();
+        for term in terms {
+            if self.postings.contains_key(&term) { corrected.push(term); continue; }
+            if term.chars().count() < 4 { return None; }
+            let best = self.postings.keys().filter_map(|word| {
+                let distance = edit_distance(&term, word);
+                (distance <= 2 && distance < term.chars().count() / 2).then_some((distance, word))
+            }).min_by(|(da, wa), (db, wb)| da.cmp(db).then_with(|| wa.cmp(wb)))?;
+            corrected.push(best.1.clone());
+        }
+        let result = corrected.join(" ");
+        (result != normalize(query) && !self.search(&result, 1).is_empty()).then_some(result)
+    }
+
     fn term_score(&self, posting: &Posting, doc_id: usize, term: &str) -> f64 {
         let frequency = posting.title as f64 * TITLE_WEIGHT + posting.tags as f64 * TAG_WEIGHT
             + posting.summary as f64 * SUMMARY_WEIGHT + posting.body as f64 * BODY_WEIGHT;
@@ -176,6 +218,24 @@ impl WasmSearch {
     pub fn search(&self, query: &str, limit: usize) -> Result<String, JsValue> {
         serde_json::to_string(&self.index.search(query, limit)).map_err(|error| JsValue::from_str(&error.to_string()))
     }
+
+    pub fn respond(&self, query: &str, limit: usize) -> Result<String, JsValue> {
+        serde_json::to_string(&self.index.respond(query, limit)).map_err(|error| JsValue::from_str(&error.to_string()))
+    }
+}
+
+fn edit_distance(left: &str, right: &str) -> usize {
+    let right_chars: Vec<char> = right.chars().collect();
+    let mut row: Vec<usize> = (0..=right_chars.len()).collect();
+    for (i, left_char) in left.chars().enumerate() {
+        let mut diagonal = row[0]; row[0] = i + 1;
+        for (j, right_char) in right_chars.iter().enumerate() {
+            let above = row[j + 1];
+            row[j + 1] = (row[j + 1] + 1).min(row[j] + 1).min(diagonal + usize::from(left_char != *right_char));
+            diagonal = above;
+        }
+    }
+    row[right_chars.len()]
 }
 
 #[cfg(test)]
@@ -191,4 +251,6 @@ mod tests {
     #[test] fn prefix_search_finds_words() { assert_eq!(SearchIndex::new(docs()).search("authoriz", 10)[0].id, "booking"); }
     #[test] fn empty_search_has_no_results() { assert!(SearchIndex::new(docs()).search(" !!! ", 10).is_empty()); }
     #[test] fn result_count_is_bounded() { assert!(SearchIndex::new(docs()).search("secure", 500).len() <= MAX_RESULTS); }
+    #[test] fn prefix_suggestions_complete_partial_words() { assert!(SearchIndex::new(docs()).respond("author", 10).suggestions.contains(&"authorization".into())); }
+    #[test] fn corrects_a_clear_typo_when_original_query_has_no_results() { assert_eq!(SearchIndex::new(docs()).respond("secuer booking", 10).correction.as_deref(), Some("secure booking")); }
 }

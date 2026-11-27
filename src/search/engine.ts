@@ -1,13 +1,15 @@
 import type { SearchDocument } from './catalog.ts';
 
 export type SearchResult = Pick<SearchDocument, 'id' | 'title' | 'kind' | 'url'> & { score: number; excerpt: string };
-type WasmModule = { WasmSearch: new (json: string) => { search(query: string, limit: number): string } };
+export type SearchResponse = { results: SearchResult[]; suggestions: string[]; correction: string | null };
+export type SearchEngine = ((query: string, limit?: number) => SearchResult[]) & { respond: (query: string, limit?: number) => SearchResponse };
+type WasmModule = { WasmSearch: new (json: string) => { respond(query: string, limit: number): string } };
 
 const normalize = (text: string) => text.toLocaleLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 const tokenize = (text: string) => normalize(text).split(/\s+/).filter((term) => term.length > 1);
 
 function createBrowserSearch(documents: SearchDocument[]) {
-  return (query: string, limit = 10): SearchResult[] => {
+  const search = (query: string, limit = 10): SearchResult[] => {
     const terms = tokenize(query);
     if (!terms.length) return [];
     const phrase = normalize(query);
@@ -36,6 +38,14 @@ function createBrowserSearch(documents: SearchDocument[]) {
       .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
       .slice(0, Math.min(limit, 30));
   };
+  return Object.assign(search, { respond(query: string, limit = 10): SearchResponse {
+    const terms = tokenize(query);
+    const results = search(query, limit);
+    const words = new Set(documents.flatMap((document) => normalize(`${document.title} ${document.tags.join(' ')} ${document.summary}`).split(' ')));
+    const prefix = terms.at(-1) ?? '';
+    const suggestions = prefix.length < 2 ? [] : [...words].filter((word) => word.startsWith(prefix) && word !== prefix).sort((a, b) => a.length - b.length || a.localeCompare(b)).slice(0, 6);
+    return { results, suggestions, correction: null };
+  } }) as SearchEngine;
 }
 
 function makeExcerpt(body: string, terms: string[], fallback: string) {
@@ -56,7 +66,8 @@ export async function createSearchEngine(documents: SearchDocument[]) {
   try {
     const wasm = await import('./wasm-loader.ts') as unknown as WasmModule;
     const engine = new wasm.WasmSearch(JSON.stringify(documents));
-    return (query: string, limit = 10): SearchResult[] => JSON.parse(engine.search(query, limit)) as SearchResult[];
+    const search = (query: string, limit = 10) => JSON.parse(engine.respond(query, limit)).results as SearchResult[];
+    return Object.assign(search, { respond: (query: string, limit = 10) => JSON.parse(engine.respond(query, limit)) as SearchResponse }) as SearchEngine;
   } catch {
     return createBrowserSearch(documents);
   }
