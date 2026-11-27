@@ -204,7 +204,10 @@ function PostMeta({ post }: { post: BlogPost }) {
 }
 
 function BlogCatalog({ posts, allPosts, onOpen, searchQuery, onSearchChange, activeTag, onTagChange }: { posts: BlogPost[]; allPosts: BlogPost[]; onOpen: (slug: string) => void; searchQuery: string; onSearchChange: (value: string) => void; activeTag: string; onTagChange: (value: string) => void }) {
-  const post = posts[0];
+  const [visibleCount, setVisibleCount] = useState(6);
+  const post = !activeTag && !searchQuery.trim() ? allPosts[0] : undefined;
+  const archivePosts = posts.filter((entry) => entry.slug !== post?.slug);
+  const visiblePosts = archivePosts.slice(0, visibleCount);
   const allTags = [...new Set(allPosts.flatMap((entry) => entry.tags))].sort((a, b) => a.localeCompare(b));
 
   return (
@@ -223,17 +226,19 @@ function BlogCatalog({ posts, allPosts, onOpen, searchQuery, onSearchChange, act
         <div className="blog-filter-row" role="group" aria-label="Filter by topic"><Tag active={!activeTag} onClick={() => onTagChange('')}>All topics</Tag>{allTags.map((tag) => <Tag key={tag} active={activeTag === tag} onClick={() => onTagChange(tag)}>{tag}</Tag>)}</div>
       </div>
 
-      {!post ? <div className="blog-empty-state surface-card"><p className="blog-eyebrow">No matches</p><p>Try another search term or clear the topic filter.</p></div> : <>
+      {post && <>
         <article className="blog-featured-post surface-card">
           <a href={`/blog/${post.slug}`} onClick={() => onOpen(post.slug)} className="blog-featured-link">
             <PostVisual post={post} featured />
             <div className="blog-featured-copy"><p className="blog-section-label">Featured note</p><PostMeta post={post} /><h2>{post.title}</h2><p>{post.subtitle}</p><div className="blog-card-footer"><div className="blog-card-tags">{post.tags.slice(0, 2).map((tag) => <Tag key={tag}>{tag}</Tag>)}</div><span className="blog-read-link">Read note <ArrowRight size={15} /></span></div></div>
           </a>
         </article>
+      </>}
 
         <div className="blog-section-heading"><div><p className="blog-section-label">The archive</p><h2>Latest notes</h2></div><span aria-live="polite" aria-atomic="true">{posts.length} {posts.length === 1 ? 'result' : 'results'}</span></div>
-        <div className="blog-post-grid">{posts.slice(1).map((entry) => <article key={entry.slug} className="blog-post-card surface-card"><a href={`/blog/${entry.slug}`} onClick={() => onOpen(entry.slug)}><PostVisual post={entry} /><div className="blog-post-card-copy"><PostMeta post={entry} /><h3>{entry.title}</h3><p>{entry.subtitle}</p><div className="blog-card-footer"><div className="blog-card-tags">{entry.tags.slice(0, 2).map((tag) => <Tag key={tag}>{tag}</Tag>)}</div><span className="blog-read-link" aria-hidden="true"><ArrowRight size={15} /></span></div></div></a></article>)}</div>
-      </>}
+        {visiblePosts.length ? <div className="blog-post-grid">{visiblePosts.map((entry) => <article key={entry.slug} className="blog-post-card surface-card"><a href={`/blog/${entry.slug}`} onClick={() => onOpen(entry.slug)}><PostVisual post={entry} /><div className="blog-post-card-copy"><PostMeta post={entry} /><h3>{entry.title}</h3><p>{entry.subtitle}</p><div className="blog-card-footer"><div className="blog-card-tags">{entry.tags.slice(0, 2).map((tag) => <Tag key={tag}>{tag}</Tag>)}</div><span className="blog-read-link" aria-hidden="true"><ArrowRight size={15} /></span></div></div></a></article>)}</div> : <div className="blog-empty-state surface-card"><p className="blog-eyebrow">No matches</p><p>Try another search term or clear the topic filter.</p></div>}
+        {visibleCount < archivePosts.length && <button type="button" className="blog-load-more" onClick={() => setVisibleCount((count) => count + 6)}>Load more articles <ArrowRight size={15} /></button>}
+      
     </section>
   );
 }
